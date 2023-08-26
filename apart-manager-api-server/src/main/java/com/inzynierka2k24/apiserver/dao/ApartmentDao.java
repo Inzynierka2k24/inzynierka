@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
@@ -21,11 +22,12 @@ public class ApartmentDao {
 
   public Optional<Apartment> getById(long userId, long apartmentId) {
     return Optional.ofNullable(
-        template.queryForObject(
-            "SELECT * FROM apartments WHERE user_id = ? and apartment_id = ?",
-            this::apartmentRowMapper,
-            userId,
-            apartmentId));
+        DataAccessUtils.singleResult(
+            template.query(
+                "SELECT * FROM apartments WHERE user_id = ? and apartment_id = ?",
+                this::apartmentRowMapper,
+                userId,
+                apartmentId)));
   }
 
   public void add(long userId, Apartment apartment) {
