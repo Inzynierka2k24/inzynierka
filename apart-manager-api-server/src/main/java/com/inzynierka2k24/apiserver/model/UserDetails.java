@@ -3,7 +3,7 @@ package com.inzynierka2k24.apiserver.model;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
-public class StoreUserDetails { // implements UserDetails {
+public class UserDetails { // implements UserDetails {
 
   private String userName;
   private String password;

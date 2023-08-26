@@ -11,13 +11,28 @@ import org.springframework.web.bind.annotation.*;
 public class ApartmentController {
   private final ApartmentService apartmentService;
 
-  @GetMapping("/apartments")
-  public List<Apartment> getAll() {
-    return apartmentService.getAll();
+  @GetMapping("/apartments/{userId}")
+  public List<Apartment> getAll(@PathVariable long userId) {
+    return apartmentService.getAll(userId);
   }
 
-  @PostMapping("/apartment/add")
-  public void add(@ModelAttribute("apartment") Apartment apartment) {
-    apartmentService.add(apartment);
+  @GetMapping("/apartment/{userId}/get/{apartmentId}")
+  public Apartment get(@PathVariable long userId, @PathVariable long apartmentId) {
+    return apartmentService.getById(userId, apartmentId).orElse(null);
+  }
+
+  @PostMapping("/apartment/{userId}/add")
+  public void add(@PathVariable long userId, @RequestBody Apartment apartment) {
+    apartmentService.add(userId, apartment);
+  }
+
+  @PutMapping("/apartment/{userId}/edit/{apartmentId}")
+  public void edit(@PathVariable long userId, @RequestBody Apartment apartment) {
+    apartmentService.update(userId, apartment);
+  }
+
+  @DeleteMapping("/apartment/{userId}/remove/{apartmentId}")
+  public void delete(@PathVariable long userId, @PathVariable long apartmentId) {
+    apartmentService.deleteById(userId, apartmentId);
   }
 }

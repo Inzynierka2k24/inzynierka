@@ -14,7 +14,7 @@
     <version>0.0.1-SNAPSHOT</version>
 
     <properties>
-        <java.version>19</java.version>
+        <java.version>17</java.version>
 
         <postgresql.version>42.6.0</postgresql.version>
         <lombok.version>1.18.24</lombok.version>
