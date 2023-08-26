@@ -1,13 +1,13 @@
 CREATE TABLE IF NOT EXISTS users (
-  user_id int NOT NULL PRIMARY KEY,
+  user_id bigserial NOT NULL PRIMARY KEY,
   login varchar(50) NOT NULL,
   password varchar(50) NOT NULL,
   mail varchar(50) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS apartments (
-  apartment_id int NOT NULL PRIMARY KEY,
-  user_id int NOT NULL REFERENCES users(user_id),
+  apartment_id bigserial NOT NULL PRIMARY KEY,
+  user_id bigint NOT NULL REFERENCES users(user_id),
   daily_price float NOT NULL,
   title varchar(50),
   country varchar(50),
@@ -18,22 +18,22 @@ CREATE TABLE IF NOT EXISTS apartments (
 );
 
 CREATE TABLE IF NOT EXISTS external_offers (
-  offer_id int NOT NULL PRIMARY KEY,
-  apartment_id int NOT NULL REFERENCES apartments(apartment_id),
+  offer_id bigserial NOT NULL PRIMARY KEY,
+  apartment_id bigint NOT NULL REFERENCES apartments(apartment_id),
   service_type int NOT NULL,
   external_link varchar(250) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS reservations (
-  reservation_id int NOT NULL PRIMARY KEY,
-  apartment_id int NOT NULL REFERENCES apartments(apartment_id),
+  reservation_id bigserial NOT NULL PRIMARY KEY,
+  apartment_id bigint NOT NULL REFERENCES apartments(apartment_id),
   start_date date NOT NULL,
   end_date date NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS external_accounts (
-  account_id int NOT NULL PRIMARY KEY,
-  user_id int NOT NULL REFERENCES users(user_id),
+  account_id bigserial NOT NULL PRIMARY KEY,
+  user_id bigint NOT NULL REFERENCES users(user_id),
   login varchar(50) NOT NULL,
   password varchar(50) NOT NULL,
   mail varchar(50) NOT NULL,
@@ -41,8 +41,8 @@ CREATE TABLE IF NOT EXISTS external_accounts (
 );
 
 CREATE TABLE IF NOT EXISTS contacts (
-  contact_id int NOT NULL PRIMARY KEY,
-  user_id int NOT NULL REFERENCES users(user_id),
+  contact_id bigserial NOT NULL PRIMARY KEY,
+  user_id bigint NOT NULL REFERENCES users(user_id),
   type int NOT NULL,
   password varchar(50) NOT NULL,
   mail varchar(50) NOT NULL
