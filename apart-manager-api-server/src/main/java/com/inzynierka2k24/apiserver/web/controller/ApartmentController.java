@@ -7,31 +7,32 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequestMapping("/{userId}/apartment")
 @RequiredArgsConstructor
 public class ApartmentController {
   private final ApartmentService apartmentService;
 
-  @GetMapping("/apartments/{userId}")
+  @GetMapping()
   public List<Apartment> getAll(@PathVariable long userId) {
     return apartmentService.getAll(userId);
   }
 
-  @GetMapping("/apartment/{userId}/get/{apartmentId}")
+  @GetMapping("/{apartmentId}")
   public Apartment get(@PathVariable long userId, @PathVariable long apartmentId) {
     return apartmentService.getById(userId, apartmentId).orElse(null);
   }
 
-  @PostMapping("/apartment/{userId}/add")
+  @PostMapping()
   public void add(@PathVariable long userId, @RequestBody Apartment apartment) {
     apartmentService.add(userId, apartment);
   }
 
-  @PutMapping("/apartment/{userId}/edit/{apartmentId}")
+  @PutMapping()
   public void edit(@PathVariable long userId, @RequestBody Apartment apartment) {
     apartmentService.update(userId, apartment);
   }
 
-  @DeleteMapping("/apartment/{userId}/remove/{apartmentId}")
+  @DeleteMapping("/{apartmentId}")
   public void delete(@PathVariable long userId, @PathVariable long apartmentId) {
     apartmentService.deleteById(userId, apartmentId);
   }
