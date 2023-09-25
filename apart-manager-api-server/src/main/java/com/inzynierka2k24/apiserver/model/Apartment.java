@@ -1,7 +1,9 @@
 package com.inzynierka2k24.apiserver.model;
 
+import java.util.Optional;
+
 public record Apartment(
-    long id,
+    Optional<Long> id,
     float dailyPrice,
     String title,
     String country,

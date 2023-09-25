@@ -37,7 +37,7 @@ public class UserDao {
           mail = ?,
       WHERE user_id = ?
       """;
-    template.update(query, user.password(), user.mail(), user.id());
+    template.update(query, user.password(), user.mail(), user.id().orElseThrow());
   }
 
   public void deleteById(long userId) {
@@ -46,7 +46,7 @@ public class UserDao {
 
   private User userRowMapper(ResultSet rs, int rowNum) throws SQLException {
     return new User(
-        rs.getLong("user_id"),
+        Optional.of(rs.getLong("user_id")),
         rs.getString("login"),
         rs.getString("password"),
         rs.getString("mail"),

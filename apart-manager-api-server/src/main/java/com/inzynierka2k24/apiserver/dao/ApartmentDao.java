@@ -66,7 +66,7 @@ public class ApartmentDao {
         apartment.buildingNumber(),
         apartment.apartmentNumber(),
         userId,
-        apartment.id());
+        apartment.id().orElseThrow());
   }
 
   public void deleteById(long userId, long apartmentId) {
@@ -76,7 +76,7 @@ public class ApartmentDao {
 
   private Apartment apartmentRowMapper(ResultSet rs, int rowNum) throws SQLException {
     return new Apartment(
-        rs.getLong("apartment_id"),
+        Optional.of(rs.getLong("apartment_id")),
         rs.getFloat("daily_price"),
         rs.getString("title"),
         rs.getString("country"),

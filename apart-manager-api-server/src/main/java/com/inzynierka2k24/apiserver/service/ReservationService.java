@@ -25,7 +25,9 @@ public class ReservationService {
   }
 
   public void update(long apartmentId, Reservation reservation) {
-    reservationDao.update(apartmentId, reservation);
+    if (reservation.id().isPresent()) {
+      reservationDao.update(apartmentId, reservation);
+    }
   }
 
   public void deleteById(long apartmentId, long reservationId) {

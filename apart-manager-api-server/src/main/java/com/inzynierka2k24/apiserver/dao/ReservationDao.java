@@ -50,7 +50,11 @@ public class ReservationDao {
         WHERE apartment_id = ? and reservation_id = ?
         """;
     template.update(
-        query, reservation.startDate(), reservation.endDate(), apartmentId, reservation.id());
+        query,
+        reservation.startDate(),
+        reservation.endDate(),
+        apartmentId,
+        reservation.id().orElseThrow());
   }
 
   public void deleteById(long apartmentId, long reservationId) {
@@ -62,7 +66,7 @@ public class ReservationDao {
 
   private Reservation reservationRowMapper(ResultSet rs, int rowNum) throws SQLException {
     return new Reservation(
-        rs.getLong("reservation_id"),
+        Optional.of(rs.getLong("reservation_id")),
         rs.getTimestamp("start_date").toInstant(),
         rs.getTimestamp("end_date").toInstant());
   }

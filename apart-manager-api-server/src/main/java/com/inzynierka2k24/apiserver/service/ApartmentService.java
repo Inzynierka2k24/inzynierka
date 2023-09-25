@@ -25,7 +25,9 @@ public class ApartmentService {
   }
 
   public void update(long userId, Apartment apartment) {
-    apartmentDao.update(userId, apartment);
+    if (apartment.id().isPresent()) {
+      apartmentDao.update(userId, apartment);
+    }
   }
 
   public void deleteById(long userId, long apartmentId) {
