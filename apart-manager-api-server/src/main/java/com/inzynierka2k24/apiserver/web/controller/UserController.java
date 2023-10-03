@@ -13,10 +13,8 @@ public class UserController {
   private final UserService userService;
 
   @PostMapping("/login")
-  public String login(@RequestBody LoginRequest request) {
-    return userService.get(request.login(), request.password()).isPresent()
-        ? "Logged successfully!"
-        : "Login failed :(";
+  public boolean login(@RequestBody LoginRequest request) {
+    return userService.get(request.login(), request.password()).isPresent();
   }
 
   @PostMapping("/register")

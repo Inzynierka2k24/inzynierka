@@ -1,13 +1,15 @@
 package com.inzynierka2k24.apiserver.dao;
 
 import com.inzynierka2k24.apiserver.model.User;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -51,6 +53,6 @@ public class UserDao {
         rs.getString("password"),
         rs.getString("mail"),
         true,
-        "USER");
+        List.of("USER"));
   }
 }
