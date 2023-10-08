@@ -44,6 +44,8 @@ public class UserService implements UserDetailsService {
       throw new UsernameNotFoundException("Not found : " + username);
     }
 
+    System.out.println("User roles: " + user.get().roles());
+
     return new UserSecurityDetails(user.get());
   }
 }

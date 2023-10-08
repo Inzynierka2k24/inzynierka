@@ -11,22 +11,10 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
   private final UserService userService;
 
-  //  @PostMapping("/mail")
+  //  @PostMapping("/login")
   //  public boolean login(@RequestBody AuthRequest request) {
   //    return userService.get(request.mail(), request.password()).isPresent();
   //  }
-
-  @GetMapping("/home")
-  public String home() {
-    System.out.println("home");
-    return "ApartManager home page!";
-  }
-
-  @GetMapping("/register")
-  public String register() {
-    System.out.println("register get");
-    return "Register page!";
-  }
 
   @PostMapping("/register")
   public void register(@RequestBody AuthRequest request) {

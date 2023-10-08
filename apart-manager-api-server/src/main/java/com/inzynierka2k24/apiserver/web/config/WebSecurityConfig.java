@@ -20,11 +20,11 @@ public class WebSecurityConfig {
     http.authorizeHttpRequests(
             (requests) ->
                 requests
-                    .requestMatchers("/user/*", "*/apartment/*")
-                    .hasAnyRole("USER", "ADMIN")
+                    .requestMatchers("/user/**", "/*/apartment/**")
+                    .hasAnyAuthority("USER", "ADMIN")
                     .requestMatchers("/register", "/login")
                     .permitAll())
-        .formLogin(withDefaults())
+        .formLogin(withDefaults()) // Only for testing
         .csrf(AbstractHttpConfigurer::disable); // Only for testing
     return http.build();
   }
