@@ -23,6 +23,7 @@
         <testcontainers.version>1.17.6</testcontainers.version>
         <fmt.version>2.21</fmt.version>
         <snakeyaml.version>2.1</snakeyaml.version>
+        <typescript-generator.version>3.1.1185</typescript-generator.version>
     </properties>
 
     <dependencies>
@@ -79,6 +80,11 @@
             <version>${testcontainers.version}</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>cz.habarta.typescript-generator</groupId>
+            <artifactId>typescript-generator-maven-plugin</artifactId>
+            <version>${typescript-generator.version}</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -98,6 +104,29 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>cz.habarta.typescript-generator</groupId>
+                <artifactId>typescript-generator-maven-plugin</artifactId>
+                <version>${typescript-generator.version}</version>
+                <executions>
+                    <execution>
+                        <id>generate</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <phase>process-classes</phase>
+                    </execution>
+                </executions>
+                <configuration>
+                    <jsonLibrary>jackson2</jsonLibrary>
+                    <classPatterns>
+                        <classPattern>com.inzynierka2k24.apiserver.model.*</classPattern>
+                        <classPattern>com.inzynierka2k24.apiserver.web.request.*</classPattern>
+                    </classPatterns>
+                    <outputKind>module</outputKind>
+                    <outputFile>../apart-manager-api-web/src/generated/index.d.ts</outputFile>
+                </configuration>
             </plugin>
         </plugins>
     </build>
