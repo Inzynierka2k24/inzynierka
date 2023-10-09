@@ -1,8 +1,7 @@
 CREATE TABLE IF NOT EXISTS users (
   user_id bigserial NOT NULL PRIMARY KEY,
-  login varchar(50) NOT NULL,
-  password varchar(50) NOT NULL,
-  mail varchar(50) NOT NULL
+  mail varchar(50) NOT NULL,
+  password varchar(250) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS apartments (

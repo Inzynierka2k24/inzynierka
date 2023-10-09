@@ -1,9 +1,8 @@
 package com.inzynierka2k24.apiserver.web.controller;
 
 import com.inzynierka2k24.apiserver.service.UserService;
+import com.inzynierka2k24.apiserver.web.request.AuthRequest;
 import com.inzynierka2k24.apiserver.web.request.EditUserRequest;
-import com.inzynierka2k24.apiserver.web.request.LoginRequest;
-import com.inzynierka2k24.apiserver.web.request.RegisterRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,14 +11,15 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
   private final UserService userService;
 
-  @PostMapping("/login")
-  public boolean login(@RequestBody LoginRequest request) {
-    return userService.get(request.login(), request.password()).isPresent();
-  }
+  //  @PostMapping("/login")
+  //  public boolean login(@RequestBody AuthRequest request) {
+  //    return userService.get(request.mail(), request.password()).isPresent();
+  //  }
 
   @PostMapping("/register")
-  public void register(@RequestBody RegisterRequest request) {
-    userService.register(request.login(), request.password(), request.mail());
+  public void register(@RequestBody AuthRequest request) {
+    System.out.println("register post");
+    userService.register(request.mail(), request.password());
   }
 
   @PutMapping("/user/{userId}/edit")

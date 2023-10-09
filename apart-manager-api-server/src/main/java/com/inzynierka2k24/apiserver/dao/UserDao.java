@@ -1,34 +1,38 @@
 package com.inzynierka2k24.apiserver.dao;
 
 import com.inzynierka2k24.apiserver.model.User;
-import lombok.RequiredArgsConstructor;
-import org.springframework.dao.support.DataAccessUtils;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Service;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
+import lombok.RequiredArgsConstructor;
+import org.springframework.dao.support.DataAccessUtils;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 public class UserDao {
   private final JdbcTemplate template;
 
-  public Optional<User> get(String login, String password) {
+  public Optional<User> get(String mail, String password) {
     return Optional.ofNullable(
         DataAccessUtils.singleResult(
             template.query(
-                "SELECT * FROM users WHERE login = ? and password = ?",
+                "SELECT * FROM users WHERE mail = ? and password = ?",
                 this::userRowMapper,
-                login,
+                mail,
                 password)));
   }
 
+  public Optional<User> get(String mail) {
+    return Optional.ofNullable(
+        DataAccessUtils.singleResult(
+            template.query("SELECT * FROM users WHERE mail = ?", this::userRowMapper, mail)));
+  }
+
   public void register(User user) {
-    template.update(
-        "INSERT INTO users VALUES (default, ?, ?, ?)", user.login(), user.password(), user.mail());
+    template.update("INSERT INTO users VALUES (default, ?, ?)", user.mail(), user.password());
   }
 
   public void update(User user) {
@@ -49,9 +53,8 @@ public class UserDao {
   private User userRowMapper(ResultSet rs, int rowNum) throws SQLException {
     return new User(
         Optional.of(rs.getLong("user_id")),
-        rs.getString("login"),
-        rs.getString("password"),
         rs.getString("mail"),
+        rs.getString("password"),
         true,
         List.of("USER"));
   }
