@@ -1,8 +1,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AppState } from '../../core/store/app.store';
 import { Store } from '@ngrx/store';
-import { selectCurrentUser } from '../../core/store/user/user.selectors';
+import {
+  selectCurrentUser,
+  selectUserStateError,
+} from '../../core/store/user/user.selectors';
 import { Subscription } from 'rxjs';
+import { MessageService } from 'primeng/api';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-user-widget',
@@ -16,7 +21,11 @@ export class UserWidgetComponent implements OnInit, OnDestroy {
   displayContent: boolean = false;
   formToggle: boolean = false;
 
-  constructor(private store: Store<AppState>) {}
+  constructor(
+    private store: Store<AppState>,
+    private messageService: MessageService,
+    private translateService: TranslateService,
+  ) {}
 
   ngOnInit(): void {
     const userDataSub = this.store
@@ -26,7 +35,23 @@ export class UserWidgetComponent implements OnInit, OnDestroy {
           this.isUserLoggedIn = true;
         }
       });
-    this.subscriptions.push(userDataSub);
+    const userErrorSub = this.store
+      .select(selectUserStateError)
+      .subscribe((error) => {
+        if (error) {
+          switch (error.status) {
+            default:
+              console.warn(error);
+              this.messageService.add({
+                severity: 'error',
+                summary: this.translateService.instant('ERROR_MESSAGE.DEFAULT'),
+                detail: error.type,
+              });
+          }
+        }
+      });
+
+    this.subscriptions.push(userDataSub, userErrorSub);
   }
 
   ngOnDestroy(): void {

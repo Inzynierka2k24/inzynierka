@@ -11,9 +11,15 @@ import { MenubarModule } from 'primeng/menubar';
 import { RippleModule } from 'primeng/ripple';
 import { CheckboxModule } from 'primeng/checkbox';
 import { RegisterComponent } from './user-widget/components/register/register.component';
+import { MessagesModule } from 'primeng/messages';
 
 @NgModule({
-  declarations: [LoginComponent, UserWidgetComponent, HeaderComponent, RegisterComponent],
+  declarations: [
+    LoginComponent,
+    UserWidgetComponent,
+    HeaderComponent,
+    RegisterComponent,
+  ],
   imports: [
     SharedModule,
     ReactiveFormsModule,
@@ -23,6 +29,7 @@ import { RegisterComponent } from './user-widget/components/register/register.co
     MenubarModule,
     RippleModule,
     CheckboxModule,
+    MessagesModule,
   ],
   exports: [HeaderComponent],
 })

@@ -20,8 +20,10 @@
   "REGISTER": {
     "TITLE": "Welcome!",
     "HAS_ACCOUNT": "Already have an account?",
-    "FORM_TOGGLE":"Log in here!",
+    "FORM_TOGGLE": "Log in here!",
     "SUBMIT": "Register"
+  },
+  "ERROR_MESSAGE": {
+    "DEFAULT": "Something went wrong."
   }
-
 }

@@ -3,7 +3,7 @@ import { User } from '../../../../generated';
 export interface UserState {
   loading: boolean;
   user?: User;
-  error?: Error;
+  error?: any;
 }
 
 export const initialState: UserState = {
