@@ -29,7 +29,7 @@ public class UserService implements UserDetailsService {
   }
 
   public void update(long userId, String password, String mail) {
-    userDao.update(new User(userId, mail, password));
+    userDao.update(new User(userId, mail, passwordEncoder.encode(password)));
   }
 
   public void deleteById(long userId) {
