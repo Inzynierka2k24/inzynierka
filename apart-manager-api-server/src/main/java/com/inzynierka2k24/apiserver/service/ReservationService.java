@@ -21,16 +21,22 @@ public class ReservationService {
   }
 
   public void add(long apartmentId, Reservation reservation) {
-    reservationDao.add(apartmentId, reservation);
+    if (isValid(reservation)) {
+      reservationDao.add(apartmentId, reservation);
+    }
   }
 
   public void update(long apartmentId, Reservation reservation) {
-    if (reservation.id().isPresent()) {
+    if (isValid(reservation) && reservation.id().isPresent()) {
       reservationDao.update(apartmentId, reservation);
     }
   }
 
   public void deleteById(long apartmentId, long reservationId) {
     reservationDao.deleteById(apartmentId, reservationId);
+  }
+
+  private boolean isValid(Reservation reservation) {
+    return reservation.startDate().isBefore(reservation.endDate());
   }
 }

@@ -18,10 +18,6 @@ public class UserService implements UserDetailsService {
 
   private final PasswordEncoder passwordEncoder;
 
-  public Optional<User> get(String mail, String password) {
-    return userDao.get(mail, password);
-  }
-
   public void register(String mail, String password) {
     if (userDao.get(mail, password).isEmpty()) {
       userDao.register(new User(mail, passwordEncoder.encode(password)));
@@ -43,8 +39,6 @@ public class UserService implements UserDetailsService {
     if (user.isEmpty()) {
       throw new UsernameNotFoundException("Not found : " + username);
     }
-
-    System.out.println("User roles: " + user.get().roles());
 
     return new UserSecurityDetails(user.get());
   }

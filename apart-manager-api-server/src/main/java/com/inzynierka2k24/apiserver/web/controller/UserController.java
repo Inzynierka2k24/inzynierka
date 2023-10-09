@@ -18,7 +18,6 @@ public class UserController {
 
   @PostMapping("/register")
   public void register(@RequestBody AuthRequest request) {
-    System.out.println("register post");
     userService.register(request.mail(), request.password());
   }
 
