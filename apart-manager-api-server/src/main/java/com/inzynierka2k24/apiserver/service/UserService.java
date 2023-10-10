@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -16,20 +15,24 @@ import org.springframework.stereotype.Service;
 public class UserService implements UserDetailsService {
   private final UserDao userDao;
 
-  private final PasswordEncoder passwordEncoder;
-
-  public void register(String mail, String password) {
-    if (userDao.get(mail, password).isEmpty()) {
-      userDao.register(new User(mail, passwordEncoder.encode(password)));
-    }
+  public void register(User user) {
+    userDao.register(user);
   }
 
-  public void update(long userId, String password, String mail) {
-    userDao.update(new User(userId, mail, passwordEncoder.encode(password)));
+  public void update(User user) {
+    userDao.update(user);
   }
 
   public void deleteById(long userId) {
     userDao.deleteById(userId);
+  }
+
+  public boolean existsByMail(String mail) {
+    return userDao.get(mail).isPresent();
+  }
+
+  public boolean userIdMatchesEmail() {
+    return true;
   }
 
   @Override
