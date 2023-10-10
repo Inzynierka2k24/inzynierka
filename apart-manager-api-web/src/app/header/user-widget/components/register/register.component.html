@@ -6,6 +6,7 @@
     <span class="text-600 font-medium line-height-3">{{
       "REGISTER.HAS_ACCOUNT" | translate
     }}</span>
+    <br />
     <a
       (click)="toggleForm()"
       class="font-medium no-underline ml-2 text-blue-500 cursor-pointer"
@@ -57,16 +58,21 @@
       formControlName="password"
       id="password"
       inputStyleClass="w-full"
-      styleClass="mb-6 w-full"
+      styleClass="mb-2 w-full"
     >
+      <ng-template pTemplate="header">
+        {{ "PASSWORD_RULE" | translate }}
+        <p-divider></p-divider>
+      </ng-template>
     </p-password>
     <p-password
+      [feedback]="false"
       [placeholder]="'FORM.REPEAT_PASSWORD_LABEL' | translate"
       [toggleMask]="true"
       formControlName="passwordRepeat"
       id="password2"
       inputStyleClass="w-full"
-      styleClass="mb-6 w-full"
+      styleClass="mb-4 w-full"
     >
     </p-password>
 

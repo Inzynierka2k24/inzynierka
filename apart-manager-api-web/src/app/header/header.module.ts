@@ -12,6 +12,7 @@ import { RippleModule } from 'primeng/ripple';
 import { CheckboxModule } from 'primeng/checkbox';
 import { RegisterComponent } from './user-widget/components/register/register.component';
 import { MessagesModule } from 'primeng/messages';
+import {DividerModule} from "primeng/divider";
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import { MessagesModule } from 'primeng/messages';
     RippleModule,
     CheckboxModule,
     MessagesModule,
+    DividerModule,
   ],
   exports: [HeaderComponent],
 })
