@@ -1,0 +1,17 @@
+#user-widget {
+  font-size: 1.4rem;
+}
+
+#user-widget > p {
+  margin: 0 5px 0 15px;
+}
+
+#user-widget i {
+  font-size: 1.4rem;
+}
+
+.user-widget-content {
+  position: absolute;
+  right: 1rem;
+  max-width: 25vw;
+}

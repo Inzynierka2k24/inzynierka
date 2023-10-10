@@ -1,0 +1,31 @@
+{
+  "USER_WIDGET": {
+    "INFO_LOGGED_IN": "Hello {{username}}!",
+    "INFO_NOT_LOGGED_IN": "Log in / Register"
+  },
+  "FORM": {
+    "LOGIN_LABEL": "Username",
+    "PASSWORD_LABEL": "Password",
+    "REPEAT_PASSWORD_LABEL": "Repeat password",
+    "EMAIL_LABEL": "Email",
+    "EMAIL_PLACEHOLDER": "Email Address",
+    "REMEMBER_ME": "Remember me"
+  },
+  "LOGIN": {
+    "TITLE": "Welcome back!",
+    "NO_ACCOUNT": "Don't have an account?",
+    "FORM_TOGGLE": "Create today!",
+    "FORGOT_PASSWORD": "Forgot password?",
+    "SUBMIT": "Sign in"
+  },
+  "REGISTER": {
+    "TITLE": "Welcome!",
+    "HAS_ACCOUNT": "Already have an account?",
+    "FORM_TOGGLE": "Log in here!",
+    "SUBMIT": "Register"
+  },
+  "PASSWORD_RULE": "Provide a password with minimum 4 characters",
+  "ERROR_MESSAGE": {
+    "DEFAULT": "Something went wrong."
+  }
+}
