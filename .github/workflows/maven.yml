@@ -1,4 +1,4 @@
-name: Java Services test execution
+name: Java Services test run
 
 on:
   push:
@@ -18,5 +18,5 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
         cache: maven
-    - name: Build ApartManagerServer
+    - name: Build ApartManagerServer and run tests
       run: mvn -B package --file apart-manager-api-server/pom.xml
