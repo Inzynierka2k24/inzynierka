@@ -56,7 +56,17 @@
       [toggleMask]="true"
       formControlName="password"
       id="password"
-      styleClass="w-full mb-3"
+      inputStyleClass="w-full"
+      styleClass="mb-6 w-full"
+    >
+    </p-password>
+    <p-password
+      [placeholder]="'FORM.REPEAT_PASSWORD_LABEL' | translate"
+      [toggleMask]="true"
+      formControlName="passwordRepeat"
+      id="password2"
+      inputStyleClass="w-full"
+      styleClass="mb-6 w-full"
     >
     </p-password>
 

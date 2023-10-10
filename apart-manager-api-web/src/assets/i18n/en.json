@@ -6,6 +6,7 @@
   "FORM": {
     "LOGIN_LABEL": "Username",
     "PASSWORD_LABEL": "Password",
+    "REPEAT_PASSWORD_LABEL": "Repeat password",
     "EMAIL_LABEL": "Email",
     "EMAIL_PLACEHOLDER": "Email Address",
     "REMEMBER_ME": "Remember me"

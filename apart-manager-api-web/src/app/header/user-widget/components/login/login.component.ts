@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../../core/store/app.store';
 import { Observable } from 'rxjs';
@@ -16,7 +16,7 @@ export class LoginComponent {
   toggleForm: () => void;
 
   isLoading$: Observable<boolean>;
-  loginForm: FormGroup;
+  loginForm;
 
   constructor(
     private store: Store<AppState>,
@@ -24,7 +24,7 @@ export class LoginComponent {
   ) {
     this.loginForm = formBuilder.nonNullable.group({
       login: ['', Validators.required],
-      password: ['', Validators.required],
+      password: ['', [Validators.required, Validators.minLength(4)]],
     });
     this.isLoading$ = store.select(selectUserLoadingState);
   }
@@ -33,8 +33,8 @@ export class LoginComponent {
     if (this.loginForm.valid) {
       this.store.dispatch(
         UserActions.login({
-          login: this.loginForm.controls['login'].value,
-          password: this.loginForm.controls['password'].value,
+          login: this.loginForm.value.login!,
+          password: this.loginForm.value.password!,
         }),
       );
     }

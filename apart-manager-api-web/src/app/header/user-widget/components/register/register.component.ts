@@ -1,6 +1,12 @@
 import { Component, Input } from '@angular/core';
 import { Observable } from 'rxjs';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormBuilder,
+  ValidationErrors,
+  ValidatorFn,
+  Validators,
+} from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../../core/store/app.store';
 import { selectUserLoadingState } from '../../../../core/store/user/user.selectors';
@@ -16,17 +22,24 @@ export class RegisterComponent {
   toggleForm: () => void;
 
   isLoading$: Observable<boolean>;
-  registrationForm: FormGroup;
+  registrationForm;
 
   constructor(
     private store: Store<AppState>,
     private formBuilder: FormBuilder,
   ) {
-    this.registrationForm = formBuilder.nonNullable.group({
-      login: ['', Validators.required],
-      password: ['', Validators.required],
-      mail: ['', [Validators.required, Validators.email]],
-    });
+    this.registrationForm = formBuilder.nonNullable.group(
+      {
+        login: ['', Validators.required],
+        password: ['', [Validators.required, Validators.minLength(4)]],
+        passwordRepeat: ['', Validators.required],
+        mail: ['', [Validators.required, Validators.email]],
+      },
+      {
+        validators: matchingPasswordValidator,
+        updateOn: 'submit',
+      },
+    );
     this.isLoading$ = store.select(selectUserLoadingState);
   }
 
@@ -34,11 +47,31 @@ export class RegisterComponent {
     if (this.registrationForm.valid) {
       this.store.dispatch(
         UserActions.register({
-          login: this.registrationForm.controls['login'].value,
-          password: this.registrationForm.controls['password'].value,
-          mail: this.registrationForm.controls['mail'].value,
+          login: this.registrationForm.value.login!,
+          password: this.registrationForm.value.password!,
+          mail: this.registrationForm.value.mail!,
         }),
       );
     }
   }
 }
+
+/**
+ * @param control AbstractControl to provide validation for.
+ * @returns ValidationErrors
+ * with property passwordsNotMatching set to true when passwords don't match.
+ * @returns null
+ * when passwords match.
+ */
+const matchingPasswordValidator: ValidatorFn = (
+  control: AbstractControl,
+): ValidationErrors | null => {
+  const passwordValue = control.value?.password;
+  const passwordRepeatValue = control.value?.passwordRepeat;
+
+  return passwordValue &&
+    passwordRepeatValue &&
+    passwordValue == passwordRepeatValue
+    ? null
+    : { passwordsNotMatching: true };
+};
