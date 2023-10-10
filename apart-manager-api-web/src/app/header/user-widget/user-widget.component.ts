@@ -17,9 +17,9 @@ import { TranslateService } from '@ngx-translate/core';
 export class UserWidgetComponent implements OnInit, OnDestroy {
   subscriptions: Subscription[] = [];
 
-  isUserLoggedIn: boolean = false;
-  displayContent: boolean = false;
-  formToggle: boolean = false;
+  isUserLoggedIn = false;
+  displayContent = false;
+  formToggle = false;
 
   constructor(
     private store: Store<AppState>,
@@ -33,6 +33,7 @@ export class UserWidgetComponent implements OnInit, OnDestroy {
       .subscribe((user) => {
         if (user) {
           this.isUserLoggedIn = true;
+          this.currentUser = user;
         }
       });
     const userErrorSub = this.store
