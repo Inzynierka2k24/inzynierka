@@ -14,14 +14,14 @@
     <version>0.0.1-SNAPSHOT</version>
 
     <properties>
-        <java.version>21</java.version>
+        <java.version>17</java.version>
 
         <postgresql.version>42.6.0</postgresql.version>
         <lombok.version>1.18.30</lombok.version>
         <h2.version>2.2.220</h2.version>
         <mockito.version>5.2.0</mockito.version>
         <testcontainers.version>1.17.6</testcontainers.version>
-        <fmt.version>2.21</fmt.version>
+        <fmt.version>2.20</fmt.version>
         <snakeyaml.version>2.1</snakeyaml.version>
         <typescript-generator.version>3.1.1185</typescript-generator.version>
     </properties>
