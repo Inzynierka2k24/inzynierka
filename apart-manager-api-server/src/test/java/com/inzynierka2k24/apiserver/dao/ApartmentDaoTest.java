@@ -32,7 +32,7 @@ class ApartmentDaoTest {
   void setUp(@Autowired DataSource dataSource) throws SQLException {
     try (Connection connection = dataSource.getConnection()) {
       ScriptUtils.executeSqlScript(connection, new ClassPathResource("db-schema.sql"));
-      ScriptUtils.executeSqlScript(connection, new ClassPathResource("test-data.sql"));
+      ScriptUtils.executeSqlScript(connection, new ClassPathResource("apartments-test-data.sql"));
     }
 
     apartmentDao = new ApartmentDao(template);

@@ -30,7 +30,7 @@ public class ReservationController {
 
   @PutMapping()
   public void edit(@PathVariable long apartmentId, @RequestBody Reservation reservation) {
-    reservationService.update(apartmentId, reservation);
+    reservationService.update(reservation);
   }
 
   @DeleteMapping("/{reservationId}")

@@ -26,9 +26,9 @@ public class ReservationService {
     }
   }
 
-  public void update(long apartmentId, Reservation reservation) {
+  public void update(Reservation reservation) {
     if (isValid(reservation) && reservation.id().isPresent()) {
-      reservationDao.update(apartmentId, reservation);
+      reservationDao.update(reservation);
     }
   }
 
