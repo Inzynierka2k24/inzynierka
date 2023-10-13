@@ -17,13 +17,14 @@ public class ApartmentDao {
 
   private final JdbcTemplate template;
 
-  static final String GET_ALL_QUERY = "SELECT * FROM apartments WHERE user_id = ?";
-  static final String GET_BY_ID_QUERY =
+  private static final String GET_ALL_QUERY = "SELECT * FROM apartments WHERE user_id = ?";
+  private static final String GET_BY_ID_QUERY =
       "SELECT * FROM apartments WHERE user_id = ? and apartment_id = ?";
-  static final String ADD_QUERY = "INSERT INTO apartments VALUES (default, ?, ?, ?, ?, ?, ?, ?, ?)";
-  static final String DELETE_QUERY =
+  private static final String ADD_QUERY =
+      "INSERT INTO apartments VALUES (default, ?, ?, ?, ?, ?, ?, ?, ?)";
+  private static final String DELETE_QUERY =
       "DELETE FROM apartments WHERE user_id = ? and apartment_id = ?";
-  static final String UPDATE_QUERY =
+  private static final String UPDATE_QUERY =
       """
       UPDATE apartments
       SET daily_price = ?,
@@ -81,7 +82,7 @@ public class ApartmentDao {
     template.update(DELETE_QUERY, userId, apartmentId);
   }
 
-  Apartment apartmentRowMapper(ResultSet rs, int rowNum) throws SQLException {
+  private Apartment apartmentRowMapper(ResultSet rs, int rowNum) throws SQLException {
     return new Apartment(
         Optional.of(rs.getLong("apartment_id")),
         rs.getFloat("daily_price"),
