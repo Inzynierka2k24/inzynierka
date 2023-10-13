@@ -1,14 +1,13 @@
 package com.inzynierka2k24.apiserver.dao;
 
 import com.inzynierka2k24.apiserver.model.Apartment;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -36,15 +35,26 @@ public class ApartmentDao {
           apartment_nr = ?
       WHERE user_id = ? and apartment_id = ?
       """;
+  private static final RowMapper<Apartment> apartmentRowMapper =
+      (rs, rowNum) ->
+          new Apartment(
+              Optional.of(rs.getLong("apartment_id")),
+              rs.getFloat("daily_price"),
+              rs.getString("title"),
+              rs.getString("country"),
+              rs.getString("city"),
+              rs.getString("street"),
+              rs.getString("building_nr"),
+              rs.getString("apartment_nr"));
 
   public List<Apartment> getAll(long userId) {
-    return template.query(GET_ALL_QUERY, this::apartmentRowMapper, userId);
+    return template.query(GET_ALL_QUERY, apartmentRowMapper, userId);
   }
 
   public Optional<Apartment> getById(long userId, long apartmentId) {
     return Optional.ofNullable(
         DataAccessUtils.singleResult(
-            template.query(GET_BY_ID_QUERY, this::apartmentRowMapper, userId, apartmentId)));
+            template.query(GET_BY_ID_QUERY, apartmentRowMapper, userId, apartmentId)));
   }
 
   public void add(long userId, Apartment apartment) {
@@ -80,17 +90,5 @@ public class ApartmentDao {
 
   public void deleteById(long userId, long apartmentId) {
     template.update(DELETE_QUERY, userId, apartmentId);
-  }
-
-  private Apartment apartmentRowMapper(ResultSet rs, int rowNum) throws SQLException {
-    return new Apartment(
-        Optional.of(rs.getLong("apartment_id")),
-        rs.getFloat("daily_price"),
-        rs.getString("title"),
-        rs.getString("country"),
-        rs.getString("city"),
-        rs.getString("street"),
-        rs.getString("building_nr"),
-        rs.getString("apartment_nr"));
   }
 }
