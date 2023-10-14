@@ -1,5 +1,6 @@
 package com.inzynierka2k24.apiserver.web.controller;
 
+import com.inzynierka2k24.apiserver.exception.apartment.ApartmentNotFoundException;
 import com.inzynierka2k24.apiserver.model.Apartment;
 import com.inzynierka2k24.apiserver.service.ApartmentService;
 import java.util.List;
@@ -19,7 +20,11 @@ public class ApartmentController {
 
   @GetMapping("/{apartmentId}")
   public Apartment get(@PathVariable long userId, @PathVariable long apartmentId) {
-    return apartmentService.getById(userId, apartmentId).orElse(null);
+    try {
+      return apartmentService.getById(userId, apartmentId);
+    } catch (ApartmentNotFoundException e) {
+      throw new RuntimeException(e);
+    }
   }
 
   @PostMapping()
@@ -29,11 +34,19 @@ public class ApartmentController {
 
   @PutMapping()
   public void edit(@PathVariable long userId, @RequestBody Apartment apartment) {
-    apartmentService.update(userId, apartment);
+    try {
+      apartmentService.update(userId, apartment);
+    } catch (ApartmentNotFoundException e) {
+      throw new RuntimeException(e);
+    }
   }
 
   @DeleteMapping("/{apartmentId}")
   public void delete(@PathVariable long userId, @PathVariable long apartmentId) {
-    apartmentService.deleteById(userId, apartmentId);
+    try {
+      apartmentService.deleteById(userId, apartmentId);
+    } catch (ApartmentNotFoundException e) {
+      throw new RuntimeException(e);
+    }
   }
 }
