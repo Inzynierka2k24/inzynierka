@@ -98,6 +98,16 @@ public class UserServiceTest {
   @Test
   public void shouldThrowUserNotFoundExceptionWhenUserDoesNotExist() {
     // Given
+    long userId = 1L;
+    when(userDao.get(userId)).thenReturn(Optional.empty());
+
+    // When/Then
+    assertThrows(UserNotFoundException.class, () -> userService.deleteById(userId));
+  }
+
+  @Test
+  public void shouldNotRemoveUserThatNotExists() {
+    // Given
     String username = "testUser";
     User user = new User(username, "password");
     when(userDao.get(username)).thenReturn(Optional.empty());

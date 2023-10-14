@@ -50,6 +50,20 @@ class UserDaoTest {
   }
 
   @Test
+  void shouldGetUserById() {
+    // Given
+    long id = 1;
+
+    // When
+    Optional<User> user = userDao.get(id);
+
+    // Then
+    assertTrue(user.isPresent());
+    assertTrue(user.get().id().isPresent());
+    assertEquals(id, user.get().id().get());
+  }
+
+  @Test
   void shouldRegisterNewUser() {
     // Given
     User user = new User("test2@example.com", "password");
