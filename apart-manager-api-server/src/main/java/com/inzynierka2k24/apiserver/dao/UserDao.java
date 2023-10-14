@@ -15,7 +15,8 @@ public class UserDao {
 
   private final JdbcTemplate template;
 
-  private static final String GET_QUERY = "SELECT * FROM users WHERE mail = ?";
+  private static final String GET_BY_MAIL_QUERY = "SELECT * FROM users WHERE mail = ?";
+  private static final String GET_BY_ID_QUERY = "SELECT * FROM users WHERE user_id = ?";
   private static final String REGISTER_QUERY = "INSERT INTO users VALUES (default, ?, ?)";
   private static final String DELETE_QUERY = "DELETE FROM users WHERE user_id = ?";
   private static final String UPDATE_QUERY =
@@ -36,7 +37,12 @@ public class UserDao {
 
   public Optional<User> get(String mail) {
     return Optional.ofNullable(
-        DataAccessUtils.singleResult(template.query(GET_QUERY, userRowMapper, mail)));
+        DataAccessUtils.singleResult(template.query(GET_BY_MAIL_QUERY, userRowMapper, mail)));
+  }
+
+  public Optional<User> get(long userId) {
+    return Optional.ofNullable(
+        DataAccessUtils.singleResult(template.query(GET_BY_ID_QUERY, userRowMapper, userId)));
   }
 
   public void register(User user) {
