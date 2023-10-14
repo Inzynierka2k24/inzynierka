@@ -6,6 +6,7 @@ import com.inzynierka2k24.apiserver.model.User;
 import com.inzynierka2k24.apiserver.service.UserService;
 import com.inzynierka2k24.apiserver.web.request.AuthRequest;
 import com.inzynierka2k24.apiserver.web.request.EditUserRequest;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,35 +21,24 @@ public class UserController {
   private final PasswordEncoder passwordEncoder;
 
   @PostMapping("/register")
-  public ResponseEntity<String> register(@RequestBody AuthRequest request) {
-    try {
-      userService.register(new User(request.mail(), passwordEncoder.encode(request.password())));
-    } catch (UserAlreadyExistsException e) {
-      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-    }
-
+  public ResponseEntity<String> register(@Valid @RequestBody AuthRequest request)
+      throws UserAlreadyExistsException {
+    userService.register(new User(request.mail(), passwordEncoder.encode(request.password())));
     return ResponseEntity.status(HttpStatus.CREATED).body("User registered successfully");
   }
 
   @PutMapping("/user/{userId}/edit")
   public ResponseEntity<String> edit(
-      @PathVariable long userId, @RequestBody EditUserRequest request) {
-    try {
-      userService.update(
-          new User(userId, request.mail(), passwordEncoder.encode(request.password())));
-    } catch (UserNotFoundException e) {
-      throw new RuntimeException(e);
-    }
+      @PathVariable long userId, @Valid @RequestBody EditUserRequest request)
+      throws UserNotFoundException {
+    userService.update(
+        new User(userId, request.mail(), passwordEncoder.encode(request.password())));
     return ResponseEntity.ok("User updated successfully");
   }
 
   @DeleteMapping("/user/{userId}/remove")
-  public ResponseEntity<String> delete(@PathVariable long userId) {
-    try {
-      userService.deleteById(userId);
-    } catch (UserNotFoundException e) {
-      throw new RuntimeException(e);
-    }
-    return ResponseEntity.noContent().build();
+  public ResponseEntity<String> delete(@PathVariable long userId) throws UserNotFoundException {
+    userService.deleteById(userId);
+    return ResponseEntity.ok("User deleted successfully");
   }
 }
