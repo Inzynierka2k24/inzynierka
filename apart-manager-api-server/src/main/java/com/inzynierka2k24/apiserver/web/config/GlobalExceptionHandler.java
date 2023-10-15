@@ -45,7 +45,7 @@ public class GlobalExceptionHandler {
   @ExceptionHandler(ReservationNotValidException.class)
   public ResponseEntity<ErrorResponse> handleReservationNotValidException(
       ReservationNotValidException e) {
-    return ResponseEntity.status(HttpStatus.NOT_FOUND)
-        .body(new ErrorResponseException(HttpStatus.NOT_FOUND, e));
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+        .body(new ErrorResponseException(HttpStatus.BAD_REQUEST, e));
   }
 }
