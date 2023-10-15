@@ -7,7 +7,7 @@ public record User(
     Optional<Long> id, String mail, String password, boolean active, Set<String> roles) {
 
   public User(String mail, String password) {
-    this(Optional.of(0L), mail, password, true, Set.of("USER"));
+    this(Optional.empty(), mail, password, true, Set.of("USER"));
   }
 
   public User(Long id, String mail, String password) {
