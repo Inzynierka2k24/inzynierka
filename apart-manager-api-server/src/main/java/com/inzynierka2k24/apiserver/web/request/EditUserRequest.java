@@ -1,3 +1,6 @@
 package com.inzynierka2k24.apiserver.web.request;
 
-public record EditUserRequest(String mail, String password) {}
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Size;
+
+public record EditUserRequest(@Email String mail, @Size(min = 5) String password) {}

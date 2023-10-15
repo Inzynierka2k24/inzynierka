@@ -1,3 +1,6 @@
 package com.inzynierka2k24.apiserver.web.request;
 
-public record AuthRequest(String mail, String password) {}
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Size;
+
+public record AuthRequest(@Email String mail, @Size(min = 5) String password) {}
