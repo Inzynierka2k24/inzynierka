@@ -2,7 +2,11 @@
     <ng-template pTemplate="start">
         <h1>ApartManager API</h1>
     </ng-template>
+
     <ng-template pTemplate="end">
-        <app-user-widget></app-user-widget>
+      <button pButton label="Add Apartment" (click)="navigateToAddApartment()"></button>
+      <app-user-widget></app-user-widget>
     </ng-template>
 </p-menubar>
+
+

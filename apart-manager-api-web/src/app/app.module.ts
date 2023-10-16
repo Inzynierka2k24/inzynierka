@@ -7,6 +7,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { HeaderModule } from './header/header.module';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { ToastModule } from 'primeng/toast';
+import {StoreModule} from "@ngrx/store";
+import {apartmentReducer} from "./core/store/apartment/apartment.reducer";
 
 @NgModule({
   declarations: [AppComponent],
@@ -18,6 +20,7 @@ import { ToastModule } from 'primeng/toast';
     HeaderModule,
     DashboardModule,
     ToastModule,
+    StoreModule.forRoot({apartmentEntries: apartmentReducer}),
   ],
   providers: [],
   bootstrap: [AppComponent],

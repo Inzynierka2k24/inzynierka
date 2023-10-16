@@ -37,7 +37,7 @@ export class RegisterComponent {
       },
       {
         validators: matchingPasswordValidator,
-        updateOn: 'submit',
+        updateOn: 'change',
       },
     );
     this.isLoading$ = store.select(selectUserLoadingState);
