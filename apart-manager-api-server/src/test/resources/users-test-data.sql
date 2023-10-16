@@ -1,0 +1,1 @@
+INSERT INTO users VALUES (default, 'test@example.com', '$2a$10$x3I902NcTS2JeqL6Sykfbuk8Eo08g/B0su1wOA7EwHm1iHT6AceLm');

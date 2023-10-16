@@ -1,73 +1,99 @@
 package com.inzynierka2k24.apiserver.dao;
 
+import static java.sql.Timestamp.from;
+
 import com.inzynierka2k24.apiserver.model.Reservation;
-import java.sql.Date;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.ZoneOffset;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 public class ReservationDao {
+
   private final JdbcTemplate template;
 
+  private static final String GET_ALL_QUERY = "SELECT * FROM reservations WHERE apartment_id = ?";
+  private static final String GET_BY_ID_QUERY =
+      "SELECT * FROM reservations WHERE apartment_id = ? AND reservation_id = ?";
+  private static final String ADD_QUERY = "INSERT INTO reservations VALUES (default, ?, ?, ?)";
+  private static final String DELETE_QUERY =
+      "DELETE FROM reservations WHERE apartment_id = ? AND reservation_id = ?";
+  private static final String UPDATE_QUERY =
+      """
+        UPDATE
+          reservations
+        SET
+          start_date = ?,
+          end_date = ?
+        WHERE
+          apartment_id = ? AND reservation_id = ?
+        """;
+  private static final String PERIOD_FREE_QUERY =
+      """
+        SELECT
+          COUNT(reservation_id)
+        FROM
+          reservations
+        WHERE
+        	apartment_id = ? AND start_date BETWEEN ? AND ? OR end_date BETWEEN ? AND ?
+        """;
+  private static final RowMapper<Reservation> reservationRowMapper =
+      (rs, rowNum) ->
+          new Reservation(
+              Optional.of(rs.getLong("reservation_id")),
+              rs.getLong("apartment_id"),
+              rs.getTimestamp("start_date").toLocalDateTime().toInstant(ZoneOffset.UTC),
+              rs.getTimestamp("end_date").toLocalDateTime().toInstant(ZoneOffset.UTC));
+
   public List<Reservation> getAll(long apartmentId) {
-    return template.query(
-        "SELECT * FROM reservations WHERE apartment_id = ?",
-        this::reservationRowMapper,
-        apartmentId);
+    return template.query(GET_ALL_QUERY, reservationRowMapper, apartmentId);
   }
 
   public Optional<Reservation> getById(long apartmentId, long reservationId) {
     return Optional.ofNullable(
         DataAccessUtils.singleResult(
-            template.query(
-                "SELECT * FROM reservations WHERE apartment_id = ? and reservation_id = ?",
-                this::reservationRowMapper,
-                apartmentId,
-                reservationId)));
+            template.query(GET_BY_ID_QUERY, reservationRowMapper, apartmentId, reservationId)));
   }
 
   public void add(long apartmentId, Reservation reservation) {
     template.update(
-        "INSERT INTO reservations VALUES (default, ?, ?, ?)",
-        apartmentId,
-        Date.from(reservation.startDate()),
-        Date.from(reservation.endDate()));
+        ADD_QUERY, apartmentId, from(reservation.startDate()), from(reservation.endDate()));
   }
 
-  public void update(long apartmentId, Reservation reservation) {
-    var query =
-        """
-        UPDATE reservations
-        SET start_date = ?,
-            end_date = ?,
-        WHERE apartment_id = ? and reservation_id = ?
-        """;
+  public void update(Reservation reservation) {
     template.update(
-        query,
+        UPDATE_QUERY,
         reservation.startDate(),
         reservation.endDate(),
-        apartmentId,
+        reservation.apartmentId(),
         reservation.id().orElseThrow());
   }
 
   public void deleteById(long apartmentId, long reservationId) {
-    template.update(
-        "DELETE FROM reservations WHERE apartment_id = ? and reservation_id = ?",
-        apartmentId,
-        reservationId);
+    template.update(DELETE_QUERY, apartmentId, reservationId);
   }
 
-  private Reservation reservationRowMapper(ResultSet rs, int rowNum) throws SQLException {
-    return new Reservation(
-        Optional.of(rs.getLong("reservation_id")),
-        rs.getTimestamp("start_date").toInstant(),
-        rs.getTimestamp("end_date").toInstant());
+  public boolean isTimePeriodFree(Reservation reservation) {
+    Timestamp start = from(reservation.startDate());
+    Timestamp end = from(reservation.endDate());
+
+    return Optional.ofNullable(
+                template.queryForObject(
+                    PERIOD_FREE_QUERY,
+                    int.class,
+                    reservation.apartmentId(),
+                    start,
+                    end,
+                    start,
+                    end))
+            .orElseThrow()
+        == 0;
   }
 }
