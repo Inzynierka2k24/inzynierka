@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.1.1185 on 2023-10-08 11:00:01.
+// Generated using typescript-generator version 3.1.1185 on 2023-10-17 15:57:59.
 
 export interface Apartment {
     id?: number;
@@ -36,36 +36,47 @@ export interface ExternalOffer {
 
 export interface Reservation {
     id?: number;
+    apartmentId: number;
     startDate: Date;
     endDate: Date;
 }
 
 export interface User {
     id?: number;
-    login: string;
-    password: string;
     mail: string;
+    password: string;
     active: boolean;
     roles: string[];
 }
 
-export interface UserDetails {
+export interface UserSecurityDetails extends UserDetails {
+}
+
+export interface AuthRequest {
+    mail: string;
+    password: string;
 }
 
 export interface EditUserRequest {
-    password: string;
     mail: string;
-}
-
-export interface LoginRequest {
-    login: string;
     password: string;
 }
 
-export interface RegisterRequest {
-    login: string;
+export interface GrantedAuthority extends Serializable {
+    authority: string;
+}
+
+export interface UserDetails extends Serializable {
+    enabled: boolean;
     password: string;
-    mail: string;
+    username: string;
+    authorities: GrantedAuthority[];
+    accountNonLocked: boolean;
+    accountNonExpired: boolean;
+    credentialsNonExpired: boolean;
+}
+
+export interface Serializable {
 }
 
 export type ContactType = "UNKNOWN" | "CLEANING" | "MECHANIC" | "ELECTRICIAN";

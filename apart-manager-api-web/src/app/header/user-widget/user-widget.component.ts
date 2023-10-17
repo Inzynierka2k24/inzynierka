@@ -33,7 +33,6 @@ export class UserWidgetComponent implements OnInit, OnDestroy {
       .subscribe((user) => {
         if (user) {
           this.isUserLoggedIn = true;
-          this.currentUser = user;
         }
       });
     const userErrorSub = this.store

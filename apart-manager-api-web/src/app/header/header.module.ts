@@ -12,7 +12,9 @@ import { RippleModule } from 'primeng/ripple';
 import { CheckboxModule } from 'primeng/checkbox';
 import { RegisterComponent } from './user-widget/components/register/register.component';
 import { MessagesModule } from 'primeng/messages';
-import {DividerModule} from "primeng/divider";
+import { DividerModule } from 'primeng/divider';
+import { UserCardComponent } from './user-widget/components/user-card/user-card.component';
+import { MenuModule } from 'primeng/menu';
 
 @NgModule({
   declarations: [
@@ -20,6 +22,7 @@ import {DividerModule} from "primeng/divider";
     UserWidgetComponent,
     HeaderComponent,
     RegisterComponent,
+    UserCardComponent,
   ],
   imports: [
     SharedModule,
@@ -32,6 +35,7 @@ import {DividerModule} from "primeng/divider";
     CheckboxModule,
     MessagesModule,
     DividerModule,
+    MenuModule,
   ],
   exports: [HeaderComponent],
 })

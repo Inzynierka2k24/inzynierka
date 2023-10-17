@@ -1,7 +1,5 @@
 package com.inzynierka2k24.apiserver.web.config;
 
-import static org.springframework.security.config.Customizer.withDefaults;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -24,7 +22,6 @@ public class WebSecurityConfig {
                     .hasAnyAuthority("USER", "ADMIN")
                     .requestMatchers("/register", "/login")
                     .permitAll())
-        .formLogin(withDefaults()) // Only for testing
         .csrf(AbstractHttpConfigurer::disable); // Only for testing
     return http.build();
   }

@@ -23,7 +23,7 @@ export class LoginComponent {
     private formBuilder: FormBuilder,
   ) {
     this.loginForm = formBuilder.nonNullable.group({
-      login: ['', Validators.required],
+      mail: ['', Validators.required],
       password: ['', [Validators.required, Validators.minLength(4)]],
     });
     this.isLoading$ = store.select(selectUserLoadingState);
@@ -33,7 +33,7 @@ export class LoginComponent {
     if (this.loginForm.valid) {
       this.store.dispatch(
         UserActions.login({
-          login: this.loginForm.value.login!,
+          mail: this.loginForm.value.mail!,
           password: this.loginForm.value.password!,
         }),
       );
