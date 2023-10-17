@@ -6,7 +6,7 @@
 
     <groupId>com.inzynierka2k24</groupId>
     <artifactId>proto</artifactId>
-    <version>0.0.2-SNAPSHOT</version>
+    <version>0.0.1</version>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
