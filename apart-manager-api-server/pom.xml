@@ -9,7 +9,7 @@
         <relativePath/>
     </parent>
 
-    <groupId>com.Inzynierka2k24</groupId>
+    <groupId>com.inzynierka2k24</groupId>
     <artifactId>apart-manager-api-server</artifactId>
     <version>0.0.1-SNAPSHOT</version>
 
