@@ -9,7 +9,7 @@
 		<relativePath/>
 	</parent>
 
-	<groupId>com.Inzynierka2k24</groupId>
+	<groupId>com.inzynierka2k24</groupId>
 	<artifactId>messaging-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>messaging-service</name>
@@ -18,6 +18,8 @@
 	<properties>
 		<java.version>17</java.version>
 
+		<grpc-spring-boot.version>5.1.5</grpc-spring-boot.version>
+		<grpc.version>1.58.0</grpc.version>
         <lombok.version>1.18.30</lombok.version>
         <mockito.version>5.2.0</mockito.version>
         <testcontainers.version>1.17.6</testcontainers.version>
@@ -37,6 +39,33 @@
             <scope>test</scope>
         </dependency>
 
+		<!-- gRPC -->
+		<dependency>
+			<groupId>com.inzynierka2k24</groupId>
+			<artifactId>proto</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>io.github.lognet</groupId>
+			<artifactId>grpc-spring-boot-starter</artifactId>
+			<version>${grpc-spring-boot.version}</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>netty-tcnative-boringssl-static</artifactId>
+					<groupId>io.netty</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>grpc-netty-shaded</artifactId>
+					<groupId>io.grpc</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>io.grpc</groupId>
+			<artifactId>grpc-netty</artifactId>
+			<version>${grpc.version}</version>
+		</dependency>
+
         <!--   Misc    -->
 		<dependency>
 			<groupId>org.projectlombok</groupId>
@@ -53,6 +82,12 @@
 		<dependency>
 			<groupId>org.testcontainers</groupId>
 			<artifactId>junit-jupiter</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.grpc</groupId>
+			<artifactId>grpc-testing</artifactId>
+			<version>${grpc.version}</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
