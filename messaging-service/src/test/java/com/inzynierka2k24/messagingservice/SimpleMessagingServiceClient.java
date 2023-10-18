@@ -1,5 +1,8 @@
 package com.inzynierka2k24.messagingservice;
 
+import com.inzynierka2k24.EventData;
+import com.inzynierka2k24.EventType;
+import com.inzynierka2k24.GetMessageStatusRequest;
 import com.inzynierka2k24.Message;
 import com.inzynierka2k24.MessageType;
 import com.inzynierka2k24.MessagingServiceGrpc;
@@ -28,7 +31,7 @@ public class SimpleMessagingServiceClient {
 
   public SimpleMessagingServiceClient(ManagedChannel channel) {
     var blockingStub = MessagingServiceGrpc.newBlockingStub(channel);
-    var request =
+    var sendMessageRequest =
         SendMessageRequest.newBuilder()
             .setMessage(
                 Message.newBuilder()
@@ -37,10 +40,24 @@ public class SimpleMessagingServiceClient {
                     .setMessageType(MessageType.MAIL)
                     .build())
             .build();
-    var start = Instant.now();
-    var response = blockingStub.sendMessage(request);
+    var sendMessageStart = Instant.now();
+    var sendMessageResponse = blockingStub.sendMessage(sendMessageRequest);
 
     System.out.printf(
-        "Response: %s. Connection active for %s", response, Duration.between(start, Instant.now()));
+        "SendMessage response: %s Connection active for %s\n",
+        sendMessageResponse, Duration.between(sendMessageStart, Instant.now()));
+
+    var getMessageStatusRequest =
+        GetMessageStatusRequest.newBuilder()
+            .setReceiver("test@mail.com")
+            .setEventData(
+                EventData.newBuilder().setEventType(EventType.RESERVATION).setEventId(1L).build())
+            .build();
+    var getMessageStatusStart = Instant.now();
+    var getMessageStatusResponse = blockingStub.getMessageStatus(getMessageStatusRequest);
+
+    System.out.printf(
+        "GetMessageStatus response: %s. Connection active for %s",
+        getMessageStatusResponse, Duration.between(getMessageStatusStart, Instant.now()));
   }
 }

@@ -1,5 +1,9 @@
 package com.inzynierka2k24.messagingservice.server;
 
+import com.google.protobuf.Timestamp;
+import com.inzynierka2k24.GetMessageStatusRequest;
+import com.inzynierka2k24.GetMessageStatusResponse;
+import com.inzynierka2k24.MessageStatus;
 import com.inzynierka2k24.MessagingServiceGrpc;
 import com.inzynierka2k24.SendMessageRequest;
 import com.inzynierka2k24.SendMessageResponse;
@@ -20,6 +24,22 @@ public class GrpcServer extends MessagingServiceGrpc.MessagingServiceImplBase {
         "Message sent to %s. Content: %s\n", message.getReceiver(), message.getContent());
 
     responseObserver.onNext(SendMessageResponse.newBuilder().setStatus(Status.SUCCESS).build());
+    responseObserver.onCompleted();
+  }
+
+  @Override
+  public void getMessageStatus(
+      GetMessageStatusRequest request, StreamObserver<GetMessageStatusResponse> responseObserver) {
+    System.out.printf(
+        "Receiver: %s, eventId: %s\n", request.getReceiver(), request.getEventData().getEventId());
+
+    responseObserver.onNext(
+        GetMessageStatusResponse.newBuilder()
+            .addMessageStatus(
+                MessageStatus.newBuilder()
+                    .setStatus(Status.SUCCESS)
+                    .setMessageTime(Timestamp.newBuilder().getDefaultInstanceForType()))
+            .build());
     responseObserver.onCompleted();
   }
 }
