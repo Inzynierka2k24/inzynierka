@@ -1,5 +1,6 @@
 package com.inzynierka2k24.messagingservice.service.messaging;
 
+import com.inzynierka2k24.Status;
 import com.inzynierka2k24.messagingservice.model.Message;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,8 +14,8 @@ public class SmsSender implements MessageSender {
   private final MailSender mailSender;
 
   @Override
-  public void sentMessage(Message message) {
-    mailSender.sentMessage(addGateInfo(message));
+  public Status sentMessage(Message message) {
+    return mailSender.sentMessage(addGateInfo(message));
   }
 
   private Message addGateInfo(Message message) {

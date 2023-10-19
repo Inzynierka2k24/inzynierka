@@ -9,6 +9,7 @@ import com.inzynierka2k24.SendMessageRequest;
 import com.inzynierka2k24.SendMessageResponse;
 import com.inzynierka2k24.Status;
 import com.inzynierka2k24.messagingservice.server.request.MessageConverter;
+import com.inzynierka2k24.messagingservice.service.MessageStatusService;
 import com.inzynierka2k24.messagingservice.service.messaging.MessageSenderProvider;
 import io.grpc.stub.StreamObserver;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,7 @@ import org.lognet.springboot.grpc.GRpcService;
 public class GrpcServer extends MessagingServiceGrpc.MessagingServiceImplBase {
 
   private final MessageSenderProvider senderProvider;
+  private final MessageStatusService messageStatusService;
 
   @Override
   public void sendMessage(
@@ -27,9 +29,12 @@ public class GrpcServer extends MessagingServiceGrpc.MessagingServiceImplBase {
     System.out.printf(
         "Message sent to %s. Content: %s\n", message.getReceiver(), message.getContent());
 
-    senderProvider
-        .getMessageSender(message.getMessageType())
-        .sentMessage(MessageConverter.convert(message));
+    var status =
+        senderProvider
+            .getMessageSender(message.getMessageType())
+            .sentMessage(MessageConverter.convert(message));
+
+    messageStatusService.save(null);
 
     responseObserver.onNext(SendMessageResponse.newBuilder().setStatus(Status.SUCCESS).build());
     responseObserver.onCompleted();
@@ -40,6 +45,8 @@ public class GrpcServer extends MessagingServiceGrpc.MessagingServiceImplBase {
       GetMessageStatusRequest request, StreamObserver<GetMessageStatusResponse> responseObserver) {
     System.out.printf(
         "Receiver: %s, eventId: %s\n", request.getReceiver(), request.getEventData().getEventId());
+
+    var statuses = messageStatusService.get(request.getReceiver());
 
     responseObserver.onNext(
         GetMessageStatusResponse.newBuilder()

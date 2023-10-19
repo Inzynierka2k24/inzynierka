@@ -1,5 +1,6 @@
 package com.inzynierka2k24.messagingservice.service.messaging;
 
+import com.inzynierka2k24.Status;
 import com.inzynierka2k24.messagingservice.model.Message;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.SimpleMailMessage;
@@ -13,8 +14,9 @@ public class MailSender implements MessageSender {
   private final JavaMailSender javaMailSender;
 
   @Override
-  public void sentMessage(Message message) {
+  public Status sentMessage(Message message) {
     javaMailSender.send(convertToMail(message));
+    return Status.SUCCESS;
   }
 
   private SimpleMailMessage convertToMail(Message message) {
