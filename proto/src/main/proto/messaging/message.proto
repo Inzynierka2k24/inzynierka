@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package messaging;
+
+option java_package = "com.inzynierka2k24";
+option java_multiple_files = true;
+
+message MetaData {
+  string name = 1;
+  string type = 2;
+}
+
+message Message {
+  string receiver = 1;
+  string content = 2;
+  MessageType messageType = 3;
+}
+
+enum MessageType {
+  MAIL = 0;
+  SMS = 1;
+}
+
+enum Status {
+  PENDING = 0;
+  IN_PROGRESS = 1;
+  SUCCESS = 2;
+  FAILED = 3;
+}
