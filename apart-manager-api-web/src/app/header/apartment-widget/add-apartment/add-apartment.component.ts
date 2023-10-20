@@ -6,7 +6,6 @@ import {Apartment} from "../../../../generated";
 import {FormBuilder, Validators} from "@angular/forms";
 import {Store} from "@ngrx/store";
 import ApartmentActions, {addApartment} from "../../../core/store/apartment/apartment.actions";
-import {ApartmentActionTypes} from "../../../core/store/apartment/apartment.store";
 
 @Component({
   selector: 'app-add-apartment',
@@ -50,31 +49,5 @@ export class AddApartmentComponent {
 
     }
   }
-
-
-
-
-  // @ViewChild('dailyPrice') dailyPriceInput: InputText;
-  // @ViewChild('title') titleInput: InputText;
-  // @ViewChild('country') countryInput: InputText;
-  // @ViewChild('city') cityInput: InputText;
-  // @ViewChild('street') streetInput: InputText;
-  // @ViewChild('buildingNumber') buildingNumberInput: InputText;
-  // @ViewChild('apartmentNumber') apartmentNumberInput: InputText;
-
-  // addApartment(): void {
-    // const apartmentData = {
-    //   dailyPrice: this.dailyPriceInput.nativeElement.value,
-    //   title: this.titleInput.nativeElement.value,
-    //   country: this.countryInput.nativeElement.value,
-    //   city: this.cityInput.nativeElement.value,
-    //   street: this.streetInput.nativeElement.value,
-    //   buildingNumber: this.buildingNumberInput.nativeElement.value,
-    //   apartmentNumber: this.apartmentNumberInput.nativeElement.value
-    // };
-    //
-    // // Here, you can add the apartment data to your data source
-    // console.log(apartmentData); // For demonstration, log the data
-  // }
 
 }

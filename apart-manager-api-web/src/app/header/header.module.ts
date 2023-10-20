@@ -39,6 +39,6 @@ import { ApartmentListComponent } from './apartment-widget/apartment-list/apartm
     MessagesModule,
     DividerModule,
   ],
-  exports: [HeaderComponent, AddApartmentComponent],
+  exports: [HeaderComponent, AddApartmentComponent, ApartmentListComponent],
 })
 export class HeaderModule {}

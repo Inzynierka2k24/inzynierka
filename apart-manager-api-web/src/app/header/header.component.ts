@@ -14,4 +14,7 @@ export class HeaderComponent {
     this.formService.toggleFormVisibility();
   }
 
+  navigateToApartmentList():void {
+    this.formService.toggleListVisibility();
+  }
 }

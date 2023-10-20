@@ -12,4 +12,7 @@ export class DashboardComponent {
   get formVisible() {
     return this.formService.formVisible;
   }
+  get listVisible() {
+    return this.formService.listVisible;
+  }
 }

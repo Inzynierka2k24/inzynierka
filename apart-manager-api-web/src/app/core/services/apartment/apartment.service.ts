@@ -11,10 +11,11 @@ export class ApartmentService {
   constructor(private http: HttpClient) { }
 
   getApartments(): Observable<Apartment[]> {
-    return this.http.get<Apartment[]>("/api/apartments");
+    return this.http.get<Apartment[]>('/api/11/apartment');
+    //TODO change path
   }
 
   addApartment(apartment: Apartment): Observable<boolean> {
-    return this.http.post<boolean>('/api/apartments', apartment);
+    return this.http.post<boolean>('/api/11/apartment', apartment);
   }
 }

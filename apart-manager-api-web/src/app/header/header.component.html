@@ -4,9 +4,10 @@
     </ng-template>
 
     <ng-template pTemplate="end">
-      <button pButton label="Add Apartment" (click)="navigateToAddApartment()"></button>
-      <app-user-widget></app-user-widget>
+        <div class="button-container">
+            <button pButton label="Add Apartment" (click)="navigateToAddApartment()"></button>
+            <button pButton label="Apartment List" (click)="navigateToApartmentList()"></button>
+            <app-user-widget></app-user-widget>
+        </div>
     </ng-template>
 </p-menubar>
-
-
