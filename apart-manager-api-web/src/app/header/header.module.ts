@@ -16,6 +16,9 @@ import {DividerModule} from "primeng/divider";
 import { AddApartmentComponent } from './apartment-widget/add-apartment/add-apartment.component';
 import { FormServiceComponent } from './apartment-widget/form-service/form-service.component';
 import { ApartmentListComponent } from './apartment-widget/apartment-list/apartment-list.component';
+import { DividerModule } from 'primeng/divider';
+import { UserCardComponent } from './user-widget/components/user-card/user-card.component';
+import { MenuModule } from 'primeng/menu';
 
 @NgModule({
   declarations: [
@@ -26,6 +29,7 @@ import { ApartmentListComponent } from './apartment-widget/apartment-list/apartm
     AddApartmentComponent,
     FormServiceComponent,
     ApartmentListComponent,
+    UserCardComponent,
   ],
   imports: [
     SharedModule,
@@ -38,6 +42,7 @@ import { ApartmentListComponent } from './apartment-widget/apartment-list/apartm
     CheckboxModule,
     MessagesModule,
     DividerModule,
+    MenuModule,
   ],
   exports: [HeaderComponent, AddApartmentComponent, ApartmentListComponent],
 })

@@ -1,11 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { DashboardComponent } from './dashboard/dashboard.component';
+import { WelcomePageComponent } from './welcome-page/welcome-page.component';
 
-const routes: Routes = [
-  { path: '**', component: DashboardComponent },
-
-];
+const routes: Routes = [{ path: '**', component: WelcomePageComponent }];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

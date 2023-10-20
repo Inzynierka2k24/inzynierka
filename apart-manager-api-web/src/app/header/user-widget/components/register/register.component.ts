@@ -30,14 +30,13 @@ export class RegisterComponent {
   ) {
     this.registrationForm = formBuilder.nonNullable.group(
       {
-        login: ['', Validators.required],
         password: ['', [Validators.required, Validators.minLength(4)]],
         passwordRepeat: ['', Validators.required],
         mail: ['', [Validators.required, Validators.email]],
       },
       {
         validators: matchingPasswordValidator,
-        updateOn: 'change',
+        updateOn: 'blur',
       },
     );
     this.isLoading$ = store.select(selectUserLoadingState);
