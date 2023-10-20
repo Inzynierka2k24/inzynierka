@@ -2,13 +2,19 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username: user
-    password: password
+    username: apartmanager404@gmail.com
+    password: zezz pblr eicz cjja
     properties.mail.smtp:
       auth: true
-      starttls.enable: true
+      starttls:
+        enable: true
+        required: true
 
 #  datasource:
 #    url: jdbc:postgresql://localhost:5432/postgres
 #    username: postgres
 #    password: postgres
+
+sms.client:
+  key: d78cc0c1
+  secret: OtRqjrjKzcVN2PCi

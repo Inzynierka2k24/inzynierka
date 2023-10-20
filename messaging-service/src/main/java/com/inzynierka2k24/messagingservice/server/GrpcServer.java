@@ -8,14 +8,16 @@ import com.inzynierka2k24.MessagingServiceGrpc;
 import com.inzynierka2k24.SendMessageRequest;
 import com.inzynierka2k24.SendMessageResponse;
 import com.inzynierka2k24.Status;
-import com.inzynierka2k24.messagingservice.server.request.MessageConverter;
+import com.inzynierka2k24.messagingservice.server.request.RequestConverter;
 import com.inzynierka2k24.messagingservice.service.MessageStatusService;
 import com.inzynierka2k24.messagingservice.service.messaging.MessageSenderProvider;
 import io.grpc.stub.StreamObserver;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.lognet.springboot.grpc.GRpcService;
 
 @GRpcService
+@Slf4j
 @RequiredArgsConstructor
 public class GrpcServer extends MessagingServiceGrpc.MessagingServiceImplBase {
 
@@ -26,25 +28,24 @@ public class GrpcServer extends MessagingServiceGrpc.MessagingServiceImplBase {
   public void sendMessage(
       SendMessageRequest request, StreamObserver<SendMessageResponse> responseObserver) {
     var message = request.getMessage();
-    System.out.printf(
-        "Message sent to %s. Content: %s\n", message.getReceiver(), message.getContent());
+    log.info("Message sent to {}. Content: {}", message.getReceiver(), message.getContent());
 
     var status =
         senderProvider
             .getMessageSender(message.getMessageType())
-            .sentMessage(MessageConverter.convert(message));
+            .sentMessage(RequestConverter.convertToMessage(message));
 
     messageStatusService.save(null);
 
-    responseObserver.onNext(SendMessageResponse.newBuilder().setStatus(Status.SUCCESS).build());
+    responseObserver.onNext(SendMessageResponse.newBuilder().setStatus(status).build());
     responseObserver.onCompleted();
   }
 
   @Override
   public void getMessageStatus(
       GetMessageStatusRequest request, StreamObserver<GetMessageStatusResponse> responseObserver) {
-    System.out.printf(
-        "Receiver: %s, eventId: %s\n", request.getReceiver(), request.getEventData().getEventId());
+    log.info(
+        "Receiver: {}, eventId: {}", request.getReceiver(), request.getEventData().getEventId());
 
     var statuses = messageStatusService.get(request.getReceiver());
 

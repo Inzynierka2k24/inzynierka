@@ -8,12 +8,12 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class MessageSenderProvider {
 
-  private final MailSender mailSender;
+  private final EmailSender emailSender;
   private final SmsSender smsSender;
 
   public MessageSender getMessageSender(MessageType messageType) {
     return switch (messageType) {
-      case MAIL -> mailSender;
+      case MAIL -> emailSender;
       case SMS -> smsSender;
       case UNRECOGNIZED -> null;
     };

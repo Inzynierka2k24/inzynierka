@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class MailSender implements MessageSender {
+public class EmailSender implements MessageSender {
 
   private final JavaMailSender javaMailSender;
 
@@ -23,7 +23,7 @@ public class MailSender implements MessageSender {
     SimpleMailMessage mailMessage = new SimpleMailMessage();
 
     mailMessage.setTo(message.receiver());
-    mailMessage.setSubject(""); // TODO Add subjects
+    mailMessage.setSubject(message.subject());
     mailMessage.setText(message.content());
 
     return mailMessage;

@@ -35,11 +35,20 @@ public class SimpleMessagingServiceClient {
         SendMessageRequest.newBuilder()
             .setMessage(
                 Message.newBuilder()
-                    .setReceiver("test@mail.com")
+                    .setReceiver("apartmanager404@gmail.com")
                     .setContent("Sending mail...")
                     .setMessageType(MessageType.MAIL)
                     .build())
             .build();
+    //    var sendMessageRequest =
+    //        SendMessageRequest.newBuilder()
+    //            .setMessage(
+    //                Message.newBuilder()
+    //                    .setReceiver("797955650")
+    //                    .setContent("Sending sms...")
+    //                    .setMessageType(MessageType.SMS)
+    //                    .build())
+    //            .build();
     var sendMessageStart = Instant.now();
     var sendMessageResponse = blockingStub.sendMessage(sendMessageRequest);
 

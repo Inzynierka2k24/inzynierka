@@ -15,8 +15,9 @@ message EventData {
 
 message Message {
   string receiver = 1;  // Mail, phone number...
-  string content = 2;
-  MessageType message_type = 3;
+  string subject = 2;
+  string content = 3;
+  MessageType message_type = 4;
 }
 
 message MessageStatus {

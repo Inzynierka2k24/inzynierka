@@ -22,6 +22,7 @@
 
 		<grpc-spring-boot.version>5.1.5</grpc-spring-boot.version>
 		<grpc.version>1.58.0</grpc.version>
+		<vonage.version>7.10.0</vonage.version>
         <lombok.version>1.18.30</lombok.version>
         <mockito.version>5.2.0</mockito.version>
         <testcontainers.version>1.17.6</testcontainers.version>
@@ -81,6 +82,11 @@
 		</dependency>
 
         <!--   Misc    -->
+		<dependency>
+			<groupId>com.vonage</groupId>
+			<artifactId>client</artifactId>
+			<version>${vonage.version}</version>
+		</dependency>
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
