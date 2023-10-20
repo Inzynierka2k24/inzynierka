@@ -1,5 +1,6 @@
 package com.inzynierka2k24.messagingservice;
 
+import com.google.protobuf.Timestamp;
 import com.inzynierka2k24.EventData;
 import com.inzynierka2k24.EventType;
 import com.inzynierka2k24.GetMessageStatusRequest;
@@ -38,6 +39,12 @@ public class SimpleMessagingServiceClient {
                     .setReceiver("apartmanager404@gmail.com")
                     .setContent("Sending mail...")
                     .setMessageType(MessageType.MAIL)
+                    .build())
+            .setEventData(
+                EventData.newBuilder()
+                    .setEventType(EventType.RESERVATION)
+                    .setEventTime(
+                        Timestamp.newBuilder().setSeconds(Instant.now().getEpochSecond()).build())
                     .build())
             .build();
     //    var sendMessageRequest =

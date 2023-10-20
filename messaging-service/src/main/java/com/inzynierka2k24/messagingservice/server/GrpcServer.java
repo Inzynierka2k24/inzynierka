@@ -9,6 +9,7 @@ import com.inzynierka2k24.SendMessageRequest;
 import com.inzynierka2k24.SendMessageResponse;
 import com.inzynierka2k24.Status;
 import com.inzynierka2k24.messagingservice.server.request.RequestConverter;
+import com.inzynierka2k24.messagingservice.server.request.RequestValidator;
 import com.inzynierka2k24.messagingservice.service.MessageStatusService;
 import com.inzynierka2k24.messagingservice.service.messaging.MessageSenderProvider;
 import io.grpc.stub.StreamObserver;
@@ -21,6 +22,7 @@ import org.lognet.springboot.grpc.GRpcService;
 @RequiredArgsConstructor
 public class GrpcServer extends MessagingServiceGrpc.MessagingServiceImplBase {
 
+  private final RequestValidator validator;
   private final MessageSenderProvider senderProvider;
   private final MessageStatusService messageStatusService;
 
@@ -28,14 +30,16 @@ public class GrpcServer extends MessagingServiceGrpc.MessagingServiceImplBase {
   public void sendMessage(
       SendMessageRequest request, StreamObserver<SendMessageResponse> responseObserver) {
     var message = request.getMessage();
-    log.info("Message sent to {}. Content: {}", message.getReceiver(), message.getContent());
+    var status = Status.STORED;
 
-    var status =
-        senderProvider
-            .getMessageSender(message.getMessageType())
-            .sentMessage(RequestConverter.convertToMessage(message));
+    if (validator.shouldBeSentNow(request.getEventData().getEventTime())) {
+      status =
+          senderProvider
+              .getMessageSender(message.getMessageType())
+              .sentMessage(RequestConverter.convertToMessage(message));
+    }
 
-    messageStatusService.save(null);
+    messageStatusService.save(null); // TODO save status in database
 
     responseObserver.onNext(SendMessageResponse.newBuilder().setStatus(status).build());
     responseObserver.onCompleted();
@@ -47,7 +51,7 @@ public class GrpcServer extends MessagingServiceGrpc.MessagingServiceImplBase {
     log.info(
         "Receiver: {}, eventId: {}", request.getReceiver(), request.getEventData().getEventId());
 
-    var statuses = messageStatusService.get(request.getReceiver());
+    var statuses = messageStatusService.get(request.getReceiver()); // TODO get statuses from database
 
     responseObserver.onNext(
         GetMessageStatusResponse.newBuilder()
