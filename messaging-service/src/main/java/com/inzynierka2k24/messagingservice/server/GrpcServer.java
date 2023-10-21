@@ -8,6 +8,7 @@ import com.inzynierka2k24.MessagingServiceGrpc;
 import com.inzynierka2k24.SendMessageRequest;
 import com.inzynierka2k24.SendMessageResponse;
 import com.inzynierka2k24.Status;
+import com.inzynierka2k24.messagingservice.server.request.InvalidRequestException;
 import com.inzynierka2k24.messagingservice.server.request.RequestConverter;
 import com.inzynierka2k24.messagingservice.server.request.RequestValidator;
 import com.inzynierka2k24.messagingservice.service.MessageStatusService;
@@ -31,6 +32,11 @@ public class GrpcServer extends MessagingServiceGrpc.MessagingServiceImplBase {
       SendMessageRequest request, StreamObserver<SendMessageResponse> responseObserver) {
     var message = request.getMessage();
     var status = Status.STORED;
+    var validationError = validator.validate(request);
+
+    if (validationError != null) {
+      responseObserver.onError(new InvalidRequestException(validationError));
+    }
 
     if (validator.shouldBeSentNow(request.getEventData().getEventTime())) {
       status =
@@ -51,7 +57,8 @@ public class GrpcServer extends MessagingServiceGrpc.MessagingServiceImplBase {
     log.info(
         "Receiver: {}, eventId: {}", request.getReceiver(), request.getEventData().getEventId());
 
-    var statuses = messageStatusService.get(request.getReceiver()); // TODO get statuses from database
+    var statuses =
+        messageStatusService.get(request.getReceiver()); // TODO get statuses from database
 
     responseObserver.onNext(
         GetMessageStatusResponse.newBuilder()

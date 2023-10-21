@@ -8,10 +8,11 @@ import lombok.Getter;
 
 @Getter
 public enum ValidationError {
-  INVALID_DATE(INVALID_ARGUMENT, "The date cannot be in the past"),
+  INVALID_DATE(INVALID_ARGUMENT, "Dates cannot be in the past"),
   EMPTY_RECEIVER(INVALID_ARGUMENT, "Receiver field cannot be empty"),
-  INVALID_NUMBER(INVALID_ARGUMENT, "Receiver field contains invalid phone number"),
-  INVALID_MAIL(INVALID_ARGUMENT, "Receiver field contains invalid mail");
+  INVALID_PHONE_NUMBER(INVALID_ARGUMENT, "Receiver field contains invalid phone number"),
+  INVALID_MAIL(INVALID_ARGUMENT, "Receiver field contains invalid mail"),
+  INVALID_RECEIVER_FORMAT(INVALID_ARGUMENT, "Invalid receiver format");
 
   private final Status grpcStatus;
 
