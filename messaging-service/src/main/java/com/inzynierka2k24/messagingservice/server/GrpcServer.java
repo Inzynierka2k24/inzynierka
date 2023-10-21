@@ -36,6 +36,7 @@ public class GrpcServer extends MessagingServiceGrpc.MessagingServiceImplBase {
 
     if (validationError != null) {
       responseObserver.onError(new InvalidRequestException(validationError));
+      return;
     }
 
     if (validator.shouldBeSentNow(request.getEventData().getEventTime())) {

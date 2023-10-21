@@ -4,6 +4,7 @@ import com.inzynierka2k24.Status;
 import com.inzynierka2k24.messagingservice.model.Message;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
@@ -17,14 +18,19 @@ public class EmailSender implements MessageSender {
 
   @Override
   public Status sentMessage(Message message) {
-    log.info("Message sent to {}. Content: {}", message.receiver(), message.content());
-    javaMailSender.send(convertToMail(message));
-    return Status.SUCCESS;
+    try {
+      javaMailSender.send(convertToMail(message));
+      log.info("Message sent to {}.", message.receiver());
+      return Status.SUCCESS;
+    } catch (MailException e) {
+      log.error(
+          "Failed sending message to {}. Error message: {}", message.receiver(), e.getMessage());
+      return Status.FAILED;
+    }
   }
 
   private SimpleMailMessage convertToMail(Message message) {
     SimpleMailMessage mailMessage = new SimpleMailMessage();
-
     mailMessage.setTo(message.receiver());
     mailMessage.setSubject(message.subject());
     mailMessage.setText(message.content());

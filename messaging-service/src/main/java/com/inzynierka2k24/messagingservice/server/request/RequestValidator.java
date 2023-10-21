@@ -29,7 +29,7 @@ public class RequestValidator {
   }
 
   public boolean shouldBeSentNow(Timestamp eventDate) {
-    return Duration.between(toInstant(eventDate), Instant.now()).toDays() < DAYS_BEFORE_SENDING;
+    return Duration.between(Instant.now(), toInstant(eventDate)).toDays() < DAYS_BEFORE_SENDING;
   }
 
   private ValidationError validateReceiver(String receiver, MessageType messageType) {
