@@ -5,5 +5,5 @@ import com.inzynierka2k24.messagingservice.model.Message;
 
 public interface MessageSender {
 
-  Status sentMessage(Message message);
+  Status sendMessage(Message message);
 }

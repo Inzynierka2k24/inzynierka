@@ -43,7 +43,7 @@ public class GrpcServer extends MessagingServiceGrpc.MessagingServiceImplBase {
       status =
           senderProvider
               .getMessageSender(message.getMessageType())
-              .sentMessage(RequestConverter.convertToMessage(message));
+              .sendMessage(RequestConverter.convertToMessage(message));
     }
 
     messageStatusService.save(null); // TODO save status in database

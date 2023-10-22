@@ -46,7 +46,7 @@ public class GrpcServerTest {
             .build();
 
     StreamObserver<SendMessageResponse> responseObserver = mock(StreamObserver.class);
-    when(emailSender.sentMessage(any())).thenReturn(Status.SUCCESS);
+    when(emailSender.sendMessage(any())).thenReturn(Status.SUCCESS);
 
     // When
     grpcServer.sendMessage(request, responseObserver);

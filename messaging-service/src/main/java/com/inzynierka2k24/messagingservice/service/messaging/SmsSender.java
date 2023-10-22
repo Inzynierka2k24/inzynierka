@@ -18,7 +18,7 @@ public class SmsSender implements MessageSender {
   private final VonageClient vonageClient;
 
   @Override
-  public Status sentMessage(Message message) {
+  public Status sendMessage(Message message) {
     SmsSubmissionResponse response =
         vonageClient.getSmsClient().submitMessage(convertToTextMessage(message));
 

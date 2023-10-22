@@ -21,7 +21,7 @@ public class EmailSenderTest {
     Message message = new Message("test@example.com", "Test Subject", "Test Content");
 
     // When
-    Status result = emailSender.sentMessage(message);
+    Status result = emailSender.sendMessage(message);
 
     // Then
     assertEquals(Status.SUCCESS, result);
@@ -38,7 +38,7 @@ public class EmailSenderTest {
         .send(any(SimpleMailMessage.class));
 
     // When
-    Status result = emailSender.sentMessage(message);
+    Status result = emailSender.sendMessage(message);
 
     // Then
     assertEquals(Status.FAILED, result);

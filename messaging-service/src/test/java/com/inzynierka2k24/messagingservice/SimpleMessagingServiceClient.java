@@ -14,7 +14,9 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class SimpleMessagingServiceClient {
   private static final String API_URL = "localhost";
   private static final int PORT = 6565;
@@ -59,9 +61,10 @@ public class SimpleMessagingServiceClient {
     var sendMessageStart = Instant.now();
     var sendMessageResponse = blockingStub.sendMessage(sendMessageRequest);
 
-    System.out.printf(
-        "SendMessage response: %s Connection active for %s\n",
-        sendMessageResponse, Duration.between(sendMessageStart, Instant.now()));
+    log.info(
+        "SendMessage response: {} Connection active for {}",
+        sendMessageResponse,
+        Duration.between(sendMessageStart, Instant.now()));
 
     var getMessageStatusRequest =
         GetMessageStatusRequest.newBuilder()
@@ -72,8 +75,9 @@ public class SimpleMessagingServiceClient {
     var getMessageStatusStart = Instant.now();
     var getMessageStatusResponse = blockingStub.getMessageStatus(getMessageStatusRequest);
 
-    System.out.printf(
-        "GetMessageStatus response: %s. Connection active for %s",
-        getMessageStatusResponse, Duration.between(getMessageStatusStart, Instant.now()));
+    log.info(
+        "GetMessageStatus response: {}. Connection active for {}",
+        getMessageStatusResponse,
+        Duration.between(getMessageStatusStart, Instant.now()));
   }
 }

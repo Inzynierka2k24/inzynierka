@@ -33,7 +33,7 @@ public class SmsSenderTest {
     Message message = new Message("1234567890", "Test Subject", "Test Content");
 
     // When
-    Status result = smsSender.sentMessage(message);
+    Status result = smsSender.sendMessage(message);
 
     // Then
     assertEquals(Status.SUCCESS, result);
@@ -52,7 +52,7 @@ public class SmsSenderTest {
     Message message = new Message("1234567890", "Test Subject", "Test Content");
 
     // When
-    Status result = smsSender.sentMessage(message);
+    Status result = smsSender.sendMessage(message);
 
     // Then
     assertEquals(Status.FAILED, result);

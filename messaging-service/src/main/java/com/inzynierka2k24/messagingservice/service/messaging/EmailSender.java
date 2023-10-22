@@ -17,7 +17,7 @@ public class EmailSender implements MessageSender {
   private final JavaMailSender javaMailSender;
 
   @Override
-  public Status sentMessage(Message message) {
+  public Status sendMessage(Message message) {
     try {
       javaMailSender.send(convertToMail(message));
       log.info("Message sent to {}.", message.receiver());
