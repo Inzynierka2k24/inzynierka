@@ -9,12 +9,24 @@ option java_multiple_files = true;
 
 service MessagingService {
   rpc SendMessage(SendMessageRequest) returns (SendMessageResponse);
+
+  rpc GetMessageStatus(GetMessageStatusRequest) returns (GetMessageStatusResponse);
 }
 
 message SendMessageRequest {
   Message message = 1;
+  EventData event_data = 2;
 }
 
 message SendMessageResponse {
   Status status = 1;
+}
+
+message GetMessageStatusRequest {
+  string receiver = 1;
+  EventData event_data = 2;
+}
+
+message GetMessageStatusResponse {
+  repeated MessageStatus message_status = 1;
 }

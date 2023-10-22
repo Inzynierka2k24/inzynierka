@@ -2,18 +2,27 @@ syntax = "proto3";
 
 package messaging;
 
+import "google/protobuf/timestamp.proto";
+
 option java_package = "com.inzynierka2k24";
 option java_multiple_files = true;
 
-message MetaData {
-  string name = 1;
-  string type = 2;
+message EventData {
+  int64 event_id = 1;  // If message is triggered by event (e. g. reservation) id for this event should be stored
+  EventType event_type = 2;
+  google.protobuf.Timestamp event_time = 3;  // When message should be sent
 }
 
 message Message {
-  string receiver = 1;
-  string content = 2;
-  MessageType messageType = 3;
+  string receiver = 1;  // Mail, phone number...
+  string subject = 2;
+  string content = 3;
+  MessageType message_type = 4;
+}
+
+message MessageStatus {
+  Status status = 1;
+  google.protobuf.Timestamp message_time = 2;
 }
 
 enum MessageType {
@@ -21,9 +30,14 @@ enum MessageType {
   SMS = 1;
 }
 
+enum EventType {
+  RESERVATION = 0;
+  RENOVATION = 1;
+}
+
 enum Status {
   PENDING = 0;
-  IN_PROGRESS = 1;
+  STORED = 1;
   SUCCESS = 2;
   FAILED = 3;
 }
