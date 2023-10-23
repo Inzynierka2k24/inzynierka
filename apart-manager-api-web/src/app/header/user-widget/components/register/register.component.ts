@@ -46,7 +46,6 @@ export class RegisterComponent {
     if (this.registrationForm.valid) {
       this.store.dispatch(
         UserActions.register({
-          login: this.registrationForm.value.login!,
           password: this.registrationForm.value.password!,
           mail: this.registrationForm.value.mail!,
         }),
