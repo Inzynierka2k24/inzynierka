@@ -1,6 +1,8 @@
 package com.inzynierka2k24.messagingservice.service;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -40,13 +42,26 @@ class MessageServiceTest {
   }
 
   @Test
-  void shouldSaveStatuses() {
+  void shouldSaveMessage() {
     // Given
     var content = new MessageContent("test@example.com", "Test Subject", "Test Content");
-    var details = new MessageDetails(1L, EventType.RESERVATION, Instant.EPOCH, Status.STORED);
+    var details = new MessageDetails(1L, EventType.RESERVATION, Instant.EPOCH, Status.PENDING);
     var message = new Message(content, details, MessageType.MAIL);
+    when(repository.save(message)).thenReturn(message);
 
     // When/Then
-    assertDoesNotThrow(() -> messageService.save(message));
+    assertEquals(Status.STORED, messageService.save(message));
+  }
+
+  @Test
+  void shouldReturnStatusFailedWhenMessageNotSaved() {
+    // Given
+    var content = new MessageContent("test@example.com", "Test Subject", "Test Content");
+    var details = new MessageDetails(1L, EventType.RESERVATION, Instant.EPOCH, Status.PENDING);
+    var message = new Message(content, details, MessageType.MAIL);
+    doThrow(IllegalArgumentException.class).when(repository).save(any());
+
+    // When/Then
+    assertEquals(Status.FAILED, messageService.save(message));
   }
 }

@@ -5,6 +5,7 @@ import static org.mockito.Mockito.mock;
 
 import com.inzynierka2k24.MessageType;
 import java.util.stream.Stream;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -18,6 +19,11 @@ class MessageSenderProviderTest {
   @MethodSource
   void getMessageSender(MessageType messageType, Class<? extends MessageSender> expectedClass) {
     assertEquals(expectedClass, provider.getMessageSender(messageType).getClass());
+  }
+
+  @Test
+  void shouldReturnNullWhenUnrecognizedType() {
+    assertNull(provider.getMessageSender(MessageType.UNRECOGNIZED));
   }
 
   static Stream<Arguments> getMessageSender() {

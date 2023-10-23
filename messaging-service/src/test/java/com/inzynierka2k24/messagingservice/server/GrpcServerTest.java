@@ -18,7 +18,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
 
-public class GrpcServerTest {
+class GrpcServerTest {
 
   private final EmailSender emailSender = mock(EmailSender.class);
   private final SmsSender smsSender = mock(SmsSender.class);
@@ -28,7 +28,7 @@ public class GrpcServerTest {
       new GrpcServer(new RequestValidator(), provider, messageService);
 
   @Test
-  public void shouldSuccessfullySendMessageWhenRequestWithValidInputAndEventTimeWithin14Days() {
+  void shouldSuccessfullySendMessageWhenRequestWithValidInputAndEventTimeWithin14Days() {
     // Given
     SendMessageRequest request =
         SendMessageRequest.newBuilder()
@@ -62,7 +62,7 @@ public class GrpcServerTest {
   }
 
   @Test
-  public void shouldSuccessfulGetMessageStatusRequestWithValidInput() {
+  void shouldSuccessfulGetMessageStatusRequestWithValidInput() {
     // Given
     var receiver = "receiver@example.com";
     var eventId = 123456L;
@@ -73,7 +73,10 @@ public class GrpcServerTest {
             .setEventData(
                 EventData.newBuilder().setEventId(eventId).setEventType(eventType).build())
             .build();
-    Set<MessageDetails> expectedStatuses = Set.of();
+    Set<MessageDetails> expectedStatuses =
+        Set.of(
+            new MessageDetails(1L, EventType.RESERVATION, Instant.EPOCH, Status.STORED),
+            new MessageDetails(2L, EventType.RESERVATION, Instant.EPOCH, Status.SUCCESS));
 
     StreamObserver<GetMessageStatusResponse> responseObserver = mock(StreamObserver.class);
     when(messageService.get(receiver, eventId, eventType)).thenReturn(expectedStatuses);
@@ -89,7 +92,7 @@ public class GrpcServerTest {
   }
 
   @Test
-  public void shouldThrowInvalidRequestExceptionWhenValidationFails() {
+  void shouldThrowInvalidRequestExceptionWhenValidationFails() {
     // Given
     SendMessageRequest request =
         SendMessageRequest.newBuilder()
@@ -120,7 +123,7 @@ public class GrpcServerTest {
   }
 
   @Test
-  public void shouldNotSentMessageWhenEventTimeMoreThan14DaysInFuture() {
+  void shouldNotSentMessageWhenEventTimeMoreThan14DaysInFuture() {
     // Given
     SendMessageRequest request =
         SendMessageRequest.newBuilder()

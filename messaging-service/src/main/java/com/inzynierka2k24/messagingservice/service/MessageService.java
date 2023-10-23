@@ -26,11 +26,15 @@ public class MessageService {
 
   public Status save(Message message) {
     try {
-      repository.save(message);
+      repository.save(getMessageWithStoredStatus(message));
     } catch (Exception e) {
       return Status.FAILED;
     }
 
     return Status.STORED;
+  }
+
+  private Message getMessageWithStoredStatus(Message message) {
+    return message.withDetails(message.details().withMessageStatus(Status.STORED));
   }
 }

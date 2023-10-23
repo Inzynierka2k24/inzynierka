@@ -33,6 +33,7 @@ public class GrpcServer extends MessagingServiceGrpc.MessagingServiceImplBase {
     var validationError = validator.validate(request);
 
     if (validationError != null) {
+      log.error("Error for request: {}. Error: {}", request, validationError);
       responseObserver.onError(new InvalidRequestException(validationError));
       return;
     }

@@ -23,7 +23,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @SpringBootTest
 @DirtiesContext
 @Testcontainers
-public class MessageRepositoryTest {
+class MessageRepositoryTest {
 
   @Container @ServiceConnection
   static MongoDBContainer container = new MongoDBContainer("mongo:latest");
@@ -40,7 +40,7 @@ public class MessageRepositoryTest {
   }
 
   @Test
-  public void findsByReceiverAndEventIdAndEventType() {
+  void findsByReceiverAndEventIdAndEventType() {
     List<Message> result =
         repository.findByContent_ReceiverAndDetails_EventIdAndDetails_EventType(
             "test@example.com", 1L, EventType.RESERVATION);

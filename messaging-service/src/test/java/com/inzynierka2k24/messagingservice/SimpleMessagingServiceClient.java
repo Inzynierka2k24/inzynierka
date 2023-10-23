@@ -12,6 +12,7 @@ import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import java.time.Duration;
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import lombok.extern.slf4j.Slf4j;
@@ -34,19 +35,28 @@ public class SimpleMessagingServiceClient {
 
   public SimpleMessagingServiceClient(ManagedChannel channel) {
     var blockingStub = MessagingServiceGrpc.newBlockingStub(channel);
+    sendMessage(blockingStub);
+    getStatus(blockingStub);
+  }
+
+  private void sendMessage(MessagingServiceGrpc.MessagingServiceBlockingStub blockingStub) {
     var sendMessageRequest =
         SendMessageRequest.newBuilder()
             .setMessage(
                 Message.newBuilder()
                     .setReceiver("apartmanager404@gmail.com")
-                    .setContent("Sending mail...")
+                    .setSubject("Cleaning service for apartment xyz")
+                    .setContent("I'd like to order cleaning service for apartment xyz.")
                     .setMessageType(MessageType.MAIL)
                     .build())
             .setEventData(
                 EventData.newBuilder()
+                    .setEventId(1L)
                     .setEventType(EventType.RESERVATION)
                     .setEventTime(
-                        Timestamp.newBuilder().setSeconds(Instant.now().getEpochSecond()).build())
+                        Timestamp.newBuilder()
+                            .setSeconds(Instant.now().plus(1, ChronoUnit.DAYS).getEpochSecond())
+                            .build())
                     .build())
             .build();
     //    var sendMessageRequest =
@@ -65,10 +75,12 @@ public class SimpleMessagingServiceClient {
         "SendMessage response: {} Connection active for {}",
         sendMessageResponse,
         Duration.between(sendMessageStart, Instant.now()));
+  }
 
+  private void getStatus(MessagingServiceGrpc.MessagingServiceBlockingStub blockingStub) {
     var getMessageStatusRequest =
         GetMessageStatusRequest.newBuilder()
-            .setReceiver("test@mail.com")
+            .setReceiver("apartmanager404@gmail.com")
             .setEventData(
                 EventData.newBuilder().setEventType(EventType.RESERVATION).setEventId(1L).build())
             .build();
