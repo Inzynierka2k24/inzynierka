@@ -10,10 +10,13 @@ spring:
         enable: true
         required: true
 
-#  datasource:
-#    url: jdbc:postgresql://localhost:5432/postgres
-#    username: postgres
-#    password: postgres
+  data.mongodb:
+    authentication-database: admin
+    username: root
+    password: example
+    database: message
+    port: 27017
+    host: localhost
 
 sms.client:
   key: d78cc0c1

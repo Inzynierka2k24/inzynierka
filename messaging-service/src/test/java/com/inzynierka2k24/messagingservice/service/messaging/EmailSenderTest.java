@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import com.inzynierka2k24.Status;
-import com.inzynierka2k24.messagingservice.model.Message;
+import com.inzynierka2k24.messagingservice.model.MessageContent;
 import org.junit.jupiter.api.Test;
 import org.springframework.mail.MailSendException;
 import org.springframework.mail.SimpleMailMessage;
@@ -18,7 +18,7 @@ public class EmailSenderTest {
   public void shouldSendEmail() {
     // Given
     EmailSender emailSender = new EmailSender(mockJavaMailSender);
-    Message message = new Message("test@example.com", "Test Subject", "Test Content");
+    MessageContent message = new MessageContent("test@example.com", "Test Subject", "Test Content");
 
     // When
     Status result = emailSender.sendMessage(message);
@@ -32,7 +32,7 @@ public class EmailSenderTest {
   public void shouldNotSendEmailWhenJavaMailSenderThrowsMailException() {
     // Given
     EmailSender emailSender = new EmailSender(mockJavaMailSender);
-    Message message = new Message("test@example.com", "Test Subject", "Test Content");
+    MessageContent message = new MessageContent("test@example.com", "Test Subject", "Test Content");
     doThrow(new MailSendException("MailException"))
         .when(mockJavaMailSender)
         .send(any(SimpleMailMessage.class));
