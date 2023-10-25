@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import com.inzynierka2k24.Status;
-import com.inzynierka2k24.messagingservice.model.Message;
+import com.inzynierka2k24.messagingservice.model.MessageContent;
 import com.vonage.client.VonageClient;
 import com.vonage.client.sms.MessageStatus;
 import com.vonage.client.sms.SmsClient;
@@ -30,7 +30,7 @@ public class SmsSenderTest {
     when(smsClient.submitMessage(any(TextMessage.class))).thenReturn(response);
     when(vonageClient.getSmsClient()).thenReturn(smsClient);
     SmsSender smsSender = new SmsSender(vonageClient);
-    Message message = new Message("1234567890", "Test Subject", "Test Content");
+    MessageContent message = new MessageContent("1234567890", "Test Subject", "Test Content");
 
     // When
     Status result = smsSender.sendMessage(message);
@@ -49,7 +49,7 @@ public class SmsSenderTest {
     when(smsClient.submitMessage(any(TextMessage.class))).thenReturn(response);
     when(vonageClient.getSmsClient()).thenReturn(smsClient);
     SmsSender smsSender = new SmsSender(vonageClient);
-    Message message = new Message("1234567890", "Test Subject", "Test Content");
+    MessageContent message = new MessageContent("1234567890", "Test Subject", "Test Content");
 
     // When
     Status result = smsSender.sendMessage(message);

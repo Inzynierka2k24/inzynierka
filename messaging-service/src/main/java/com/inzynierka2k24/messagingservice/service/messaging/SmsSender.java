@@ -1,7 +1,7 @@
 package com.inzynierka2k24.messagingservice.service.messaging;
 
 import com.inzynierka2k24.Status;
-import com.inzynierka2k24.messagingservice.model.Message;
+import com.inzynierka2k24.messagingservice.model.MessageContent;
 import com.vonage.client.VonageClient;
 import com.vonage.client.sms.MessageStatus;
 import com.vonage.client.sms.SmsSubmissionResponse;
@@ -18,7 +18,7 @@ public class SmsSender implements MessageSender {
   private final VonageClient vonageClient;
 
   @Override
-  public Status sendMessage(Message message) {
+  public Status sendMessage(MessageContent message) {
     SmsSubmissionResponse response =
         vonageClient.getSmsClient().submitMessage(convertToTextMessage(message));
 
@@ -31,7 +31,7 @@ public class SmsSender implements MessageSender {
     }
   }
 
-  private TextMessage convertToTextMessage(Message message) {
-    return new TextMessage("ApartMgr", "48" + message.receiver(), message.content());
+  private TextMessage convertToTextMessage(MessageContent message) {
+    return new TextMessage("ApartMgr", "48" + message.receiver(), message.body());
   }
 }
