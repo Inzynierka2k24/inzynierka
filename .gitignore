@@ -31,6 +31,3 @@ build/
 
 ### VS Code ###
 .vscode/
-
-/apart-manager-api-web/node_modules
-/apart-manager-api-web/.angular
