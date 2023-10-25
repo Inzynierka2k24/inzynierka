@@ -10,6 +10,9 @@ import { ToastModule } from 'primeng/toast';
 import { WelcomePageComponent } from './welcome-page/welcome-page.component';
 import {StoreModule} from "@ngrx/store";
 import {apartmentReducer} from "./core/store/apartment/apartment.reducer";
+import {FormsModule} from "@angular/forms";
+import { FullCalendarModule } from '@fullcalendar/angular';
+
 
 @NgModule({
   declarations: [AppComponent, WelcomePageComponent],
@@ -19,9 +22,11 @@ import {apartmentReducer} from "./core/store/apartment/apartment.reducer";
     AppRoutingModule,
     SharedModule,
     HeaderModule,
-    DashboardModule,
     ToastModule,
     StoreModule.forRoot({apartmentEntries: apartmentReducer}),
+    FormsModule,
+    FullCalendarModule,
+
   ],
   providers: [],
   bootstrap: [AppComponent],
