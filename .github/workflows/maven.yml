@@ -44,7 +44,7 @@ jobs:
 #      with:
 #        directory: ./apart-manager-api-server
 
-  build_and_test_messaging-service:
+  build_and_test_messaging_service:
     runs-on: ubuntu-latest
     environment: test
 
@@ -58,5 +58,22 @@ jobs:
           cache: maven
       - name: Build MessagingService and run tests
         run: mvn -B package --file messaging-service/pom.xml
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  build_and_test_external_integration_service:
+    runs-on: ubuntu-latest
+    environment: test
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+      - name: Build ExternalIntegrationService and run tests
+        run: mvn -B package --file external-integration-service/pom.xml
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
