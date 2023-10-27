@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package external;
+
+import "external/external_service.proto";
+
+option java_package = "com.inzynierka2k24";
+option java_multiple_files = true;
+
+message ServiceResponse {
+  ExternalService service = 1;
+  ResponseStatus status = 2;
+}
+
+enum ResponseStatus {
+  PENDING = 0;
+  SUCCESS = 1;
+  FAILED = 2;
+}

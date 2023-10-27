@@ -1,0 +1,45 @@
+syntax = "proto3";
+
+package external;
+
+import "external/reservation.proto";
+import "external/external_service.proto";
+import "external/service_response.proto";
+import "external/apartment_details.proto";
+
+option java_package = "com.inzynierka2k24";
+option java_multiple_files = true;
+
+service ExternalIntegrationService {
+  rpc PropagateReservation(PropagateReservationRequest) returns (PropagateReservationResponse);
+
+  rpc GetReservations(GetReservationsRequest) returns (GetReservationsResponse);
+
+  rpc UpdateApartmentDetails(UpdateApartmentDetailsRequest) returns (UpdateApartmentDetailsResponse);
+}
+
+message PropagateReservationRequest {
+  Reservation reservation = 1;
+  repeated ExternalService service = 2;
+}
+
+message PropagateReservationResponse {
+  repeated ServiceResponse response = 1;
+}
+
+message GetReservationsRequest {
+  repeated ExternalService service = 2;
+}
+
+message GetReservationsResponse {
+  repeated ExternalReservation reservation = 1;
+}
+
+message UpdateApartmentDetailsRequest {
+  ApartmentDetails details = 1;
+  repeated ExternalService service = 2;
+}
+
+message UpdateApartmentDetailsResponse {
+  repeated ServiceResponse response = 1;
+}
