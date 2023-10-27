@@ -10,10 +10,10 @@
 	</parent>
 
 	<groupId>com.inzynierka2k24</groupId>
-	<artifactId>messaging-service</artifactId>
+	<artifactId>external-integration-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>messaging-service</name>
-	<description>messaging-service</description>
+	<name>external-integration-service</name>
+	<description>external-integration-service</description>
 
 	<properties>
 		<java.version>17</java.version>
