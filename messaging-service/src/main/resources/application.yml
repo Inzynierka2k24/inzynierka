@@ -1,0 +1,23 @@
+spring:
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: apartmanager404@gmail.com
+    password: zezz pblr eicz cjja
+    properties.mail.smtp:
+      auth: true
+      starttls:
+        enable: true
+        required: true
+
+  data.mongodb:
+    authentication-database: admin
+    username: root
+    password: example
+    database: message
+    port: 27017
+    host: localhost
+
+sms.client:
+  key: d78cc0c1
+  secret: OtRqjrjKzcVN2PCi
