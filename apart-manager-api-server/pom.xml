@@ -24,6 +24,7 @@
         <fmt.version>2.20</fmt.version>
         <snakeyaml.version>2.1</snakeyaml.version>
         <typescript-generator.version>3.1.1185</typescript-generator.version>
+        <apache-collections4.version>4.4</apache-collections4.version>
     </properties>
 
     <dependencies>
@@ -50,9 +51,21 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-test</artifactId>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-oauth2-authorization-server</artifactId>
         </dependency>
 
         <!--   Database    -->
@@ -68,6 +81,13 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <scope>provided</scope>
+        </dependency>
+
+        <!--   Apache Commons    -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-collections4</artifactId>
+            <version>${apache-collections4.version}</version>
         </dependency>
 
         <!--   Testing    -->
