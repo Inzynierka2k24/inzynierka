@@ -8,6 +8,54 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
     ports:
-      - 5432:5432
+      - "5432:5432"
     volumes: 
       - ../scripts/create_tables.sql:/docker-entrypoint-initdb.d/create_tables.sql
+    networks:
+      - local
+
+  keycloak_db:
+    container_name: apartmanager_keycloak_db
+    image: postgres
+    environment:
+      - POSTGRES_DB=keycloak
+      - POSTGRES_USER=keycloak_db
+      - POSTGRES_PASSWORD=keycloak_db
+    ports:
+      - "5433:5432"
+    volumes:
+      - keycloak-data:/var/lib/postgresql/data
+    networks:
+      - local
+
+  keycloak:
+    container_name: apartmanager_auth
+    depends_on:
+      - keycloak_db
+    build: ../../keycloak/
+    environment:
+      KC_DB_PASSWORD: keycloak_db
+      KC_DB_URL: jdbc:postgresql://apartmanager_keycloak_db/keycloak
+      KC_DB_USERNAME: keycloak_db
+      KC_DB: postgres
+      KC_HEALTH_ENABLED: 'true'
+      KC_HTTP_ENABLED: 'true'
+      KC_METRICS_ENABLED: 'true'
+      KC_HOSTNAME: localhost
+      KC_HOSTNAME_PORT: 8090
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: password
+    ports:
+      - "8090:8090"
+    command: ['start-dev', '--http-port=8090']
+    networks:
+      - local
+
+networks:
+  local:
+    name: local
+    driver: bridge
+
+volumes:
+  keycloak-data: #
+
