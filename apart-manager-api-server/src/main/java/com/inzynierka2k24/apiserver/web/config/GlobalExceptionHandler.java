@@ -49,7 +49,7 @@ public class GlobalExceptionHandler {
         .body(new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage()));
   }
 
-  @ExceptionHandler(UserAlreadyExistsException.class)
+  @ExceptionHandler(RuntimeException.class)
   public ResponseEntity<ApiErrorResponse> handleRuntimeException(RuntimeException e) {
     return ResponseEntity.status(HttpStatus.BAD_REQUEST)
         .body(new ApiErrorResponse(HttpStatus.BAD_REQUEST, e.getMessage()));
