@@ -47,7 +47,7 @@ services:
       KEYCLOAK_ADMIN_PASSWORD: password
     ports:
       - "8090:8090"
-    command: ['start-dev', '--http-port=8090']
+    command: ['start-dev', '--http-port=8090', '--import-realm']
     networks:
       - local
 
