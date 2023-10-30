@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -19,8 +20,6 @@ public class ApartmentController {
 
   @GetMapping()
   public ResponseEntity<List<Apartment>> getAll(@PathVariable long userId) {
-    System.out.println("Halooo");
-    log.warn("Got request");
     return ResponseEntity.ok(apartmentService.getAll(userId));
   }
 
