@@ -1,0 +1,147 @@
+{
+	"info": {
+		"_postman_id": "f6a7f182-3600-4cbb-be3e-e55a3c135be4",
+		"name": "Keycloak Apartmanager",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "30674805"
+	},
+	"item": [
+		{
+			"name": "Create User",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICIyUG9iV2pnZ2N0YXRyRzk3Q3pua1BFbzJrVWZWc0lmTXZjNkdGbHhhdnJZIn0.eyJleHAiOjE2OTg0NDg0OTQsImlhdCI6MTY5ODQ0ODE5NCwianRpIjoiMzRlM2IyY2MtYjI4ZC00NjMzLWFkYjYtNzYzYmI1OGMyYTYxIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDkwL3JlYWxtcy9BcGFydE1hbmFnZXIiLCJhdWQiOlsicmVhbG0tbWFuYWdlbWVudCIsImJyb2tlciIsImFjY291bnQiXSwic3ViIjoiYWNiOWIxOGMtZDkzMS00NjRmLThmMGQtM2ViY2Y0NDRkODQ2IiwidHlwIjoiQmVhcmVyIiwiYXpwIjoiYXBhcnQtbWFuYWdlci1iZSIsInNlc3Npb25fc3RhdGUiOiJhMzUyZTE5ZC0xNTM2LTQ4MWYtYjNlNi05ZjFkYWE4ZmZlNjQiLCJhY3IiOiIxIiwiYWxsb3dlZC1vcmlnaW5zIjpbImh0dHA6Ly9sb2NhbGhvc3Q6ODA4MCJdLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsib2ZmbGluZV9hY2Nlc3MiLCJ1bWFfYXV0aG9yaXphdGlvbiIsImRlZmF1bHQtcm9sZXMtYXBhcnRtYW5hZ2VyIl19LCJyZXNvdXJjZV9hY2Nlc3MiOnsicmVhbG0tbWFuYWdlbWVudCI6eyJyb2xlcyI6WyJ2aWV3LXJlYWxtIiwidmlldy1pZGVudGl0eS1wcm92aWRlcnMiLCJtYW5hZ2UtaWRlbnRpdHktcHJvdmlkZXJzIiwiaW1wZXJzb25hdGlvbiIsInJlYWxtLWFkbWluIiwiY3JlYXRlLWNsaWVudCIsIm1hbmFnZS11c2VycyIsInF1ZXJ5LXJlYWxtcyIsInZpZXctYXV0aG9yaXphdGlvbiIsInF1ZXJ5LWNsaWVudHMiLCJxdWVyeS11c2VycyIsIm1hbmFnZS1ldmVudHMiLCJtYW5hZ2UtcmVhbG0iLCJ2aWV3LWV2ZW50cyIsInZpZXctdXNlcnMiLCJ2aWV3LWNsaWVudHMiLCJtYW5hZ2UtYXV0aG9yaXphdGlvbiIsIm1hbmFnZS1jbGllbnRzIiwicXVlcnktZ3JvdXBzIl19LCJicm9rZXIiOnsicm9sZXMiOlsicmVhZC10b2tlbiJdfSwiYXBhcnQtbWFuYWdlci1iZSI6eyJyb2xlcyI6WyJBRE1JTiJdfSwiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsInZpZXctYXBwbGljYXRpb25zIiwidmlldy1jb25zZW50Iiwidmlldy1ncm91cHMiLCJtYW5hZ2UtYWNjb3VudC1saW5rcyIsIm1hbmFnZS1jb25zZW50IiwiZGVsZXRlLWFjY291bnQiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6ImVtYWlsIHByb2ZpbGUiLCJzaWQiOiJhMzUyZTE5ZC0xNTM2LTQ4MWYtYjNlNi05ZjFkYWE4ZmZlNjQiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsInByZWZlcnJlZF91c2VybmFtZSI6ImFkbWluIiwiZ2l2ZW5fbmFtZSI6IiIsImZhbWlseV9uYW1lIjoiIn0.MNGCmgXlVAEmbX1tzHLMzYUNsaPbjSDmY_QEvvDXOEdfvKy_4NO6QFZ49gptO6ZDnFXM5XQvGms1EyR6nYbfrujGpnEWb_8XcA71MA56lWHYCKRbnpGiUcMnBDn3OdStJavh_5NuvuG7ZP4LThn_EjzMojmC3HnK5x225biraEaTeZ44ZADI_nfXsGgXCdsg3CRq9K7iJGyuIKRjqtblavk1YqPZeANAN3nSDn7YE39FGIVq-mEhEMTB-62L7RQIc6ACxj2xvJ8cG1ydcCl-iqnFZKNLNNMqWnxTt_80CMYLjiZlX5hH264v-m71dz3JsrekYwIpQajZFGVRvVIlmg",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"test\",\r\n    \"credentials\": [{\r\n        \"type\": \"password\",\r\n        \"value\": \"test\"\r\n        }],\r\n    \"email\": \"test@gmail.com\",\r\n    \"enabled\": true,\r\n    \"emailVerified\": true\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8090/admin/realms/ApartManager/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"admin",
+						"realms",
+						"ApartManager",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Token",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "client_id",
+							"value": "apart-manager-be",
+							"type": "default"
+						},
+						{
+							"key": "username",
+							"value": "user",
+							"type": "default"
+						},
+						{
+							"key": "password",
+							"value": "password",
+							"type": "default"
+						},
+						{
+							"key": "grant_type",
+							"value": "password",
+							"type": "default"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8090/realms/ApartManager/protocol/openid-connect/token",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"realms",
+						"ApartManager",
+						"protocol",
+						"openid-connect",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Admin Token",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "client_id",
+							"value": "apart-manager-be",
+							"type": "default"
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "default"
+						},
+						{
+							"key": "password",
+							"value": "admin",
+							"type": "default"
+						},
+						{
+							"key": "grant_type",
+							"value": "password",
+							"type": "default"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8090/realms/ApartManager/protocol/openid-connect/token",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"realms",
+						"ApartManager",
+						"protocol",
+						"openid-connect",
+						"token"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
