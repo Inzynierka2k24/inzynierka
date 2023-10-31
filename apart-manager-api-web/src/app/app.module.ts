@@ -5,7 +5,6 @@ import { SharedModule } from './core/shared.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { HeaderModule } from './header/header.module';
-import { DashboardModule } from './dashboard/dashboard.module';
 import { ToastModule } from 'primeng/toast';
 import { WelcomePageComponent } from './welcome-page/welcome-page.component';
 import {StoreModule} from "@ngrx/store";
