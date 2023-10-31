@@ -1,7 +1,7 @@
 package com.inzynierka2k24.apiserver.web.request;
 
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Size;
 
-public record RegisterRequest(String login, @Valid @Email String emailAddress, String password) {
+public record RegisterRequest(String login, @Email String emailAddress, @Size(min = 5) String password) {
 }
