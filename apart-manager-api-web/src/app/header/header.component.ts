@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import {Router} from "@angular/router";
-import {FormService} from "./apartment-widget/form-service/FormService";
 
 @Component({
   selector: 'app-header',
@@ -8,13 +7,7 @@ import {FormService} from "./apartment-widget/form-service/FormService";
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent {
-  constructor(private router: Router, private formService: FormService) {}
+  constructor(private router: Router) {}
 
-   navigateToAddApartment(): void {
-    this.formService.toggleFormVisibility();
-  }
 
-  navigateToApartmentList():void {
-    this.formService.toggleListVisibility();
-  }
 }
