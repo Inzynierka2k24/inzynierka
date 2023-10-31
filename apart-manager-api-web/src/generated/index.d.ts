@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.1.1185 on 2023-10-23 15:43:44.
+// Generated using typescript-generator version 3.1.1185 on 2023-10-31 13:07:26.
 
 export interface Apartment {
     id?: number;
@@ -32,6 +32,18 @@ export interface ExternalOffer {
     id?: number;
     serviceType: ServiceType;
     externalLink: string;
+}
+
+export interface Finance {
+    id?: number;
+    userId: number;
+    apartmentId: number;
+    eventId: number;
+    eventType: number;
+    costSource: number;
+    price: number;
+    date: Date;
+    details: string;
 }
 
 export interface Reservation {
@@ -68,10 +80,10 @@ export interface GrantedAuthority extends Serializable {
 
 export interface UserDetails extends Serializable {
     enabled: boolean;
-    password: string;
     username: string;
-    accountNonExpired: boolean;
+    password: string;
     credentialsNonExpired: boolean;
+    accountNonExpired: boolean;
     authorities: GrantedAuthority[];
     accountNonLocked: boolean;
 }
@@ -80,5 +92,9 @@ export interface Serializable {
 }
 
 export type ContactType = "UNKNOWN" | "CLEANING" | "MECHANIC" | "ELECTRICIAN";
+
+export type CostSource = "UNKNOWN" | "BOOKING" | "PROMOTION" | "FINE" | "TAX" | "CLEANING" | "REPAIR" | "MAINTENANCE";
+
+export type EventType = "UNKNOWN" | "RESERVATION" | "RENOVATION";
 
 export type ServiceType = "UNKNOWN" | "AIRBNB" | "BOOKING";
