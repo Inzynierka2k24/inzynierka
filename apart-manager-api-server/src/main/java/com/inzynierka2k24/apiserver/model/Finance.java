@@ -4,10 +4,10 @@ import java.time.Instant;
 import java.util.Optional;
 
 public record Finance(
-    Optional<Long> id, // optional??
+    Optional<Long> id,
     long userId,
     long apartmentId,
-    long eventId, // todo add services to the db
+    long eventId,
     int eventType,
     int costSource,
     float price,
