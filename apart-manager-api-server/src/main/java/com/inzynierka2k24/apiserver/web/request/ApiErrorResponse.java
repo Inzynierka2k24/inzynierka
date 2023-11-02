@@ -11,6 +11,7 @@ public class ApiErrorResponse {
     this.status = status.value();
     this.message = message;
   }
+
   public int getStatus() {
     return status;
   }

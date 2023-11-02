@@ -252,7 +252,7 @@ class FinanceDaoTest {
     // Given
     Finance finance =
         new Finance(
-            Optional.empty(),
+            Optional.of(1L),
             100L,
             1L,
             1,
@@ -271,9 +271,28 @@ class FinanceDaoTest {
     // Given
     Finance finance =
         new Finance(
-            Optional.empty(),
+            Optional.of(1L),
             1L,
             100L,
+            1,
+            1,
+            1,
+            200.5f,
+            Instant.parse("2023-01-01T00:00:00Z"),
+            "Washing machine repair");
+
+    // When/Then
+    assertThrows(IllegalArgumentException.class, () -> financeDao.update(finance));
+  }
+
+  @Test
+  void shouldHandleMissingFinanceIdWhenUpdatingFinance() {
+    // Given
+    Finance finance =
+        new Finance(
+            Optional.empty(),
+            1L,
+            1L,
             1,
             1,
             1,

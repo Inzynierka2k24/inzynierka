@@ -25,7 +25,7 @@ public class FinanceController {
     return ResponseEntity.ok(financeService.getById(financeId));
   }
 
-  @GetMapping("/allByApartmentId/{apartmentId}")
+  @GetMapping("/apartment/{apartmentId}")
   public ResponseEntity<List<Finance>> getAllByApartmentId(@PathVariable long apartmentId) {
     List<Finance> finances = financeService.getByApartmentId(apartmentId);
     return ResponseEntity.ok(finances);

@@ -30,18 +30,18 @@ public class UserController {
   }
 
   // TODO: Implement this using keycloak authentication server
-//  @PutMapping("/user/{userId}/edit")
-//  public ResponseEntity<String> edit(
-//      @PathVariable long userId, @Valid @RequestBody EditUserRequest request)
-//      throws UserNotFoundException {
-//    userService.update(
-//        new User(userId, request.mail(), passwordEncoder.encode(request.password())));
-//    return ResponseEntity.ok("User updated successfully");
-//  }
-//
-//  @DeleteMapping("/user/{userId}/remove")
-//  public ResponseEntity<String> delete(@PathVariable long userId) throws UserNotFoundException {
-//    userService.deleteById(userId);
-//    return ResponseEntity.ok("User deleted successfully");
-//  }
+  //  @PutMapping("/user/{userId}/edit")
+  //  public ResponseEntity<String> edit(
+  //      @PathVariable long userId, @Valid @RequestBody EditUserRequest request)
+  //      throws UserNotFoundException {
+  //    userService.update(
+  //        new User(userId, request.mail(), passwordEncoder.encode(request.password())));
+  //    return ResponseEntity.ok("User updated successfully");
+  //  }
+  //
+  //  @DeleteMapping("/user/{userId}/remove")
+  //  public ResponseEntity<String> delete(@PathVariable long userId) throws UserNotFoundException {
+  //    userService.deleteById(userId);
+  //    return ResponseEntity.ok("User deleted successfully");
+  //  }
 }

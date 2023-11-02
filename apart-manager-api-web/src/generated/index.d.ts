@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.1.1185 on 2023-10-31 13:07:26.
+// Generated using typescript-generator version 3.1.1185 on 2023-11-02 10:19:46.
 
 export interface Apartment {
     id?: number;
@@ -39,8 +39,8 @@ export interface Finance {
     userId: number;
     apartmentId: number;
     eventId: number;
-    eventType: number;
-    costSource: number;
+    eventType: EventType;
+    source: Source;
     price: number;
     date: Date;
     details: string;
@@ -64,8 +64,13 @@ export interface User {
 export interface UserSecurityDetails extends UserDetails {
 }
 
+export interface ApiErrorResponse {
+    status: number;
+    message: string;
+}
+
 export interface AuthRequest {
-    mail: string;
+    login: string;
     password: string;
 }
 
@@ -74,18 +79,24 @@ export interface EditUserRequest {
     password: string;
 }
 
+export interface RegisterRequest {
+    login: string;
+    emailAddress: string;
+    password: string;
+}
+
 export interface GrantedAuthority extends Serializable {
     authority: string;
 }
 
 export interface UserDetails extends Serializable {
-    enabled: boolean;
+    accountNonLocked: boolean;
+    authorities: GrantedAuthority[];
     username: string;
     password: string;
+    enabled: boolean;
     credentialsNonExpired: boolean;
     accountNonExpired: boolean;
-    authorities: GrantedAuthority[];
-    accountNonLocked: boolean;
 }
 
 export interface Serializable {
@@ -93,8 +104,8 @@ export interface Serializable {
 
 export type ContactType = "UNKNOWN" | "CLEANING" | "MECHANIC" | "ELECTRICIAN";
 
-export type CostSource = "UNKNOWN" | "BOOKING" | "PROMOTION" | "FINE" | "TAX" | "CLEANING" | "REPAIR" | "MAINTENANCE";
-
 export type EventType = "UNKNOWN" | "RESERVATION" | "RENOVATION";
 
 export type ServiceType = "UNKNOWN" | "AIRBNB" | "BOOKING";
+
+export type Source = "UNKNOWN" | "BOOKING" | "PROMOTION" | "FINE" | "TAX" | "CLEANING" | "REPAIR" | "MAINTENANCE";

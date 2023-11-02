@@ -1,6 +1,5 @@
 com\inzynierka2k24\apiserver\web\controller\UserControllerTest.class
 com\inzynierka2k24\apiserver\dao\UserDaoTest.class
-com\inzynierka2k24\apiserver\web\controller\UserControllerTest$TestConf.class
 com\inzynierka2k24\apiserver\dao\ApartmentDaoTest.class
 com\inzynierka2k24\apiserver\web\controller\ReservationControllerTest.class
 com\inzynierka2k24\apiserver\service\ApartmentServiceTest.class

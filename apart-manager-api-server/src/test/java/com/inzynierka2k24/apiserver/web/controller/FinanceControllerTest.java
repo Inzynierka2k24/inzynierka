@@ -116,7 +116,7 @@ public class FinanceControllerTest {
 
   @Test
   @WithMockUser
-  public void shouldGetFinanceForGivenApartmentId() throws Exception {
+  public void shouldGetAllFinancesForGivenApartmentId() throws Exception {
     // Given
     long userId = 1;
     long apartmentId = 1;
@@ -150,7 +150,7 @@ public class FinanceControllerTest {
     var response =
         mockMvc
             .perform(
-                get(String.format("/%s/finance/allByApartmentId/%s", userId, apartmentId))
+                get(String.format("/%s/finance/apartment/%s", userId, apartmentId))
                     .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andReturn()
@@ -273,7 +273,7 @@ public class FinanceControllerTest {
     // When/Then
     var response =
         mockMvc
-            .perform(get(String.format("/%s/finance/allByApartmentId/%s", userId, apartmentId)))
+            .perform(get(String.format("/%s/finance/apartment/%s", userId, apartmentId)))
             .andExpect(status().isOk())
             .andReturn()
             .getResponse();

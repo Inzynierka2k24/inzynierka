@@ -11,7 +11,6 @@ com\inzynierka2k24\apiserver\exception\user\UserNotFoundException.class
 com\inzynierka2k24\apiserver\web\controller\UserController.class
 com\inzynierka2k24\apiserver\model\Reservation.class
 com\inzynierka2k24\apiserver\web\controller\ReservationController.class
-com\inzynierka2k24\apiserver\web\config\WebSecurityConfig.class
 com\inzynierka2k24\apiserver\service\ApartmentService.class
 com\inzynierka2k24\apiserver\exception\reservation\ReservationNotValidException.class
 com\inzynierka2k24\apiserver\service\ReservationService.class

@@ -80,6 +80,43 @@ public class FinanceServiceTest {
   }
 
   @Test
+  public void shouldGetFinanceByApartmentId() {
+    // Given
+    long apartmentId = 1;
+    List<Finance> expectedFinances = new ArrayList<>();
+    expectedFinances.add(
+        new Finance(
+            Optional.of(1L),
+            1L,
+            1L,
+            1L,
+            1,
+            1,
+            200.5f,
+            Instant.parse("2023-01-01T00:00:00Z"),
+            "Washing machine repair"));
+    expectedFinances.add(
+        new Finance(
+            Optional.of(2L),
+            1L,
+            1L,
+            1L,
+            1,
+            1,
+            200.5f,
+            Instant.parse("2023-01-01T00:00:00Z"),
+            "none"));
+
+    when(financeDao.getByApartmentId(apartmentId)).thenReturn(expectedFinances);
+
+    // When
+    List<Finance> actualFinances = financeService.getByApartmentId(apartmentId);
+
+    // Then
+    assertEquals(expectedFinances, actualFinances);
+  }
+
+  @Test
   public void shouldAddFinance() {
     // Given
     Finance finance =
@@ -152,8 +189,7 @@ public class FinanceServiceTest {
   }
 
   @Test
-  public void shouldThrowFinanceNotFoundExceptionWhenGettingNonExistingFinanceForFinanceId()
-      throws FinanceNotFoundException {
+  public void shouldThrowFinanceNotFoundExceptionWhenGettingNonExistingFinanceForFinanceId() {
     // Given
     long financeId = 33;
     when(financeDao.getById(financeId)).thenReturn(Optional.empty());

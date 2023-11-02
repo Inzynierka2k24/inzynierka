@@ -35,4 +35,3 @@ public class KeycloakTokenResponse {
 
   private String scope;
 }
-

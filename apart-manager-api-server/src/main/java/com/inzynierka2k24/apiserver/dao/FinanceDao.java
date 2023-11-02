@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -37,7 +38,7 @@ public class FinanceDao {
           apartment_id = ?,
           event_id = ?,
           event_type = ?,
-          cost_source = ?,
+          source = ?,
           price = ?,
           date = ?,
           details = ?
@@ -53,7 +54,7 @@ public class FinanceDao {
               rs.getLong("apartment_id"),
               rs.getLong("event_id"),
               rs.getInt("event_type"),
-              rs.getInt("cost_source"),
+              rs.getInt("source"),
               rs.getFloat("price"),
               rs.getTimestamp("date").toLocalDateTime().toInstant(ZoneOffset.UTC),
               rs.getString("details"));
@@ -78,8 +79,8 @@ public class FinanceDao {
           finance.userId(),
           finance.apartmentId(),
           finance.eventId(),
-          finance.eventType(),
-          finance.costSource(),
+          finance.eventType().ordinal(),
+          finance.source().ordinal(),
           finance.price(),
           from(finance.date()),
           finance.details());
@@ -95,14 +96,16 @@ public class FinanceDao {
           finance.userId(),
           finance.apartmentId(),
           finance.eventId(),
-          finance.eventType(),
-          finance.costSource(),
+          finance.eventType().ordinal(),
+          finance.source().ordinal(),
           finance.price(),
           finance.date(),
           finance.details(),
           finance.id().orElseThrow());
-    } catch (NoSuchElementException e) {
+    } catch (DataAccessException e) {
       throw new IllegalArgumentException("The given userId or apartmentId doesn't exist", e);
+    } catch (NoSuchElementException e) {
+      throw new IllegalArgumentException("The given financeId doesn't exist", e);
     }
   }
 

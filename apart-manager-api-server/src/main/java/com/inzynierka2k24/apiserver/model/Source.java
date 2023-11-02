@@ -1,6 +1,6 @@
 package com.inzynierka2k24.apiserver.model;
 
-public enum CostSource {
+public enum Source {
   UNKNOWN(0),
   BOOKING(1),
   PROMOTION(2),
@@ -12,11 +12,11 @@ public enum CostSource {
 
   private final int number;
 
-  CostSource(int number) {
+  Source(int number) {
     this.number = number;
   }
 
-  public static CostSource forNumber(int number) {
+  public static Source forNumber(int number) {
     return switch (number) {
       case 1 -> BOOKING;
       case 2 -> PROMOTION;

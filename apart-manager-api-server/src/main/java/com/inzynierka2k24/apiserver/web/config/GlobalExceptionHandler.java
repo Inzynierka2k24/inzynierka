@@ -18,7 +18,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class GlobalExceptionHandler {
 
   @ExceptionHandler(UserAlreadyExistsException.class)
-  public ResponseEntity<ApiErrorResponse> handleUserAlreadyExistsException(UserAlreadyExistsException e) {
+  public ResponseEntity<ApiErrorResponse> handleUserAlreadyExistsException(
+      UserAlreadyExistsException e) {
     return ResponseEntity.status(HttpStatus.CONFLICT)
         .body(new ApiErrorResponse(HttpStatus.CONFLICT, e.getMessage()));
   }
@@ -57,7 +58,8 @@ public class GlobalExceptionHandler {
   }
 
   @ExceptionHandler(InvalidCredentialsException.class)
-  public ResponseEntity<ApiErrorResponse> handleInvalidCredentialsException(InvalidCredentialsException e) {
+  public ResponseEntity<ApiErrorResponse> handleInvalidCredentialsException(
+      InvalidCredentialsException e) {
     return ResponseEntity.status(HttpStatus.BAD_REQUEST)
         .body(new ApiErrorResponse(HttpStatus.BAD_REQUEST, e.getMessage()));
   }
