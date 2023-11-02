@@ -6,9 +6,13 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class ProtoTimestampToInstantConverter {
+public final class TimeConverter {
 
   public static Instant toInstant(Timestamp timestamp) {
     return Instant.ofEpochSecond(timestamp.getSeconds(), timestamp.getNanos());
+  }
+
+  public static Timestamp toProtoTimestamp(Instant instant) {
+    return Timestamp.newBuilder().setSeconds(instant.getEpochSecond()).build();
   }
 }

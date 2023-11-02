@@ -12,4 +12,6 @@ interface ExternalService {
   Set<Reservation> getReservations();
 
   ResponseStatus updateApartmentDetails(ApartmentDetails details);
+
+  com.inzynierka2k24.ExternalService getServiceType();
 }

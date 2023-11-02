@@ -1,13 +1,13 @@
 package com.inzynierka2k24.external.util;
 
-import static com.inzynierka2k24.external.util.ProtoTimestampToInstantConverter.toInstant;
+import static com.inzynierka2k24.external.util.TimeConverter.toInstant;
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.google.protobuf.Timestamp;
 import java.time.Instant;
 import org.junit.jupiter.api.Test;
 
-class ProtoTimestampToInstantConverterTest {
+class TimeConverterTest {
 
   @Test
   void shouldConvertToInstant() {

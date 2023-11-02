@@ -1,8 +1,7 @@
 package com.inzynierka2k24.external;
 
-import static com.inzynierka2k24.ExternalService.AIRBNB;
-import static com.inzynierka2k24.ExternalService.BOOKING;
-import static com.inzynierka2k24.ExternalService.NOCOWANIEPL;
+import static com.inzynierka2k24.ExternalService.*;
+import static com.inzynierka2k24.external.util.TimeConverter.toProtoTimestamp;
 
 import com.inzynierka2k24.ApartmentDetails;
 import com.inzynierka2k24.ExternalIntegrationServiceGrpc;
@@ -14,6 +13,7 @@ import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import java.time.Duration;
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -46,7 +46,11 @@ public class SimpleExternalIntegrationServiceClient {
       ExternalIntegrationServiceGrpc.ExternalIntegrationServiceBlockingStub blockingStub) {
     var request =
         PropagateReservationRequest.newBuilder()
-            .setReservation(Reservation.getDefaultInstance())
+            .setReservation(
+                Reservation.newBuilder()
+                    .setStartDate(toProtoTimestamp(Instant.now().plus(2L, ChronoUnit.DAYS)))
+                    .setEndDate(toProtoTimestamp(Instant.now().plus(5L, ChronoUnit.DAYS)))
+                    .build())
             .addAllService(List.of(BOOKING, AIRBNB, NOCOWANIEPL))
             .build();
     var start = Instant.now();
@@ -68,7 +72,7 @@ public class SimpleExternalIntegrationServiceClient {
     var response = blockingStub.getReservations(request);
 
     log.info(
-        "GetReservations response: {}. Connection active for {}",
+        "GetReservations response: {} Connection active for {}",
         response,
         Duration.between(start, Instant.now()));
   }
@@ -77,14 +81,21 @@ public class SimpleExternalIntegrationServiceClient {
       ExternalIntegrationServiceGrpc.ExternalIntegrationServiceBlockingStub blockingStub) {
     var request =
         UpdateApartmentDetailsRequest.newBuilder()
-            .setDetails(ApartmentDetails.getDefaultInstance())
+            .setDetails(
+                ApartmentDetails.newBuilder()
+                    .setTitle("Apartment")
+                    .setCity("City")
+                    .setStreet("Street")
+                    .setBuildingNumber("1A")
+                    .setDescription("Description")
+                    .build())
             .addAllService(List.of(BOOKING, AIRBNB, NOCOWANIEPL))
             .build();
     var start = Instant.now();
     var response = blockingStub.updateApartmentDetails(request);
 
     log.info(
-        "UpdateApartmentDetails response: {}. Connection active for {}",
+        "UpdateApartmentDetails response: {} Connection active for {}",
         response,
         Duration.between(start, Instant.now()));
   }

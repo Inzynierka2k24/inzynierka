@@ -8,7 +8,8 @@ import lombok.Getter;
 
 @Getter
 public enum ValidationError {
-  INVALID_DATE(INVALID_ARGUMENT, "Dates cannot be in the past");
+  INVALID_DATE(INVALID_ARGUMENT, "Dates cannot be in the past"),
+  EMPTY_STRING(INVALID_ARGUMENT, "String field cannot be empty");
 
   private final Status grpcStatus;
 

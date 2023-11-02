@@ -1,6 +1,6 @@
 package com.inzynierka2k24.external.service;
 
-import java.util.Set;
+import java.util.Collection;
 import java.util.stream.Stream;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,7 +14,8 @@ class ExternalServiceProvider {
   private final TrivagoService trivagoService;
   private final NocowaniePlService nocowaniePlService;
 
-  Stream<? extends ExternalService> getServices(Set<com.inzynierka2k24.ExternalService> services) {
+  Stream<? extends ExternalService> getServices(
+      Collection<com.inzynierka2k24.ExternalService> services) {
     return services.stream()
         .map(
             externalService ->
