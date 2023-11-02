@@ -10,9 +10,9 @@ export const login = createEffect(
       ofType(UserActions.login),
       exhaustMap((action) =>
         authService
-          .login({ login: action.login, password: action.password })
+          .login({ mail: action.mail, password: action.password })
           .pipe(
-            map((user) => UserActions.loginComplete(user)),
+            map(() => UserActions.loginComplete()),
             catchError((error) => of(UserActions.loginError(error))),
           ),
       ),
@@ -28,9 +28,8 @@ export const register = createEffect(
       exhaustMap((action) =>
         authService
           .register({
-            login: action.login,
-            password: action.password,
             mail: action.mail,
+            password: action.password,
           })
           .pipe(
             map(() => UserActions.registerComplete()),

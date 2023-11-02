@@ -3,6 +3,7 @@ package com.inzynierka2k24.apiserver.service;
 import com.inzynierka2k24.apiserver.exception.user.InvalidCredentialsException;
 import com.inzynierka2k24.apiserver.exception.user.UserAlreadyExistsException;
 import com.inzynierka2k24.apiserver.web.response.KeycloakTokenResponse;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,16 +15,13 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.Collections;
-
 @Service
 public class AuthorizationService {
 
-  private final static String GRANT_TYPE = "grant_type";
-  private final static String CLIENT_ID = "client_id";
-  private final static String USERNAME = "username";
-  private final static String PASSWORD = "password";
-
+  private static final String GRANT_TYPE = "grant_type";
+  private static final String CLIENT_ID = "client_id";
+  private static final String USERNAME = "username";
+  private static final String PASSWORD = "password";
 
   private final RestTemplate restTemplate;
 
@@ -41,7 +39,6 @@ public class AuthorizationService {
 
   @Value("${keycloak.create-user-endpoint}")
   private String createUserEndpoint;
-
 
   public AuthorizationService(RestTemplate restTemplate) {
     this.restTemplate = restTemplate;
@@ -61,11 +58,11 @@ public class AuthorizationService {
     HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(formData, headers);
 
     try {
-    ResponseEntity<KeycloakTokenResponse> responseEntity = restTemplate.postForEntity(tokenEndpoint, requestEntity, KeycloakTokenResponse.class);
+      ResponseEntity<KeycloakTokenResponse> responseEntity =
+          restTemplate.postForEntity(tokenEndpoint, requestEntity, KeycloakTokenResponse.class);
 
-    return responseEntity.getBody().getAccessToken();
-    }
-    catch (HttpClientErrorException e) {
+      return responseEntity.getBody().getAccessToken();
+    } catch (HttpClientErrorException e) {
       throw new InvalidCredentialsException(e);
     }
   }

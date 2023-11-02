@@ -5,19 +5,27 @@ import { SharedModule } from './core/shared.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { HeaderModule } from './header/header.module';
-import { DashboardModule } from './dashboard/dashboard.module';
 import { ToastModule } from 'primeng/toast';
+import { WelcomePageComponent } from './welcome-page/welcome-page.component';
+import {StoreModule} from "@ngrx/store";
+import {apartmentReducer} from "./core/store/apartment/apartment.reducer";
+import {FormsModule} from "@angular/forms";
+import { FullCalendarModule } from '@fullcalendar/angular';
+
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, WelcomePageComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
     SharedModule,
     HeaderModule,
-    DashboardModule,
     ToastModule,
+    StoreModule.forRoot({apartmentEntries: apartmentReducer}),
+    FormsModule,
+    FullCalendarModule,
+
   ],
   providers: [],
   bootstrap: [AppComponent],

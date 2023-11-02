@@ -1,5 +1,10 @@
 package com.inzynierka2k24.apiserver.security;
 
+import java.util.Collection;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import org.apache.commons.collections4.MapUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.convert.converter.Converter;
@@ -12,35 +17,29 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 import org.springframework.stereotype.Component;
 
-import java.util.Collection;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 @Component
 public class JwtAuthConverter implements Converter<Jwt, AbstractAuthenticationToken> {
 
-  private final static String RESOURCE_ACCESS = "resource_access";
-  private final static String ROLES = "roles";
+  private static final String RESOURCE_ACCESS = "resource_access";
+  private static final String ROLES = "roles";
 
-
-  private final JwtGrantedAuthoritiesConverter jwtGrantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
+  private final JwtGrantedAuthoritiesConverter jwtGrantedAuthoritiesConverter =
+      new JwtGrantedAuthoritiesConverter();
 
   @Value("${jwt.auth.converter.resource-id}")
   private String resourceId;
+
   @Override
   public AbstractAuthenticationToken convert(@NonNull Jwt jwt) {
-    Collection<GrantedAuthority> authorities = Stream.concat(
-        jwtGrantedAuthoritiesConverter.convert(jwt).stream(),
-        extractResourceRoles(jwt).stream()
-    ).collect(Collectors.toSet());
+    Collection<GrantedAuthority> authorities =
+        Stream.concat(
+                jwtGrantedAuthoritiesConverter.convert(jwt).stream(),
+                extractResourceRoles(jwt).stream())
+            .collect(Collectors.toSet());
 
-    return new JwtAuthenticationToken(
-        jwt,
-        authorities
-    );
+    return new JwtAuthenticationToken(jwt, authorities);
   }
+
   @SuppressWarnings("unchecked")
   private Collection<? extends GrantedAuthority> extractResourceRoles(Jwt jwt) {
     Map<String, Object> resourceAccess;
@@ -61,10 +60,8 @@ public class JwtAuthConverter implements Converter<Jwt, AbstractAuthenticationTo
 
     resourceRoles = (Collection<String>) resource.get(ROLES);
 
-    return resourceRoles
-        .stream()
+    return resourceRoles.stream()
         .map(role -> new SimpleGrantedAuthority("ROLE_" + role.toUpperCase()))
         .collect(Collectors.toSet());
   }
 }
-

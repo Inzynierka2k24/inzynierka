@@ -12,7 +12,13 @@ import { RippleModule } from 'primeng/ripple';
 import { CheckboxModule } from 'primeng/checkbox';
 import { RegisterComponent } from './user-widget/components/register/register.component';
 import { MessagesModule } from 'primeng/messages';
-import {DividerModule} from "primeng/divider";
+import { AddApartmentComponent } from './apartment-widget/add-apartment/add-apartment.component';
+import { ApartmentListComponent } from './apartment-widget/apartment-list/apartment-list.component';
+import { DividerModule } from 'primeng/divider';
+import { UserCardComponent } from './user-widget/components/user-card/user-card.component';
+import { MenuModule } from 'primeng/menu';
+import { ReservationListComponent } from './reservation-widget/reservation-list/reservation-list.component';
+import {FullCalendarModule} from "@fullcalendar/angular";
 
 @NgModule({
   declarations: [
@@ -20,6 +26,10 @@ import {DividerModule} from "primeng/divider";
     UserWidgetComponent,
     HeaderComponent,
     RegisterComponent,
+    AddApartmentComponent,
+    ApartmentListComponent,
+    UserCardComponent,
+    ReservationListComponent,
   ],
   imports: [
     SharedModule,
@@ -32,7 +42,9 @@ import {DividerModule} from "primeng/divider";
     CheckboxModule,
     MessagesModule,
     DividerModule,
+    MenuModule,
+    FullCalendarModule,
   ],
-  exports: [HeaderComponent],
+  exports: [HeaderComponent, AddApartmentComponent, ApartmentListComponent],
 })
 export class HeaderModule {}

@@ -46,3 +46,15 @@ CREATE TABLE IF NOT EXISTS contacts (
   password varchar(50) NOT NULL,
   mail varchar(50) NOT NULL
 );
+
+CREATE TABLE IF NOT EXISTS finances (
+  finance_id bigserial NOT NULL PRIMARY KEY,
+  user_id bigint NOT NULL REFERENCES users(user_id),
+  apartment_id bigint NOT NULL REFERENCES apartments(apartment_id),
+  event_id bigint,
+  event_type int,
+  source int NOT NULL,
+  price float4 NOT NULL,
+  date date NOT NULL,
+  details varchar(50)
+);

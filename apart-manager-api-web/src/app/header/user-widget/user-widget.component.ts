@@ -8,6 +8,7 @@ import {
 import { Subscription } from 'rxjs';
 import { MessageService } from 'primeng/api';
 import { TranslateService } from '@ngx-translate/core';
+import {User} from "../../../generated";
 
 @Component({
   selector: 'app-user-widget',
@@ -20,6 +21,7 @@ export class UserWidgetComponent implements OnInit, OnDestroy {
   isUserLoggedIn = false;
   displayContent = false;
   formToggle = false;
+  private currentUser: User;
 
   constructor(
     private store: Store<AppState>,
@@ -33,7 +35,6 @@ export class UserWidgetComponent implements OnInit, OnDestroy {
       .subscribe((user) => {
         if (user) {
           this.isUserLoggedIn = true;
-          this.currentUser = user;
         }
       });
     const userErrorSub = this.store

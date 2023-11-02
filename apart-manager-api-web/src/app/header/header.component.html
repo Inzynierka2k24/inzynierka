@@ -2,7 +2,21 @@
     <ng-template pTemplate="start">
         <h1>ApartManager API</h1>
     </ng-template>
+
     <ng-template pTemplate="end">
-        <app-user-widget></app-user-widget>
+        <div class="button-container">
+<!--            <button pButton label="Add Apartment" (click)="navigateToAddApartment()"></button>-->
+<!--            <button pButton label="Apartment List" (click)="navigateToApartmentList()"></button>-->
+            <a routerLink="/apartments/add" class="p-button p-button-outlined p-button-primary">
+                Add apartment
+            </a>
+            <a routerLink="/apartments" class="p-button p-button-outlined p-button-primary">
+                Apartment List
+            </a>
+            <a routerLink="/reservations" class="p-button p-button-outlined p-button-primary">
+                  Reservations
+            </a>
+            <app-user-widget></app-user-widget>
+        </div>
     </ng-template>
 </p-menubar>
