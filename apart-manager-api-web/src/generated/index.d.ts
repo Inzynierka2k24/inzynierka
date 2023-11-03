@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.1.1185 on 2023-11-03 16:02:50.
+// Generated using typescript-generator version 3.1.1185 on 2023-11-03 17:18:50.
 
 export interface Apartment {
     id?: number;
@@ -32,6 +32,18 @@ export interface ExternalOffer {
     id?: number;
     serviceType: ServiceType;
     externalLink: string;
+}
+
+export interface Finance {
+    id?: number;
+    userId: number;
+    apartmentId: number;
+    eventId: number;
+    eventType: EventType;
+    source: Source;
+    price: number;
+    date: Date;
+    details: string;
 }
 
 export interface Membership {
@@ -95,6 +107,10 @@ export type BillingType = "CARD" | "PAYPAL" | "NONE";
 
 export type ContactType = "UNKNOWN" | "CLEANING" | "MECHANIC" | "ELECTRICIAN";
 
+export type EventType = "UNKNOWN" | "RESERVATION" | "RENOVATION";
+
 export type MembershipLevel = "FREE" | "COMMERCIAL" | "ENTERPRISE";
 
 export type ServiceType = "UNKNOWN" | "AIRBNB" | "BOOKING";
+
+export type Source = "UNKNOWN" | "BOOKING" | "PROMOTION" | "FINE" | "TAX" | "CLEANING" | "REPAIR" | "MAINTENANCE";

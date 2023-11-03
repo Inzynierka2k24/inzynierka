@@ -19,8 +19,7 @@ public class ApartmentController {
 
   @GetMapping()
   public ResponseEntity<List<Apartment>> getAll(@PathVariable long userId) {
-    System.out.println("Halooo");
-    log.warn("Got request");
+    log.info("Got request");
     return ResponseEntity.ok(apartmentService.getAll(userId));
   }
 
