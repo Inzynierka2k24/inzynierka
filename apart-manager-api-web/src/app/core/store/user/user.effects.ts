@@ -1,8 +1,11 @@
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { AuthService } from '../../services/auth.service';
 import { inject } from '@angular/core';
-import { catchError, exhaustMap, map, of } from 'rxjs';
+import { catchError, exhaustMap, map, of, tap } from 'rxjs';
 import UserActions from './user.actions';
+import { Router } from '@angular/router';
+import { UserService } from '../../../user/services/user.service';
+import { LocalStorageService } from '../../services/local-storage.service';
 
 export const login = createEffect(
   (actions$ = inject(Actions), authService = inject(AuthService)) => {
@@ -10,12 +13,33 @@ export const login = createEffect(
       ofType(UserActions.login),
       exhaustMap((action) =>
         authService
-          .login({ mail: action.mail, password: action.password })
+          .login({
+            login: action.login,
+            password: action.password,
+          })
           .pipe(
-            map(() => UserActions.loginComplete()),
+            map((jwt) => UserActions.loginComplete({ jwt })),
             catchError((error) => of(UserActions.loginError(error))),
           ),
       ),
+    );
+  },
+  { functional: true },
+);
+
+export const loginComplete = createEffect(
+  (
+    actions$ = inject(Actions),
+    localStorageService = inject(LocalStorageService),
+    router = inject(Router),
+  ) => {
+    return actions$.pipe(
+      ofType(UserActions.loginComplete),
+      tap(({ jwt }) => {
+        localStorageService.saveData('JWT_TOKEN', jwt);
+        router.navigate(['user', 'dashboard']);
+      }),
+      map(() => UserActions.details()),
     );
   },
   { functional: true },
@@ -28,13 +52,44 @@ export const register = createEffect(
       exhaustMap((action) =>
         authService
           .register({
-            mail: action.mail,
+            emailAddress: action.emailAddress,
+            login: action.login,
             password: action.password,
           })
           .pipe(
             map(() => UserActions.registerComplete()),
             catchError((error) => of(UserActions.registerError(error))),
           ),
+      ),
+    );
+  },
+  { functional: true },
+);
+
+export const edit = createEffect(
+  (actions$ = inject(Actions), userService = inject(UserService)) => {
+    return actions$.pipe(
+      ofType(UserActions.edit),
+      exhaustMap((props) =>
+        userService.editUser(props.user, props.editUserRequest).pipe(
+          map((user) => UserActions.editComplete(user)),
+          catchError((error) => of(UserActions.editError(error))),
+        ),
+      ),
+    );
+  },
+  { functional: true },
+);
+
+export const getDetails = createEffect(
+  (actions$ = inject(Actions), userService = inject(UserService)) => {
+    return actions$.pipe(
+      ofType(UserActions.details),
+      exhaustMap(() =>
+        userService.getUserDetails().pipe(
+          map((user) => UserActions.detailsComplete(user)),
+          catchError((error) => of(UserActions.detailsError(error))),
+        ),
       ),
     );
   },

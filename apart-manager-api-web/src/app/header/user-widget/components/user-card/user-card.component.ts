@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
 import { AppState } from '../../../../core/store/app.store';
 import { Store } from '@ngrx/store';
 import UserActions from '../../../../core/store/user/user.actions';
@@ -10,13 +9,16 @@ import UserActions from '../../../../core/store/user/user.actions';
   styleUrls: ['./user-card.component.scss'],
 })
 export class UserCardComponent {
-  menuItems = [
+  readonly menuItems = [
+    {
+      label: 'Dashboard',
+      icon: 'pi pi-fw pi-chart-bar',
+      routerLink: '/user/dashboard',
+    },
     {
       label: 'Settings',
       icon: 'pi pi-fw pi-cog',
-      command: () => {
-        this.router.navigate(['user', 'settings']);
-      },
+      routerLink: '/user/settings',
     },
     {
       label: 'Log Out',
@@ -27,8 +29,5 @@ export class UserCardComponent {
     },
   ];
 
-  constructor(
-    private store: Store<AppState>,
-    private router: Router,
-  ) {}
+  constructor(private store: Store<AppState>) {}
 }

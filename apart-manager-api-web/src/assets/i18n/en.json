@@ -24,7 +24,7 @@
     "FORM_TOGGLE": "Log in here!",
     "SUBMIT": "Register"
   },
-  "PASSWORD_RULE": "Provide a password with minimum 4 characters",
+  "PASSWORD_RULE": "Provide a password with minimum 5 characters",
   "ERROR_MESSAGE": {
     "DEFAULT": "Something went wrong."
   }

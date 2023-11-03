@@ -16,16 +16,15 @@ export class LoginComponent {
   toggleForm: () => void;
 
   isLoading$: Observable<boolean>;
-  loginForm;
+  loginForm = this.formBuilder.nonNullable.group({
+    login: ['', Validators.required],
+    password: ['', [Validators.required, Validators.minLength(5)]],
+  });
 
   constructor(
     private store: Store<AppState>,
     private formBuilder: FormBuilder,
   ) {
-    this.loginForm = formBuilder.nonNullable.group({
-      mail: ['', Validators.required],
-      password: ['', [Validators.required, Validators.minLength(4)]],
-    });
     this.isLoading$ = store.select(selectUserLoadingState);
   }
 
@@ -33,7 +32,7 @@ export class LoginComponent {
     if (this.loginForm.valid) {
       this.store.dispatch(
         UserActions.login({
-          mail: this.loginForm.value.mail!,
+          login: this.loginForm.value.login!,
           password: this.loginForm.value.password!,
         }),
       );

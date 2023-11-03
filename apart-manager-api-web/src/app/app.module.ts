@@ -3,15 +3,14 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import { SharedModule } from './core/shared.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { AppRoutingModule } from './app-routing.module';
+import { AppInterceptor, AppRoutingModule } from './app-routing.module';
 import { HeaderModule } from './header/header.module';
-import { ToastModule } from 'primeng/toast';
 import { WelcomePageComponent } from './welcome-page/welcome-page.component';
-import {StoreModule} from "@ngrx/store";
-import {apartmentReducer} from "./core/store/apartment/apartment.reducer";
-import {FormsModule} from "@angular/forms";
-import { FullCalendarModule } from '@fullcalendar/angular';
-
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { ReservationsModule } from './resevations/reservations.module';
+import { ApartmentsModule } from './apartments/apartments.module';
+import { UserModule } from './user/user.module';
+import { ToastModule } from 'primeng/toast';
 
 @NgModule({
   declarations: [AppComponent, WelcomePageComponent],
@@ -21,13 +20,18 @@ import { FullCalendarModule } from '@fullcalendar/angular';
     AppRoutingModule,
     SharedModule,
     HeaderModule,
+    ReservationsModule,
+    ApartmentsModule,
+    UserModule,
     ToastModule,
-    StoreModule.forRoot({apartmentEntries: apartmentReducer}),
-    FormsModule,
-    FullCalendarModule,
-
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AppInterceptor,
+      multi: true,
+    },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

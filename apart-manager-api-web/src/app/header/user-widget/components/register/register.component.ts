@@ -30,9 +30,10 @@ export class RegisterComponent {
   ) {
     this.registrationForm = formBuilder.nonNullable.group(
       {
-        password: ['', [Validators.required, Validators.minLength(4)]],
+        login: ['', Validators.required],
+        password: ['', [Validators.required, Validators.minLength(5)]],
         passwordRepeat: ['', Validators.required],
-        mail: ['', [Validators.required, Validators.email]],
+        emailAddress: ['', [Validators.required, Validators.email]],
       },
       {
         validators: matchingPasswordValidator,
@@ -46,8 +47,9 @@ export class RegisterComponent {
     if (this.registrationForm.valid) {
       this.store.dispatch(
         UserActions.register({
+          login: this.registrationForm.value.login!,
           password: this.registrationForm.value.password!,
-          mail: this.registrationForm.value.mail!,
+          emailAddress: this.registrationForm.value.emailAddress!,
         }),
       );
     }

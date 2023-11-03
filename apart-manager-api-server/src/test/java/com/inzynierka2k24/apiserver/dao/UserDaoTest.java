@@ -1,8 +1,6 @@
 package com.inzynierka2k24.apiserver.dao;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 import com.inzynierka2k24.apiserver.model.User;
 import java.sql.Connection;
@@ -46,7 +44,7 @@ class UserDaoTest {
 
     // Then
     assertTrue(user.isPresent());
-    assertEquals(email, user.get().mail());
+    assertEquals(email, user.get().emailAddress());
   }
 
   @Test
@@ -66,31 +64,31 @@ class UserDaoTest {
   @Test
   void shouldRegisterNewUser() {
     // Given
-    User user = new User("test2@example.com", "password");
+    User user = new User("test2@example.com", "login");
 
     // When
     userDao.register(user);
-    Optional<User> registeredUser = userDao.get(user.mail());
+    Optional<User> registeredUser = userDao.get(user.emailAddress());
 
     // Then
     assertTrue(registeredUser.isPresent());
-    assertEquals(user.mail(), registeredUser.get().mail());
-    assertEquals(user.password(), registeredUser.get().password());
+    assertEquals(user.emailAddress(), registeredUser.get().emailAddress());
+    assertEquals(user.login(), registeredUser.get().login());
   }
 
   @Test
   void shouldUpdateExistingUser() {
     // Given
-    User user = new User(1L, "updated@example.com", "new_password");
+    User user = new User(1L, "updated@example.com", "login");
 
     // When
     userDao.update(user);
-    Optional<User> updatedUser = userDao.get(user.mail());
+    Optional<User> updatedUser = userDao.get(user.emailAddress());
 
     // Then
     assertTrue(updatedUser.isPresent());
-    assertEquals(user.mail(), updatedUser.get().mail());
-    assertEquals(user.password(), updatedUser.get().password());
+    assertEquals(user.emailAddress(), updatedUser.get().emailAddress());
+    assertEquals(user.login(), updatedUser.get().login());
   }
 
   @Test
@@ -100,7 +98,7 @@ class UserDaoTest {
 
     // When
     userDao.deleteById(user.id().orElseThrow());
-    Optional<User> deletedUser = userDao.get(user.mail());
+    Optional<User> deletedUser = userDao.get(user.emailAddress());
 
     // Then
     assertFalse(deletedUser.isPresent());

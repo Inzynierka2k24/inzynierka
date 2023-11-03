@@ -19,11 +19,8 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class FinanceDao {
 
-  private final JdbcTemplate template;
-
   private static final String GET_ALL_QUERY = "SELECT * FROM finances WHERE user_id = ?";
   private static final String GET_BY_ID_QUERY = "SELECT * FROM finances WHERE finance_id = ?";
-
   private static final String GET_BY_APARTMENT_QUERY =
       "SELECT * FROM finances WHERE apartment_id = ?";
   private static final String ADD_QUERY =
@@ -38,14 +35,13 @@ public class FinanceDao {
           apartment_id = ?,
           event_id = ?,
           event_type = ?,
-          source = ?,
+          cost_source = ?,
           price = ?,
           date = ?,
           details = ?
         WHERE
           finance_id = ?
         """;
-
   private static final RowMapper<Finance> financeRowMapper =
       (rs, rowNum) ->
           new Finance(
@@ -54,10 +50,11 @@ public class FinanceDao {
               rs.getLong("apartment_id"),
               rs.getLong("event_id"),
               rs.getInt("event_type"),
-              rs.getInt("source"),
+              rs.getInt("cost_source"),
               rs.getFloat("price"),
               rs.getTimestamp("date").toLocalDateTime().toInstant(ZoneOffset.UTC),
               rs.getString("details"));
+  private final JdbcTemplate template;
 
   public List<Finance> getAll(long userId) {
     return template.query(GET_ALL_QUERY, financeRowMapper, userId);

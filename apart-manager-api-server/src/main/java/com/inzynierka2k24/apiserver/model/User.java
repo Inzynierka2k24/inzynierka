@@ -4,13 +4,13 @@ import java.util.Optional;
 import java.util.Set;
 
 public record User(
-    Optional<Long> id, String mail, String password, boolean active, Set<String> roles) {
+    Optional<Long> id, String login, String emailAddress, boolean active, Set<String> roles) {
 
-  public User(String mail, String password) {
-    this(Optional.empty(), mail, password, true, Set.of("USER"));
+  public User(String login, String emailAddress) {
+    this(Optional.empty(), login, emailAddress, true, Set.of("USER"));
   }
 
-  public User(Long id, String mail, String password) {
-    this(Optional.of(id), mail, password, true, Set.of("USER"));
+  public User(Long id, String login, String emailAddress) {
+    this(Optional.of(id), login, emailAddress, true, Set.of("USER"));
   }
 }

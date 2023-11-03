@@ -1,15 +1,14 @@
 package com.inzynierka2k24.apiserver.web.controller;
 
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.inzynierka2k24.apiserver.exception.user.InvalidCredentialsException;
 import com.inzynierka2k24.apiserver.exception.user.UserAlreadyExistsException;
 import com.inzynierka2k24.apiserver.service.AuthorizationService;
+import com.inzynierka2k24.apiserver.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -23,9 +22,9 @@ import org.springframework.test.web.servlet.MockMvc;
 @AutoConfigureMockMvc(addFilters = false)
 public class UserControllerTest {
 
-  @Autowired private MockMvc mockMvc;
-
   @MockBean AuthorizationService authorizationService;
+  @MockBean UserService userService;
+  @Autowired private MockMvc mockMvc;
 
   @Test
   @WithMockUser
@@ -40,7 +39,7 @@ public class UserControllerTest {
     // when then
     mockMvc
         .perform(
-            post("/api/user/login")
+            post("/login")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"login\":\"" + login + "\", \"password\":\"" + password + "\"}"))
         .andExpect(status().isOk())
@@ -60,7 +59,7 @@ public class UserControllerTest {
     // when then
     mockMvc
         .perform(
-            post("/api/user/login")
+            post("/login")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"login\":\"" + login + "\", \"password\":\"" + password + "\"}"))
         .andExpect(status().isBadRequest());
@@ -78,7 +77,7 @@ public class UserControllerTest {
     // when then
     mockMvc
         .perform(
-            post("/api/user/register")
+            post("/register")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(
                     "{ \"login\":\""
@@ -88,8 +87,7 @@ public class UserControllerTest {
                         + "\", \"password\":\""
                         + password
                         + "\"}"))
-        .andExpect(status().isCreated())
-        .andExpect(content().string("User registered successfully"));
+        .andExpect(status().isCreated());
 
     verify(authorizationService).register(email, login, password);
   }
@@ -108,7 +106,7 @@ public class UserControllerTest {
     // when then
     mockMvc
         .perform(
-            post("/api/user/register")
+            post("/register")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(
                     "{ \"login\":\""
@@ -135,7 +133,7 @@ public class UserControllerTest {
     // when then
     mockMvc
         .perform(
-            post("/api/user/register")
+            post("/register")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(
                     "{ \"login\":\""

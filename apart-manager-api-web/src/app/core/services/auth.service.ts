@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { AuthRequest, User } from '../../../generated';
-import { Observable, of } from 'rxjs';
+import { AuthRequest, RegisterRequest } from '../../../generated';
+import { Observable } from 'rxjs';
 
 const PROXY_PREFIX = '/api';
 
@@ -11,17 +11,13 @@ const PROXY_PREFIX = '/api';
 export class AuthService {
   constructor(private httpClient: HttpClient) {}
 
-  login(request: AuthRequest): Observable<User> {
-    return this.httpClient.post<User>(PROXY_PREFIX + '/login', request);
+  login(request: AuthRequest): Observable<string> {
+    return this.httpClient.post(PROXY_PREFIX + '/login', request, {
+      responseType: 'text',
+    });
   }
 
-  register(request: AuthRequest): Observable<boolean> {
-    return this.httpClient.post<boolean>(PROXY_PREFIX + '/register', request);
+  register(request: RegisterRequest): Observable<string> {
+    return this.httpClient.post<string>(PROXY_PREFIX + '/register', request);
   }
-
-  authenticate(): Observable<boolean> {
-    return of(false); //TODO
-  }
-
-  logout() {}
 }
