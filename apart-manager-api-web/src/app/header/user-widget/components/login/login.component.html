@@ -1,79 +1,79 @@
 <div class="surface-card p-4 shadow-2 border-round w-full">
-    <div class="text-center mb-5">
-        <div class="text-900 text-3xl font-medium mb-3">
-            {{ "LOGIN.TITLE" | translate }}
-        </div>
-        <span class="text-600 font-medium line-height-3">{{
-            "LOGIN.NO_ACCOUNT" | translate
-            }}</span>
-        <a
-                (click)="toggleForm()"
-                class="font-medium no-underline ml-2 text-blue-500 cursor-pointer"
-        >{{ "LOGIN.FORM_TOGGLE" | translate }}</a
-        >
+  <div class="text-center mb-5">
+    <div class="text-900 text-3xl font-medium mb-3">
+      {{ "LOGIN.TITLE" | translate }}
     </div>
-    <div
-            *ngIf="isLoading$ | async"
-            class="absolute top-0 left-0 w-full h-full z-2 bg-black-alpha-30"
+    <span class="text-600 font-medium line-height-3">{{
+      "LOGIN.NO_ACCOUNT" | translate
+    }}</span>
+    <a
+      (click)="toggleForm()"
+      class="font-medium no-underline ml-2 text-blue-500 cursor-pointer"
+      >{{ "LOGIN.FORM_TOGGLE" | translate }}</a
     >
-        <div class="flex w-full h-full justify-content-center align-items-center">
-            <i
-                    class="pi pi-spin pi-spinner text-pink-500"
-                    style="font-size: 4rem"
-            ></i>
-        </div>
+  </div>
+  <div
+    *ngIf="isLoading$ | async"
+    class="absolute top-0 left-0 w-full h-full z-2 bg-black-alpha-30"
+  >
+    <div class="flex w-full h-full justify-content-center align-items-center">
+      <i
+        class="pi pi-spin pi-spinner text-pink-500"
+        style="font-size: 4rem"
+      ></i>
     </div>
-    <form (ngSubmit)="login()" [formGroup]="loginForm" id="loginForm">
-        <label class="block text-900 font-medium mb-2" for="username">{{
-            "FORM.LOGIN_LABEL" | translate
-            }}</label>
-        <input
-                [placeholder]="'FORM.LOGIN_LABEL' | translate"
-                class="w-full mb-3"
-                formControlName="mail"
-                id="username"
-                pInputText
-                type="text"
-        />
+  </div>
+  <form (ngSubmit)="login()" [formGroup]="loginForm" id="loginForm">
+    <label class="block text-900 font-medium mb-2" for="username">{{
+      "FORM.LOGIN_LABEL" | translate
+    }}</label>
+    <input
+      [placeholder]="'FORM.LOGIN_LABEL' | translate"
+      class="w-full mb-3"
+      formControlName="login"
+      id="username"
+      pInputText
+      type="text"
+    />
 
-        <label class="block text-900 font-medium mb-2" for="password">{{
-            "FORM.PASSWORD_LABEL" | translate
-            }}</label>
-        <p-password
-                [feedback]="false"
-                [placeholder]="'FORM.PASSWORD_LABEL' | translate"
-                [toggleMask]="true"
-                formControlName="password"
-                id="password"
-                inputStyleClass="w-full"
-                styleClass="mb-3 w-full"
-        >
-        </p-password>
+    <label class="block text-900 font-medium mb-2" for="password">{{
+      "FORM.PASSWORD_LABEL" | translate
+    }}</label>
+    <p-password
+      [feedback]="false"
+      [placeholder]="'FORM.PASSWORD_LABEL' | translate"
+      [toggleMask]="true"
+      formControlName="password"
+      id="password"
+      inputStyleClass="w-full"
+      styleClass="mb-3 w-full"
+    >
+    </p-password>
 
-        <div class="flex align-items-center justify-content-between mb-4">
-            <div class="flex align-items-center">
-                <p-checkbox
-                        [binary]="true"
-                        id="rememberMe"
-                        styleClass="mr-2"
-                ></p-checkbox>
-                <label class="text-900" for="rememberMe">{{
-                    "FORM.REMEMBER_ME" | translate
-                    }}</label>
-            </div>
-            <a
-                    class="font-medium no-underline ml-2 text-blue-500 text-right cursor-pointer"
-            >{{ "LOGIN.FORGOT_PASSWORD" | translate }}</a
-            >
-        </div>
+    <div class="flex align-items-center justify-content-between mb-4">
+      <div class="flex align-items-center">
+        <p-checkbox
+          [binary]="true"
+          id="rememberMe"
+          styleClass="mr-2"
+        ></p-checkbox>
+        <label class="text-900" for="rememberMe">{{
+          "FORM.REMEMBER_ME" | translate
+        }}</label>
+      </div>
+      <a
+        class="font-medium no-underline ml-2 text-blue-500 text-right cursor-pointer"
+        >{{ "LOGIN.FORGOT_PASSWORD" | translate }}</a
+      >
+    </div>
 
-        <button
-                [disabled]="!loginForm.valid"
-                [label]="'LOGIN.SUBMIT' | translate"
-                class="w-full"
-                icon="pi pi-user"
-                pButton
-                pRipple
-        ></button>
-    </form>
+    <button
+      [disabled]="!loginForm.valid"
+      [label]="'LOGIN.SUBMIT' | translate"
+      class="w-full"
+      icon="pi pi-user"
+      pButton
+      pRipple
+    ></button>
+  </form>
 </div>

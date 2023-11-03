@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.1.1185 on 2023-11-03 16:23:32.
+// Generated using typescript-generator version 3.1.1185 on 2023-10-31 11:14:02.
 
 export interface Apartment {
     id?: number;
@@ -24,7 +24,7 @@ export interface ExternalAccount {
     id?: number;
     login: string;
     password: string;
-    mail: string;
+    emailAddress: string;
     serviceType: ServiceType;
 }
 
@@ -34,16 +34,10 @@ export interface ExternalOffer {
     externalLink: string;
 }
 
-export interface Finance {
-    id?: number;
-    userId: number;
-    apartmentId: number;
-    eventId: number;
-    eventType: EventType;
-    source: Source;
-    price: number;
-    date: Date;
-    details: string;
+export interface Membership {
+    level: MembershipLevel;
+    billingType: BillingType;
+    billingInfo: string;
 }
 
 export interface Reservation {
@@ -55,13 +49,25 @@ export interface Reservation {
 
 export interface User {
     id?: number;
-    mail: string;
-    password: string;
+    login: string;
+    emailAddress: string;
     active: boolean;
     roles: string[];
 }
 
-export interface UserSecurityDetails extends UserDetails {
+export interface UserPreferences {
+    id?: number;
+    sms: boolean;
+    email: boolean;
+}
+
+export interface UserDTO {
+    login: string;
+    emailAddress: string;
+    level: MembershipLevel;
+    billingType: BillingType;
+    smsNotifications: boolean;
+    emailNotifications: boolean;
 }
 
 export interface ApiErrorResponse {
@@ -75,7 +81,7 @@ export interface AuthRequest {
 }
 
 export interface EditUserRequest {
-    mail: string;
+    emailAddress: string;
     password: string;
 }
 
@@ -85,27 +91,10 @@ export interface RegisterRequest {
     password: string;
 }
 
-export interface GrantedAuthority extends Serializable {
-    authority: string;
-}
-
-export interface UserDetails extends Serializable {
-    enabled: boolean;
-    password: string;
-    username: string;
-    authorities: GrantedAuthority[];
-    accountNonLocked: boolean;
-    credentialsNonExpired: boolean;
-    accountNonExpired: boolean;
-}
-
-export interface Serializable {
-}
+export type BillingType = "CARD" | "PAYPAL" | "NONE";
 
 export type ContactType = "UNKNOWN" | "CLEANING" | "MECHANIC" | "ELECTRICIAN";
 
-export type EventType = "UNKNOWN" | "RESERVATION" | "RENOVATION";
+export type MembershipLevel = "FREE" | "COMMERCIAL" | "ENTERPRISE";
 
 export type ServiceType = "UNKNOWN" | "AIRBNB" | "BOOKING";
-
-export type Source = "UNKNOWN" | "BOOKING" | "PROMOTION" | "FINE" | "TAX" | "CLEANING" | "REPAIR" | "MAINTENANCE";

@@ -11,7 +11,7 @@
   <p>
     {{
       isUserLoggedIn
-        ? ("USER_WIDGET.INFO_LOGGED_IN" | translate: { username: "Zbyszek" })
+        ? ("USER_WIDGET.INFO_LOGGED_IN" | translate: { username: user.login })
         : ("USER_WIDGET.INFO_NOT_LOGGED_IN" | translate)
     }}
   </p>

@@ -1,0 +1,93 @@
+<div class="surface-section p-4">
+  <div class="font-medium text-3xl text-900 mb-3">
+    {{ "PREFERENCES.TITLE" | translate }}
+  </div>
+  <div class="flex justify-content-between">
+    <div class="text-500 mb-5">
+      {{ "PREFERENCES.DESCRIPTION" | translate }}
+    </div>
+    <ng-container *ngIf="!editable">
+      <button
+        (click)="editable = !editable"
+        class="p-button-text"
+        icon="pi pi-pencil"
+        label="Edit"
+        pButton
+        pRipple
+      ></button>
+    </ng-container>
+    <div *ngIf="editable">
+      <button
+        (click)="submitEditRequest()"
+        class="p-button-text p-button-success"
+        icon="pi pi-pencil"
+        label="Save"
+        pButton
+        pRipple
+      ></button>
+      <button
+        (click)="editable = !editable"
+        class="p-button-text p-button-danger"
+        icon="pi pi-pencil"
+        label="Cancel"
+        pButton
+        pRipple
+      ></button>
+    </div>
+  </div>
+  <ng-container *ngIf="!editable; else editableTable">
+    <ul class="list-none p-0 m-0">
+      <ng-container *ngFor="let category of tableStructure">
+        <h3>{{ category.title | translate }}</h3>
+        <ng-container *ngFor="let row of category.rows">
+          <li
+            class="flex align-items-center py-3 px-2 border-top-1 surface-border flex-wrap"
+          >
+            <div class="text-500 w-6 md:w-2 font-medium">
+              {{ row.label | translate }}
+            </div>
+            <div class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">
+              {{ row.placeholder ? row.placeholder : data.get(row.selector) }}
+            </div>
+          </li>
+        </ng-container>
+      </ng-container>
+    </ul>
+  </ng-container>
+
+  <ng-template #editableTable>
+    <form [formGroup]="userEditForm">
+      <ul class="list-none p-0 m-0">
+        <ng-container *ngFor="let category of tableStructure">
+          <h3>{{ category.title | translate }}</h3>
+          <ng-container *ngFor="let row of category.rows">
+            <li
+              class="flex align-items-center py-3 px-2 border-top-1 surface-border flex-wrap"
+            >
+              <div class="text-500 w-6 md:w-2 font-medium">
+                {{ row.label | translate }}
+              </div>
+              <ng-container [ngSwitch]="row.selector">
+                <ng-container *ngSwitchCase="'sms'">
+                  <p-checkbox
+                    [binary]="true"
+                    [formControlName]="row.selector"
+                  ></p-checkbox>
+                </ng-container>
+                <ng-container *ngSwitchDefault>
+                  <input
+                    [formControlName]="row.selector"
+                    [value]="
+                      row.selector ? data.get(row.selector) : row.placeholder
+                    "
+                    pInputText
+                  />
+                </ng-container>
+              </ng-container>
+            </li>
+          </ng-container>
+        </ng-container>
+      </ul>
+    </form>
+  </ng-template>
+</div>

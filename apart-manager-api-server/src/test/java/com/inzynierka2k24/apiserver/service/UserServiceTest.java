@@ -9,29 +9,12 @@ import com.inzynierka2k24.apiserver.exception.user.UserNotFoundException;
 import com.inzynierka2k24.apiserver.model.User;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 public class UserServiceTest {
 
   private final UserDao userDao = mock(UserDao.class);
   private final UserService userService = new UserService(userDao);
-
-  @Test
-  public void shouldReturnUserDetailsWhenUserExists() {
-    // Given
-    String username = "testUser";
-    User user = new User(username, "password");
-    when(userDao.get(username)).thenReturn(Optional.of(user));
-
-    // When
-    UserDetails result = userService.loadUserByUsername(username);
-
-    // Then
-    assertNotNull(result);
-    assertEquals(username, result.getUsername());
-  }
 
   @Test
   public void shouldAddNewUserToDatabaseWhenUserDoesNotExist() throws UserAlreadyExistsException {
@@ -81,7 +64,7 @@ public class UserServiceTest {
     when(userDao.get(username)).thenReturn(Optional.empty());
 
     // When/Then
-    assertThrows(UsernameNotFoundException.class, () -> userService.loadUserByUsername(username));
+    assertThrows(UsernameNotFoundException.class, () -> userService.getUser(username));
   }
 
   @Test
@@ -166,21 +149,5 @@ public class UserServiceTest {
 
     // Then
     assertFalse(result);
-  }
-
-  @Test
-  public void shouldReturnUserDetailsWithCorrectAuthorities() {
-    // Given
-    String username = "testUser";
-    User user = new User(username, "password");
-    when(userDao.get(username)).thenReturn(Optional.of(user));
-
-    // When
-    UserDetails result = userService.loadUserByUsername(username);
-
-    // Then
-    assertNotNull(result);
-    assertEquals(username, result.getUsername());
-    assertTrue(result.getAuthorities().contains(new SimpleGrantedAuthority("USER")));
   }
 }

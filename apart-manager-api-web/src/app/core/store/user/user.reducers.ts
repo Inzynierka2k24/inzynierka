@@ -4,19 +4,42 @@ import { initialState } from './user.store';
 
 export const userReducer = createReducer(
   initialState,
-  on(UserActions.login, UserActions.register, (state, action) => ({
-    ...state,
-    loading: true,
-    user: { mail: action.mail },
-  })),
-  on(UserActions.loginComplete, (state, action) => ({
+  on(
+    UserActions.login,
+    UserActions.register,
+    UserActions.edit,
+    UserActions.details,
+    (state) => ({
+      ...state,
+      loading: true,
+    }),
+  ),
+  on(
+    UserActions.loginComplete,
+    UserActions.registerComplete,
+    UserActions.editComplete,
+    (state, user) => ({
+      ...state,
+      loading: false,
+    }),
+  ),
+  on(
+    UserActions.loginError,
+    UserActions.registerError,
+    UserActions.editError,
+    UserActions.detailsError,
+    (state, error) => ({
+      ...state,
+      loading: false,
+      error,
+    }),
+  ),
+  on(UserActions.detailsComplete, (state, user) => ({
     ...state,
     loading: false,
+    user,
   })),
-  on(UserActions.loginError, UserActions.registerError, (state, error) => ({
-    ...state,
-    loading: false,
-    error,
+  on(UserActions.logout, () => ({
+    ...initialState,
   })),
-  on(UserActions.registerComplete, (state) => ({ ...state, loading: false })),
 );

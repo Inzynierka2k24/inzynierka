@@ -3,12 +3,13 @@ import { AppState } from '../../core/store/app.store';
 import { Store } from '@ngrx/store';
 import {
   selectCurrentUser,
+  selectUserLoadingState,
   selectUserStateError,
 } from '../../core/store/user/user.selectors';
 import { Subscription } from 'rxjs';
 import { MessageService } from 'primeng/api';
 import { TranslateService } from '@ngx-translate/core';
-import {User} from "../../../generated";
+import { UserDTO } from '../../../generated';
 
 @Component({
   selector: 'app-user-widget',
@@ -18,6 +19,7 @@ import {User} from "../../../generated";
 export class UserWidgetComponent implements OnInit, OnDestroy {
   subscriptions: Subscription[] = [];
 
+  user: UserDTO;
   isUserLoggedIn = false;
   displayContent = false;
   formToggle = false;
@@ -35,6 +37,9 @@ export class UserWidgetComponent implements OnInit, OnDestroy {
       .subscribe((user) => {
         if (user) {
           this.isUserLoggedIn = true;
+          this.user = user;
+        } else {
+          this.isUserLoggedIn = false;
         }
       });
     const userErrorSub = this.store
@@ -52,8 +57,15 @@ export class UserWidgetComponent implements OnInit, OnDestroy {
           }
         }
       });
+    const loadingSub = this.store
+      .select(selectUserLoadingState)
+      .subscribe((loading) => {
+        if (!loading) {
+          this.displayContent = false;
+        }
+      });
 
-    this.subscriptions.push(userDataSub, userErrorSub);
+    this.subscriptions.push(userDataSub, userErrorSub, loadingSub);
   }
 
   ngOnDestroy(): void {

@@ -1,8 +1,8 @@
-import { User } from '../../../../generated';
+import { UserDTO } from '../../../../generated';
 
 export interface UserState {
   loading: boolean;
-  user?: Partial<User>;
+  user?: UserDTO;
   error?: any;
 }
 
@@ -20,4 +20,10 @@ export enum UserActionTypes {
   REGISTER = '[User] Register Action',
   REGISTER_COMPLETE = '[User] Register Action Complete',
   REGISTER_ERROR = '[User] Register Action Error',
+  EDIT = '[User] Edit Action',
+  EDIT_COMPLETE = '[User] Edit Action Complete',
+  EDIT_ERROR = '[User] Edit Action Error',
+  DETAILS = '[User] Details Action',
+  DETAILS_COMPLETE = '[User] Details Action Complete',
+  DETAILS_ERROR = '[User] Details Action Error',
 }

@@ -4,33 +4,29 @@ import com.inzynierka2k24.apiserver.dao.UserDao;
 import com.inzynierka2k24.apiserver.exception.user.UserAlreadyExistsException;
 import com.inzynierka2k24.apiserver.exception.user.UserNotFoundException;
 import com.inzynierka2k24.apiserver.model.User;
-import com.inzynierka2k24.apiserver.model.UserSecurityDetails;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class UserService implements UserDetailsService {
+public class UserService {
 
   private final UserDao userDao;
 
-  @Override
-  public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+  public User getUser(String username) {
     Optional<User> user = userDao.get(username);
 
     if (user.isEmpty()) {
       throw new UsernameNotFoundException("Not found : " + username);
     }
 
-    return new UserSecurityDetails(user.get());
+    return user.get();
   }
 
   public void register(User user) throws UserAlreadyExistsException {
-    if (!existsByMail(user.mail())) {
+    if (!existsByMail(user.emailAddress())) {
       userDao.register(user);
     } else {
       throw new UserAlreadyExistsException();
@@ -38,7 +34,7 @@ public class UserService implements UserDetailsService {
   }
 
   public void update(User user) throws UserNotFoundException {
-    if (existsByMail(user.mail())) {
+    if (existsByMail(user.emailAddress())) {
       userDao.update(user);
     } else {
       throw new UserNotFoundException();
@@ -53,8 +49,8 @@ public class UserService implements UserDetailsService {
     }
   }
 
-  boolean existsByMail(String mail) {
-    return userDao.get(mail).isPresent();
+  boolean existsByMail(String emailAddress) {
+    return userDao.get(emailAddress).isPresent();
   }
 
   boolean existsById(long userId) {
