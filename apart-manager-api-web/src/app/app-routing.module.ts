@@ -11,7 +11,7 @@ import { PreferencesComponent } from './user/preferences/preferences.component';
 import { selectCurrentUser } from './core/store/user/user.selectors';
 import { map, Observable, take } from 'rxjs';
 import { Store } from '@ngrx/store';
-import { DashboardComponent } from './dashboard/dashboard.component';
+import { DashboardComponent } from './user/dashboard/dashboard.component';
 import { LocalStorageService } from './core/services/local-storage.service';
 import {
   HttpEvent,
@@ -20,6 +20,9 @@ import {
   HttpRequest,
 } from '@angular/common/http';
 import UserActions from './core/store/user/user.actions';
+import { AddApartmentComponent } from './apartments/add-apartment/add-apartment.component';
+import { ReservationListComponent } from './resevations/reservation-list/reservation-list.component';
+import { ApartmentListComponent } from './apartments/apartment-list/apartment-list.component';
 
 /**
  * Appends bearer token to each request when present.
@@ -42,29 +45,15 @@ export class AppInterceptor implements HttpInterceptor {
     return next.handle(request);
   }
 }
-import {AddApartmentComponent} from "./header/apartment-widget/add-apartment/add-apartment.component";
-import {ApartmentListComponent} from "./header/apartment-widget/apartment-list/apartment-list.component";
-import {ReservationListComponent} from "./header/reservation-widget/reservation-list/reservation-list.component";
 
-
-const routes: Routes = [
-  { path: '', component: WelcomePageComponent },
-  {path: 'apartments/add', component: AddApartmentComponent},
-  {path: 'apartments', component: ApartmentListComponent},
-  {path: 'reservations', component: ReservationListComponent},
-];
 const authenticatedGuard: CanActivateFn = () => {
   const store = inject(Store);
   const router = inject(Router);
-  const localStorageService = inject(LocalStorageService);
-
-  const jwt = localStorageService.getData('JWT_TOKEN');
 
   return store.select(selectCurrentUser).pipe(
     take(1),
     map((user) => {
-      if (!user && jwt) {
-        store.dispatch(UserActions.details());
+      if (user) {
         return true;
       }
       return router.parseUrl('');
@@ -74,26 +63,57 @@ const authenticatedGuard: CanActivateFn = () => {
 
 const authResolver: ResolveFn<boolean> = (route, state) => {
   const store = inject(Store);
+  const localStorageService = inject(LocalStorageService);
 
-  return true;
+  const jwt = localStorageService.getData('JWT_TOKEN');
+
+  console.log('BONK');
+
+  return store.select(selectCurrentUser).pipe(
+    take(1),
+    map((user) => {
+      if (!user && jwt) {
+        store.dispatch(UserActions.details());
+      }
+      return true;
+    }),
+  );
 };
 const routes: Routes = [
   {
-    path: 'user',
-    resolve: authResolver,
-    canActivate: [authenticatedGuard],
+    path: '',
+    resolve: [authResolver],
     children: [
       {
-        path: 'settings',
-        component: PreferencesComponent,
+        path: 'user',
+        canActivate: [authenticatedGuard],
+        children: [
+          {
+            path: 'settings',
+            component: PreferencesComponent,
+          },
+          {
+            path: 'dashboard',
+            component: DashboardComponent,
+          },
+        ],
       },
       {
-        path: 'dashboard',
-        component: DashboardComponent,
+        path: 'apartments',
+        canActivate: [authenticatedGuard],
+        children: [
+          { path: 'add', component: AddApartmentComponent },
+          { path: '', component: ApartmentListComponent },
+        ],
       },
+      {
+        path: 'reservations',
+        canActivate: [authenticatedGuard],
+        component: ReservationListComponent,
+      },
+      { path: '**', component: WelcomePageComponent },
     ],
   },
-  { path: '**', component: WelcomePageComponent },
 ];
 
 @NgModule({

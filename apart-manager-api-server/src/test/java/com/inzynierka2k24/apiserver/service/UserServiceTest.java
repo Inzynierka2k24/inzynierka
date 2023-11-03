@@ -1,16 +1,15 @@
 package com.inzynierka2k24.apiserver.service;
 
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
 import com.inzynierka2k24.apiserver.dao.UserDao;
 import com.inzynierka2k24.apiserver.exception.user.UserAlreadyExistsException;
 import com.inzynierka2k24.apiserver.exception.user.UserNotFoundException;
 import com.inzynierka2k24.apiserver.model.User;
+import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
 
 public class UserServiceTest {
 

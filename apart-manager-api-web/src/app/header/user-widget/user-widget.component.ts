@@ -23,7 +23,6 @@ export class UserWidgetComponent implements OnInit, OnDestroy {
   isUserLoggedIn = false;
   displayContent = false;
   formToggle = false;
-  private currentUser: User;
 
   constructor(
     private store: Store<AppState>,

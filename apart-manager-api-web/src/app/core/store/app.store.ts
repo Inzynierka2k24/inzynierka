@@ -10,6 +10,7 @@ import {
   loginComplete,
   register,
 } from './user/user.effects';
+import { apartmentReducer } from './apartment/apartment.reducer';
 
 export interface AppState {
   user: UserState;
@@ -17,7 +18,10 @@ export interface AppState {
 
 @NgModule({
   imports: [
-    StoreModule.forRoot({ user: userReducer }),
+    StoreModule.forRoot({
+      user: userReducer,
+      apartmentEntries: apartmentReducer,
+    }),
     EffectsModule.forRoot({ login, loginComplete, register, getDetails, edit }),
   ],
   exports: [StoreModule, EffectsModule],

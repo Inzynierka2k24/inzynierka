@@ -10,7 +10,7 @@ public record User(
     this(Optional.empty(), login, emailAddress, true, Set.of("USER"));
   }
 
-  public User(Long id, String login,String emailAddress) {
+  public User(Long id, String login, String emailAddress) {
     this(Optional.of(id), login, emailAddress, true, Set.of("USER"));
   }
 }
