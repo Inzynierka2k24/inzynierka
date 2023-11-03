@@ -1,15 +1,16 @@
 package com.inzynierka2k24.apiserver.service;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
-
 import com.inzynierka2k24.apiserver.dao.UserDao;
 import com.inzynierka2k24.apiserver.exception.user.UserAlreadyExistsException;
 import com.inzynierka2k24.apiserver.exception.user.UserNotFoundException;
 import com.inzynierka2k24.apiserver.model.User;
-import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 public class UserServiceTest {
 
@@ -19,9 +20,9 @@ public class UserServiceTest {
   @Test
   public void shouldAddNewUserToDatabaseWhenUserDoesNotExist() throws UserAlreadyExistsException {
     // Given
-    String username = "testUser";
-    User user = new User(username, "password");
-    when(userDao.get(username)).thenReturn(Optional.empty());
+    String email = "testUser@gmail.com";
+    User user = new User("testUser", email);
+    when(userDao.get(email)).thenReturn(Optional.empty());
 
     // When
     userService.register(user);
@@ -33,9 +34,9 @@ public class UserServiceTest {
   @Test
   public void shouldUpdateUserInDatabaseWhenUserExists() throws UserNotFoundException {
     // Given
-    String username = "testUser";
-    User user = new User(username, "password");
-    when(userDao.get(username)).thenReturn(Optional.of(user));
+    String email = "testUser@gmail.com";
+    User user = new User("testUser", email);
+    when(userDao.get(email)).thenReturn(Optional.of(user));
 
     // When
     userService.update(user);
@@ -60,19 +61,19 @@ public class UserServiceTest {
   @Test
   public void shouldThrowUsernameNotFoundExceptionWhenUserDoesNotExist() {
     // Given
-    String username = "testUser";
-    when(userDao.get(username)).thenReturn(Optional.empty());
+    String email = "testUser@gmail.com";
+    when(userDao.get(email)).thenReturn(Optional.empty());
 
     // When/Then
-    assertThrows(UsernameNotFoundException.class, () -> userService.getUser(username));
+    assertThrows(UsernameNotFoundException.class, () -> userService.getUser(email));
   }
 
   @Test
   public void shouldThrowUserAlreadyExistsExceptionWhenUserAlreadyExists() {
     // Given
-    String username = "testUser";
-    User user = new User(username, "password");
-    when(userDao.get(username)).thenReturn(Optional.of(user));
+    String email = "testUser@gmail.com";
+    User user = new User("testUser", email);
+    when(userDao.get(email)).thenReturn(Optional.of(user));
 
     // When/Then
     assertThrows(UserAlreadyExistsException.class, () -> userService.register(user));
@@ -91,9 +92,9 @@ public class UserServiceTest {
   @Test
   public void shouldNotRemoveUserThatNotExists() {
     // Given
-    String username = "testUser";
-    User user = new User(username, "password");
-    when(userDao.get(username)).thenReturn(Optional.empty());
+    String email = "testUser@gmail.com";
+    User user = new User("testUser", email);
+    when(userDao.get(email)).thenReturn(Optional.empty());
 
     // When/Then
     assertThrows(UserNotFoundException.class, () -> userService.update(user));

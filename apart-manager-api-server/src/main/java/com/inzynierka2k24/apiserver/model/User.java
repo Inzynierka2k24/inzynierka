@@ -6,11 +6,11 @@ import java.util.Set;
 public record User(
     Optional<Long> id, String login, String emailAddress, boolean active, Set<String> roles) {
 
-  public User(String emailAddress, String login) {
-    this(Optional.empty(), emailAddress, login, true, Set.of("USER"));
+  public User(String login, String emailAddress) {
+    this(Optional.empty(), login, emailAddress, true, Set.of("USER"));
   }
 
-  public User(Long id, String emailAddress, String login) {
-    this(Optional.of(id), emailAddress, login, true, Set.of("USER"));
+  public User(Long id, String login,String emailAddress) {
+    this(Optional.of(id), login, emailAddress, true, Set.of("USER"));
   }
 }
