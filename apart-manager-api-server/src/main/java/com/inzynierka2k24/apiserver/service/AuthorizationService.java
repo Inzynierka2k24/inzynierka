@@ -1,6 +1,5 @@
 package com.inzynierka2k24.apiserver.service;
 
-import com.inzynierka2k24.apiserver.exception.user.InvalidCredentialsException;
 import com.inzynierka2k24.apiserver.exception.user.UserAlreadyExistsException;
 import com.inzynierka2k24.apiserver.web.response.KeycloakTokenResponse;
 import java.util.Collections;
