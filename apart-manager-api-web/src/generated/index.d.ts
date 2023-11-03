@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.1.1185 on 2023-11-02 10:19:46.
+// Generated using typescript-generator version 3.1.1185 on 2023-11-03 16:23:32.
 
 export interface Apartment {
     id?: number;
@@ -90,11 +90,11 @@ export interface GrantedAuthority extends Serializable {
 }
 
 export interface UserDetails extends Serializable {
-    accountNonLocked: boolean;
-    authorities: GrantedAuthority[];
-    username: string;
-    password: string;
     enabled: boolean;
+    password: string;
+    username: string;
+    authorities: GrantedAuthority[];
+    accountNonLocked: boolean;
     credentialsNonExpired: boolean;
     accountNonExpired: boolean;
 }
