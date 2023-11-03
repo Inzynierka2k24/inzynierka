@@ -1,6 +1,6 @@
 package com.inzynierka2k24.external.util;
 
-import static com.inzynierka2k24.external.util.TimeConverter.toInstant;
+import static com.inzynierka2k24.external.util.TimeConverter.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.google.protobuf.Timestamp;
@@ -18,5 +18,16 @@ class TimeConverterTest {
 
     // When/Then
     assertEquals(expected, toInstant(timestamp));
+  }
+
+  @Test
+  void shouldConvertToProtoTimestamp() {
+    // Given
+    var epochSeconds = 1000000;
+    var instant = Instant.ofEpochSecond(epochSeconds);
+    var expected = Timestamp.newBuilder().setSeconds(epochSeconds).build();
+
+    // When/Then
+    assertEquals(expected, toProtoTimestamp(instant));
   }
 }
