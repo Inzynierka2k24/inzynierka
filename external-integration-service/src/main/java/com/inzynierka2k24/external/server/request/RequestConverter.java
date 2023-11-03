@@ -8,7 +8,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class RequestConverter {
+public final class RequestConverter {
 
   public static com.inzynierka2k24.external.model.Reservation convert(Reservation request) {
     return new com.inzynierka2k24.external.model.Reservation(

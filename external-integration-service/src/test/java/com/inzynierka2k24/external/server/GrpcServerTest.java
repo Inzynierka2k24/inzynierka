@@ -94,18 +94,8 @@ class GrpcServerTest {
   void shouldUpdateApartmentDetails() {
     // Given
     UpdateApartmentDetailsRequest request =
-        UpdateApartmentDetailsRequest.newBuilder()
-            .setDetails(
-                ApartmentDetails.newBuilder()
-                    .setTitle("title")
-                    .setCity("city")
-                    .setStreet("street")
-                    .setBuildingNumber("123")
-                    .setDescription("description")
-                    .build())
-            .addService(ExternalService.BOOKING)
-            .addService(ExternalService.AIRBNB)
-            .build();
+        createUpdateApartmentDetailsRequest(
+            "Title", Set.of(ExternalService.BOOKING, ExternalService.AIRBNB));
 
     when(validator.validate(request)).thenReturn(null);
 
@@ -165,18 +155,8 @@ class GrpcServerTest {
   void shouldThrowInvalidRequestExceptionIfValidationErrorWhenUpdatingApartmentDetails() {
     // Given
     UpdateApartmentDetailsRequest request =
-        UpdateApartmentDetailsRequest.newBuilder()
-            .setDetails(
-                ApartmentDetails.newBuilder()
-                    .setTitle("")
-                    .setCity("city")
-                    .setStreet("street")
-                    .setBuildingNumber("123")
-                    .setDescription("description")
-                    .build())
-            .addService(ExternalService.BOOKING)
-            .addService(ExternalService.AIRBNB)
-            .build();
+        createUpdateApartmentDetailsRequest(
+            "", Set.of(ExternalService.BOOKING, ExternalService.AIRBNB));
 
     ValidationError validationError = ValidationError.EMPTY_STRING;
     when(validator.validate(request)).thenReturn(validationError);
@@ -190,5 +170,20 @@ class GrpcServerTest {
     verify(validator).validate(request);
     verify(responseObserver).onError(any(InvalidRequestException.class));
     verifyNoInteractions(integrationService);
+  }
+
+  private UpdateApartmentDetailsRequest createUpdateApartmentDetailsRequest(
+      String title, Set<ExternalService> services) {
+    return UpdateApartmentDetailsRequest.newBuilder()
+        .setDetails(
+            ApartmentDetails.newBuilder()
+                .setTitle(title)
+                .setCity("city")
+                .setStreet("street")
+                .setBuildingNumber("123")
+                .setDescription("description")
+                .build())
+        .addAllService(services)
+        .build();
   }
 }

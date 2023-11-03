@@ -10,7 +10,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class ResponseGenerator {
+public final class ResponseGenerator {
 
   public static GetReservationsResponse getResponse(Set<Reservation> reservations) {
     return GetReservationsResponse.newBuilder()

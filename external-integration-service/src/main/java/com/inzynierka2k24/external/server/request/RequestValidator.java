@@ -6,11 +6,12 @@ import com.inzynierka2k24.ApartmentDetails;
 import com.inzynierka2k24.PropagateReservationRequest;
 import com.inzynierka2k24.Reservation;
 import com.inzynierka2k24.UpdateApartmentDetailsRequest;
-import java.time.Instant;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
+
 @Service
-public class RequestValidator {
+public final class RequestValidator {
 
   public ValidationError validate(PropagateReservationRequest request) {
     return validateDates(request.getReservation());
