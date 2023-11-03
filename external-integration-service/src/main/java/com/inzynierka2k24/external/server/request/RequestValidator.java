@@ -6,9 +6,8 @@ import com.inzynierka2k24.ApartmentDetails;
 import com.inzynierka2k24.PropagateReservationRequest;
 import com.inzynierka2k24.Reservation;
 import com.inzynierka2k24.UpdateApartmentDetailsRequest;
-import org.springframework.stereotype.Service;
-
 import java.time.Instant;
+import org.springframework.stereotype.Service;
 
 @Service
 public final class RequestValidator {

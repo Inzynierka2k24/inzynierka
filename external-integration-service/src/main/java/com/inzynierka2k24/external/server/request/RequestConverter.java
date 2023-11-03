@@ -2,22 +2,20 @@ package com.inzynierka2k24.external.server.request;
 
 import static com.inzynierka2k24.external.util.TimeConverter.toInstant;
 
-import com.inzynierka2k24.ApartmentDetails;
-import com.inzynierka2k24.Reservation;
+import com.inzynierka2k24.external.model.ApartmentDetails;
+import com.inzynierka2k24.external.model.Reservation;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class RequestConverter {
 
-  public static com.inzynierka2k24.external.model.Reservation convert(Reservation request) {
-    return new com.inzynierka2k24.external.model.Reservation(
-        toInstant(request.getStartDate()), toInstant(request.getEndDate()));
+  public static Reservation convert(com.inzynierka2k24.Reservation request) {
+    return new Reservation(toInstant(request.getStartDate()), toInstant(request.getEndDate()));
   }
 
-  public static com.inzynierka2k24.external.model.ApartmentDetails convert(
-      ApartmentDetails request) {
-    return new com.inzynierka2k24.external.model.ApartmentDetails(
+  public static ApartmentDetails convert(com.inzynierka2k24.ApartmentDetails request) {
+    return new ApartmentDetails(
         request.getTitle(),
         request.getCity(),
         request.getStreet(),
