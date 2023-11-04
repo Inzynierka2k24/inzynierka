@@ -10,10 +10,10 @@
 	</parent>
 
 	<groupId>com.inzynierka2k24</groupId>
-	<artifactId>messaging-service</artifactId>
+	<artifactId>external-integration-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>messaging-service</name>
-	<description>messaging-service</description>
+	<name>external-integration-service</name>
+	<description>external-integration-service</description>
 
 	<properties>
 		<java.version>17</java.version>
@@ -22,13 +22,11 @@
 
 		<grpc-spring-boot.version>5.1.5</grpc-spring-boot.version>
 		<grpc.version>1.58.0</grpc.version>
-		<vonage.version>7.10.0</vonage.version>
-		<validator.version>1.7</validator.version>
         <lombok.version>1.18.30</lombok.version>
         <mockito.version>5.2.0</mockito.version>
         <testcontainers.version>1.17.6</testcontainers.version>
         <fmt.version>2.20</fmt.version>
-        <snakeyaml.version>2.1</snakeyaml.version>
+        <snakeyaml.version>2.2</snakeyaml.version>
 	</properties>
 
 	<repositories>
@@ -44,14 +42,6 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-mail</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-mongodb</artifactId>
 		</dependency>
 		<dependency>
             <groupId>org.springframework.boot</groupId>
@@ -88,16 +78,6 @@
 
         <!--   Misc    -->
 		<dependency>
-			<groupId>com.vonage</groupId>
-			<artifactId>client</artifactId>
-			<version>${vonage.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>commons-validator</groupId>
-			<artifactId>commons-validator</artifactId>
-			<version>${validator.version}</version>
-		</dependency>
-		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<scope>provided</scope>
@@ -118,11 +98,6 @@
 			<groupId>io.grpc</groupId>
 			<artifactId>grpc-testing</artifactId>
 			<version>${grpc.version}</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.testcontainers</groupId>
-			<artifactId>mongodb</artifactId>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>

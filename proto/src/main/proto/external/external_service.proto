@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package external;
+
+option java_package = "com.inzynierka2k24";
+option java_multiple_files = true;
+
+enum ExternalService {
+  BOOKING = 0;
+  AIRBNB = 1;
+  TRIVAGO = 2;
+  NOCOWANIEPL = 3;
+}

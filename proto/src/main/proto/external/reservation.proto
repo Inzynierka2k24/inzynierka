@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package external;
+
+import "google/protobuf/timestamp.proto";
+import "external/external_service.proto";
+
+option java_package = "com.inzynierka2k24";
+option java_multiple_files = true;
+
+message Reservation {
+  google.protobuf.Timestamp start_date = 1;
+  google.protobuf.Timestamp end_date = 2;
+  optional float price = 3;
+}
+
+message ExternalReservation {
+  ExternalService service = 1;
+  Reservation reservation = 2;
+}

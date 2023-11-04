@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package external;
+
+option java_package = "com.inzynierka2k24";
+option java_multiple_files = true;
+
+message ApartmentDetails {
+  optional string title = 1;
+  optional string city = 2;
+  optional string street = 3;
+  optional string building_number = 4;
+  optional string description = 5;
+}
