@@ -15,6 +15,7 @@ keycloak:
   client-id: apart-manager-be
   token-endpoint: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/token
   create-user-endpoint: http://localhost:8090/admin/realms/${keycloak.realm}/users
+  edit-user-endpoint: http://localhost:8090/${keycloak.realm}/users/{id}
   credentials:
     login: admin
     password: admin

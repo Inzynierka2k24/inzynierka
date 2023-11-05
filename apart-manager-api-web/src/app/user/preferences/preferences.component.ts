@@ -15,7 +15,9 @@ interface PreferencesCategory {
 interface PreferencesTableRow {
   label: string;
   selector: string;
+  inputType: string;
   placeholder?: string;
+  dropdownValues?: string[];
 }
 
 @Component({
@@ -28,8 +30,13 @@ export class PreferencesComponent implements OnInit, OnDestroy {
     {
       title: 'ACCOUNT',
       rows: [
-        { label: 'E-mail', selector: 'emailAddress' },
-        { label: 'Password', selector: 'password', placeholder: '*******' },
+        { label: 'E-mail', selector: 'emailAddress', inputType: 'text' },
+        {
+          label: 'Password',
+          selector: 'password',
+          placeholder: '*******',
+          inputType: 'password',
+        },
       ],
     },
     {
@@ -38,13 +45,22 @@ export class PreferencesComponent implements OnInit, OnDestroy {
         {
           label: 'Level',
           selector: 'level',
+          inputType: 'dropdown',
+          dropdownValues: ['FREE', 'PREMIUM', 'ENTERPRISE'],
         },
-        { label: 'Billing', selector: 'billingType' },
+        {
+          label: 'Billing',
+          selector: 'billingType',
+          inputType: 'dropdown',
+          dropdownValues: ['CARD', 'CASH'],
+        },
       ],
     },
     {
       title: 'NOTIFICATIONS',
-      rows: [{ label: 'SMS', selector: 'sms' }],
+      rows: [
+        { label: 'SMS', selector: 'smsNotifications', inputType: 'checkbox' },
+      ],
     },
   ];
 
@@ -75,7 +91,7 @@ export class PreferencesComponent implements OnInit, OnDestroy {
         password: this.userEditForm.value.password!,
       };
       this.store.dispatch(
-        UserActions.edit({ user: this.currentUser.login, editUserRequest }),
+        UserActions.edit({ userId: this.currentUser.id, editUserRequest }),
       );
     }
   }
@@ -99,5 +115,9 @@ export class PreferencesComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subscriptions.forEach((sub) => sub.unsubscribe());
+  }
+
+  deleteUser() {
+    this.store.dispatch(UserActions.deleteUser());
   }
 }

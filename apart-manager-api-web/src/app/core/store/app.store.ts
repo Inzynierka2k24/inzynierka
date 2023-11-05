@@ -22,7 +22,13 @@ export interface AppState {
       user: userReducer,
       apartmentEntries: apartmentReducer,
     }),
-    EffectsModule.forRoot({ login, loginComplete, register, getDetails, edit }),
+    EffectsModule.forRoot({
+      login,
+      loginComplete,
+      register,
+      getDetails,
+      edit,
+    }),
   ],
   exports: [StoreModule, EffectsModule],
 })

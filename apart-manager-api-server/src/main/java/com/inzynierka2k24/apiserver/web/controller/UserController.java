@@ -1,12 +1,14 @@
 package com.inzynierka2k24.apiserver.web.controller;
 
 import com.inzynierka2k24.apiserver.exception.user.UserAlreadyExistsException;
+import com.inzynierka2k24.apiserver.exception.user.UserNotFoundException;
 import com.inzynierka2k24.apiserver.model.User;
 import com.inzynierka2k24.apiserver.service.AuthorizationService;
 import com.inzynierka2k24.apiserver.service.UserService;
 import com.inzynierka2k24.apiserver.web.config.JwtAuthConverter;
 import com.inzynierka2k24.apiserver.web.dto.UserDTO;
 import com.inzynierka2k24.apiserver.web.request.AuthRequest;
+import com.inzynierka2k24.apiserver.web.request.EditUserRequest;
 import com.inzynierka2k24.apiserver.web.request.RegisterRequest;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -14,10 +16,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @Slf4j
@@ -30,6 +29,7 @@ public class UserController {
   @PostMapping("/login")
   public ResponseEntity<String> login(@Valid @RequestBody AuthRequest request) {
     String token = authorizationService.getToken(request.login(), request.password());
+    log.info(token);
     return token != null
         ? ResponseEntity.ok(token)
         : ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
@@ -49,25 +49,23 @@ public class UserController {
     if (token == null) {
       return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
-    String username = JwtAuthConverter.getEmailFromJWT(token);
+    String username = JwtAuthConverter.getLoginFromJWT(token);
     User u = userService.getUser(username);
-    UserDTO dto = new UserDTO(u.emailAddress(), u.login());
+    UserDTO dto = new UserDTO(u.id().get(),u.login(),u.emailAddress());
     return ResponseEntity.ok(dto);
   }
+    @PutMapping("/user/{userId}/edit")
+    public ResponseEntity<String> edit(
+        @PathVariable long userId, @Valid @RequestBody EditUserRequest request)
+        throws UserNotFoundException {
+      authorizationService.edit(request.username(),request.emailAddress(), request.password());
+      userService.update(new User(userId, request.username(), request.emailAddress()));
+      return ResponseEntity.ok("User updated successfully");
+    }
 
-  // TODO: Implement this using keycloak authentication server
-  //  @PutMapping("/user/{userId}/edit")
-  //  public ResponseEntity<String> edit(
-  //      @PathVariable long userId, @Valid @RequestBody EditUserRequest request)
-  //      throws UserNotFoundException {
-  //    userService.update(
-  //        new User(userId, request.login(), passwordEncoder.encode(request.password())));
-  //    return ResponseEntity.ok("User updated successfully");
-  //  }
-  //
-  //  @DeleteMapping("/user/{userId}/remove")
-  //  public ResponseEntity<String> delete(@PathVariable long userId) throws UserNotFoundException {
-  //    userService.deleteById(userId);
-  //    return ResponseEntity.ok("User deleted successfully");
-  //  }
+    @DeleteMapping("/user/{userId}/remove")
+    public ResponseEntity<String> delete(@PathVariable long userId) throws UserNotFoundException {
+      userService.deleteById(userId);
+      return ResponseEntity.ok("User deleted successfully");
+    }
 }

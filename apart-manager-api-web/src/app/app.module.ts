@@ -11,6 +11,8 @@ import { ReservationsModule } from './resevations/reservations.module';
 import { ApartmentsModule } from './apartments/apartments.module';
 import { UserModule } from './user/user.module';
 import { ToastModule } from 'primeng/toast';
+import { ButtonModule } from 'primeng/button';
+import { RippleModule } from 'primeng/ripple';
 
 @NgModule({
   declarations: [AppComponent, WelcomePageComponent],
@@ -24,6 +26,8 @@ import { ToastModule } from 'primeng/toast';
     ApartmentsModule,
     UserModule,
     ToastModule,
+    ButtonModule,
+    RippleModule,
   ],
   providers: [
     {

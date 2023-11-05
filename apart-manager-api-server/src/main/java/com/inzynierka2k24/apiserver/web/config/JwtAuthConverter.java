@@ -1,11 +1,5 @@
 package com.inzynierka2k24.apiserver.web.config;
 
-import java.util.Base64;
-import java.util.Collection;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import org.apache.commons.collections4.MapUtils;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,6 +13,13 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 import org.springframework.stereotype.Component;
 
+import java.util.Base64;
+import java.util.Collection;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 @Component
 public class JwtAuthConverter implements Converter<Jwt, AbstractAuthenticationToken> {
 
@@ -31,12 +32,12 @@ public class JwtAuthConverter implements Converter<Jwt, AbstractAuthenticationTo
   @Value("${jwt.auth.converter.resource-id}")
   private String resourceId;
 
-  public static String getEmailFromJWT(String jwt) {
+  public static String getLoginFromJWT(String jwt) {
     String[] chunks = jwt.split("\\.");
     Base64.Decoder decoder = Base64.getUrlDecoder();
     String payload = new String(decoder.decode(chunks[1]));
     JSONObject jsonObject = new JSONObject(payload);
-    return jsonObject.getString("email");
+    return jsonObject.getString("preferred_username");
   }
 
   @Override

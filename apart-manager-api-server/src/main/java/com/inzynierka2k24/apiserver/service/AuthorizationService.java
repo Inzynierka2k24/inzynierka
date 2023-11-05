@@ -3,9 +3,6 @@ package com.inzynierka2k24.apiserver.service;
 import com.inzynierka2k24.apiserver.exception.user.InvalidCredentialsException;
 import com.inzynierka2k24.apiserver.exception.user.UserAlreadyExistsException;
 import com.inzynierka2k24.apiserver.web.response.KeycloakTokenResponse;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
@@ -14,6 +11,10 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class AuthorizationService {
@@ -39,6 +40,11 @@ public class AuthorizationService {
 
   @Value("${keycloak.create-user-endpoint}")
   private String createUserEndpoint;
+
+  @Value("${keycloak.edit-user-endpoint}")
+  private String editUserEndpoint;
+
+  private String deleteUserEndpoint;
 
   public AuthorizationService(RestTemplate restTemplate) {
     this.restTemplate = restTemplate;
@@ -100,5 +106,34 @@ public class AuthorizationService {
     } catch (HttpServerErrorException e) {
       throw new RuntimeException("Server error during registration", e);
     }
+  }
+
+  public void edit(String username, String emailAddress, String password){
+    // request body
+    Map<String, Object> requestBody = new HashMap<>();
+    requestBody.put("username", username);
+    requestBody.put("email", emailAddress);
+    requestBody.put("enabled", true);
+    requestBody.put("emailVerified", true);
+    Map<String, String> credentials = new HashMap<>();
+    credentials.put("type", "password");
+    credentials.put("value", password);
+    requestBody.put("credentials", Collections.singletonList(credentials));
+
+    HttpEntity<Map<String, Object>> requestEntity = new HttpEntity<>(requestBody, headersWithAdminToken());
+
+    try{
+      restTemplate.exchange(editUserEndpoint, HttpMethod.PUT, requestEntity, String.class);
+    }catch (HttpServerErrorException e){
+      throw new RuntimeException("Server error during user edition");
+    }
+  }
+
+  private HttpHeaders headersWithAdminToken(){
+    String token = getToken(adminLogin,adminPassword);
+    HttpHeaders headers = new HttpHeaders();
+    headers.setContentType(MediaType.APPLICATION_JSON);
+    headers.set("Authorization", "Bearer " + token);
+    return headers;
   }
 }

@@ -70,8 +70,8 @@ export const edit = createEffect(
   (actions$ = inject(Actions), userService = inject(UserService)) => {
     return actions$.pipe(
       ofType(UserActions.edit),
-      exhaustMap((props) =>
-        userService.editUser(props.user, props.editUserRequest).pipe(
+      exhaustMap(({ userId, editUserRequest }) =>
+        userService.editUser(userId, editUserRequest).pipe(
           map((user) => UserActions.editComplete(user)),
           catchError((error) => of(UserActions.editError(error))),
         ),
@@ -82,13 +82,20 @@ export const edit = createEffect(
 );
 
 export const getDetails = createEffect(
-  (actions$ = inject(Actions), userService = inject(UserService)) => {
+  (
+    actions$ = inject(Actions),
+    userService = inject(UserService),
+    localStorageService = inject(LocalStorageService),
+  ) => {
     return actions$.pipe(
       ofType(UserActions.details),
       exhaustMap(() =>
         userService.getUserDetails().pipe(
           map((user) => UserActions.detailsComplete(user)),
-          catchError((error) => of(UserActions.detailsError(error))),
+          catchError((error) => {
+            localStorageService.removeData('JWT_TOKEN');
+            return of(UserActions.detailsError(error));
+          }),
         ),
       ),
     );
