@@ -1,0 +1,12 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: apart-manager
+          uri: http://localhost:8080
+          predicates:
+            - Path=/services/apart-manager/**
+          filters:
+            - StripPrefix=2
+server:
+  port: 9000
