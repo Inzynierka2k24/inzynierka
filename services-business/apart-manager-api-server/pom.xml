@@ -160,7 +160,7 @@
                         <classPattern>com.inzynierka2k24.apiserver.web.dto.*</classPattern>
                     </classPatterns>
                     <outputKind>module</outputKind>
-                    <outputFile>../apart-manager-api-web/src/generated/index.d.ts</outputFile>
+                    <outputFile>../../apart-manager-api-web/src/generated/index.d.ts</outputFile>
                 </configuration>
             </plugin>
         </plugins>
