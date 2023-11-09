@@ -29,17 +29,11 @@
         <snakeyaml.version>2.2</snakeyaml.version>
 	</properties>
 
-	<!-- <repositories>
+	<repositories>
 		<repository>
 			<id>github</id>
 			<name>GitHub Inzynierka2k24 Apache Maven Packages</name>
 			<url>https://maven.pkg.github.com/Inzynierka2k24/inzynierka</url>
-		</repository>
-	</repositories> -->
-	<repositories>
-		<repository>
-		    <id>jitpack.io</id>
-		    <url>https://jitpack.io</url>
 		</repository>
 	</repositories>
 
@@ -56,15 +50,10 @@
         </dependency>
 
 		<!-- gRPC -->
-		<!-- <dependency>
+		<dependency>
 			<groupId>com.inzynierka2k24</groupId>
 			<artifactId>proto</artifactId>
 			<version>${proto.version}</version>
-		</dependency> -->
-		<dependency>
-	    	<groupId>com.github.Inzynierka2k24</groupId>
-	    	<artifactId>inzynierka</artifactId>
-	    	<version>v0.0.1-alpha</version>
 		</dependency>
 		<dependency>
 			<groupId>io.github.lognet</groupId>
