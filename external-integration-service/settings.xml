@@ -22,8 +22,8 @@
     <servers>
         <server>
             <id>github</id>
-            <username>${env.GITHUB_USERNAME}</username>
-            <password>${env.GITHUB_TOKEN}</password>
+            <username>mKazmierczak1</username>
+            <password>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</password>
         </server>
     </servers>
 </settings>
