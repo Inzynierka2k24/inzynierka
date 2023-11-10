@@ -38,13 +38,11 @@ public class AuthorizationService {
   @Value("${keycloak.token-endpoint}")
   private String tokenEndpoint;
 
-  @Value("${keycloak.create-user-endpoint}")
-  private String createUserEndpoint;
+  @Value("${keycloak.user-endpoint}")
+  private String userEndpoint;
 
-  @Value("${keycloak.edit-user-endpoint}")
-  private String editUserEndpoint;
-
-  private String deleteUserEndpoint;
+  @Value("${keycloak.user-details}")
+  private String userDetailsEndpoint;
 
   public AuthorizationService(RestTemplate restTemplate) {
     this.restTemplate = restTemplate;
@@ -66,10 +64,19 @@ public class AuthorizationService {
     try {
       ResponseEntity<KeycloakTokenResponse> responseEntity =
           restTemplate.postForEntity(tokenEndpoint, requestEntity, KeycloakTokenResponse.class);
-
       return responseEntity.getBody().getAccessToken();
     } catch (HttpClientErrorException e) {
       throw new InvalidCredentialsException(e);
+    }
+  }
+
+  public String getUserIdByLogin(String login){
+    try {
+      ResponseEntity<Map> r = restTemplate.getForEntity(userDetailsEndpoint, Map.class);
+      System.out.println(r.getBody().toString());
+      return r.getBody().get("userId").toString();
+    } catch (HttpClientErrorException e) {
+      throw new RuntimeException(e.getMessage());
     }
   }
 
@@ -97,7 +104,7 @@ public class AuthorizationService {
 
     // request and error status handling
     try {
-      restTemplate.exchange(createUserEndpoint, HttpMethod.POST, requestEntity, String.class);
+      restTemplate.exchange(userEndpoint, HttpMethod.POST, requestEntity, String.class);
     } catch (HttpClientErrorException e) {
       if (HttpStatus.CONFLICT.equals(e.getStatusCode())) {
         throw new UserAlreadyExistsException(e);
@@ -109,6 +116,7 @@ public class AuthorizationService {
   }
 
   public void edit(String username, String emailAddress, String password){
+    String userId = getUserIdByLogin(username);
     // request body
     Map<String, Object> requestBody = new HashMap<>();
     requestBody.put("username", username);
@@ -123,13 +131,13 @@ public class AuthorizationService {
     HttpEntity<Map<String, Object>> requestEntity = new HttpEntity<>(requestBody, headersWithAdminToken());
 
     try{
-      restTemplate.exchange(editUserEndpoint, HttpMethod.PUT, requestEntity, String.class);
+      restTemplate.exchange(userEndpoint + userId, HttpMethod.PUT, requestEntity, String.class);
     }catch (HttpServerErrorException e){
-      throw new RuntimeException("Server error during user edition");
+      throw new RuntimeException("Server error during user edition" + e.getMessage());
     }
   }
 
-  private HttpHeaders headersWithAdminToken(){
+  private HttpHeaders  headersWithAdminToken(){
     String token = getToken(adminLogin,adminPassword);
     HttpHeaders headers = new HttpHeaders();
     headers.setContentType(MediaType.APPLICATION_JSON);

@@ -54,18 +54,18 @@ public class UserController {
     UserDTO dto = new UserDTO(u.id().get(),u.login(),u.emailAddress());
     return ResponseEntity.ok(dto);
   }
-    @PutMapping("/user/{userId}/edit")
-    public ResponseEntity<String> edit(
-        @PathVariable long userId, @Valid @RequestBody EditUserRequest request)
-        throws UserNotFoundException {
-      authorizationService.edit(request.username(),request.emailAddress(), request.password());
-      userService.update(new User(userId, request.username(), request.emailAddress()));
-      return ResponseEntity.ok("User updated successfully");
-    }
+  @PutMapping("/user/{userId}/edit")
+  public ResponseEntity<String> edit(
+      @PathVariable long userId, @Valid @RequestBody EditUserRequest request)
+      throws UserNotFoundException {
+    authorizationService.edit(request.username(),request.emailAddress(), request.password());
+    userService.update(new User(userId, request.username(), request.emailAddress()));
+    return ResponseEntity.ok("User updated successfully");
+  }
 
-    @DeleteMapping("/user/{userId}/remove")
-    public ResponseEntity<String> delete(@PathVariable long userId) throws UserNotFoundException {
-      userService.deleteById(userId);
-      return ResponseEntity.ok("User deleted successfully");
-    }
+  @DeleteMapping("/user/{userId}/remove")
+  public ResponseEntity<String> delete(@PathVariable long userId) throws UserNotFoundException {
+    userService.deleteById(userId);
+    return ResponseEntity.ok("User deleted successfully");
+  }
 }
