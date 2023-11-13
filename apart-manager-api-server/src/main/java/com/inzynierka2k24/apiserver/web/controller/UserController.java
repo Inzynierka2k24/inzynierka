@@ -14,6 +14,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -55,10 +56,10 @@ public class UserController {
     return ResponseEntity.ok(dto);
   }
   @PutMapping("/user/{userId}/edit")
-  public ResponseEntity<String> edit(
+  public ResponseEntity<String> edit(@RequestHeader(HttpHeaders.AUTHORIZATION) String authToken,
       @PathVariable long userId, @Valid @RequestBody EditUserRequest request)
       throws UserNotFoundException {
-    authorizationService.edit(request.username(),request.emailAddress(), request.password());
+    authorizationService.edit(authToken, request);
     userService.update(new User(userId, request.username(), request.emailAddress()));
     return ResponseEntity.ok("User updated successfully");
   }
