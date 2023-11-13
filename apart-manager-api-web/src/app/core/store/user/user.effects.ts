@@ -45,6 +45,23 @@ export const loginComplete = createEffect(
   { functional: true },
 );
 
+export const logout = createEffect(
+  (
+    actions$ = inject(Actions),
+    localStorageService = inject(LocalStorageService),
+    router = inject(Router),
+  ) => {
+    return actions$.pipe(
+      ofType(UserActions.logout),
+      tap(() => {
+        localStorageService.removeData('JWT_TOKEN');
+        router.navigate(['']);
+      }),
+    );
+  },
+  { functional: true, dispatch: false },
+);
+
 export const register = createEffect(
   (actions$ = inject(Actions), authService = inject(AuthService)) => {
     return actions$.pipe(
