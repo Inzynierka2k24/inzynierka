@@ -12,8 +12,8 @@ export class UserService {
     return this.httpClient.get<UserDTO>('/api/user/details');
   }
 
-  editUser(user: string, editUserRequest: EditUserRequest) {
-    return this.httpClient.post<EditUserRequest>(
+  editUser(user: number, editUserRequest: EditUserRequest) {
+    return this.httpClient.put<EditUserRequest>(
       '/api/user/' + user + '/edit',
       editUserRequest,
     );

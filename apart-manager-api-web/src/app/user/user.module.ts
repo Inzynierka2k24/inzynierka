@@ -7,6 +7,9 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { RippleModule } from 'primeng/ripple';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ConfirmationService } from 'primeng/api';
+import { PasswordModule } from 'primeng/password';
 
 @NgModule({
   declarations: [DashboardComponent, PreferencesComponent],
@@ -17,6 +20,9 @@ import { RippleModule } from 'primeng/ripple';
     InputTextModule,
     ButtonModule,
     RippleModule,
+    ConfirmDialogModule,
+    PasswordModule,
   ],
+  providers: [ConfirmationService],
 })
 export class UserModule {}

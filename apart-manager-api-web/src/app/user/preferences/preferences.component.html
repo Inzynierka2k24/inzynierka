@@ -19,7 +19,7 @@
     <div *ngIf="editable">
       <button
         (click)="submitEditRequest()"
-        class="p-button-text p-button-success"
+        class="p-button-success"
         icon="pi pi-pencil"
         label="Save"
         pButton
@@ -28,7 +28,7 @@
       <button
         (click)="editable = !editable"
         class="p-button-text p-button-danger"
-        icon="pi pi-pencil"
+        icon="pi pi-times-circle"
         label="Cancel"
         pButton
         pRipple
@@ -47,7 +47,7 @@
               {{ row.label | translate }}
             </div>
             <div class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">
-              {{ row.placeholder ? row.placeholder : data.get(row.selector) }}
+              {{ data.get(row.selector) }}
             </div>
           </li>
         </ng-container>
@@ -67,19 +67,31 @@
               <div class="text-500 w-6 md:w-2 font-medium">
                 {{ row.label | translate }}
               </div>
-              <ng-container [ngSwitch]="row.selector">
+              <ng-container [ngSwitch]="row.inputType">
+                <ng-container *ngSwitchCase="'login'">{{
+                  data.get(row.selector)
+                }}</ng-container>
                 <ng-container *ngSwitchCase="'sms'">
                   <p-checkbox
                     [binary]="true"
                     [formControlName]="row.selector"
                   ></p-checkbox>
                 </ng-container>
+                <ng-container *ngSwitchCase="'password'">
+                  <p-password
+                    [feedback]="false"
+                    [placeholder]="'FORM.PASSWORD_LABEL' | translate"
+                    [toggleMask]="true"
+                    formControlName="password"
+                    id="password"
+                    inputStyleClass="w-full"
+                    styleClass="mb-3 w-full"
+                  ></p-password>
+                </ng-container>
                 <ng-container *ngSwitchDefault>
                   <input
                     [formControlName]="row.selector"
-                    [value]="
-                      row.selector ? data.get(row.selector) : row.placeholder
-                    "
+                    [value]="data.get(row.selector)"
                     pInputText
                   />
                 </ng-container>
@@ -90,4 +102,15 @@
       </ul>
     </form>
   </ng-template>
+  <div class="flex justify-content-end">
+    <button
+      (click)="deleteUser()"
+      class="p-button-danger"
+      icon="pi pi-trash"
+      label="Delete Account"
+      pButton
+      pRipple
+    ></button>
+  </div>
+  <p-confirmDialog></p-confirmDialog>
 </div>

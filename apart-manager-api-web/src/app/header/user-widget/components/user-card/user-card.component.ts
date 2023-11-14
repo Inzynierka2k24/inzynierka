@@ -21,6 +21,11 @@ export class UserCardComponent {
       routerLink: '/user/settings',
     },
     {
+      label: 'Messaging',
+      icon: 'pi pi-fw pi-envelope',
+      routerLink: '/messaging',
+    },
+    {
       label: 'Log Out',
       icon: 'pi pi-fw pi-sign-out',
       command: () => {

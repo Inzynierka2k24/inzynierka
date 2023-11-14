@@ -50,7 +50,7 @@ public class UserService {
   }
 
   boolean existsByMail(String emailAddress) {
-    return userDao.get(emailAddress).isPresent();
+    return userDao.getByEmail(emailAddress).isPresent();
   }
 
   boolean existsById(long userId) {

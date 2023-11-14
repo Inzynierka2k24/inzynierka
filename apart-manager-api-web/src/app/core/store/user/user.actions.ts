@@ -50,6 +50,12 @@ const detailsError = createAction(
   UserActionTypes.DETAILS_ERROR,
   props<Error>(),
 );
+/**
+ * [Use Case] User Deletion
+ */
+const deleteUser = createAction(UserActionTypes.DELETE);
+const deleteUserComplete = createAction(UserActionTypes.DELETE_COMPLETE);
+const deleteUserError = createAction(UserActionTypes.DELETE_ERROR);
 
 const UserActions = {
   login,
@@ -65,11 +71,14 @@ const UserActions = {
   details,
   detailsComplete,
   detailsError,
+  deleteUser,
+  deleteUserComplete,
+  deleteUserError,
 };
 
 export default UserActions;
 
 export interface EditUserActionProps {
-  user: string;
+  userId: number;
   editUserRequest: EditUserRequest;
 }

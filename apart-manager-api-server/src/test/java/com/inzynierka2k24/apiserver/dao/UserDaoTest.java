@@ -1,12 +1,6 @@
 package com.inzynierka2k24.apiserver.dao;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import com.inzynierka2k24.apiserver.model.User;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.Optional;
-import javax.sql.DataSource;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +9,13 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.init.ScriptUtils;
 import org.springframework.test.annotation.DirtiesContext;
+
+import javax.sql.DataSource;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @JdbcTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
@@ -40,7 +41,7 @@ class UserDaoTest {
     String email = "test@example.com";
 
     // When
-    Optional<User> user = userDao.get(email);
+    Optional<User> user = userDao.getByEmail(email);
 
     // Then
     assertTrue(user.isPresent());
@@ -68,7 +69,7 @@ class UserDaoTest {
 
     // When
     userDao.register(user);
-    Optional<User> registeredUser = userDao.get(user.emailAddress());
+    Optional<User> registeredUser = userDao.getByEmail(user.emailAddress());
 
     // Then
     assertTrue(registeredUser.isPresent());
@@ -83,7 +84,7 @@ class UserDaoTest {
 
     // When
     userDao.update(user);
-    Optional<User> updatedUser = userDao.get(user.emailAddress());
+    Optional<User> updatedUser = userDao.getByEmail(user.emailAddress());
 
     // Then
     assertTrue(updatedUser.isPresent());

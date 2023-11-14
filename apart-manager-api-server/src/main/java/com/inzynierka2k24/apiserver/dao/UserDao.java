@@ -1,18 +1,20 @@
 package com.inzynierka2k24.apiserver.dao;
 
 import com.inzynierka2k24.apiserver.model.User;
-import java.util.Optional;
-import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+import java.util.Set;
+
 @Service
 @RequiredArgsConstructor
 public class UserDao {
 
+  private static final String GET_BY_LOGIN_QUERY = "SELECT * FROM users WHERE login = ?";
   private static final String GET_BY_MAIL_QUERY = "SELECT * FROM users WHERE mail = ?";
   private static final String GET_BY_ID_QUERY = "SELECT * FROM users WHERE user_id = ?";
   private static final String REGISTER_QUERY = "INSERT INTO users VALUES (default, ?, ?)";
@@ -34,10 +36,9 @@ public class UserDao {
               Set.of("USER"));
   private final JdbcTemplate template;
 
-  public Optional<User> get(String emailAddress) {
+  public Optional<User> get(String username) {
     return Optional.ofNullable(
-        DataAccessUtils.singleResult(
-            template.query(GET_BY_MAIL_QUERY, userRowMapper, emailAddress)));
+        DataAccessUtils.singleResult(template.query(GET_BY_LOGIN_QUERY, userRowMapper, username)));
   }
 
   public Optional<User> get(long userId) {
@@ -55,5 +56,11 @@ public class UserDao {
 
   public void deleteById(long userId) {
     template.update(DELETE_QUERY, userId);
+  }
+
+  public Optional<User> getByEmail(String emailAddress) {
+    return Optional.ofNullable(
+        DataAccessUtils.singleResult(
+            template.query(GET_BY_MAIL_QUERY, userRowMapper, emailAddress)));
   }
 }

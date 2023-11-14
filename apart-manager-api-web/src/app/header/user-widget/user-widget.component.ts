@@ -4,12 +4,11 @@ import { Store } from '@ngrx/store';
 import {
   selectCurrentUser,
   selectUserLoadingState,
-  selectUserStateError,
 } from '../../core/store/user/user.selectors';
-import { Subscription } from 'rxjs';
-import { MessageService } from 'primeng/api';
+import { filter, Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { UserDTO } from '../../../generated';
+import { NavigationStart, Router } from '@angular/router';
 
 @Component({
   selector: 'app-user-widget',
@@ -26,8 +25,8 @@ export class UserWidgetComponent implements OnInit, OnDestroy {
 
   constructor(
     private store: Store<AppState>,
-    private messageService: MessageService,
     private translateService: TranslateService,
+    private router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -41,30 +40,24 @@ export class UserWidgetComponent implements OnInit, OnDestroy {
           this.isUserLoggedIn = false;
         }
       });
-    const userErrorSub = this.store
-      .select(selectUserStateError)
-      .subscribe((error) => {
-        if (error) {
-          switch (error.status) {
-            default:
-              console.warn(error);
-              this.messageService.add({
-                severity: 'error',
-                summary: this.translateService.instant('ERROR_MESSAGE.DEFAULT'),
-                detail: error.type,
-              });
-          }
-        }
-      });
-    const loadingSub = this.store
+    const loadingSpinnerSub = this.store
       .select(selectUserLoadingState)
       .subscribe((loading) => {
         if (!loading) {
           this.displayContent = false;
         }
       });
+    const hideOnNavigationSub = this.router.events
+      .pipe(filter((event) => event instanceof NavigationStart))
+      .subscribe(() => {
+        this.displayContent = false;
+      });
 
-    this.subscriptions.push(userDataSub, userErrorSub, loadingSub);
+    this.subscriptions.push(
+      userDataSub,
+      loadingSpinnerSub,
+      hideOnNavigationSub,
+    );
   }
 
   ngOnDestroy(): void {

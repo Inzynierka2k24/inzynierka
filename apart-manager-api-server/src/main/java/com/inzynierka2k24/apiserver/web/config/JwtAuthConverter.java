@@ -31,12 +31,12 @@ public class JwtAuthConverter implements Converter<Jwt, AbstractAuthenticationTo
   @Value("${jwt.auth.converter.resource-id}")
   private String resourceId;
 
-  public static String getEmailFromJWT(String jwt) {
+  public static String getLoginFromJWT(String jwt) {
     String[] chunks = jwt.split("\\.");
     Base64.Decoder decoder = Base64.getUrlDecoder();
     String payload = new String(decoder.decode(chunks[1]));
     JSONObject jsonObject = new JSONObject(payload);
-    return jsonObject.getString("email");
+    return jsonObject.getString("preferred_username");
   }
 
   @Override

@@ -26,4 +26,7 @@ export enum UserActionTypes {
   DETAILS = '[User] Details Action',
   DETAILS_COMPLETE = '[User] Details Action Complete',
   DETAILS_ERROR = '[User] Details Action Error',
+  DELETE = '[User] Delete Action',
+  DELETE_COMPLETE = '[User] Delete Action Complete',
+  DELETE_ERROR = '[User] Delete Action Error',
 }
