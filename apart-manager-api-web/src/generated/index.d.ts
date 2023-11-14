@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.1.1185 on 2023-11-07 15:52:52.
+// Generated using typescript-generator version 3.1.1185 on 2023-11-14 16:06:53.
 
 export interface Apartment {
     id?: number;

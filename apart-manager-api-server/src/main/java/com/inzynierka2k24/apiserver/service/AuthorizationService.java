@@ -4,6 +4,9 @@ import com.inzynierka2k24.apiserver.exception.user.InvalidCredentialsException;
 import com.inzynierka2k24.apiserver.exception.user.UserAlreadyExistsException;
 import com.inzynierka2k24.apiserver.web.request.EditUserRequest;
 import com.inzynierka2k24.apiserver.web.response.KeycloakTokenResponse;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
@@ -12,10 +15,6 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
-
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
 @Service
 public class AuthorizationService {
@@ -83,7 +82,8 @@ public class AuthorizationService {
     requestBody.put("emailVerified", true);
     requestBody.put("credentials", Collections.singletonList(credentialsWithPassword(password)));
 
-    HttpEntity<Map<String, Object>> requestEntity = new HttpEntity<>(requestBody, headersWithAdminToken());
+    HttpEntity<Map<String, Object>> requestEntity =
+        new HttpEntity<>(requestBody, headersWithAdminToken());
 
     // request and error status handling
     try {
@@ -98,42 +98,47 @@ public class AuthorizationService {
     }
   }
 
-  public void edit(String authToken, EditUserRequest request){
+  public void edit(String authToken, EditUserRequest request) {
     String userId = getCurrentUserId(authToken);
     // request body
     Map<String, Object> requestBody = new HashMap<>();
     requestBody.put("username", request.username());
     requestBody.put("email", request.emailAddress());
 
-    HttpEntity<Map<String, Object>> requestEntity = new HttpEntity<>(requestBody, headersWithAdminToken());
-    try{
+    HttpEntity<Map<String, Object>> requestEntity =
+        new HttpEntity<>(requestBody, headersWithAdminToken());
+    try {
       restTemplate.exchange(userEndpoint + userId, HttpMethod.PUT, requestEntity, String.class);
-    }catch (HttpServerErrorException e){
+    } catch (HttpServerErrorException e) {
       throw new RuntimeException("Server error during user edition" + e.getMessage());
     }
   }
 
-  private String getCurrentUserId(String authToken){
+  private String getCurrentUserId(String authToken) {
     try {
       HttpHeaders headers = new HttpHeaders();
       headers.set("Authorization", "Bearer " + authToken);
-      RequestEntity<Void> request = RequestEntity.get(userDetailsEndpoint).accept(MediaType.APPLICATION_JSON).headers(headers).build();
-      Map <String, String> r = restTemplate.exchange(request, Map.class).getBody();
+      RequestEntity<Void> request =
+          RequestEntity.get(userDetailsEndpoint)
+              .accept(MediaType.APPLICATION_JSON)
+              .headers(headers)
+              .build();
+      Map<String, String> r = restTemplate.exchange(request, Map.class).getBody();
       return r.get("sub");
     } catch (HttpClientErrorException e) {
       throw new RuntimeException(e.getMessage());
     }
   }
 
-  private HttpHeaders  headersWithAdminToken(){
-    String token = getToken(adminLogin,adminPassword);
+  private HttpHeaders headersWithAdminToken() {
+    String token = getToken(adminLogin, adminPassword);
     HttpHeaders headers = new HttpHeaders();
     headers.setContentType(MediaType.APPLICATION_JSON);
     headers.set("Authorization", "Bearer " + token);
     return headers;
   }
 
-  private Map<String, String> credentialsWithPassword(String password){
+  private Map<String, String> credentialsWithPassword(String password) {
     Map<String, String> credentials = new HashMap<>();
     credentials.put("type", "password");
     credentials.put("value", password);

@@ -52,12 +52,15 @@ public class UserController {
     }
     String username = JwtAuthConverter.getLoginFromJWT(token);
     User u = userService.getUser(username);
-    UserDTO dto = new UserDTO(u.id().get(),u.login(),u.emailAddress());
+    UserDTO dto = new UserDTO(u.id().get(), u.login(), u.emailAddress());
     return ResponseEntity.ok(dto);
   }
+
   @PutMapping("/user/{userId}/edit")
-  public ResponseEntity<String> edit(@RequestHeader(HttpHeaders.AUTHORIZATION) String authToken,
-      @PathVariable long userId, @Valid @RequestBody EditUserRequest request)
+  public ResponseEntity<String> edit(
+      @RequestHeader(HttpHeaders.AUTHORIZATION) String authToken,
+      @PathVariable long userId,
+      @Valid @RequestBody EditUserRequest request)
       throws UserNotFoundException {
     authorizationService.edit(authToken, request);
     userService.update(new User(userId, request.username(), request.emailAddress()));

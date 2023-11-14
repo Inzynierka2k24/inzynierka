@@ -38,8 +38,7 @@ public class UserDao {
 
   public Optional<User> get(String username) {
     return Optional.ofNullable(
-        DataAccessUtils.singleResult(
-            template.query(GET_BY_LOGIN_QUERY, userRowMapper, username)));
+        DataAccessUtils.singleResult(template.query(GET_BY_LOGIN_QUERY, userRowMapper, username)));
   }
 
   public Optional<User> get(long userId) {
@@ -59,9 +58,9 @@ public class UserDao {
     template.update(DELETE_QUERY, userId);
   }
 
-  public Optional<Object> getByEmail(String emailAddress) {
+  public Optional<User> getByEmail(String emailAddress) {
     return Optional.ofNullable(
-            DataAccessUtils.singleResult(
-                    template.query(GET_BY_MAIL_QUERY, userRowMapper, emailAddress)));
+        DataAccessUtils.singleResult(
+            template.query(GET_BY_MAIL_QUERY, userRowMapper, emailAddress)));
   }
 }

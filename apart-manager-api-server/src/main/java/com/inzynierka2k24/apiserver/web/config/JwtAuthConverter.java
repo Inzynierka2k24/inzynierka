@@ -1,5 +1,11 @@
 package com.inzynierka2k24.apiserver.web.config;
 
+import java.util.Base64;
+import java.util.Collection;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import org.apache.commons.collections4.MapUtils;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,13 +18,6 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 import org.springframework.stereotype.Component;
-
-import java.util.Base64;
-import java.util.Collection;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Component
 public class JwtAuthConverter implements Converter<Jwt, AbstractAuthenticationToken> {

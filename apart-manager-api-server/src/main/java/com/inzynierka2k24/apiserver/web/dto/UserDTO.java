@@ -4,7 +4,7 @@ import com.inzynierka2k24.apiserver.model.BillingType;
 import com.inzynierka2k24.apiserver.model.MembershipLevel;
 
 public record UserDTO(
-        long id,
+    long id,
     String login,
     String emailAddress,
     MembershipLevel level,
@@ -12,6 +12,6 @@ public record UserDTO(
     boolean smsNotifications,
     boolean emailNotifications) {
   public UserDTO(long id, String login, String emailAddress) {
-    this(id,login, emailAddress, MembershipLevel.FREE, BillingType.NONE, false, false);
+    this(id, login, emailAddress, MembershipLevel.FREE, BillingType.NONE, false, false);
   }
 }
