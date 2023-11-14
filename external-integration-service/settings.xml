@@ -23,7 +23,8 @@
         <server>
             <id>github</id>
             <username>mKazmierczak1</username>
-            <password>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</password>
+<!--            <password>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</password>-->
+            <password>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</password>
         </server>
     </servers>
 </settings>
