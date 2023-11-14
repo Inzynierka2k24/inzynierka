@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.1.1185 on 2023-11-03 21:08:03.
+// Generated using typescript-generator version 3.1.1185 on 2023-11-14 16:06:53.
 
 export interface Apartment {
     id?: number;
@@ -74,6 +74,7 @@ export interface UserPreferences {
 }
 
 export interface UserDTO {
+    id: number;
     login: string;
     emailAddress: string;
     level: MembershipLevel;
@@ -93,6 +94,7 @@ export interface AuthRequest {
 }
 
 export interface EditUserRequest {
+    username: string;
     emailAddress: string;
     password: string;
 }

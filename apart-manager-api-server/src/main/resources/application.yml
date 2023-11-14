@@ -13,8 +13,10 @@ spring:
 keycloak:
   realm: ApartManager
   client-id: apart-manager-be
-  token-endpoint: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/token
-  create-user-endpoint: http://localhost:8090/admin/realms/${keycloak.realm}/users
+  base-url: http://localhost:8090/admin/realms/${keycloak.realm}
+  token-endpoint: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/token/
+  user-endpoint: ${keycloak.base-url}/users/
+  user-details: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/userinfo/
   credentials:
     login: admin
     password: admin

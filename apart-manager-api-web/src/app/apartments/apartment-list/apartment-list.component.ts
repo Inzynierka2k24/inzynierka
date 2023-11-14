@@ -25,6 +25,5 @@ export class ApartmentListComponent implements OnInit {
     this.apartmentService.getApartments().subscribe((data) => {
       this.apartments = data;
     });
-    console.log(this.apartments);
   }
 }

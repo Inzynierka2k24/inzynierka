@@ -8,6 +8,7 @@ import {
   getDetails,
   login,
   loginComplete,
+  logout,
   register,
 } from './user/user.effects';
 import { apartmentReducer } from './apartment/apartment.reducer';
@@ -22,7 +23,14 @@ export interface AppState {
       user: userReducer,
       apartmentEntries: apartmentReducer,
     }),
-    EffectsModule.forRoot({ login, loginComplete, register, getDetails, edit }),
+    EffectsModule.forRoot({
+      login,
+      loginComplete,
+      logout,
+      register,
+      getDetails,
+      edit,
+    }),
   ],
   exports: [StoreModule, EffectsModule],
 })

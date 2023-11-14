@@ -6,6 +6,7 @@ import { selectCurrentUser } from '../../core/store/user/user.selectors';
 import UserActions from '../../core/store/user/user.actions';
 import { Subscription } from 'rxjs';
 import { UserDTO } from '../../../generated';
+import { ConfirmationService } from 'primeng/api';
 
 interface PreferencesCategory {
   title: string;
@@ -15,7 +16,8 @@ interface PreferencesCategory {
 interface PreferencesTableRow {
   label: string;
   selector: string;
-  placeholder?: string;
+  inputType: string;
+  dropdownValues?: string[];
 }
 
 @Component({
@@ -28,8 +30,13 @@ export class PreferencesComponent implements OnInit, OnDestroy {
     {
       title: 'ACCOUNT',
       rows: [
-        { label: 'E-mail', selector: 'emailAddress' },
-        { label: 'Password', selector: 'password', placeholder: '*******' },
+        { label: 'Username', selector: 'login', inputType: 'login' },
+        { label: 'E-mail', selector: 'emailAddress', inputType: 'text' },
+        {
+          label: 'Password',
+          selector: 'password',
+          inputType: 'password',
+        },
       ],
     },
     {
@@ -38,18 +45,28 @@ export class PreferencesComponent implements OnInit, OnDestroy {
         {
           label: 'Level',
           selector: 'level',
+          inputType: 'dropdown',
+          dropdownValues: ['FREE', 'PREMIUM', 'ENTERPRISE'],
         },
-        { label: 'Billing', selector: 'billingType' },
+        {
+          label: 'Billing',
+          selector: 'billingType',
+          inputType: 'dropdown',
+          dropdownValues: ['CARD', 'CASH'],
+        },
       ],
     },
     {
       title: 'NOTIFICATIONS',
-      rows: [{ label: 'SMS', selector: 'sms' }],
+      rows: [
+        { label: 'SMS', selector: 'smsNotifications', inputType: 'checkbox' },
+      ],
     },
   ];
 
   editable = false;
   userEditForm = this.formBuilder.nonNullable.group({
+    login: ['', Validators.required],
     emailAddress: ['', [Validators.email]],
     password: ['', Validators.minLength(5)],
     level: [''],
@@ -66,16 +83,18 @@ export class PreferencesComponent implements OnInit, OnDestroy {
   constructor(
     private store: Store<AppState>,
     private formBuilder: FormBuilder,
+    private confirmationService: ConfirmationService,
   ) {}
 
   submitEditRequest() {
     if (this.userEditForm.valid && this.currentUser) {
       const editUserRequest = {
+        username: this.userEditForm.value.login!,
         emailAddress: this.userEditForm.value.emailAddress!,
         password: this.userEditForm.value.password!,
       };
       this.store.dispatch(
-        UserActions.edit({ user: this.currentUser.login, editUserRequest }),
+        UserActions.edit({ userId: this.currentUser.id, editUserRequest }),
       );
     }
   }
@@ -85,8 +104,9 @@ export class PreferencesComponent implements OnInit, OnDestroy {
       this.data = new Map(Object.entries({ ...user }));
       if (user) {
         this.userEditForm.setValue({
+          login: user.login ?? '',
           emailAddress: user.emailAddress ?? '',
-          password: '**********',
+          password: '',
           level: user.level ?? '',
           billingType: user.billingType ?? '',
           smsNotifications: user.smsNotifications,
@@ -99,5 +119,16 @@ export class PreferencesComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subscriptions.forEach((sub) => sub.unsubscribe());
+  }
+
+  deleteUser() {
+    this.confirmationService.confirm({
+      message: 'Do you want to delete this record?',
+      header: 'Delete Confirmation',
+      icon: 'pi pi-info-circle',
+      accept: () => {
+        this.store.dispatch(UserActions.deleteUser());
+      },
+    });
   }
 }

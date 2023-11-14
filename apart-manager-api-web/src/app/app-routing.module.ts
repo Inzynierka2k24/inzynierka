@@ -61,13 +61,11 @@ const authenticatedGuard: CanActivateFn = () => {
   );
 };
 
-const authResolver: ResolveFn<boolean> = (route, state) => {
+const authResolver: ResolveFn<boolean> = () => {
   const store = inject(Store);
   const localStorageService = inject(LocalStorageService);
 
   const jwt = localStorageService.getData('JWT_TOKEN');
-
-  console.log('BONK');
 
   return store.select(selectCurrentUser).pipe(
     take(1),
