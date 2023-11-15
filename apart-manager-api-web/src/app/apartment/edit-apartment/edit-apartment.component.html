@@ -1,0 +1,117 @@
+<div class="form-container">
+    <div class="surface-card p-4 shadow-7 border-round w-full">
+        <div class="text-center mb-5">
+<div>
+    <form [formGroup]="editApartmentForm">
+      <div class="p-grid">
+          <div class="p-col-12">
+              <label class="block text-900 font-medium mb-2" for="dailyPrice">Daily Price:</label>
+              <input
+                  [placeholder]="'Daily Price'"
+                  class="w-full mb-3"
+                  formControlName="dailyPrice"
+                  id="dailyPrice"
+                  pInputText
+                  type="number"
+                  required
+                  [value]="editApartmentForm.get('dailyPrice')?.value"
+              />
+          </div>
+          <div class="p-col-12">
+            <label class="block text-900 font-medium mb-2" for="title">Title:</label>
+            <input
+              [placeholder]="'Title'"
+              class="w-full mb-3"
+              formControlName="title"
+              id="title"
+              pInputText
+              type="text"
+              required
+              [value]="editApartmentForm.get('title')?.value"
+            />
+          </div>
+
+          <div class="p-col-12">
+            <label class="block text-900 font-medium mb-2" for="country">Country:</label>
+            <input
+              [placeholder]="'Country'"
+              class="w-full mb-3"
+              formControlName="country"
+              id="country"
+              pInputText
+              type="text"
+              required
+              [value]="editApartmentForm.get('country')?.value"
+            />
+          </div>
+
+          <div class="p-col-12">
+            <label class="block text-900 font-medium mb-2" for="city">City:</label>
+            <input
+              [placeholder]="'City'"
+              class="w-full mb-3"
+              formControlName="city"
+              id="city"
+              pInputText
+              type="text"
+              required
+              [value]="editApartmentForm.get('city')?.value"
+            />
+          </div>
+          </div>
+      </form>
+  </div>
+</div>
+</div>
+  <div class="surface-card p-4 shadow-7 border-round w-full">
+    <div class="text-center mb-5">
+        <form [formGroup]="editApartmentForm">
+          <div class="p-grid">
+                <div class="p-col-12">
+                  <label class="block text-900 font-medium mb-2" for="street">Street:</label>
+                  <input
+                    [placeholder]="'Street'"
+                    class="w-full mb-3"
+                    formControlName="street"
+                    id="street"
+                    pInputText
+                    type="text"
+                    required
+                    [value]="editApartmentForm.get('street')?.value"
+                  />
+                </div>
+                <div class="p-col-12">
+                  <label class="block text-900 font-medium mb-2" for="buildingNumber">Building Number:</label>
+                  <input
+                    [placeholder]="'Building Number'"
+                    class="w-full mb-3"
+                    formControlName="buildingNumber"
+                    id="buildingNumber"
+                    pInputText
+                    type="text"
+                    required
+                    [value]="editApartmentForm.get('buildingNumber')?.value"
+                  />
+                </div>
+                <div class="p-col-12">
+                  <label class="block text-900 font-medium mb-2" for="apartmentNumber">Apartment Number:</label>
+                  <input
+                    [placeholder]="'Apartment Number'"
+                    class="w-full mb-3"
+                    formControlName="apartmentNumber"
+                    id="apartmentNumber"
+                    pInputText
+                    type="text"
+                    required
+                    [value]="editApartmentForm.get('apartmentNumber')?.value"
+                  />
+                </div>
+              <p-button class="custom-button" severity="success" (click)="saveChanges(apartment)">Save</p-button>
+              <p-button class="custom-button" severity="danger" (click)="cancelEditing()">Cancel</p-button>
+
+            </div>
+    </form>
+    </div>
+  </div>
+</div>
+<p-messages [(value)]="messages" [enableService]="false" [closable]="false"></p-messages>
