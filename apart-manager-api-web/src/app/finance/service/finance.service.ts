@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import {Finance} from "../../../generated";
+import {Finance, UserDTO} from "../../../generated";
 
 @Injectable({
   providedIn: 'root'
@@ -10,20 +10,19 @@ export class FinanceService {
 
   constructor(private http: HttpClient) { }
 
-  getFinances(): Observable<Finance[]> {
-    return this.http.get<Finance[]>('/api/11/finance');
-    //TODO change path
+  getFinances(user: UserDTO): Observable<Finance[]> {
+    return this.http.get<Finance[]>('/api/'+ user.id +'/finance');
   }
 
-  addFinance(finance: Finance): Observable<boolean> {
-    return this.http.post<boolean>('/api/11/finance', finance);
+  addFinance(user: UserDTO, finance: Finance): Observable<boolean> {
+    return this.http.post<boolean>('/api/'+ user.id +'/finance', finance);
   }
 
-  updateFinance(finance: Finance): Observable<Finance> {
-    return this.http.put<Finance>('/api/11/finance/' + finance.id, finance);
+  updateFinance(user: UserDTO, finance: Finance): Observable<Finance> {
+    return this.http.put<Finance>('/api/'+ user.id +'/finance/' + finance.id, finance);
   }
 
-  deleteFinance(financeId: number): Observable<void> {
-    return this.http.delete<void>('/api/11/finance/' + financeId);
+  deleteFinance(user: UserDTO, financeId: number): Observable<void> {
+    return this.http.delete<void>('/api/'+ user.id +'/finance/' + financeId);
   }
 }

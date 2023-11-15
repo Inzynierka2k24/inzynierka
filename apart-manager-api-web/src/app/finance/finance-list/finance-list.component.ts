@@ -1,10 +1,15 @@
 import { Component } from '@angular/core';
-import {EventType, Finance, Source} from "../../../generated";
+import {Apartment, EventType, Finance, Source, UserDTO} from "../../../generated";
 import {Observable} from "rxjs";
 import {Message, MessageService} from "primeng/api";
 import {FormBuilder, FormGroup, Validators, FormsModule} from "@angular/forms";
-import {FinanceService} from "../../finance/service/finance.service";
+import {FinanceService} from "../service/finance.service";
 import {Router} from "@angular/router";
+import {Store} from "@ngrx/store";
+
+import {selectCurrentUser} from "../../core/store/user/user.selectors";
+import {AppState} from "../../core/store/app.store";
+import {ApartmentService} from "../../apartment/services/apartment.service";
 
 interface WeeklyRevenue {
   weekStartDate: Date;
@@ -42,9 +47,15 @@ export class FinanceListComponent {
     { name: "REPAIR" },
     { name: "MAINTENANCE" },
   ];
+  isUserLoggedIn = false;
+  apartments: Apartment[] = [];
+  apartment: Apartment;
+  user: UserDTO;
 
 
-  constructor(private financeService: FinanceService,
+  constructor(private store: Store<AppState>,
+              private financeService: FinanceService,
+              private apartmentService: ApartmentService,
               private messageService: MessageService,
               private router: Router,
               private fb: FormBuilder)
@@ -62,48 +73,45 @@ export class FinanceListComponent {
     });
   }
 
-  ngOnInit() {
-    // this.financeService.getFinances().subscribe((data: Finance[]) => {
-    //   this.finances = data;
-    // });
+  // ngOnInit() {
+  //   const userDataSub = this.store
+  //     .select(selectCurrentUser)
+  //     .subscribe((user) => {
+  //       if (user) {
+  //         this.isUserLoggedIn = true;
+  //         this.user = user;
+  //         this.financeService.getFinances(this.user).subscribe((data: Finance[]) => {
+  //           this.finances = data;
+  //         });
+  //       } else {
+  //         this.isUserLoggedIn = false;
+  //       }
+  //   });
+  //
+  //   this.filteredFinances = [...this.finances];
+  //   this.sumOfPrices = 0;
+  //   this.filteredFinances.forEach((f) => {this.sumOfPrices += f.price});
+  // }
 
-    this.finances = [
-      {
-        userId: 1,
-        apartmentId: 1,
-        eventId: 1,
-        eventType: "RENOVATION",
-        source: "CLEANING",
-        price: 120,
-        date: new Date(),
-        details: "Cleaned carpet",
-      },
-      {
-        userId: 1,
-        apartmentId: 1,
-        eventId: 1,
-        eventType: "RENOVATION",
-        source: "REPAIR",
-        price: 150,
-        date: new Date('2023-10-11T03:24:00'),
-        details: "Promotions",
-      },
-      {
-        userId: 3,
-        apartmentId: 2,
-        eventId: 1,
-        eventType: "RESERVATION",
-        source: "BOOKING",
-        price: 1000.79,
-        date: new Date('2023-11-11T03:24:00'),
-        details: "Promotions",
-      },
-    ];
-    this.filteredFinances = [...this.finances];
-    this.sumOfPrices = 0;
-    this.filteredFinances.forEach((f) => {this.sumOfPrices += f.price});
+  ngAfterViewInit() {
+    const userDataSub = this.store
+      .select(selectCurrentUser)
+      .subscribe((user) => {
+        if (user) {
+          this.isUserLoggedIn = true;
+          this.user = user;
+          this.financeService.getFinances(this.user).subscribe((data: Finance[]) => {
+            this.finances = data;
+
+            this.filteredFinances = [...this.finances];
+            this.sumOfPrices = 0;
+            this.filteredFinances.forEach((f) => { this.sumOfPrices += f.price });
+          });
+        } else {
+          this.isUserLoggedIn = false;
+        }
+      });
   }
-
   // Filter criteria
   filterEventType: string | undefined;
   filterApartmentId: number | undefined;
@@ -127,7 +135,6 @@ export class FinanceListComponent {
       else if ("ALL" === this.filterFinanceForm.value.filterSource.name!) sourceMatch = true;
       else sourceMatch = finance.source === this.filterFinanceForm.value.filterSource.name!;
 
-      console.log(this.filterFinanceForm.value.filterApartmentId)
       return eventTypeMatch && apartmentIdMatch && sourceMatch;
     });
     this.sumPrices();
