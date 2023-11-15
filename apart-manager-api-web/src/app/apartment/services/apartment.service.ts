@@ -20,10 +20,10 @@ export class ApartmentService {
   }
 
   updateApartment(user: UserDTO, apartment: Apartment): Observable<Apartment> {
-    return this.http.put<Apartment>('/api/'+ user.id +'/apartment' + apartment.id, apartment);
+    return this.http.put<Apartment>('/api/'+ user.id +'/apartment/' + apartment.id, apartment);
   }
 
   deleteApartment(user: UserDTO, apartmentId: number): Observable<void> {
-    return this.http.delete<void>('/api/'+ user.id +'/apartment' + apartmentId);
+    return this.http.delete<void>('/api/'+ user.id +'/apartment/' + apartmentId);
   }
 }

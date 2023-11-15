@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ReservationService } from '../services/reservation.service';
-import {Reservation, UserDTO} from '../../../generated';
+import {Apartment, Reservation, UserDTO} from '../../../generated';
+import { ApartmentService} from "../../apartment/services/apartment.service";
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { MessageService } from 'primeng/api';
@@ -20,9 +21,12 @@ export class ReservationListComponent implements OnInit {
   reservations: Reservation[] = [];
   reservation: Reservation;
   isUserLoggedIn = false;
+  apartments: Apartment[] = [];
+  apartment: Apartment;
 
   constructor(private store: Store<AppState>,
               private reservationService: ReservationService,
+              private apartmentService: ApartmentService,
               private messageService: MessageService,
               private router: Router) {
   }
@@ -35,13 +39,21 @@ export class ReservationListComponent implements OnInit {
           this.isUserLoggedIn = true;
           this.user = user;
 
-          this.reservationService.getReservations(this.user).subscribe((data: Reservation[]) => {
-          this.reservations = data;
-    });
+          this.apartmentService.getApartments(this.user).subscribe((data: Apartment[]) => {
+            this.apartments = data;
+
+            if (this.apartments && this.apartments.length > 0) {
+              for(const val of this.apartments) {
+                this.reservationService.getReservations(this.user, val).subscribe((data: Reservation[]) => {
+                  this.reservations = this.reservations.concat(data);
+                });
+              }
+            }
+          });
         } else {
           this.isUserLoggedIn = false;
         }
-    });
+      });
   }
 
   addReservation() {

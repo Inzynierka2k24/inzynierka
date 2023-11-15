@@ -54,7 +54,7 @@ export class ApartmentListComponent implements OnInit {
 
           this.apartmentService.getApartments(this.user).subscribe((data: Apartment[]) => {
           this.apartments = data;
-    });
+          });
         } else {
           this.isUserLoggedIn = false;
         }
