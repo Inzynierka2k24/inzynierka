@@ -29,13 +29,13 @@
         <snakeyaml.version>2.2</snakeyaml.version>
 	</properties>
 
-	<repositories>
-		<repository>
-			<id>github</id>
-			<name>GitHub Inzynierka2k24 Apache Maven Packages</name>
-			<url>https://maven.pkg.github.com/Inzynierka2k24/inzynierka</url>
-		</repository>
-	</repositories>
+<!--	<repositories>-->
+<!--		<repository>-->
+<!--			<id>github</id>-->
+<!--			<name>GitHub Inzynierka2k24 Apache Maven Packages</name>-->
+<!--			<url>https://maven.pkg.github.com/Inzynierka2k24/inzynierka</url>-->
+<!--		</repository>-->
+<!--	</repositories>-->
 
 	<dependencies>
 	    <!--   Spring    -->
@@ -54,6 +54,8 @@
 			<groupId>com.inzynierka2k24</groupId>
 			<artifactId>proto</artifactId>
 			<version>${proto.version}</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/../proto/target/proto-0.0.4.jar</systemPath>
 		</dependency>
 		<dependency>
 			<groupId>io.github.lognet</groupId>

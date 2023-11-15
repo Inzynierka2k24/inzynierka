@@ -1,24 +1,19 @@
-# Build Proto stage
-FROM maven:3.9.5-eclipse-temurin-17 AS build_proto
+# Build stage
+FROM maven:3.9.5-eclipse-temurin-17 AS build
 ENV PB_REL https://github.com/protocolbuffers/protobuf/releases
-RUN mkdir inzynierka && mkdir inzynierka/proto
-COPY proto inzynierka/proto
-RUN ls inzynierka/proto
+RUN mkdir inzynierka
+COPY . inzynierka
+RUN ls inzynierka
 RUN apt update -y && apt install -y unzip
 RUN mkdir inzynierka/proto/target && mkdir inzynierka/proto/target/protoc-plugins
 RUN curl -LO $PB_REL/download/v3.15.8/protoc-3.15.8-linux-x86_64.zip
 RUN unzip protoc-3.15.8-linux-x86_64.zip -d inzynierka/proto/target/protoc-plugins
 RUN mvn -f inzynierka/proto/pom.xml clean package
-
-# Build app stage
-FROM maven:3.9.5-eclipse-temurin-17-alpine AS build
-RUN mkdir inzynierka && mkdir inzynierka/external-integration-service
-COPY --from=build_proto inzynierka inzynierka
-COPY external-integration-service inzynierka/external-integration-service
 RUN mvn -f inzynierka/external-integration-service/pom.xml clean package
+
 
 # Package stage
 FROM eclipse-temurin:17-alpine
-COPY --from=build /usr/src/app/target/*.jar /usr/app/service.jar
+COPY --from=build inzynierka/external-integration-service/target/*.jar /usr/app/service.jar
 EXPOSE 8080 6565
 ENTRYPOINT ["java","-jar","/usr/app/service.jar"]
