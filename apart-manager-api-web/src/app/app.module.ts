@@ -7,10 +7,9 @@ import { AppInterceptor, AppRoutingModule } from './app-routing.module';
 import { HeaderModule } from './header/header.module';
 import { WelcomePageComponent } from './welcome-page/welcome-page.component';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { ReservationsModule } from './resevations/reservations.module';
-import { ApartmentsModule } from './apartments/apartments.module';
 import { UserModule } from './user/user.module';
 import { ToastModule } from 'primeng/toast';
+import {StoreModule} from "@ngrx/store";
 import { ButtonModule } from 'primeng/button';
 import { RippleModule } from 'primeng/ripple';
 
@@ -22,8 +21,6 @@ import { RippleModule } from 'primeng/ripple';
     AppRoutingModule,
     SharedModule,
     HeaderModule,
-    ReservationsModule,
-    ApartmentsModule,
     UserModule,
     ToastModule,
     ButtonModule,
