@@ -1,8 +1,11 @@
 import { Component } from '@angular/core';
-import {FormBuilder, Validators} from "@angular/forms";
-import {Store} from "@ngrx/store";
-import FinanceActions from "../store/finance.actions";
-import {Finance, Source, EventType} from "../../../generated";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {resultMemoize, Store} from "@ngrx/store";
+import {Finance, Source, EventType, Apartment, UserDTO} from "../../../generated";
+import {AppState} from "../../core/store/app.store";
+import {FinanceService} from "../service/finance.service";
+import {selectCurrentUser} from "../../core/store/user/user.selectors";
+import {MessageService} from "primeng/api";
 
 @Component({
   selector: 'app-add-finance',
@@ -26,8 +29,13 @@ export class AddFinanceComponent {
     { name: "REPAIR" },
     { name: "MAINTENANCE" },
   ];
-  constructor(private formBuilder: FormBuilder, private store: Store){
+  isUserLoggedIn = false;
+  user: UserDTO;
 
+  constructor(private store: Store<AppState>,
+              private financeService: FinanceService,
+              private formBuilder: FormBuilder,
+              private messageService: MessageService){
     this.addFinanceForm = formBuilder.nonNullable.group(
       {
         userId: ['', Validators.required],
@@ -42,30 +50,67 @@ export class AddFinanceComponent {
   }
 
   addFinance(): void {
-      if (this.addFinanceForm.valid) {
-        const financeData: Finance = {
-          userId: parseInt(this.addFinanceForm.value.userId!),
-          apartmentId: parseInt(this.addFinanceForm.value.apartmentId!),
-          eventId: parseInt(this.addFinanceForm.value.eventId!),
-          eventType: this.addFinanceForm.value.eventType! as EventType,
-          source: this.addFinanceForm.value.source! as Source,
-          price: parseFloat(this.addFinanceForm.value.price!),
-          date: new Date(this.addFinanceForm.value.date!),
-          details: this.addFinanceForm.value.details!,
-        };
-
-      // FinanceActions.addFinance(financeData)
-      //   .subscribe((result: boolean) => {
-      //     if (result) {
-      //       // TODO add message
-      //       this.addFinanceForm.reset();
-      //     } else {
-      //       // TODO Handle API call error
-      //     }
-      //   });
+    if (this.addFinanceForm.valid) {
+      const financeData: Finance = {
+        userId: parseInt(this.addFinanceForm.value.userId!),
+        apartmentId: parseInt(this.addFinanceForm.value.apartmentId!),
+        eventId: parseInt(this.addFinanceForm.value.eventId!),
+        eventType: this.addFinanceForm.value.eventType! as EventType,
+        source: this.addFinanceForm.value.source! as Source,
+        price: parseFloat(this.addFinanceForm.value.price!),
+        date: new Date(this.addFinanceForm.value.date!),
+        details: this.addFinanceForm.value.details!,
+      };
+      // const financeData: Finance = {
+      //   userId: parseInt(this.addFinanceForm.value.userId!),
+      //   apartmentId: parseInt(this.addFinanceForm.value.apartmentId!),
+      //   eventId: parseInt(this.addFinanceForm.value.eventId!),
+      //   eventType: EventType[this.addFinanceForm.value.eventType],
+      //   source: Source[this.addFinanceForm.value.source],
+      //   price: parseFloat(this.addFinanceForm.value.price!),
+      //   date: new Date(this.addFinanceForm.value.date!),
+      //   details: this.addFinanceForm.value.details!,
+      // };
+      console.log(financeData);
+      const financeDataSub = this.store
+        .select(selectCurrentUser)
+        .subscribe((user) => {
+          if (user) {
+            this.isUserLoggedIn = true;
+            this.user = user;
+            this.financeService.addFinance(this.user, financeData).subscribe(
+              (result: boolean) => {
+                if (result){
+                  this.addFinanceForm.reset()
+                } else {
+                  // TODO Handle API call error
+                }
+            },
+        (error) => {
+                console.error('API call error:', error); //TODO
+              }
+            );
+          } else {
+            this.isUserLoggedIn = false;
+          }
+        });
     } else {
-      // TODO Handle validation errors
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Validation Error',
+          detail: 'Please fill in all required fields and correct validation errors.',
+        });
+        this.markAllFieldsAsTouched(this.addFinanceForm);
     }
   }
-
+  private markAllFieldsAsTouched(formGroup: FormGroup): void {
+    Object.keys(formGroup.controls).forEach((controlName) => {
+      const control = formGroup.get(controlName);
+      if (control instanceof FormGroup) {
+        this.markAllFieldsAsTouched(<FormGroup<any>>control);
+      } else {
+        control?.markAsTouched();
+      }
+    });
+  }
 }
