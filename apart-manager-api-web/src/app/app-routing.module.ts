@@ -89,18 +89,6 @@ const authResolver: ResolveFn<boolean> = () => {
 };
 
 const routes: Routes = [
-  // {path: 'apartments/add', component: AddApartmentComponent},
-  // {path: 'apartments/edit', component: EditApartmentComponent},
-  // {path: 'apartments', component: ApartmentListComponent},
-  // {path: 'reservations/calendar', component: ReservationCalendarComponent},
-  // {path: 'reservations/add', component: AddReservationComponent},
-  // {path: 'reservations', component: ReservationListComponent},
-  // {path: 'reservations/edit', component: EditReservationComponent},
-  // {path: 'finances/add', component: AddFinanceComponent},
-  // {path: 'finances/chart', component: FinanceChartComponent},
-  // {path: 'finances/edit', component: EditFinanceComponent},
-  // {path: 'finances', component: FinanceListComponent},
-  // {path: '**', component: WelcomePageComponent },
   {
     path: '',
     resolve: [authResolver],

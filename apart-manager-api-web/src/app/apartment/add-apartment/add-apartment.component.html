@@ -12,6 +12,7 @@
                             id="dailyPrice"
                             pInputText
                             type="number"
+                            [ngClass]="{'error-outline': addApartForm.get('dailyPrice')?.hasError('required') && addApartForm.get('dailyPrice')?.touched}"
                             required
                         />
                     </div>
@@ -24,6 +25,7 @@
                         id="title"
                         pInputText
                         type="text"
+                        [ngClass]="{'error-outline': addApartForm.get('title')?.hasError('required') && addApartForm.get('title')?.touched}"
                         required
                       />
                     </div>
@@ -37,6 +39,7 @@
                         id="country"
                         pInputText
                         type="text"
+                        [ngClass]="{'error-outline': addApartForm.get('country')?.hasError('required') && addApartForm.get('country')?.touched}"
                         required
                       />
                     </div>
@@ -50,6 +53,7 @@
                         id="city"
                         pInputText
                         type="text"
+                        [ngClass]="{'error-outline': addApartForm.get('city')?.hasError('required') && addApartForm.get('city')?.touched}"
                         required
                       />
                     </div>
@@ -71,6 +75,7 @@
                             id="street"
                             pInputText
                             type="text"
+                            [ngClass]="{'error-outline': addApartForm.get('street')?.hasError('required') && addApartForm.get('street')?.touched}"
                             required
                         />
                     </div>
@@ -84,6 +89,7 @@
                         id="buildingNumber"
                         pInputText
                         type="text"
+                        [ngClass]="{'error-outline': addApartForm.get('buildingNumber')?.hasError('required') && addApartForm.get('buildingNumber')?.touched}"
                         required
                       />
                     </div>
@@ -97,6 +103,7 @@
                         id="apartmentNumber"
                         pInputText
                         type="text"
+                        [ngClass]="{'error-outline': addApartForm.get('apartmentNumber')?.hasError('required') && addApartForm.get('apartmentNumber')?.touched}"
                         required
                       />
                     </div>

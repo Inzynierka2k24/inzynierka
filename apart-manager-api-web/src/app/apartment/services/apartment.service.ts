@@ -15,8 +15,8 @@ export class ApartmentService {
     return this.http.get<Apartment[]>('/api/'+ user.id +'/apartment');
   }
 
-  addApartment(user: UserDTO, apartment: Apartment): Observable<boolean> {
-    return this.http.post<boolean>('/api/'+ user.id +'/apartment', apartment);
+  addApartment(user: UserDTO, apartment: Apartment): Observable<string> {
+    return this.http.post<string>('/api/'+ user.id +'/apartment', apartment);
   }
 
   updateApartment(user: UserDTO, apartment: Apartment): Observable<Apartment> {

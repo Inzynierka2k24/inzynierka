@@ -1,9 +1,12 @@
 import {Component, OnInit} from '@angular/core';
-import {Finance} from "../../../generated";
+import {Apartment, Finance, UserDTO} from "../../../generated";
 import {FormBuilder, FormGroup, FormsModule} from "@angular/forms";
 import {FinanceService} from "../service/finance.service";
 import {MessageService} from "primeng/api";
 import {Router} from "@angular/router";
+import {selectCurrentUser} from "../../core/store/user/user.selectors";
+import {Store} from "@ngrx/store";
+import {AppState} from "../../core/store/app.store";
 
 @Component({
   selector: 'app-finance-chart',
@@ -17,75 +20,28 @@ export class FinanceChartComponent implements OnInit{
   filterForm: FormGroup;
   monthlyRevenue: any;
   years = [
-    { name: "2017" },
-    { name: "2018" },
-    { name: "2019" },
-    { name: "2020" },
-    { name: "2021" },
-    { name: "2022" },
     { name: "2023" },
-    { name: "2024" },
+    { name: "2022" },
+    { name: "2021" },
+    { name: "2020" },
+    { name: "2019" },
+    { name: "2018" },
+    { name: "2017" },
   ];
+  isUserLoggedIn = false;
+  user: UserDTO;
+  selectedYear: string;
 
-  constructor(private fb: FormBuilder)
+  constructor(private store: Store<AppState>,
+              private financeService: FinanceService,
+              private fb: FormBuilder)
   {
     this.filterForm = this.fb.group({
       filterYear: [null],
     });
-
-    this.filterForm.setValue({
-      filterYear: 2023,
-    });
-
-    // this.filterForm.get("filterYear")?.valueChanges.subscribe(x => {
-    //   this.calculateRevenue();
-    // });
-
   }
   ngOnInit() {
-    this.selectedYear = this.filterForm.value.filterYear;
-    this.finances = [
-        {
-          userId: 1,
-          apartmentId: 1,
-          eventId: 1,
-          eventType: "RENOVATION",
-          source: "CLEANING",
-          price: 120,
-          date: new Date(),
-          details: "Cleaned carpet",
-        },
-        {
-          userId: 1,
-          apartmentId: 1,
-          eventId: 1,
-          eventType: "RENOVATION",
-          source: "REPAIR",
-          price: 150,
-          date: new Date('2023-10-11T03:24:00'),
-          details: "Promotions",
-        },
-        {
-          userId: 3,
-          apartmentId: 2,
-          eventId: 1,
-          eventType: "RESERVATION",
-          source: "BOOKING",
-          price: 1000.79,
-          date: new Date('2023-11-11T03:24:00'),
-          details: "Promotions",
-        },
-        {
-          userId: 3,
-          apartmentId: 2,
-          eventId: 1,
-          eventType: "RESERVATION",
-          source: "BOOKING",
-          price: 1000.79,
-          date: new Date('2023-08-11T03:24:00'),
-          details: "Promotions",
-        },
-    ];
+
     const documentStyle = getComputedStyle(document.documentElement);
     const textColor = documentStyle.getPropertyValue('--text-color');
     const textColorSecondary = documentStyle.getPropertyValue('--text-color-secondary');
@@ -141,17 +97,35 @@ export class FinanceChartComponent implements OnInit{
         },
       },
     };
+    this.filterForm.setValue({
+      filterYear: 2023,
+    });
+    this.selectedYear = this.filterForm.value.filterYear;
+
+    const userDataSub = this.store
+      .select(selectCurrentUser)
+      .subscribe((user) => {
+        if (user) {
+          this.isUserLoggedIn = true;
+          this.user = user;
+          this.financeService.getFinances(this.user).subscribe((data: Finance[]) => {
+            this.finances = data;
+            this.calculateRevenue();
+          });
+
+        } else {
+          this.isUserLoggedIn = false;
+        }
+      });
   }
 
-  selectedYear: string;
-
   calculateRevenue(): void {
-    this.selectedYear = this.filterForm.value.filterYear.name;
+    this.selectedYear = this.filterForm.value.filterYear;
     this.monthlyRevenue = new Array(12).fill(0);
 
     for (var val of this.finances) {
-      if (val.date.getFullYear() == parseInt(this.selectedYear)){
-        this.monthlyRevenue[val.date.getMonth()] += val.price;
+      if (new Date(val.date).getFullYear() == parseInt(this.selectedYear)){
+        this.monthlyRevenue[new Date(val.date).getMonth()] += val.price;
       }
     }
 

@@ -73,26 +73,6 @@ export class FinanceListComponent {
     });
   }
 
-  // ngOnInit() {
-  //   const userDataSub = this.store
-  //     .select(selectCurrentUser)
-  //     .subscribe((user) => {
-  //       if (user) {
-  //         this.isUserLoggedIn = true;
-  //         this.user = user;
-  //         this.financeService.getFinances(this.user).subscribe((data: Finance[]) => {
-  //           this.finances = data;
-  //         });
-  //       } else {
-  //         this.isUserLoggedIn = false;
-  //       }
-  //   });
-  //
-  //   this.filteredFinances = [...this.finances];
-  //   this.sumOfPrices = 0;
-  //   this.filteredFinances.forEach((f) => {this.sumOfPrices += f.price});
-  // }
-
   ngAfterViewInit() {
     const userDataSub = this.store
       .select(selectCurrentUser)
