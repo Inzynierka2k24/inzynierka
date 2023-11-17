@@ -22,10 +22,7 @@ export class ApartmentListComponent implements OnInit {
   messages: Message[] = [];
   isEditing = true;
   editApartmentForm: FormGroup;
-  user: UserDTO;
-  isUserLoggedIn = false;
-  displayContent = false;
-  formToggle = false;
+  user$: Observable<UserDTO | undefined>;
 
   constructor(private store: Store<AppState>,
               private apartmentService: ApartmentService,
@@ -43,21 +40,15 @@ export class ApartmentListComponent implements OnInit {
       apartmentNumber: ['', Validators.required],
     });
   }
+
   ngOnInit() {
-
-    const userDataSub = this.store
-      .select(selectCurrentUser)
-      .subscribe((user) => {
-        if (user) {
-          this.isUserLoggedIn = true;
-          this.user = user;
-
-          this.apartmentService.getApartments(this.user).subscribe((data: Apartment[]) => {
+    this.user$ = this.store.select(selectCurrentUser);
+    this.user$.subscribe((user) => {
+      if (user) {
+        this.apartmentService.getApartments(user).subscribe((data: Apartment[]) => {
           this.apartments = data;
-          });
-        } else {
-          this.isUserLoggedIn = false;
-        }
+        });
+      }
     });
   }
 
