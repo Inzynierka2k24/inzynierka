@@ -17,12 +17,12 @@ import {AppState} from "../../core/store/app.store";
 })
 export class ReservationListComponent implements OnInit {
   messages: Message[] = [];
-  user: UserDTO;
   reservations: Reservation[] = [];
   reservation: Reservation;
   isUserLoggedIn = false;
   apartments: Apartment[] = [];
   apartment: Apartment;
+  user$: Observable<UserDTO | undefined>;
 
   constructor(private store: Store<AppState>,
               private reservationService: ReservationService,
@@ -32,28 +32,22 @@ export class ReservationListComponent implements OnInit {
   }
 
   ngOnInit() {
-    const userDataSub = this.store
-      .select(selectCurrentUser)
-      .subscribe((user) => {
-        if (user) {
-          this.isUserLoggedIn = true;
-          this.user = user;
+    this.user$ = this.store.select(selectCurrentUser);
+    this.user$.subscribe((user) => {
+      if (user) {
+        this.apartmentService.getApartments(user).subscribe((data: Apartment[]) => {
+          this.apartments = data;
 
-          this.apartmentService.getApartments(this.user).subscribe((data: Apartment[]) => {
-            this.apartments = data;
-
-            if (this.apartments && this.apartments.length > 0) {
-              for(const val of this.apartments) {
-                this.reservationService.getReservations(this.user, val).subscribe((data: Reservation[]) => {
-                  this.reservations = this.reservations.concat(data);
-                });
-              }
+          if (this.apartments && this.apartments.length > 0) {
+            for(const val of this.apartments) {
+              this.reservationService.getReservations(user, val).subscribe((data: Reservation[]) => {
+                this.reservations = this.reservations.concat(data);
+              });
             }
-          });
-        } else {
-          this.isUserLoggedIn = false;
-        }
-      });
+          }
+        });
+      }
+    });
   }
 
   addReservation() {

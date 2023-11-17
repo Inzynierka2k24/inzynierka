@@ -7,6 +7,8 @@ import {AppState} from "../../core/store/app.store";
 import {selectCurrentUser} from "../../core/store/user/user.selectors";
 import {Apartment, UserDTO} from "../../../generated";
 import {ApartmentService} from "../services/apartment.service";
+import { switchMap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-add-apartment',
@@ -18,6 +20,7 @@ export class AddApartmentComponent {
   isUserLoggedIn = false;
   addApartForm;
   user: UserDTO;
+  apartmentResult$: Observable<string | undefined>;
 
   constructor(private formBuilder: FormBuilder,
               private store: Store<AppState>,
@@ -36,60 +39,90 @@ export class AddApartmentComponent {
       })
   }
 
+  // addApartment(): void {
+  //   console.log("1")
+  //   if (this.addApartForm.valid) {
+  //     console.log("2")
+  //     this.apartmentResult$ = this.store.select(selectCurrentUser).pipe(
+  //       switchMap((user) => {
+  //         if (!user) {
+  //           this.isUserLoggedIn = false;
+  //           throw new Error('User not logged in');
+  //         }
+  //         this.isUserLoggedIn = true;
+  //         this.user = user;
+  //         const apartmentData: Apartment = {
+  //           dailyPrice: parseInt(this.addApartForm.value.dailyPrice!),
+  //           title: this.addApartForm.value.title!,
+  //           country: this.addApartForm.value.country!,
+  //           city: this.addApartForm.value.city!,
+  //           street: this.addApartForm.value.street!,
+  //           buildingNumber: this.addApartForm.value.buildingNumber!,
+  //           apartmentNumber: this.addApartForm.value.apartmentNumber!,
+  //         };
+  //
+  //         return this.apartmentService.addApartment(this.user, apartmentData);
+  //       })
+  //     );
+  //     console.log(this.apartmentResult$)
+  //
+  //   } else {
+  //     this.messageService.add({
+  //       severity: 'error',
+  //       summary: 'Validation Error',
+  //       detail: 'Please fill in all required fields and correct validation errors.',
+  //     });
+  //     this.markAllFieldsAsTouched(this.addApartForm);
+  //   }
+  // }
+
   addApartment(): void {
-    if (this.addApartForm.valid){
-      this.store.dispatch(
-        ApartmentActions.addApartment({
-          dailyPrice: parseInt(this.addApartForm.value.dailyPrice!),
-          title: this.addApartForm.value.title!,
-          country: this.addApartForm.value.country!,
-          city: this.addApartForm.value.city!,
-          street: this.addApartForm.value.street!,
-          buildingNumber: this.addApartForm.value.buildingNumber!,
-          apartmentNumber: this.addApartForm.value.apartmentNumber!,
-        }),
-      )
-      this.addApartForm.reset();
-
-      const apartmentData: Apartment = {
-          dailyPrice: parseInt(this.addApartForm.value.dailyPrice!),
-          title: this.addApartForm.value.title!,
-          country: this.addApartForm.value.country!,
-          city: this.addApartForm.value.city!,
-          street: this.addApartForm.value.street!,
-          buildingNumber: this.addApartForm.value.buildingNumber!,
-          apartmentNumber: this.addApartForm.value.apartmentNumber!,
-      };
-
-      const apartmentDataSub = this.store
+    if (this.addApartForm.valid) {
+      this.store
         .select(selectCurrentUser)
-        .subscribe((user) => {
-          if (user) {
+        .pipe(
+          switchMap((user) => {
+            if (!user) {
+              this.isUserLoggedIn = false;
+              throw new Error('User not logged in');
+            }
             this.isUserLoggedIn = true;
             this.user = user;
-            this.apartmentService.addApartment(this.user, apartmentData).subscribe(
-              (result: string) => {
-                  this.addApartForm.reset()
-
-            },
-        (error) => {
-                console.error('API call error:', error); //TODO
-              }
-            );
-          } else {
-            this.isUserLoggedIn = false;
+            const apartmentData: Apartment = {
+              dailyPrice: parseInt(this.addApartForm.value.dailyPrice!),
+              title: this.addApartForm.value.title!,
+              country: this.addApartForm.value.country!,
+              city: this.addApartForm.value.city!,
+              street: this.addApartForm.value.street!,
+              buildingNumber: this.addApartForm.value.buildingNumber!,
+              apartmentNumber: this.addApartForm.value.apartmentNumber!,
+            };
+            return this.apartmentService.addApartment(this.user, apartmentData);
+          })
+        )
+        .subscribe(
+          (result: string) => {
+            this.addApartForm.reset();
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Apartment added correctly',
+              detail: 'Please fill in all required fields and correct validation errors.',
+            });
+          },
+          (error) => {
+            console.error('API call error:', error);
           }
-        });
-    }
-    else {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Validation Error',
-          detail: 'Please fill in all required fields and correct validation errors.',
-        });
-        this.markAllFieldsAsTouched(this.addApartForm);
+        );
+    } else {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Validation Error',
+        detail: 'Please fill in all required fields and correct validation errors.',
+      });
+      this.markAllFieldsAsTouched(this.addApartForm);
     }
   }
+
 
   private markAllFieldsAsTouched(formGroup: FormGroup): void {
     Object.keys(formGroup.controls).forEach((controlName) => {
