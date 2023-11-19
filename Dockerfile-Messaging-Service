@@ -1,21 +1,14 @@
 # Build stage
 FROM maven:3.9.5-eclipse-temurin-17 AS build
 ENV PB_REL https://github.com/protocolbuffers/protobuf/releases
-RUN --mount=type=secret,id=MAIL_PASSWORD \
-  --mount=type=secret,id=MAIL_USER \
-  --mount=type=secret,id=MESSAGE_DB_PASSWORD \
-  --mount=type=secret,id=MESSAGE_DB_URL \
-  --mount=type=secret,id=MESSAGE_DB_USER \
-  --mount=type=secret,id=SMS_CLIENT_KEY \
-  --mount=type=secret,id=SMS_CLIENT_SECRET \
-   export MAIL_PASSWORD=$(cat /run/secrets/MAIL_PASSWORD) && \
-   export MAIL_USER=$(cat /run/secrets/MAIL_USER) && \
-   export MESSAGE_DB_PASSWORD=$(cat /run/secrets/MESSAGE_DB_PASSWORD) && \
-   export MESSAGE_DB_URL=$(cat /run/secrets/MESSAGE_DB_URL) && \
-   export MESSAGE_DB_USER=$(cat /run/secrets/MESSAGE_DB_USER) && \
-   export SMS_CLIENT_KEY=$(cat /run/secrets/SMS_CLIENT_KEY) && \
-   export SMS_CLIENT_SECRET=$(cat /run/secrets/SMS_CLIENT_SECRET) && \
-   echo $MESSAGE_DB_URL
+RUN --mount=type=secret,id=MAIL_PASSWORD MAIL_PASSWORD=$(cat /run/secrets/MAIL_PASSWORD) \
+  --mount=type=secret,id=MAIL_USER MAIL_USER=$(cat /run/secrets/MAIL_USER) \
+  --mount=type=secret,id=MESSAGE_DB_PASSWORD MESSAGE_DB_PASSWORD=$(cat /run/secrets/MESSAGE_DB_PASSWORD)  \
+  --mount=type=secret,id=MESSAGE_DB_URL MESSAGE_DB_URL=$(cat /run/secrets/MESSAGE_DB_URL) \
+  --mount=type=secret,id=MESSAGE_DB_USER MESSAGE_DB_USER=$(cat /run/secrets/MESSAGE_DB_USER) \
+  --mount=type=secret,id=SMS_CLIENT_KEY SMS_CLIENT_KEY=$(cat /run/secrets/SMS_CLIENT_KEY) \
+  --mount=type=secret,id=SMS_CLIENT_SECRET SMS_CLIENT_SECRET=$(cat /run/secrets/SMS_CLIENT_SECRET) \
+RUN echo $MESSAGE_DB_URL
 RUN mkdir inzynierka
 COPY . inzynierka
 RUN apt update -y && apt install -y unzip
