@@ -1,4 +1,4 @@
-name: Azure deploy
+name: Azure External Integration Service deploy
 
 on:
   push:
@@ -40,41 +40,5 @@ jobs:
           registry-username: ${{ secrets.REGISTRY_USERNAME }}
           registry-password: ${{ secrets.REGISTRY_PASSWORD }}
           name: external-integration-service
-          ports: 6565 80
-          location: 'westeurope'
-
-  build-and-deploy-messaging-service:
-    runs-on: ubuntu-latest
-    environment: manual
-    steps:
-      # checkout the repo
-      - name: 'Checkout GitHub Action'
-        uses: actions/checkout@v4
-
-      - name: 'Login via Azure CLI'
-        uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
-
-      - name: 'Build and push image'
-        uses: azure/docker-login@v1
-        with:
-          login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
-          username: ${{ secrets.REGISTRY_USERNAME }}
-          password: ${{ secrets.REGISTRY_PASSWORD }}
-      - run: |
-          docker build -f Dockerfile-Messaging-Service . -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/messaging-service:${{ github.sha }}
-          docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/messaging-service:${{ github.sha }}
-
-      - name: 'Deploy to Azure Container Instances'
-        uses: 'azure/aci-deploy@v1'
-        with:
-          resource-group: ${{ secrets.RESOURCE_GROUP }}
-          dns-name-label: ${{ secrets.RESOURCE_GROUP }}
-          image: ${{ secrets.REGISTRY_LOGIN_SERVER }}/messaging-service:${{ github.sha }}
-          registry-login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
-          registry-username: ${{ secrets.REGISTRY_USERNAME }}
-          registry-password: ${{ secrets.REGISTRY_PASSWORD }}
-          name: messaging-service
           ports: 6565 80
           location: 'westeurope'
