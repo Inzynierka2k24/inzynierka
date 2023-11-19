@@ -7,6 +7,16 @@ import {
   Routes,
 } from '@angular/router';
 import { WelcomePageComponent } from './welcome-page/welcome-page.component';
+import {AddApartmentComponent} from "./apartment/add-apartment/add-apartment.component";
+import {ApartmentListComponent} from "./apartment/apartment-list/apartment-list.component";
+import {ReservationCalendarComponent} from "./reservation/reservation-calendar/reservation-calendar.component";
+import {AddReservationComponent} from "./reservation/add-reservation/add-reservation.component";
+import {ReservationListComponent} from "./reservation/reservation-list/reservation-list.component";
+import {EditApartmentComponent} from "./apartment/edit-apartment/edit-apartment.component";
+import {EditReservationComponent} from "./reservation/edit-reservation/edit-reservation.component";
+import {FinanceListComponent} from "./finance/finance-list/finance-list.component";
+import {AddFinanceComponent} from "./finance/add-finance/add-finance.component";
+import {EditFinanceComponent} from "./finance/edit-finance/edit-finance.component";
 import { PreferencesComponent } from './user/preferences/preferences.component';
 import { selectCurrentUser } from './core/store/user/user.selectors';
 import { map, Observable, take } from 'rxjs';
@@ -20,9 +30,9 @@ import {
   HttpRequest,
 } from '@angular/common/http';
 import UserActions from './core/store/user/user.actions';
-import { AddApartmentComponent } from './apartments/add-apartment/add-apartment.component';
-import { ReservationListComponent } from './resevations/reservation-list/reservation-list.component';
-import { ApartmentListComponent } from './apartments/apartment-list/apartment-list.component';
+import {FinanceChartComponent} from "./finance/finance-chart/finance-chart.component";
+
+
 
 /**
  * Appends bearer token to each request when present.
@@ -77,6 +87,7 @@ const authResolver: ResolveFn<boolean> = () => {
     }),
   );
 };
+
 const routes: Routes = [
   {
     path: '',
@@ -101,17 +112,34 @@ const routes: Routes = [
         canActivate: [authenticatedGuard],
         children: [
           { path: 'add', component: AddApartmentComponent },
+          { path: 'edit', component: EditApartmentComponent },
           { path: '', component: ApartmentListComponent },
         ],
       },
       {
         path: 'reservations',
         canActivate: [authenticatedGuard],
-        component: ReservationListComponent,
+        children: [
+          { path: 'add', component: AddReservationComponent },
+          { path: 'calendar', component: ReservationCalendarComponent },
+          { path: 'edit', component: EditReservationComponent },
+          { path: '', component: ReservationListComponent },
+        ],
+      },
+      {
+        path: 'finances',
+        canActivate: [authenticatedGuard],
+        children: [
+          { path: 'add', component: AddFinanceComponent },
+          { path: 'edit', component: EditFinanceComponent },
+          { path: 'chart', component: FinanceChartComponent},
+          { path: '', component: FinanceListComponent },
+        ],
       },
       { path: '**', component: WelcomePageComponent },
     ],
   },
+
 ];
 
 @NgModule({

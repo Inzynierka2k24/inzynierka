@@ -1,0 +1,23 @@
+.form-container {
+  width: 60%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+}
+
+.custom-button {
+  font-size: 20px;
+}
+
+.column {
+  flex: 1;
+  padding: 10px;
+}
+
+.column:nth-child(odd) {
+  margin-right: 10px;
+}
+
+.error-outline {
+  border: 3px solid red;
+}

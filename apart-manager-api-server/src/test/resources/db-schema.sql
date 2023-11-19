@@ -53,7 +53,7 @@ CREATE TABLE IF NOT EXISTS finances (
                                         apartment_id bigint NOT NULL REFERENCES apartments(apartment_id),
                                         event_id bigint,
                                         event_type int,
-                                        cost_source int NOT NULL,
+                                        source int NOT NULL,
                                         price float4 NOT NULL,
                                         date date NOT NULL,
                                         details varchar(50)

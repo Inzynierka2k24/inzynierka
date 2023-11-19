@@ -35,13 +35,14 @@ public class FinanceDao {
           apartment_id = ?,
           event_id = ?,
           event_type = ?,
-          cost_source = ?,
+          source = ?,
           price = ?,
           date = ?,
           details = ?
         WHERE
           finance_id = ?
         """;
+
   private static final RowMapper<Finance> financeRowMapper =
       (rs, rowNum) ->
           new Finance(
@@ -50,7 +51,7 @@ public class FinanceDao {
               rs.getLong("apartment_id"),
               rs.getLong("event_id"),
               rs.getInt("event_type"),
-              rs.getInt("cost_source"),
+              rs.getInt("source"),
               rs.getFloat("price"),
               rs.getTimestamp("date").toLocalDateTime().toInstant(ZoneOffset.UTC),
               rs.getString("details"));

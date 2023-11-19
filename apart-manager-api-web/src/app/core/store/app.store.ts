@@ -11,7 +11,6 @@ import {
   logout,
   register,
 } from './user/user.effects';
-import { apartmentReducer } from './apartment/apartment.reducer';
 
 export interface AppState {
   user: UserState;
@@ -21,7 +20,6 @@ export interface AppState {
   imports: [
     StoreModule.forRoot({
       user: userReducer,
-      apartmentEntries: apartmentReducer,
     }),
     EffectsModule.forRoot({
       login,

@@ -1,0 +1,52 @@
+<div class="surface-card p-4 shadow-7 border-round w-full">
+  <h2>Finances List</h2>
+  <form [formGroup]="filterFinanceForm">
+    <div class="labels">
+      <label class="text-900 font-medium mb-2 controls">Apartment ID:</label>
+      <input
+        formControlName="filterApartmentId"
+        pInputText
+        type="number"
+        required
+      />
+      <label class="text-900 font-medium mb-2 controls">Event Type:</label>
+      <p-dropdown formControlName="filterEventType" [options]="eventTypes" optionLabel="name"></p-dropdown>
+
+      <label class="text-900 font-medium mb-2 controls">Source:</label>
+      <p-dropdown formControlName="filterSource" [options]="sources" optionLabel="name" ></p-dropdown>
+
+      <p-button class="p-button-text controls" icon="pi pi-filter" label="Filter" (click)="applyFilter()"></p-button>
+      <p-button class="p-button-text controls" icon="pi pi-filter-slash" label="Disable" (click)="disableFilter()"></p-button>
+
+    </div>
+  </form>
+  <p-table [value]="filteredFinances" [tableStyle]="{ 'min-width': '50rem' }">
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Apartment ID</th>
+        <th>Event ID</th>
+        <th>Event Type</th>
+        <th>Source</th>
+        <th>Price</th>
+        <th>Date</th>
+        <th>Details</th>
+        <th></th>
+        <th><p-button icon="pi pi-plus" (click)="addFinance()"></p-button></th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-finance>
+      <tr>
+        <td>{{ finance.apartmentId }}</td>
+        <td>{{ finance.eventId }}</td>
+        <td>{{ finance.eventType }}</td>
+        <td>{{ finance.source }}</td>
+        <td>{{ finance.price }}</td>
+        <td>{{ finance.date | date:'dd-MM-YYYY HH:mm' }}</td>
+        <td>{{ finance.details }}</td>
+        <td><p-button icon="pi pi-file-edit" (click)="startEditing(finance)"></p-button></td>
+        <td><p-button icon="pi pi-trash" (click)="deleteFinance(finance)"></p-button></td>
+      </tr>
+    </ng-template>
+  </p-table>
+  <h2>Sum of prices: {{sumOfPrices}}</h2>
+</div>

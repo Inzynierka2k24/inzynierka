@@ -1,0 +1,16 @@
+.form-container {
+  width: 60%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+}
+
+.custom-button {
+  font-size: 20px;
+  margin-right: 10px;
+}
+
+.column {
+  flex: 1;
+  padding: 10px;
+}

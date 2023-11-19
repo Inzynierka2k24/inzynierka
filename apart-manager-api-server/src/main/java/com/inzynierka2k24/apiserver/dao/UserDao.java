@@ -1,14 +1,13 @@
 package com.inzynierka2k24.apiserver.dao;
 
 import com.inzynierka2k24.apiserver.model.User;
+import java.util.Optional;
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
-import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
