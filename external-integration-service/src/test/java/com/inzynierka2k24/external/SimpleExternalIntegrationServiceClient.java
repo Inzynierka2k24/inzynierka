@@ -21,8 +21,8 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class SimpleExternalIntegrationServiceClient {
-  private static final String API_URL = "localhost";//"external-integration-service.onrender.com";
-  private static final int PORT = 10000;
+  private static final String API_URL = "localhost";
+  private static final int PORT = 6565;
 
   public static void main(String[] args) {
     ManagedChannel channel =

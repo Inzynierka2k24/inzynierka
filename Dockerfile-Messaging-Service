@@ -1,0 +1,18 @@
+# Build stage
+FROM maven:3.9.5-eclipse-temurin-17 AS build
+ENV PB_REL https://github.com/protocolbuffers/protobuf/releases
+RUN mkdir inzynierka
+COPY . inzynierka
+RUN apt update -y && apt install -y unzip
+RUN mkdir inzynierka/proto/target && mkdir inzynierka/proto/target/protoc-plugins
+RUN curl -LO $PB_REL/download/v3.15.8/protoc-3.15.8-linux-x86_64.zip
+RUN unzip protoc-3.15.8-linux-x86_64.zip -d inzynierka/proto/target/protoc-plugins
+RUN mvn -f inzynierka/proto/pom.xml clean install
+RUN mvn -f inzynierka/messaging-service/pom.xml clean package
+
+
+# Package stage
+FROM eclipse-temurin:17-alpine
+COPY --from=build inzynierka/messaging-service/target/*.jar /usr/app/service.jar
+EXPOSE 8080 6565
+ENTRYPOINT ["java","-jar","/usr/app/service.jar"]
