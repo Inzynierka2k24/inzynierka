@@ -21,6 +21,14 @@ jobs:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: 'Build and push image'
+        env:
+          MAIL_USER: ${{ secrets.MAIL_USER }}
+          MAIL_PASSWORD: ${{ secrets.MAIL_PASSWORD }}
+          MESSAGE_DB_USER: ${{ secrets.MESSAGE_DB_USER }}
+          MESSAGE_DB_PASSWORD: ${{ secrets.MESSAGE_DB_PASSWORD }}
+          MESSAGE_DB_URL: ${{ secrets.MESSAGE_DB_URL }}
+          SMS_CLIENT_KEY: ${{ secrets.SMS_CLIENT_KEY }}
+          SMS_CLIENT_SECRET: ${{ secrets.SMS_CLIENT_SECRET }}
         uses: azure/docker-login@v1
         with:
           login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
