@@ -27,7 +27,6 @@ jobs:
           username: ${{ secrets.REGISTRY_USERNAME }}
           password: ${{ secrets.REGISTRY_PASSWORD }}
       - run: |
-          ls
           docker build -f Dockerfile-External-Integration-Service . -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/external-integration-service:${{ github.sha }}
           docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/external-integration-service:${{ github.sha }}
 
@@ -41,4 +40,4 @@ jobs:
           registry-username: ${{ secrets.REGISTRY_USERNAME }}
           registry-password: ${{ secrets.REGISTRY_PASSWORD }}
           name: external-integration-service
-          location: 'west eu'
+          location: 'westeurope'
