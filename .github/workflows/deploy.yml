@@ -40,4 +40,5 @@ jobs:
           registry-username: ${{ secrets.REGISTRY_USERNAME }}
           registry-password: ${{ secrets.REGISTRY_PASSWORD }}
           name: external-integration-service
+          ports: 6565 80
           location: 'westeurope'
