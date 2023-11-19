@@ -27,7 +27,8 @@ jobs:
           username: ${{ secrets.REGISTRY_USERNAME }}
           password: ${{ secrets.REGISTRY_PASSWORD }}
       - run: |
-          docker build -f .\Dockerfile-External-Integration-Service . -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/external-integration-service:${{ github.sha }}
+          ls
+          docker build -f Dockerfile-External-Integration-Service . -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/external-integration-service:${{ github.sha }}
           docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/external-integration-service:${{ github.sha }}
 
       - name: 'Deploy to Azure Container Instances'
