@@ -35,7 +35,15 @@ jobs:
           username: ${{ secrets.REGISTRY_USERNAME }}
           password: ${{ secrets.REGISTRY_PASSWORD }}
       - run: |
-          docker build -f Dockerfile-Messaging-Service . -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/messaging-service:${{ github.sha }}
+          docker build -f Dockerfile-Messaging-Service . \
+          --secret id=MAIL_USER,env=MAIL_USER \
+          --secret id=MAIL_PASSWORD,env=MAIL_PASSWORD \
+          --secret id=MESSAGE_DB_USER,env=MESSAGE_DB_USER \
+          --secret id=MESSAGE_DB_PASSWORD,env=MESSAGE_DB_PASSWORD \
+          --secret id=MESSAGE_DB_URL,env=MESSAGE_DB_URL \
+          --secret id=MESSAGE_DB_URL,env=MESSAGE_DB_URL \
+          --secret id=SMS_CLIENT_SECRET,env=SMS_CLIENT_SECRET \
+          -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/messaging-service:${{ github.sha }}
           docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/messaging-service:${{ github.sha }}
 
       - name: 'Deploy to Azure Container Instances'
