@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Store} from "@ngrx/store";
-import ApartmentActions from "../store/apartment.actions";
 import {MessageService} from "primeng/api";
 import {AppState} from "../../core/store/app.store";
 import {selectCurrentUser} from "../../core/store/user/user.selectors";
@@ -39,44 +38,7 @@ export class AddApartmentComponent {
       })
   }
 
-  // addApartment(): void {
-  //   console.log("1")
-  //   if (this.addApartForm.valid) {
-  //     console.log("2")
-  //     this.apartmentResult$ = this.store.select(selectCurrentUser).pipe(
-  //       switchMap((user) => {
-  //         if (!user) {
-  //           this.isUserLoggedIn = false;
-  //           throw new Error('User not logged in');
-  //         }
-  //         this.isUserLoggedIn = true;
-  //         this.user = user;
-  //         const apartmentData: Apartment = {
-  //           dailyPrice: parseInt(this.addApartForm.value.dailyPrice!),
-  //           title: this.addApartForm.value.title!,
-  //           country: this.addApartForm.value.country!,
-  //           city: this.addApartForm.value.city!,
-  //           street: this.addApartForm.value.street!,
-  //           buildingNumber: this.addApartForm.value.buildingNumber!,
-  //           apartmentNumber: this.addApartForm.value.apartmentNumber!,
-  //         };
-  //
-  //         return this.apartmentService.addApartment(this.user, apartmentData);
-  //       })
-  //     );
-  //     console.log(this.apartmentResult$)
-  //
-  //   } else {
-  //     this.messageService.add({
-  //       severity: 'error',
-  //       summary: 'Validation Error',
-  //       detail: 'Please fill in all required fields and correct validation errors.',
-  //     });
-  //     this.markAllFieldsAsTouched(this.addApartForm);
-  //   }
-  // }
-
-  addApartment(): void {
+    addApartment(): void {
     if (this.addApartForm.valid) {
       this.store
         .select(selectCurrentUser)
@@ -101,17 +63,18 @@ export class AddApartmentComponent {
           })
         )
         .subscribe(
-          (result: string) => {
+          {
+          next: response =>{
             this.addApartForm.reset();
             this.messageService.add({
               severity: 'success',
               summary: 'Apartment added correctly',
-              detail: 'Please fill in all required fields and correct validation errors.',
-            });
+              detail: '',
+            })},
+          error:error => {
+              console.error('API call error:', error);
+            }
           },
-          (error) => {
-            console.error('API call error:', error);
-          }
         );
     } else {
       this.messageService.add({
@@ -122,7 +85,6 @@ export class AddApartmentComponent {
       this.markAllFieldsAsTouched(this.addApartForm);
     }
   }
-
 
   private markAllFieldsAsTouched(formGroup: FormGroup): void {
     Object.keys(formGroup.controls).forEach((controlName) => {
