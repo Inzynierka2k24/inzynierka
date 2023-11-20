@@ -36,23 +36,6 @@ export class AddReservationComponent {
         endDate: ['', [Validators.required]],
       })
   }
-  //
-  // addReservation(): void {
-  //   if (this.addReservationForm.valid){
-  //     this.store.dispatch(
-  //       ReservationActions.addReservation({
-  //         apartmentId: parseInt(this.addReservationForm.value.apartmentId!),
-  //         startDate: new Date(this.addReservationForm.value.startDate!),
-  //         endDate: new Date(this.addReservationForm.value.endDate!),
-  //       }),
-  //     )
-  //     this.addReservationForm.reset();
-  //   }
-  //   else {
-  //     //TODO validation errors
-  //   }
-  // }
-
 
   addReservation(): void {
     if (this.addReservationForm.valid) {
@@ -74,16 +57,12 @@ export class AddReservationComponent {
               startDate: new Date(this.addReservationForm.value.startDate!),
               endDate: new Date(this.addReservationForm.value.endDate!),
             };
-            const reservationApartment = this.getApartment(reservationData);
-            if (!reservationApartment) {
-              console.error('Apartment data is null');
-              return EMPTY;
-            }
-            return this.reservationService.addReservation(this.user, reservationApartment, reservationData);
+            return this.reservationService.addReservation(this.user, reservationData.apartmentId, reservationData);
           })
         )
         .subscribe(
           {
+            //todo display message
           next: response =>{
             this.addReservationForm.reset();
             this.messageService.add({
@@ -115,14 +94,5 @@ export class AddReservationComponent {
         control?.markAsTouched();
       }
     });
-  }
-
-  getApartment(reservation: Reservation) {
-    for (const val of this.apartments){
-      if (val.id == reservation.apartmentId){
-        return val;
-      }
-    }
-    return null;
   }
 }

@@ -1,9 +1,13 @@
 import { Component } from '@angular/core';
-import {Apartment} from "../../../generated";
+import {Apartment, UserDTO} from "../../../generated";
 import {Message, MessageService} from "primeng/api";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {ApartmentService} from "../services/apartment.service";
 import {ActivatedRoute, Router} from "@angular/router";
+import {selectCurrentUser} from "../../core/store/user/user.selectors";
+import {switchMap} from "rxjs/operators";
+import {Store} from "@ngrx/store";
+import {AppState} from "../../core/store/app.store";
 
 @Component({
   selector: 'app-edit-apartment',
@@ -14,11 +18,14 @@ export class EditApartmentComponent {
   apartment: any;
   messages: Message[] = [];
   editApartmentForm: FormGroup;
+  isUserLoggedIn = false;
+  user: UserDTO;
 
 
   constructor(private apartmentService: ApartmentService,
               private messageService: MessageService,
               private router: Router,
+              private store: Store<AppState>,
               private fb: FormBuilder,
               private route: ActivatedRoute) {
 
@@ -27,13 +34,13 @@ export class EditApartmentComponent {
     });
 
     this.editApartmentForm = this.fb.group({
-      dailyPrice: [null, Validators.required],
-      title: ['', Validators.required],
-      country: ['', Validators.required],
-      city: ['', Validators.required],
-      street: ['', Validators.required],
-      buildingNumber: ['', Validators.required],
-      apartmentNumber: ['', Validators.required],
+        dailyPrice: ['', [Validators.required, Validators.min(0)]],
+        title: ['', [Validators.required]],
+        country: ['', [Validators.required]],
+        city: ['', [Validators.required]],
+        street: ['', [Validators.required]],
+        buildingNumber: ['', [Validators.required, Validators.min(0)]],
+        apartmentNumber: ['', [Validators.required, Validators.min(0)]],
     });
 
     this.editApartmentForm.setValue({
@@ -47,27 +54,63 @@ export class EditApartmentComponent {
     });
   }
 
-  addApartment() {
-    this.router.navigate(['/apartments/add']);
+  editApartment(): void { //todo
+    if (this.editApartmentForm.valid) {
+      this.store
+        .select(selectCurrentUser)
+        .pipe(
+          switchMap((user) => {
+            if (!user) {
+              this.isUserLoggedIn = false;
+              throw new Error('User not logged in');
+            }
+            this.isUserLoggedIn = true;
+            this.user = user;
+            const apartmentData: Apartment = {
+              dailyPrice: parseInt(this.editApartmentForm.value.dailyPrice!),
+              title: this.editApartmentForm.value.title!,
+              country: this.editApartmentForm.value.country!,
+              city: this.editApartmentForm.value.city!,
+              street: this.editApartmentForm.value.street!,
+              buildingNumber: this.editApartmentForm.value.buildingNumber!,
+              apartmentNumber: this.editApartmentForm.value.apartmentNumber!,
+            };
+            return this.apartmentService.updateApartment(this.user, apartmentData);
+          })
+        )
+        .subscribe(
+          {
+          next: response =>{
+            this.editApartmentForm.reset();
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Apartment edited correctly',
+              detail: '',
+            })},
+          error:error => {
+              console.error('API call error:', error);
+            }
+          },
+        );
+    } else {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Validation Error',
+        detail: 'Please fill in all required fields and correct validation errors.',
+      });
+      this.markAllFieldsAsTouched(this.editApartmentForm);
+    }
   }
 
-  saveChanges(apartment: Apartment) {
-    console.log('Edit Apartment:', event);
-    this.messages = [{
-      severity: 'success',
-      detail: 'Apartment edited successfully',
-    }];
-    this.cleanMessages();
-    // this.apartmentService.updateApartment(this.apartment).subscribe((response) => {
-    //   this.isEditing = false;
-    // }, (error) => {
-    //   this.messages = [{
-    //     severity: 'warn',
-    //     detail: 'Cannot update apartment',
-    //   }];
-    // });
-    this.router.navigate(['/apartments']);
-
+  private markAllFieldsAsTouched(formGroup: FormGroup): void {
+    Object.keys(formGroup.controls).forEach((controlName) => {
+      const control = formGroup.get(controlName);
+      if (control instanceof FormGroup) {
+        this.markAllFieldsAsTouched(<FormGroup<any>>control);
+      } else {
+        control?.markAsTouched();
+      }
+    });
   }
 
   cancelEditing() {

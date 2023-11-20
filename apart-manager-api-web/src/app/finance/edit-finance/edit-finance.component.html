@@ -12,6 +12,7 @@
                           id="userId"
                           pInputText
                           type="number"
+                          [value]="editFinanceForm.get('userId')?.value"
                           required
                       />
                     </div>
@@ -24,6 +25,7 @@
                         id="apartmentId"
                         pInputText
                         type="number"
+                        [value]="editFinanceForm.get('apartmentId')?.value"
                         required
                       />
                     </div>
@@ -37,6 +39,7 @@
                         id="eventId"
                         pInputText
                         type="number"
+                        [value]="editFinanceForm.get('eventId')?.value"
                         required
                       />
                     </div>
@@ -57,7 +60,10 @@
                 <div class="p-grid">
                     <div class="p-col-12">
                       <label class="block text-900 font-medium mb-2">Source:</label>
-                      <p-dropdown formControlName="sources" [options]="sources" optionLabel="name"></p-dropdown>
+                      <p-dropdown formControlName="sources"
+                                  [options]="sources"
+                                  optionLabel="name">
+                      </p-dropdown>
                     </div>
 
                     <div class="p-col-12">
@@ -69,6 +75,7 @@
                         id="price"
                         pInputText
                         type="number"
+                        [value]="editFinanceForm.get('price')?.value"
                         required
                       />
                     </div>
@@ -86,6 +93,7 @@
                             id="details"
                             pInputText
                             type="text"
+                            [value]="editFinanceForm.get('details')?.value"
                             required
                         />
                     </div>

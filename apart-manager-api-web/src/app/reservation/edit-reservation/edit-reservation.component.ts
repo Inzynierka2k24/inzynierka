@@ -72,4 +72,15 @@ export class EditReservationComponent {
       this.messages = [];
     }, 3000);
   }
+
+  private markAllFieldsAsTouched(formGroup: FormGroup): void {
+    Object.keys(formGroup.controls).forEach((controlName) => {
+      const control = formGroup.get(controlName);
+      if (control instanceof FormGroup) {
+        this.markAllFieldsAsTouched(<FormGroup<any>>control);
+      } else {
+        control?.markAsTouched();
+      }
+    });
+  }
 }
