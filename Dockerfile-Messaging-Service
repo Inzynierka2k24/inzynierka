@@ -1,10 +1,6 @@
 # Build stage
 FROM maven:3.9.5-eclipse-temurin-17 AS build
 ENV PB_REL https://github.com/protocolbuffers/protobuf/releases
-ENV MAIL_PASSWORD=pass MAIL_USER=user
-ENV MESSAGE_DB_USER=user MESSAGE_DB_PASSWORD=pass MESSAGE_DB_URL=localhost
-ENV SMS_CLIENT_KEY=key SMS_CLIENT_SECRET=secret
-RUN echo $MESSAGE_DB_URL
 RUN mkdir inzynierka
 COPY . inzynierka
 RUN apt update -y && apt install -y unzip
