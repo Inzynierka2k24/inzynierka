@@ -9,6 +9,7 @@ import { Message } from 'primeng/api';
 import {Router} from "@angular/router";
 import {selectCurrentUser} from "../../core/store/user/user.selectors";
 import {AppState} from "../../core/store/app.store";
+import {switchMap} from "rxjs/operators";
 
 @Component({
   selector: 'app-reservation-list',
@@ -23,6 +24,7 @@ export class ReservationListComponent implements OnInit {
   apartments: Apartment[] = [];
   apartment: Apartment;
   user$: Observable<UserDTO | undefined>;
+  user: UserDTO;
 
   constructor(private store: Store<AppState>,
               private reservationService: ReservationService,
@@ -56,22 +58,33 @@ export class ReservationListComponent implements OnInit {
 
   editReservation(reservation: any) {
     this.router.navigate(['/reservations/edit', reservation]);
-
-    // console.log('Edit Reservation:', event);
-    // this.messages = [{
-    //   severity: 'success',
-    //   detail: 'Reservation edited successfully',
-    // }];
-    // this.cleanMessages();
   }
 
-  deleteReservation(event: any) {
-    console.log('Delete Reservation:', event);
-    this.messages = [{
-      severity: 'info',
-      detail: 'Reservation deleted successfully',
-    }];
-    this.cleanMessages();
+  deleteReservation(reservation: Reservation) {
+    this.store
+      .select(selectCurrentUser)
+      .pipe(
+        switchMap((user) => {
+          if (!user) {
+            throw new Error('User not logged in');
+          }
+          this.user = user;
+          return this.reservationService.deleteReservation(this.user, reservation.apartmentId, <number>reservation.id);
+        })
+      )
+      .subscribe(
+        {
+        next: response =>{
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Reservation deleted successfully',
+            detail: '',
+          })},
+        error:error => {
+            console.error('API call error:', error);
+          }
+        },
+      );
   }
 
   cleanMessages() {

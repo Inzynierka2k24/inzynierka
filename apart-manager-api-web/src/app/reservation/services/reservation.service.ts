@@ -14,15 +14,15 @@ export class ReservationService {
     return this.http.get<Reservation[]>('/api/'+ user.id +'/apartment/' + apartment.id +'/reservation');
   }
 
-  addReservation(user: UserDTO, apartment: Apartment, reservation: Reservation): Observable<boolean> {
-    return this.http.post<boolean>('/api/'+ user.id +'/apartment/' + apartment.id +'/reservation', reservation);
+  addReservation(user: UserDTO, apartmentId: number, reservation: Reservation): Observable<boolean> {
+    return this.http.post<boolean>('/api/'+ user.id +'/apartment/' + apartmentId +'/reservation', reservation);
   }
 
-  updateReservation(user: UserDTO, apartment: Apartment, reservation: Reservation): Observable<Reservation> {
-    return this.http.put<Reservation>('/api/'+ user.id +'/apartment/' + apartment.id +'/reservation/' + reservation.id, reservation);
+  updateReservation(user: UserDTO, apartmentId: number, reservation: Reservation): Observable<Reservation> {
+    return this.http.put<Reservation>('/api/'+ user.id +'/apartment/' + apartmentId +'/reservation/' + reservation.id, reservation);
   }
 
-  deleteReservation(user: UserDTO, apartment: Apartment, reservationId: number): Observable<void> {
-    return this.http.delete<void>('/api/'+ user.id +'/apartment/' + apartment.id +'/reservation/' + reservationId);
+  deleteReservation(user: UserDTO, apartmentId: number, reservationId: number): Observable<void> {
+    return this.http.delete<void>('/api/'+ user.id +'/apartment/' + apartmentId +'/reservation/' + reservationId);
   }
 }
