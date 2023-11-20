@@ -1,13 +1,9 @@
 # Build stage
 FROM maven:3.9.5-eclipse-temurin-17 AS build
 ENV PB_REL https://github.com/protocolbuffers/protobuf/releases
-#RUN --mount=type=secret,id=MAIL_PASSWORD MAIL_PASSWORD=$(cat /run/secrets/MAIL_PASSWORD) \
-#  --mount=type=secret,id=MAIL_USER MAIL_USER=$(cat /run/secrets/MAIL_USER) \
-#  --mount=type=secret,id=MESSAGE_DB_PASSWORD MESSAGE_DB_PASSWORD=$(cat /run/secrets/MESSAGE_DB_PASSWORD)  \
-#  --mount=type=secret,id=MESSAGE_DB_URL MESSAGE_DB_URL=$(cat /run/secrets/MESSAGE_DB_URL) \
-#  --mount=type=secret,id=MESSAGE_DB_USER MESSAGE_DB_USER=$(cat /run/secrets/MESSAGE_DB_USER) \
-#  --mount=type=secret,id=SMS_CLIENT_KEY SMS_CLIENT_KEY=$(cat /run/secrets/SMS_CLIENT_KEY) \
-#  --mount=type=secret,id=SMS_CLIENT_SECRET SMS_CLIENT_SECRET=$(cat /run/secrets/SMS_CLIENT_SECRET) \
+ENV MAIL_PASSWORD=pass MAIL_USER=user
+ENV MESSAGE_DB_USER=user MESSAGE_DB_PASSWORD=pass MESSAGE_DB_URL=localhost
+ENV SMS_CLIENT_KEY=key SMS_CLIENT_SECRET=secret
 RUN echo $MESSAGE_DB_URL
 RUN mkdir inzynierka
 COPY . inzynierka
