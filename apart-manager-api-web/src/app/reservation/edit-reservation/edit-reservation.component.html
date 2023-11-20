@@ -12,24 +12,31 @@
                             id="apartmentId"
                             pInputText
                             type="number"
+                            [value]="editReservationForm.get('apartmentId')?.value"
+                            [ngClass]="{'error-outline': editReservationForm.get('apartmentId')?.hasError('required')
+                             && editReservationForm.get('apartmentId')?.touched}"
                             required/>
                     </div>
                     <div class="p-col-12">
                       <label class="block text-900 font-medium mb-2" for="startDate">Start Date:</label>
-                      <p-calendar [showIcon]="true" formControlName="date">
+                      <p-calendar [showIcon]="true" formControlName="startDate"
+                      [ngClass]="{'error-outline': editReservationForm.get('startDate')?.hasError('required')
+                       && editReservationForm.get('startDate')?.touched}">
                       </p-calendar>
 
                     </div>
                     <div class="p-col-12">
                       <label class="block text-900 font-medium mb-2" for="endDate">End Date:</label>
-                      <p-calendar [showIcon]="true" formControlName="date">
+                      <p-calendar [showIcon]="true" formControlName="endDate"
+                      [ngClass]="{'error-outline': editReservationForm.get('endDate')?.hasError('required')
+                      && editReservationForm.get('endDate')?.touched}">
                       </p-calendar>
                     </div>
                 </div>
             </form>
         </div>
         <p-button class="custom-button" severity="success" (click)="saveChanges(reservation)">Save</p-button>
-        <p-button class="custom-button-right" severity="danger" (click)="cancelEditing()">Cancel</p-button>
+        <p-button class="custom-button" severity="danger" (click)="cancelEditing()">Cancel</p-button>
     </div>
 </div>
 

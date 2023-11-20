@@ -9,6 +9,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {selectCurrentUser} from "../../core/store/user/user.selectors";
 import {Store} from "@ngrx/store";
 import {AppState} from "../../core/store/app.store";
+import {switchMap} from "rxjs/operators";
 
 @Component({
   selector: 'app-apartment-list',
@@ -23,6 +24,7 @@ export class ApartmentListComponent implements OnInit {
   isEditing = true;
   editApartmentForm: FormGroup;
   user$: Observable<UserDTO | undefined>;
+  user: UserDTO;
 
   constructor(private store: Store<AppState>,
               private apartmentService: ApartmentService,
@@ -31,13 +33,13 @@ export class ApartmentListComponent implements OnInit {
               private fb: FormBuilder) {
 
     this.editApartmentForm = this.fb.group({
-      dailyPrice: [null, Validators.required],
-      title: ['', Validators.required],
-      country: ['', Validators.required],
-      city: ['', Validators.required],
-      street: ['', Validators.required],
-      buildingNumber: ['', Validators.required],
-      apartmentNumber: ['', Validators.required],
+        dailyPrice: ['', [Validators.required, Validators.min(0)]],
+        title: ['', [Validators.required]],
+        country: ['', [Validators.required]],
+        city: ['', [Validators.required]],
+        street: ['', [Validators.required]],
+        buildingNumber: ['', [Validators.required, Validators.min(0)]],
+        apartmentNumber: ['', [Validators.required, Validators.min(0)]],
     });
   }
 
@@ -69,14 +71,32 @@ export class ApartmentListComponent implements OnInit {
     this.cleanMessages();
   }
 
-
-  deleteApartment(event: any) {
-    console.log('Delete Apartment:', event);
-    this.messages = [{
-      severity: 'info',
-      detail: 'Apartment deleted successfully',
-    }];
-    this.cleanMessages();
+  deleteApartment(apartment: Apartment): void {
+    this.store
+      .select(selectCurrentUser)
+      .pipe(
+        switchMap((user) => {
+          if (!user) {
+            throw new Error('User not logged in');
+          }
+          this.user = user;
+          return this.apartmentService.deleteApartment(this.user, <number>apartment.id);
+        })
+      )
+      .subscribe(
+        {
+        next: response =>{
+          this.editApartmentForm.reset();
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Apartment deleted successfully',
+            detail: '',
+          })},
+        error:error => {
+            console.error('API call error:', error);
+          }
+        },
+      );
   }
 
   cleanMessages() {

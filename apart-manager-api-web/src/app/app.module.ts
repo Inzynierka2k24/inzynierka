@@ -9,9 +9,10 @@ import { WelcomePageComponent } from './welcome-page/welcome-page.component';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { UserModule } from './user/user.module';
 import { ToastModule } from 'primeng/toast';
-import {StoreModule} from "@ngrx/store";
 import { ButtonModule } from 'primeng/button';
 import { RippleModule } from 'primeng/ripple';
+import { FullCalendarModule } from "@fullcalendar/angular";
+import { CalendarModule } from 'primeng/calendar';
 
 @NgModule({
   declarations: [AppComponent, WelcomePageComponent],
@@ -25,6 +26,9 @@ import { RippleModule } from 'primeng/ripple';
     ToastModule,
     ButtonModule,
     RippleModule,
+    FullCalendarModule,
+    CalendarModule,
+
   ],
   providers: [
     {
