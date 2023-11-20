@@ -139,7 +139,6 @@ const routes: Routes = [
       },
       {
         path: 'messaging',
-        canActivate: [authenticatedGuard],
         component: MessagingPanelComponent,
       },
       { path: '**', component: WelcomePageComponent },

@@ -42,9 +42,8 @@ CREATE TABLE IF NOT EXISTS external_accounts (
 CREATE TABLE IF NOT EXISTS contacts (
   contact_id bigserial NOT NULL PRIMARY KEY,
   user_id bigint NOT NULL REFERENCES users(user_id),
-  type int NOT NULL,
-  password varchar(50) NOT NULL,
-  mail varchar(50) NOT NULL
+  name varchar(50) NOT NULL,
+  type int NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS finances (

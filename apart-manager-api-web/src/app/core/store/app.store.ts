@@ -11,9 +11,12 @@ import {
   register,
 } from './user/user.effects';
 import { apartmentReducer } from './apartment/apartment.reducer';
+import { MessagingState } from './messaging/messaging.store';
+import { messagingReducer } from './messaging/messaging.reducers';
 
 export interface AppState {
   user: UserState;
+  messaging: MessagingState;
 }
 
 @NgModule({
@@ -21,6 +24,7 @@ export interface AppState {
     StoreModule.forRoot({
       user: userReducer,
       apartmentEntries: apartmentReducer,
+      contacts: messagingReducer,
     }),
     EffectsModule.forRoot({
       login,
