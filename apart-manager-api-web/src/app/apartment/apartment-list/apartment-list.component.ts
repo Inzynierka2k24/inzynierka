@@ -44,14 +44,7 @@ export class ApartmentListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.user$ = this.store.select(selectCurrentUser);
-    this.user$.subscribe((user) => {
-      if (user) {
-        this.apartmentService.getApartments(user).subscribe((data: Apartment[]) => {
-          this.apartments = data;
-        });
-      }
-    });
+    this.fetchData();
   }
 
   addApartment() {
@@ -80,6 +73,7 @@ export class ApartmentListComponent implements OnInit {
             throw new Error('User not logged in');
           }
           this.user = user;
+          // return this.apartmentService.deleteApartment(this.user, <number>apartment.id);
           return this.apartmentService.deleteApartment(this.user, <number>apartment.id);
         })
       )
@@ -91,10 +85,13 @@ export class ApartmentListComponent implements OnInit {
             severity: 'success',
             summary: 'Apartment deleted successfully',
             detail: '',
-          })},
+          });
+          this.fetchData();
+        },
         error:error => {
             console.error('API call error:', error);
-          }
+            this.fetchData();
+          },
         },
       );
   }
@@ -103,5 +100,16 @@ export class ApartmentListComponent implements OnInit {
     setTimeout(() => {
       this.messages = [];
     }, 3000);
+  }
+
+  fetchData(){
+    this.user$ = this.store.select(selectCurrentUser);
+    this.user$.subscribe((user) => {
+      if (user) {
+        this.apartmentService.getApartments(user).subscribe((data: Apartment[]) => {
+          this.apartments = data;
+        });
+      }
+    });
   }
 }
