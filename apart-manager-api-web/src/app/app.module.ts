@@ -13,6 +13,7 @@ import { UserModule } from './user/user.module';
 import { ToastModule } from 'primeng/toast';
 import { ButtonModule } from 'primeng/button';
 import { RippleModule } from 'primeng/ripple';
+import { MessagingModule } from './messaging/messaging.module';
 
 @NgModule({
   declarations: [AppComponent, WelcomePageComponent],
@@ -28,6 +29,7 @@ import { RippleModule } from 'primeng/ripple';
     ToastModule,
     ButtonModule,
     RippleModule,
+    MessagingModule,
   ],
   providers: [
     {

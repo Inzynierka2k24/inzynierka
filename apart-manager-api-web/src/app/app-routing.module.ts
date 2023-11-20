@@ -30,6 +30,7 @@ import {
   HttpRequest,
 } from '@angular/common/http';
 import UserActions from './core/store/user/user.actions';
+import { MessagingPanelComponent } from './messaging/messaging-panel/messaging-panel.component';
 import {FinanceChartComponent} from "./finance/finance-chart/finance-chart.component";
 
 
@@ -135,6 +136,11 @@ const routes: Routes = [
           { path: 'chart', component: FinanceChartComponent},
           { path: '', component: FinanceListComponent },
         ],
+      },
+      {
+        path: 'messaging',
+        canActivate: [authenticatedGuard],
+        component: MessagingPanelComponent,
       },
       { path: '**', component: WelcomePageComponent },
     ],
