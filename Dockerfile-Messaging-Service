@@ -1,13 +1,13 @@
 # Build stage
 FROM maven:3.9.5-eclipse-temurin-17 AS build
 ENV PB_REL https://github.com/protocolbuffers/protobuf/releases
-RUN --mount=type=secret,id=MAIL_PASSWORD MAIL_PASSWORD=$(cat /run/secrets/MAIL_PASSWORD) \
-  --mount=type=secret,id=MAIL_USER MAIL_USER=$(cat /run/secrets/MAIL_USER) \
-  --mount=type=secret,id=MESSAGE_DB_PASSWORD MESSAGE_DB_PASSWORD=$(cat /run/secrets/MESSAGE_DB_PASSWORD)  \
-  --mount=type=secret,id=MESSAGE_DB_URL MESSAGE_DB_URL=$(cat /run/secrets/MESSAGE_DB_URL) \
-  --mount=type=secret,id=MESSAGE_DB_USER MESSAGE_DB_USER=$(cat /run/secrets/MESSAGE_DB_USER) \
-  --mount=type=secret,id=SMS_CLIENT_KEY SMS_CLIENT_KEY=$(cat /run/secrets/SMS_CLIENT_KEY) \
-  --mount=type=secret,id=SMS_CLIENT_SECRET SMS_CLIENT_SECRET=$(cat /run/secrets/SMS_CLIENT_SECRET) \
+#RUN --mount=type=secret,id=MAIL_PASSWORD MAIL_PASSWORD=$(cat /run/secrets/MAIL_PASSWORD) \
+#  --mount=type=secret,id=MAIL_USER MAIL_USER=$(cat /run/secrets/MAIL_USER) \
+#  --mount=type=secret,id=MESSAGE_DB_PASSWORD MESSAGE_DB_PASSWORD=$(cat /run/secrets/MESSAGE_DB_PASSWORD)  \
+#  --mount=type=secret,id=MESSAGE_DB_URL MESSAGE_DB_URL=$(cat /run/secrets/MESSAGE_DB_URL) \
+#  --mount=type=secret,id=MESSAGE_DB_USER MESSAGE_DB_USER=$(cat /run/secrets/MESSAGE_DB_USER) \
+#  --mount=type=secret,id=SMS_CLIENT_KEY SMS_CLIENT_KEY=$(cat /run/secrets/SMS_CLIENT_KEY) \
+#  --mount=type=secret,id=SMS_CLIENT_SECRET SMS_CLIENT_SECRET=$(cat /run/secrets/SMS_CLIENT_SECRET) \
 RUN echo $MESSAGE_DB_URL
 RUN mkdir inzynierka
 COPY . inzynierka
@@ -17,7 +17,6 @@ RUN curl -LO $PB_REL/download/v3.15.8/protoc-3.15.8-linux-x86_64.zip
 RUN unzip protoc-3.15.8-linux-x86_64.zip -d inzynierka/proto/target/protoc-plugins
 RUN mvn -f inzynierka/proto/pom.xml clean install
 RUN mvn -f inzynierka/messaging-service/pom.xml clean package
-
 
 # Package stage
 FROM eclipse-temurin:17-alpine

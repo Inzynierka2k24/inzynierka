@@ -10,14 +10,6 @@ jobs:
   build-and-deploy-messaging-service:
     runs-on: ubuntu-latest
     environment: manual
-    env:
-      MAIL_USER: ${{ secrets.MAIL_USER }}
-      MAIL_PASSWORD: ${{ secrets.MAIL_PASSWORD }}
-      MESSAGE_DB_USER: ${{ secrets.MESSAGE_DB_USER }}
-      MESSAGE_DB_PASSWORD: ${{ secrets.MESSAGE_DB_PASSWORD }}
-      MESSAGE_DB_URL: ${{ secrets.MESSAGE_DB_URL }}
-      SMS_CLIENT_KEY: ${{ secrets.SMS_CLIENT_KEY }}
-      SMS_CLIENT_SECRET: ${{ secrets.SMS_CLIENT_SECRET }}
     steps:
       # checkout the repo
       - name: 'Checkout GitHub Action'
@@ -58,3 +50,4 @@ jobs:
           name: messaging-service-polandcentral
           ports: 6565 80
           location: 'polandcentral'
+          secure-environment-variables: MAIL_USER=${{ secrets.MAIL_USER }} MAIL_PASSWORD=${{ secrets.MAIL_PASSWORD }} MESSAGE_DB_USER=${{ secrets.MESSAGE_DB_USER }} MESSAGE_DB_PASSWORD=${{ secrets.MESSAGE_DB_PASSWORD }} MESSAGE_DB_URL=${{ secrets.MESSAGE_DB_URL }} SMS_CLIENT_KEY=${{ secrets.SMS_CLIENT_KEY }} SMS_CLIENT_SECRET=${{ secrets.SMS_CLIENT_SECRET }}
