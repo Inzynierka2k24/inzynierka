@@ -64,6 +64,7 @@ export class AddApartmentComponent {
         )
         .subscribe(
           {
+          //todo display message
           next: response =>{
             this.addApartForm.reset();
             this.messageService.add({
