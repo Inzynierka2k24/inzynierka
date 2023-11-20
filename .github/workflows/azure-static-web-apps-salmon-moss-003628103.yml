@@ -10,7 +10,6 @@ jobs:
   build-and-deploy-apart-manager-web-app:
     runs-on: ubuntu-latest
     environment: manual
-
     name: Build and Deploy Job
     steps:
       - uses: actions/checkout@v3
