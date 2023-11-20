@@ -13,7 +13,7 @@ export class UserService {
   }
 
   editUser(user: number, editUserRequest: EditUserRequest) {
-    return this.httpClient.put<EditUserRequest>(
+    return this.httpClient.post<EditUserRequest>(
       '/api/user/' + user + '/edit',
       editUserRequest,
     );

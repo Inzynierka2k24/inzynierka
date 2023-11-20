@@ -6,7 +6,6 @@ import { selectCurrentUser } from '../../core/store/user/user.selectors';
 import UserActions from '../../core/store/user/user.actions';
 import { Subscription } from 'rxjs';
 import { UserDTO } from '../../../generated';
-import { ConfirmationService } from 'primeng/api';
 
 interface PreferencesCategory {
   title: string;
@@ -17,6 +16,7 @@ interface PreferencesTableRow {
   label: string;
   selector: string;
   inputType: string;
+  placeholder?: string;
   dropdownValues?: string[];
 }
 
@@ -30,11 +30,11 @@ export class PreferencesComponent implements OnInit, OnDestroy {
     {
       title: 'ACCOUNT',
       rows: [
-        { label: 'Username', selector: 'login', inputType: 'login' },
         { label: 'E-mail', selector: 'emailAddress', inputType: 'text' },
         {
           label: 'Password',
           selector: 'password',
+          placeholder: '*******',
           inputType: 'password',
         },
       ],
@@ -66,7 +66,6 @@ export class PreferencesComponent implements OnInit, OnDestroy {
 
   editable = false;
   userEditForm = this.formBuilder.nonNullable.group({
-    login: ['', Validators.required],
     emailAddress: ['', [Validators.email]],
     password: ['', Validators.minLength(5)],
     level: [''],
@@ -83,13 +82,11 @@ export class PreferencesComponent implements OnInit, OnDestroy {
   constructor(
     private store: Store<AppState>,
     private formBuilder: FormBuilder,
-    private confirmationService: ConfirmationService,
   ) {}
 
   submitEditRequest() {
     if (this.userEditForm.valid && this.currentUser) {
       const editUserRequest = {
-        username: this.userEditForm.value.login!,
         emailAddress: this.userEditForm.value.emailAddress!,
         password: this.userEditForm.value.password!,
       };
@@ -104,9 +101,8 @@ export class PreferencesComponent implements OnInit, OnDestroy {
       this.data = new Map(Object.entries({ ...user }));
       if (user) {
         this.userEditForm.setValue({
-          login: user.login ?? '',
           emailAddress: user.emailAddress ?? '',
-          password: '',
+          password: '**********',
           level: user.level ?? '',
           billingType: user.billingType ?? '',
           smsNotifications: user.smsNotifications,
@@ -122,13 +118,6 @@ export class PreferencesComponent implements OnInit, OnDestroy {
   }
 
   deleteUser() {
-    this.confirmationService.confirm({
-      message: 'Do you want to delete this record?',
-      header: 'Delete Confirmation',
-      icon: 'pi pi-info-circle',
-      accept: () => {
-        this.store.dispatch(UserActions.deleteUser());
-      },
-    });
+    this.store.dispatch(UserActions.deleteUser());
   }
 }

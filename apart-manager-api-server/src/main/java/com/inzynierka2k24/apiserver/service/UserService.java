@@ -4,10 +4,11 @@ import com.inzynierka2k24.apiserver.dao.UserDao;
 import com.inzynierka2k24.apiserver.exception.user.UserAlreadyExistsException;
 import com.inzynierka2k24.apiserver.exception.user.UserNotFoundException;
 import com.inzynierka2k24.apiserver.model.User;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
