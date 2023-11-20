@@ -52,14 +52,14 @@ export class EditFinanceComponent {
     });
 
     this.editFinanceForm.setValue({
-        userId: this.editFinanceForm.value.userId!,
-        apartmentId: this.editFinanceForm.value.apartmentId!,
-        eventId: this.editFinanceForm.value.eventId!,
-        eventType: this.editFinanceForm.value.eventType! as EventType,
-        source: this.editFinanceForm.value.source! as Source,
-        price: this.editFinanceForm.value.price!,
-        date: this.editFinanceForm.value.date!,
-        details: this.editFinanceForm.value.details!,
+        userId: this.finance.userId!,
+        apartmentId: this.finance.apartmentId!,
+        eventId: this.finance.eventId!,
+        eventType: this.finance.eventType! as EventType,
+        source: this.finance.source! as Source,
+        price: this.finance.price!,
+        date: this.finance.date!,
+        details: this.finance.details!,
     });
   }
 

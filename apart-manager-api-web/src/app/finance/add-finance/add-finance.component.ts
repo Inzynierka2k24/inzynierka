@@ -43,7 +43,7 @@ export class AddFinanceComponent {
         eventId: ['', Validators.required],
         eventType: ['', [Validators.required]],
         source: ['', [Validators.required]],
-        price: ['', [Validators.required, Validators.min(0)]],
+        price: ['', [Validators.required]],
         date: ['', [Validators.required]],
         details: ['', [Validators.required]],
       })
@@ -61,6 +61,7 @@ export class AddFinanceComponent {
         date: new Date(this.addFinanceForm.value.date!),
         details: this.addFinanceForm.value.details!,
       };
+      // TODO pass enums
       // const financeData: Finance = {
       //   userId: parseInt(this.addFinanceForm.value.userId!),
       //   apartmentId: parseInt(this.addFinanceForm.value.apartmentId!),
