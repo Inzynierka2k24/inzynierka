@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/postgres
-    username: postgres
-    password: postgres
+    url: ${APART_DB_URL}
+    username: ${APART_DB_USER}
+    password: ${APART_DB_PASSWORD}
   security:
     oauth2:
       resourceserver:
@@ -16,8 +16,8 @@ keycloak:
   token-endpoint: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/token
   create-user-endpoint: http://localhost:8090/admin/realms/${keycloak.realm}/users
   credentials:
-    login: admin
-    password: admin
+    login: ${KEYCLOAK_USER}
+    password: ${KEYCLOAK_PASSWORD}
 
 jwt:
   auth:

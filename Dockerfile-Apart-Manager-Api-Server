@@ -14,5 +14,5 @@ RUN mvn -f inzynierka/apart-manager-api-server/pom.xml clean package
 # Package stage
 FROM eclipse-temurin:17-alpine
 COPY --from=build inzynierka/apart-manager-api-server/target/*.jar /usr/app/service.jar
-EXPOSE 8080 6565
+EXPOSE 8080
 ENTRYPOINT ["java","-jar","/usr/app/service.jar"]
