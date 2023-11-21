@@ -8,6 +8,8 @@ import {Apartment, UserDTO} from "../../../generated";
 import {ApartmentService} from "../services/apartment.service";
 import { switchMap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
+import {Router} from "@angular/router";
+import {HttpErrorResponse} from "@angular/common/http";
 
 @Component({
   selector: 'app-add-apartment',
@@ -24,6 +26,7 @@ export class AddApartmentComponent {
   constructor(private formBuilder: FormBuilder,
               private store: Store<AppState>,
               private apartmentService: ApartmentService,
+              private router: Router,
               private messageService: MessageService){
 
     this.addApartForm = formBuilder.nonNullable.group(
@@ -38,7 +41,7 @@ export class AddApartmentComponent {
       })
   }
 
-    addApartment(): void {
+  addApartment(): void {
     if (this.addApartForm.valid) {
       this.store
         .select(selectCurrentUser)
@@ -59,18 +62,17 @@ export class AddApartmentComponent {
               buildingNumber: this.addApartForm.value.buildingNumber!,
               apartmentNumber: this.addApartForm.value.apartmentNumber!,
             };
-            return this.apartmentService.addApartment(this.user, apartmentData);
+            return this.apartmentService.addApartment(this.user, apartmentData, { responseType: 'text' });
           })
         )
         .subscribe(
           {
-          //todo display message
           next: response =>{
             this.addApartForm.reset();
             this.messageService.add({
               severity: 'success',
               summary: 'Apartment added correctly',
-              detail: '',
+              detail: 'success'
             })},
           error:error => {
               console.error('API call error:', error);

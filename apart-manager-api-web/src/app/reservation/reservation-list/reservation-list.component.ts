@@ -34,22 +34,7 @@ export class ReservationListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.user$ = this.store.select(selectCurrentUser);
-    this.user$.subscribe((user) => {
-      if (user) {
-        this.apartmentService.getApartments(user).subscribe((data: Apartment[]) => {
-          this.apartments = data;
-
-          if (this.apartments && this.apartments.length > 0) {
-            for(const val of this.apartments) {
-              this.reservationService.getReservations(user, val).subscribe((data: Reservation[]) => {
-                this.reservations = this.reservations.concat(data);
-              });
-            }
-          }
-        });
-      }
-    });
+    this.fetchData();
   }
 
   addReservation() {
@@ -69,7 +54,10 @@ export class ReservationListComponent implements OnInit {
             throw new Error('User not logged in');
           }
           this.user = user;
-          return this.reservationService.deleteReservation(this.user, reservation.apartmentId, <number>reservation.id);
+          return this.reservationService.deleteReservation(this.user,
+            reservation.apartmentId,
+            <number>reservation.id,
+            { responseType: 'text' });
         })
       )
       .subscribe(
@@ -77,11 +65,14 @@ export class ReservationListComponent implements OnInit {
         next: response =>{
           this.messageService.add({
             severity: 'success',
-            summary: 'Reservation deleted successfully',
-            detail: '',
-          })},
+            summary: 'Reservation deleted correctly',
+            detail: 'success',
+          });
+          this.fetchData();
+        },
         error:error => {
             console.error('API call error:', error);
+            this.fetchData();
           }
         },
       );
@@ -91,5 +82,25 @@ export class ReservationListComponent implements OnInit {
     setTimeout(() => {
       this.messages = [];
     }, 3000);
+  }
+
+  fetchData() {
+    this.user$ = this.store.select(selectCurrentUser);
+    this.user$.subscribe((user) => {
+      if (user) {
+        this.apartmentService.getApartments(user).subscribe((data: Apartment[]) => {
+          this.apartments = data;
+
+          if (this.apartments && this.apartments.length > 0) {
+            this.reservations = [];
+            for(const val of this.apartments) {
+              this.reservationService.getReservations(user, val).subscribe((data: Reservation[]) => {
+                this.reservations = this.reservations.concat(data);
+              });
+            }
+          }
+        });
+      }
+    });
   }
 }
