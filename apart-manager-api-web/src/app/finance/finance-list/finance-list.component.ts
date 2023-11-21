@@ -137,8 +137,7 @@ export class FinanceListComponent {
             throw new Error('User not logged in');
           }
           this.user = user;
-          // return this.financeService.deleteFinance(this.user, <number>finance.id);
-          return this.financeService.deleteFinance(this.user, <number>finance.id);
+          return this.financeService.deleteFinance(this.user, <number>finance.id, { responseType: 'text' });
         })
       )
       .subscribe(
@@ -146,8 +145,8 @@ export class FinanceListComponent {
         next: response =>{
           this.messageService.add({
             severity: 'success',
-            summary: 'Finance deleted successfully',
-            detail: '',
+            summary: 'Finance deleted correctly',
+            detail: 'success',
           });
           this.fetchData();
         },

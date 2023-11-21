@@ -47,21 +47,23 @@ export class ApartmentListComponent implements OnInit {
     this.fetchData();
   }
 
+  fetchData(){
+    this.user$ = this.store.select(selectCurrentUser);
+    this.user$.subscribe((user) => {
+      if (user) {
+        this.apartmentService.getApartments(user).subscribe((data: Apartment[]) => {
+          this.apartments = data;
+        });
+      }
+    });
+  }
+
   addApartment() {
     this.router.navigate(['/apartments/add']);
   }
 
   startEditing(apartment: Apartment) {
     this.router.navigate(['/apartments/edit', apartment]);
-  }
-
-  saveChanges(apartment: Apartment) {
-    console.log('Edit Apartment:', event);
-    this.messages = [{
-      severity: 'success',
-      detail: 'Apartment edited successfully',
-    }];
-    this.cleanMessages();
   }
 
   deleteApartment(apartment: Apartment): void {
@@ -73,8 +75,7 @@ export class ApartmentListComponent implements OnInit {
             throw new Error('User not logged in');
           }
           this.user = user;
-          // return this.apartmentService.deleteApartment(this.user, <number>apartment.id);
-          return this.apartmentService.deleteApartment(this.user, <number>apartment.id);
+          return this.apartmentService.deleteApartment(this.user, <number>apartment.id, { responseType: 'text' });
         })
       )
       .subscribe(
@@ -83,8 +84,8 @@ export class ApartmentListComponent implements OnInit {
           this.editApartmentForm.reset();
           this.messageService.add({
             severity: 'success',
-            summary: 'Apartment deleted successfully',
-            detail: '',
+            summary: 'Apartment deleted correctly',
+            detail: 'success'
           });
           this.fetchData();
         },
@@ -94,22 +95,5 @@ export class ApartmentListComponent implements OnInit {
           },
         },
       );
-  }
-
-  cleanMessages() {
-    setTimeout(() => {
-      this.messages = [];
-    }, 3000);
-  }
-
-  fetchData(){
-    this.user$ = this.store.select(selectCurrentUser);
-    this.user$.subscribe((user) => {
-      if (user) {
-        this.apartmentService.getApartments(user).subscribe((data: Apartment[]) => {
-          this.apartments = data;
-        });
-      }
-    });
   }
 }

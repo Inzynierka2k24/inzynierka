@@ -54,7 +54,10 @@ export class ReservationListComponent implements OnInit {
             throw new Error('User not logged in');
           }
           this.user = user;
-          return this.reservationService.deleteReservation(this.user, reservation.apartmentId, <number>reservation.id);
+          return this.reservationService.deleteReservation(this.user,
+            reservation.apartmentId,
+            <number>reservation.id,
+            { responseType: 'text' });
         })
       )
       .subscribe(
@@ -62,8 +65,8 @@ export class ReservationListComponent implements OnInit {
         next: response =>{
           this.messageService.add({
             severity: 'success',
-            summary: 'Reservation deleted successfully',
-            detail: '',
+            summary: 'Reservation deleted correctly',
+            detail: 'success',
           });
           this.fetchData();
         },
