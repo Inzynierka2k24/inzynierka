@@ -44,6 +44,10 @@ export class ApartmentListComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.fetchData();
+  }
+
+  fetchData(){
     this.user$ = this.store.select(selectCurrentUser);
     this.user$.subscribe((user) => {
       if (user) {
@@ -62,15 +66,6 @@ export class ApartmentListComponent implements OnInit {
     this.router.navigate(['/apartments/edit', apartment]);
   }
 
-  saveChanges(apartment: Apartment) {
-    console.log('Edit Apartment:', event);
-    this.messages = [{
-      severity: 'success',
-      detail: 'Apartment edited successfully',
-    }];
-    this.cleanMessages();
-  }
-
   deleteApartment(apartment: Apartment): void {
     this.store
       .select(selectCurrentUser)
@@ -80,7 +75,7 @@ export class ApartmentListComponent implements OnInit {
             throw new Error('User not logged in');
           }
           this.user = user;
-          return this.apartmentService.deleteApartment(this.user, <number>apartment.id);
+          return this.apartmentService.deleteApartment(this.user, <number>apartment.id, { responseType: 'text' });
         })
       )
       .subscribe(
@@ -89,19 +84,16 @@ export class ApartmentListComponent implements OnInit {
           this.editApartmentForm.reset();
           this.messageService.add({
             severity: 'success',
-            summary: 'Apartment deleted successfully',
-            detail: '',
-          })},
+            summary: 'Apartment deleted correctly',
+            detail: 'success'
+          });
+          this.fetchData();
+        },
         error:error => {
             console.error('API call error:', error);
-          }
+            this.fetchData();
+          },
         },
       );
-  }
-
-  cleanMessages() {
-    setTimeout(() => {
-      this.messages = [];
-    }, 3000);
   }
 }

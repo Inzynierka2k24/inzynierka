@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import {HttpClient, HttpEvent} from '@angular/common/http';
 import { Observable } from 'rxjs';
 import {Apartment} from "../../../generated";
 import {UserDTO} from "../../../generated";
@@ -15,15 +15,15 @@ export class ApartmentService {
     return this.http.get<Apartment[]>('/api/'+ user.id +'/apartment');
   }
 
-  addApartment(user: UserDTO, apartment: Apartment): Observable<string> {
-    return this.http.post<string>('/api/'+ user.id +'/apartment', apartment);
+  addApartment(user: UserDTO, apartment: Apartment, options?: any): Observable<HttpEvent<string>> {
+    return this.http.post<string>('/api/'+ user.id +'/apartment', apartment, options);
   }
 
   updateApartment(user: UserDTO, apartment: Apartment): Observable<Apartment> {
     return this.http.put<Apartment>('/api/'+ user.id +'/apartment/' + apartment.id, apartment);
   }
 
-  deleteApartment(user: UserDTO, apartmentId: number): Observable<void> {
-    return this.http.delete<void>('/api/'+ user.id +'/apartment/' + apartmentId);
+  deleteApartment(user: UserDTO, apartmentId: number, options?: any): Observable<HttpEvent<void>> {
+    return this.http.delete<void>('/api/'+ user.id +'/apartment/' + apartmentId, options);
   }
 }

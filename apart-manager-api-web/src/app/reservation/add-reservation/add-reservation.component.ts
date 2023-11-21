@@ -57,18 +57,20 @@ export class AddReservationComponent {
               startDate: new Date(this.addReservationForm.value.startDate!),
               endDate: new Date(this.addReservationForm.value.endDate!),
             };
-            return this.reservationService.addReservation(this.user, reservationData.apartmentId, reservationData);
+            return this.reservationService.addReservation(this.user,
+              reservationData.apartmentId,
+              reservationData,
+              { responseType: 'text' });
           })
         )
         .subscribe(
           {
-            //todo display message
           next: response =>{
             this.addReservationForm.reset();
             this.messageService.add({
               severity: 'success',
               summary: 'Reservation added correctly',
-              detail: '',
+              detail: 'success',
             })},
           error:error => {
               console.error('API call error:', error);
