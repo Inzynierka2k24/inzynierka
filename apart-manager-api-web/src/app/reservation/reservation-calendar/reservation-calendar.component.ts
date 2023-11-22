@@ -26,23 +26,8 @@ export class ReservationCalendarComponent {
   apartments: Apartment[] = [];
   apartment: Apartment;
   user$: Observable<UserDTO | undefined>;
-  // events: {id: number | undefined, title: string, start: Date; end: Date}[]= [];
   events: any[] = [];
-
-  calendarOptions: CalendarOptions = {
-    plugins: [dayGridPlugin, interactionPlugin],
-    initialView: 'dayGridMonth',
-    events: this.events,
-    weekends: true,
-
-    selectable: true,
-    editable: true,
-    selectMirror: true,
-    // dateClick: this.handleDateClick.bind(this),
-    dateClick: function(arg){
-      alert('date click');
-    }
-  };
+  calendarOptions: any;
 
   constructor(private store: Store<AppState>,
               private reservationService: ReservationService,
@@ -74,18 +59,24 @@ export class ReservationCalendarComponent {
                     end: val.endDate
                   });
                 }
-
-                this.calendarOptions = {
-                  plugins: [dayGridPlugin],
-                  initialView: 'dayGridMonth',
-                  weekends: false,
-                  events: this.events as EventInput[],
-                };
             });
             }
         });
       }
     });
+
+    this.calendarOptions = {
+      plugins: [dayGridPlugin, interactionPlugin],
+      initialView: 'dayGridMonth',
+      events: this.events,
+      selectable: true,
+      editable: true,
+      selectMirror: true,
+      eventClick: this.handleEventClick.bind(this),
+      dateClick: function (arg: any) {
+        console.log("clicked")
+      },
+    }
   }
 
   getApartmentTitle(id: number): string {
@@ -97,11 +88,9 @@ export class ReservationCalendarComponent {
     return "";
   }
 
-  handleDateClick(arg: any){
-    // const eventReservation = this.getReservation(info.event.id);
-    // this.router.navigate(['/reservations/edit', eventReservation]);
-    alert('date click! ' + arg.dateStr);
-
+  handleEventClick(arg: any){
+    const eventReservation = this.getReservation(arg.event.id);
+    this.router.navigate(['/reservations/edit', eventReservation]);
   }
 
   getReservation(id: number): Reservation | null {

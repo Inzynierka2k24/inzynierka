@@ -2,8 +2,9 @@
   <div *ngIf="events.length > 0">
     <full-calendar
       [events] = "events"
-      (dateClick)="handleDateClick($event)"
-      [options]="calendarOptions" style="width: 800px; height: 700px; border-radius: 20px;">
+      (eventClick)="handleEventClick($event)"
+      [options]="calendarOptions"
+      style="width: 800px; height: 700px; border-radius: 20px;">
       <ng-template #eventContent let-arg>
         <b>{{arg.event.id}}</b>
         <i>_</i>
