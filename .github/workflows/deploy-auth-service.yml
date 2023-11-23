@@ -43,5 +43,5 @@ jobs:
           name: auth-service-polandcentral
           ports: 8090
           location: 'polandcentral'
-          environment-variables: KC_HEALTH_ENABLED=true KC_HTTP_ENABLED=true KC_METRICS_ENABLED=true KC_HOSTNAME_PORT=8090
+          environment-variables: KC_HEALTH_ENABLED=true KC_HTTP_ENABLED=true KC_METRICS_ENABLED=true KC_HOSTNAME_PORT=8090 KC_PROXY=edge
           secure-environment-variables: KC_DB_PASSWORD=${{ secrets.KC_DB_PASSWORD }} KC_DB_URL="${{ secrets.KC_DB_URL }}" KC_DB_USERNAME=${{ secrets.KC_DB_USERNAME }} KC_DB=${{ secrets.KC_DB }} KEYCLOAK_ADMIN=${{ secrets.KEYCLOAK_ADMIN }} KEYCLOAK_ADMIN_PASSWORD=${{ secrets.KEYCLOAK_ADMIN_PASSWORD }} KC_HOSTNAME=${{ secrets.KC_HOSTNAME }}
