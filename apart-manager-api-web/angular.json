@@ -66,7 +66,8 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "apart-manager-api-web:build:production"
+              "browserTarget": "apart-manager-api-web:build:production",
+              "proxyConfig": "proxy.conf.json"
             },
             "development": {
               "browserTarget": "apart-manager-api-web:build:development",
