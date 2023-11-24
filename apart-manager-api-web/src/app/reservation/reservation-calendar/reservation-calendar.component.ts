@@ -1,6 +1,5 @@
-import { Component } from '@angular/core';
+import {Component, ElementRef, HostListener, Renderer2} from '@angular/core';
 import 'zone.js';
-import {CalendarOptions, EventInput} from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import {Message, MessageService} from "primeng/api";
 import {Apartment, Reservation, UserDTO} from "../../../generated";
@@ -12,6 +11,7 @@ import {ApartmentService} from "../../apartment/services/apartment.service";
 import {Router} from "@angular/router";
 import {selectCurrentUser} from "../../core/store/user/user.selectors";
 import interactionPlugin from '@fullcalendar/interaction';
+
 
 @Component({
   selector: 'app-reservation-calendar',
@@ -33,7 +33,9 @@ export class ReservationCalendarComponent {
               private reservationService: ReservationService,
               private apartmentService: ApartmentService,
               private messageService: MessageService,
-              private router: Router) {
+              private router: Router,
+              private el: ElementRef, private renderer: Renderer2
+             ) {
   }
 
   ngOnInit() {
@@ -73,10 +75,10 @@ export class ReservationCalendarComponent {
       editable: true,
       selectMirror: true,
       eventClick: this.handleEventClick.bind(this),
-      dateClick: function (arg: any) {
-        console.log("clicked")
-      },
-    }
+      eventMouseEnter: this.handleMouseEnter.bind(this),
+      eventMouseLeave: this.handleMouseLeave.bind(this)
+    };
+    this.createTooltipOnEnter();
   }
 
   getApartmentTitle(id: number): string {
@@ -101,6 +103,51 @@ export class ReservationCalendarComponent {
     }
     return null;
   }
+
+  createTooltipOnEnter(): void {
+    const htmlCode = `
+      <div class="custom-tooltip">
+        <b>Title:</b><br/>
+        Start: <br/>
+        End:
+      </div>
+    `;
+    const container = document.getElementById('tooltip-container');
+    this.renderer.appendChild(container, this.createHtmlElement(htmlCode));
+  }
+
+
+  handleMouseEnter(info: any): void {
+    const htmlCode = `
+      <div class="custom-tooltip">
+        <b>${info.event.title}</b><br/>
+        Start: ${info.event.start.toLocaleString()}<br/>
+        End: ${info.event.end.toLocaleString()}
+      </div>
+    `;
+    const container = document.getElementById('tooltip-container');
+    if (container){
+      container.innerHTML = '';
+      this.renderer.appendChild(container, this.createHtmlElement(htmlCode));
+    }
+  }
+
+  handleMouseLeave(info: any): void {
+    const container = document.getElementById('tooltip-container');
+    if (container) {
+      const tooltip = container.lastChild;
+      if (tooltip) {
+        this.renderer.removeChild(container, tooltip);
+      }
+    }
+  }
+
+  private createHtmlElement(htmlCode: string): HTMLElement {
+    const div = this.renderer.createElement('div');
+    this.renderer.setProperty(div, 'innerHTML', htmlCode);
+    return div;
+  }
+
 }
 
 

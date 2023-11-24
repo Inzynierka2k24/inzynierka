@@ -31,7 +31,7 @@ export class AddReservationComponent {
 
     this.addReservationForm = formBuilder.nonNullable.group(
       {
-        apartmentId: ['', [Validators.required]],
+        apartmentId: ['', [Validators.required, Validators.min(1)]],
         startDate: ['', [Validators.required]],
         endDate: ['', [Validators.required]],
       })
@@ -74,6 +74,11 @@ export class AddReservationComponent {
             })},
           error:error => {
               console.error('API call error:', error);
+                this.messageService.add({
+                  severity: 'error',
+                  summary: 'Data Error',
+                  detail: 'Please correct passed data.',
+                });
             }
           },
         );

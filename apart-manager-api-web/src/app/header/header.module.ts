@@ -33,6 +33,7 @@ import { MenuModule } from 'primeng/menu';
 import { ChartModule } from 'primeng/chart';
 import {FinanceChartComponent} from "../finance/finance-chart/finance-chart.component";
 import {TabView, TabViewModule} from "primeng/tabview";
+import { CardModule } from 'primeng/card';
 
 @NgModule({
   declarations: [
@@ -75,6 +76,7 @@ import {TabView, TabViewModule} from "primeng/tabview";
     FormsModule,
     ChartModule,
     TabViewModule,
+    CardModule,
 
   ],
   exports: [
