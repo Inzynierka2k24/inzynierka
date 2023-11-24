@@ -31,7 +31,8 @@ public class SecurityConfig {
     configuration.setAllowedOrigins(
         List.of(
             "https://salmon-moss-003628103-34.westeurope.4.azurestaticapps.net/",
-            "http://localhost:80"));
+            "http://localhost:80",
+            "http://localhost"));
     configuration.setAllowedMethods(List.of("GET", "POST", "PATCH", "PUT", "DELETE"));
     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
     source.registerCorsConfiguration("/**", configuration);
