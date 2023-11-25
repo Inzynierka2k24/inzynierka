@@ -9,6 +9,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @EnableWebMvc
 public class WebConfig implements WebMvcConfigurer {
 
+  // Disable CORS in web browser: .\chrome.exe --user-data-dir="C:/Chrome dev session" --disable-web-security
   @Override
   public void addCorsMappings(CorsRegistry corsRegistry) {
     corsRegistry
