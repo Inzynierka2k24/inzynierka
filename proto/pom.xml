@@ -8,12 +8,6 @@
     <artifactId>proto</artifactId>
     <version>0.0.4</version> <!-- Update version when deploying changes! -->
 
-<!--    <parent>-->
-<!--        <artifactId>inzynierka</artifactId>-->
-<!--        <groupId>com.inzynierka2k24</groupId>-->
-<!--        <version>1.0-SNAPSHOT</version>-->
-<!--    </parent>-->
-
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
@@ -22,13 +16,13 @@
         <javax.version>1.3.2</javax.version>
     </properties>
 
-<!--    <distributionManagement>-->
-<!--        <repository>-->
-<!--            <id>github</id>-->
-<!--            <name>GitHub Inzynierka2k24 Apache Maven Packages</name>-->
-<!--            <url>https://maven.pkg.github.com/Inzynierka2k24/inzynierka</url>-->
-<!--        </repository>-->
-<!--    </distributionManagement>-->
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <name>GitHub Inzynierka2k24 Apache Maven Packages</name>
+            <url>https://maven.pkg.github.com/Inzynierka2k24/inzynierka</url>
+        </repository>
+    </distributionManagement>
 
     <dependencies>
         <dependency>
