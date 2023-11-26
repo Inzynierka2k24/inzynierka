@@ -1,25 +1,25 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/postgres
-    username: postgres
-    password: postgres
+    url: ${APART_DB_URL:jdbc:postgresql://localhost:5432/postgres}
+    username: ${APART_DB_USER:postgres}
+    password: ${APART_DB_PASSWORD:postgres}
   security:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://localhost:8090/realms/ApartManager
+          issuer-uri: http://${AUTH_URL:localhost}:8090/realms/ApartManager
           jwk-set-uri: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/certs
 
 keycloak:
   realm: ApartManager
   client-id: apart-manager-be
-  base-url: http://localhost:8090/admin/realms/${keycloak.realm}
+  base-url: http://${AUTH_URL:localhost}:8090/admin/realms/${keycloak.realm}
   token-endpoint: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/token/
   user-endpoint: ${keycloak.base-url}/users/
   user-details: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/userinfo/
   credentials:
-    login: admin
-    password: admin
+    login: ${KEYCLOAK_USER:admin}
+    password: ${KEYCLOAK_PASSWORD:admin}
 
 jwt:
   auth:

@@ -2,8 +2,8 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username: apartmanager404@gmail.com
-    password: zezz pblr eicz cjja
+    username: ${MAIL_USER}
+    password: ${MAIL_PASSWORD}
     properties.mail.smtp:
       auth: true
       starttls:
@@ -12,12 +12,12 @@ spring:
 
   data.mongodb:
     authentication-database: admin
-    username: root
-    password: example
+    username: ${MESSAGE_DB_USER}
+    password: ${MESSAGE_DB_PASSWORD}
     database: message
     port: 27017
-    host: localhost
+    host: ${MESSAGE_DB_URL}
 
 sms.client:
-  key: d78cc0c1
-  secret: OtRqjrjKzcVN2PCi
+  key: ${SMS_CLIENT_KEY}
+  secret: ${SMS_CLIENT_SECRET}

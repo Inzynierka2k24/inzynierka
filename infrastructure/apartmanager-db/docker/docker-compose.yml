@@ -45,6 +45,8 @@ services:
       KC_HOSTNAME_PORT: 8090
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: password
+      KC_PROXY: edge
+      KC_HOSTNAME_STRICT_HTTPS: false
     ports:
       - "8090:8090"
     command: ['start-dev', '--http-port=8090', '--import-realm']
