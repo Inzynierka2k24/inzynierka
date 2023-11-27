@@ -8,6 +8,7 @@ import com.inzynierka2k24.ResponseStatus;
 import com.inzynierka2k24.external.crawler.Crawler;
 import com.inzynierka2k24.external.model.Reservation;
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import org.junit.jupiter.api.Test;
 
 class NocowaniePlServiceTest {
@@ -17,7 +18,7 @@ class NocowaniePlServiceTest {
 
   @Test
   void shouldPropagateReservation() {
-    var start = Instant.parse("2023-11-26T00:00:00Z");
+    var start = Instant.parse("2023-11-27T00:00:00Z");
     var end = Instant.parse("2023-12-02T00:00:00Z");
     var reservation = new Reservation(start, end);
 
@@ -26,6 +27,8 @@ class NocowaniePlServiceTest {
 
   @Test
   void shouldGetReservations() {
+    var start = Instant.parse("2023-11-29T00:00:00Z");
+    System.out.println(start.truncatedTo(ChronoUnit.DAYS).toString().split("T")[0]);
     assertThat(service.getReservations()).isEmpty();
   }
 

@@ -6,7 +6,6 @@ import com.inzynierka2k24.external.model.ApartmentDetails;
 import com.inzynierka2k24.external.model.Reservation;
 import com.microsoft.playwright.Page;
 import java.time.Instant;
-import java.time.temporal.ChronoField;
 import java.time.temporal.ChronoUnit;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
@@ -28,11 +27,12 @@ class NocowaniePlService implements ExternalService {
 
     try {
       var date = reservation.start();
+      var end = reservation.end().plus(1, ChronoUnit.DAYS);
 
-      while (date.isBefore(reservation.end())) {
-        System.out.println(convertToString(date));
-        changeToUnavailable(page, convertToString(date));
-        date.plus(1, ChronoUnit.DAYS);
+      while (date.isBefore(end)) {
+        System.out.println(convertToShortDateString(date));
+        changeToUnavailable(page, convertToShortDateString(date));
+        date = date.plus(1, ChronoUnit.DAYS);
       }
 
       return ResponseStatus.SUCCESS;
@@ -70,11 +70,7 @@ class NocowaniePlService implements ExternalService {
     element.press("Enter");
   }
 
-  private String convertToString(Instant date) {
-    return String.join(
-        "-",
-        String.valueOf(date.get(ChronoField.YEAR)),
-        String.valueOf(date.get(ChronoField.MONTH_OF_YEAR)),
-        String.valueOf(date.get(ChronoField.DAY_OF_MONTH)));
+  private String convertToShortDateString(Instant date) {
+    return date.toString().split("T")[0];
   }
 }
