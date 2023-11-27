@@ -2,6 +2,7 @@ package com.inzynierka2k24.external.service;
 
 import com.inzynierka2k24.ResponseStatus;
 import com.inzynierka2k24.external.crawler.Crawler;
+import com.inzynierka2k24.external.model.Account;
 import com.inzynierka2k24.external.model.ApartmentDetails;
 import com.inzynierka2k24.external.model.Reservation;
 import com.microsoft.playwright.Page;
@@ -9,20 +10,19 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 
-@Service
 @RequiredArgsConstructor
 class NocowaniePlService implements ExternalService {
 
   private static final String URL = "https://admin.noclegi.pl/";
 
   private final Crawler crawler;
+  private final Account account;
 
   @Override
   public ResponseStatus propagateReservation(Reservation reservation) {
     var page = crawler.createPage(URL);
-    logIn(page, "apartmanager404@gmail.com", "inzynierka2k24");
+    logIn(page);
     page.navigate(page.url().replace("reservations", "pricetable"));
 
     try {
@@ -56,9 +56,9 @@ class NocowaniePlService implements ExternalService {
     return com.inzynierka2k24.ExternalService.NOCOWANIEPL;
   }
 
-  private void logIn(Page page, String mail, String password) {
-    page.locator("[name='email']").fill(mail);
-    page.locator("[name='password']").fill(password);
+  private void logIn(Page page) {
+    page.locator("[name='email']").fill(account.login());
+    page.locator("[name='password']").fill(account.password());
     page.locator("[type='submit']").click();
   }
 

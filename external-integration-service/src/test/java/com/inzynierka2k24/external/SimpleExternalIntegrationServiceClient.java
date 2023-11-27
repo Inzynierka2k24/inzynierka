@@ -3,18 +3,12 @@ package com.inzynierka2k24.external;
 import static com.inzynierka2k24.ExternalService.*;
 import static com.inzynierka2k24.external.util.TimeConverter.toProtoTimestamp;
 
-import com.inzynierka2k24.ApartmentDetails;
-import com.inzynierka2k24.ExternalIntegrationServiceGrpc;
-import com.inzynierka2k24.GetReservationsRequest;
-import com.inzynierka2k24.PropagateReservationRequest;
-import com.inzynierka2k24.Reservation;
-import com.inzynierka2k24.UpdateApartmentDetailsRequest;
+import com.inzynierka2k24.*;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import lombok.extern.slf4j.Slf4j;
@@ -51,7 +45,7 @@ public class SimpleExternalIntegrationServiceClient {
                     .setStartDate(toProtoTimestamp(Instant.now().plus(2L, ChronoUnit.DAYS)))
                     .setEndDate(toProtoTimestamp(Instant.now().plus(5L, ChronoUnit.DAYS)))
                     .build())
-            .addAllService(List.of(BOOKING, AIRBNB, NOCOWANIEPL))
+            .addAccounts(createAccount())
             .build();
     var start = Instant.now();
     var response = blockingStub.propagateReservation(request);
@@ -64,10 +58,7 @@ public class SimpleExternalIntegrationServiceClient {
 
   private void getReservations(
       ExternalIntegrationServiceGrpc.ExternalIntegrationServiceBlockingStub blockingStub) {
-    var request =
-        GetReservationsRequest.newBuilder()
-            .addAllService(List.of(BOOKING, AIRBNB, NOCOWANIEPL))
-            .build();
+    var request = GetReservationsRequest.newBuilder().addAccounts(createAccount()).build();
     var start = Instant.now();
     var response = blockingStub.getReservations(request);
 
@@ -89,7 +80,7 @@ public class SimpleExternalIntegrationServiceClient {
                     .setBuildingNumber("1A")
                     .setDescription("Description")
                     .build())
-            .addAllService(List.of(BOOKING, AIRBNB, NOCOWANIEPL))
+            .addAccounts(createAccount())
             .build();
     var start = Instant.now();
     var response = blockingStub.updateApartmentDetails(request);
@@ -98,5 +89,12 @@ public class SimpleExternalIntegrationServiceClient {
         "UpdateApartmentDetails response: {} Connection active for {}",
         response,
         Duration.between(start, Instant.now()));
+  }
+
+  private ExternalAccount createAccount() {
+    return ExternalAccount.newBuilder()
+        .setAccount(Account.newBuilder().setLogin("").setPassword("").build())
+        .setService(NOCOWANIEPL)
+        .build();
   }
 }

@@ -42,7 +42,7 @@ public class GrpcServer extends ExternalIntegrationServiceGrpc.ExternalIntegrati
         PropagateReservationResponse.newBuilder()
             .addAllResponse(
                 integrationService.propagateReservation(
-                    convert(request.getReservation()), request.getServiceList()))
+                    convert(request.getReservation()), convert(request.getAccountsList())))
             .build());
     responseObserver.onCompleted();
   }
@@ -51,7 +51,7 @@ public class GrpcServer extends ExternalIntegrationServiceGrpc.ExternalIntegrati
   public void getReservations(
       GetReservationsRequest request, StreamObserver<GetReservationsResponse> responseObserver) {
     responseObserver.onNext(
-        getResponse(integrationService.getReservations(request.getServiceList())));
+        getResponse(integrationService.getReservations(convert(request.getAccountsList()))));
     responseObserver.onCompleted();
   }
 
@@ -71,7 +71,7 @@ public class GrpcServer extends ExternalIntegrationServiceGrpc.ExternalIntegrati
         UpdateApartmentDetailsResponse.newBuilder()
             .addAllResponse(
                 integrationService.updateApartmentDetails(
-                    convert(request.getDetails()), request.getServiceList()))
+                    convert(request.getDetails()), convert(request.getAccountsList())))
             .build());
     responseObserver.onCompleted();
   }
