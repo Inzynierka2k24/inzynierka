@@ -1,5 +1,6 @@
 package com.inzynierka2k24.apiserver.web.config;
 
+import com.inzynierka2k24.apiserver.exception.account.AccountNotFoundException;
 import com.inzynierka2k24.apiserver.exception.apartment.ApartmentNotFoundException;
 import com.inzynierka2k24.apiserver.exception.reservation.ReservationNotFoundException;
 import com.inzynierka2k24.apiserver.exception.reservation.ReservationNotValidException;
@@ -49,6 +50,12 @@ public class GlobalExceptionHandler {
       ReservationNotValidException e) {
     return ResponseEntity.status(HttpStatus.BAD_REQUEST)
         .body(new ErrorResponseException(HttpStatus.BAD_REQUEST, e));
+  }
+
+  @ExceptionHandler(AccountNotFoundException.class)
+  public ResponseEntity<ErrorResponse> handleAccountNotFoundException(AccountNotFoundException e) {
+    return ResponseEntity.status(HttpStatus.NOT_FOUND)
+        .body(new ErrorResponseException(HttpStatus.NOT_FOUND, e));
   }
 
   @ExceptionHandler(RuntimeException.class)
