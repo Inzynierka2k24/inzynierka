@@ -18,10 +18,11 @@
 	<properties>
 		<java.version>17</java.version>
 
-		<proto.version>0.0.4</proto.version>
+		<proto.version>0.0.5</proto.version>
 
 		<grpc-spring-boot.version>5.1.5</grpc-spring-boot.version>
 		<grpc.version>1.58.0</grpc.version>
+		<playwright.version>1.40.0</playwright.version>
         <lombok.version>1.18.30</lombok.version>
         <mockito.version>5.2.0</mockito.version>
         <testcontainers.version>1.17.6</testcontainers.version>
@@ -80,7 +81,7 @@
 		<dependency>
 			<groupId>com.microsoft.playwright</groupId>
 			<artifactId>playwright</artifactId>
-			<version>1.40.0</version>
+			<version>${playwright.version}</version>
 		</dependency>
 
         <!--   Misc    -->
