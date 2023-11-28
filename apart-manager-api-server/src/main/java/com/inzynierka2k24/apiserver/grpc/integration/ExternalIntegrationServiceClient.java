@@ -29,11 +29,13 @@ public class ExternalIntegrationServiceClient {
     return response.getResponseList();
   }
 
-  public void getReservations(Instant from, Instant to, Collection<ExternalAccount> accounts) {
+  public List<Reservation> getReservations(
+      Instant from, Instant to, Collection<ExternalAccount> accounts) {
     var request = buildGetReservationsRequest(from, to, accounts);
     var response = blockingStub.getReservations(request);
 
     log.info("GetReservations response: {}", response);
+    return List.of(); // TODO Return external reservations
   }
 
   public List<ServiceResponse> updateApartmentDetails(

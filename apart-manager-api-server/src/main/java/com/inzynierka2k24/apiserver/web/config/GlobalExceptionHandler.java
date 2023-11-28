@@ -7,7 +7,7 @@ import com.inzynierka2k24.apiserver.exception.reservation.ReservationNotValidExc
 import com.inzynierka2k24.apiserver.exception.user.InvalidCredentialsException;
 import com.inzynierka2k24.apiserver.exception.user.UserAlreadyExistsException;
 import com.inzynierka2k24.apiserver.exception.user.UserNotFoundException;
-import com.inzynierka2k24.apiserver.web.request.ApiErrorResponse;
+import com.inzynierka2k24.apiserver.web.response.ApiErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.ErrorResponse;
