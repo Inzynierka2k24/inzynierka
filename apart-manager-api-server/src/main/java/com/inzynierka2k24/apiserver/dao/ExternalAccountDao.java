@@ -1,7 +1,7 @@
 package com.inzynierka2k24.apiserver.dao;
 
+import com.inzynierka2k24.ExternalService;
 import com.inzynierka2k24.apiserver.model.ExternalAccount;
-import com.inzynierka2k24.apiserver.model.ServiceType;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -38,7 +38,7 @@ public class ExternalAccountDao {
               Optional.of(rs.getLong("account_id")),
               rs.getString("login"),
               rs.getString("password"),
-              ServiceType.forNumber(rs.getInt("service_type")));
+              ExternalService.forNumber(rs.getInt("service_type")));
 
   public List<ExternalAccount> getAll(long userId) {
     return template.query(GET_ALL_QUERY, accountRowMapper, userId);

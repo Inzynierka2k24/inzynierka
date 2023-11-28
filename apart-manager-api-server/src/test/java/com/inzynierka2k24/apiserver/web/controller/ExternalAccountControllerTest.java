@@ -1,7 +1,7 @@
 package com.inzynierka2k24.apiserver.web.controller;
 
-import static com.inzynierka2k24.apiserver.model.ServiceType.AIRBNB;
-import static com.inzynierka2k24.apiserver.model.ServiceType.BOOKING;
+import static com.inzynierka2k24.ExternalService.AIRBNB;
+import static com.inzynierka2k24.ExternalService.BOOKING;
 import static java.util.Collections.emptyList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;

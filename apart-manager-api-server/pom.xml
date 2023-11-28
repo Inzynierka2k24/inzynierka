@@ -16,7 +16,11 @@
     <properties>
         <java.version>17</java.version>
 
+        <proto.version>0.0.5</proto.version>
+
         <postgresql.version>42.6.0</postgresql.version>
+        <grpc-spring-boot.version>5.1.5</grpc-spring-boot.version>
+        <grpc.version>1.58.0</grpc.version>
         <lombok.version>1.18.30</lombok.version>
         <h2.version>2.2.220</h2.version>
         <mockito.version>5.2.0</mockito.version>
@@ -26,6 +30,14 @@
         <typescript-generator.version>3.1.1185</typescript-generator.version>
         <apache-collections4.version>4.4</apache-collections4.version>
     </properties>
+
+    <repositories>
+        <repository>
+            <id>github</id>
+            <name>GitHub Inzynierka2k24 Apache Maven Packages</name>
+            <url>https://maven.pkg.github.com/Inzynierka2k24/inzynierka</url>
+        </repository>
+    </repositories>
 
     <dependencies>
         <!--   Spring    -->
@@ -74,6 +86,33 @@
             <artifactId>postgresql</artifactId>
             <version>${postgresql.version}</version>
             <scope>runtime</scope>
+        </dependency>
+
+        <!-- gRPC -->
+        <dependency>
+            <groupId>com.inzynierka2k24</groupId>
+            <artifactId>proto</artifactId>
+            <version>${proto.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.github.lognet</groupId>
+            <artifactId>grpc-spring-boot-starter</artifactId>
+            <version>${grpc-spring-boot.version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>netty-tcnative-boringssl-static</artifactId>
+                    <groupId>io.netty</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>grpc-netty-shaded</artifactId>
+                    <groupId>io.grpc</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>io.grpc</groupId>
+            <artifactId>grpc-netty</artifactId>
+            <version>${grpc.version}</version>
         </dependency>
 
         <!--   Misc    -->
