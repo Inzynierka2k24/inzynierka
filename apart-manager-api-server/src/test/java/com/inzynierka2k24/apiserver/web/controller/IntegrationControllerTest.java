@@ -1,7 +1,7 @@
 package com.inzynierka2k24.apiserver.web.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.*;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -15,7 +15,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -39,8 +39,8 @@ public class IntegrationControllerTest {
         integrationController.propagateReservation(userId, apartmentId, reservationId);
 
     // Then
-    assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-    assertEquals(expectedMap, responseEntity.getBody());
+    assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
+    assertThat(responseEntity.getBody()).isEqualTo(expectedMap);
   }
 
   @Test
@@ -60,7 +60,7 @@ public class IntegrationControllerTest {
         integrationController.getReservations(userId, request);
 
     // Then
-    assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+    assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
     assertThat(responseEntity.getBody()).isEmpty();
   }
 
@@ -80,8 +80,8 @@ public class IntegrationControllerTest {
         integrationController.updateApartmentDetails(userId, apartmentId);
 
     // Then
-    assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-    assertEquals(expectedMap, responseEntity.getBody());
+    assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
+    assertThat(responseEntity.getBody()).isEqualTo(expectedMap);
   }
 
   @Test
@@ -97,9 +97,8 @@ public class IntegrationControllerTest {
     IntegrationController integrationController = new IntegrationController(integrationService);
 
     // When, Then
-    assertThrows(
-        ReservationNotFoundException.class,
-        () -> integrationController.propagateReservation(userId, apartmentId, reservationId));
+    assertThatThrownBy(() -> integrationController.propagateReservation(userId, apartmentId, reservationId))
+        .isInstanceOf(ReservationNotFoundException.class);
   }
 
   @Test
@@ -114,8 +113,7 @@ public class IntegrationControllerTest {
     IntegrationController integrationController = new IntegrationController(integrationService);
 
     // When, Then
-    assertThrows(
-        ApartmentNotFoundException.class,
-        () -> integrationController.updateApartmentDetails(userId, apartmentId));
+    assertThatThrownBy(() -> integrationController.updateApartmentDetails(userId, apartmentId))
+        .isInstanceOf(ApartmentNotFoundException.class);
   }
 }
