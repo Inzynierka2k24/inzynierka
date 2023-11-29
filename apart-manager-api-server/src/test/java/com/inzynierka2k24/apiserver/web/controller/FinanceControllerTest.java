@@ -29,10 +29,10 @@ import org.springframework.test.web.servlet.MockMvc;
 @AutoConfigureJsonTesters
 public class FinanceControllerTest {
 
-  @Autowired private MockMvc mockMvc;
   @Autowired JacksonTester<Finance> financeJacksonTester;
   @Autowired JacksonTester<List<Finance>> financeListJacksonTester;
   @MockBean FinanceService financeService;
+  @Autowired private MockMvc mockMvc;
 
   @Test
   @WithMockUser
@@ -150,7 +150,7 @@ public class FinanceControllerTest {
     var response =
         mockMvc
             .perform(
-                get(String.format("/%s/finance/apartment/%s", userId, apartmentId))
+                get(String.format("/%s/finance/apartments/%s", userId, apartmentId))
                     .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andReturn()
@@ -273,7 +273,7 @@ public class FinanceControllerTest {
     // When/Then
     var response =
         mockMvc
-            .perform(get(String.format("/%s/finance/apartment/%s", userId, apartmentId)))
+            .perform(get(String.format("/%s/finance/apartments/%s", userId, apartmentId)))
             .andExpect(status().isOk())
             .andReturn()
             .getResponse();

@@ -28,10 +28,10 @@ import org.springframework.test.web.servlet.MockMvc;
 @AutoConfigureJsonTesters
 public class ApartmentControllerTest {
 
-  @Autowired private MockMvc mockMvc;
   @Autowired JacksonTester<Apartment> apartmentJacksonTester;
   @Autowired JacksonTester<List<Apartment>> apartmentListJacksonTester;
   @MockBean ApartmentService apartmentService;
+  @Autowired private MockMvc mockMvc;
 
   @Test
   @WithMockUser
@@ -64,7 +64,7 @@ public class ApartmentControllerTest {
     // When/Then
     var response =
         mockMvc
-            .perform(get(String.format("/%s/apartment", userId)).accept(MediaType.APPLICATION_JSON))
+            .perform(get(String.format("/%s/apartments", userId)).accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andReturn()
             .getResponse();
@@ -99,7 +99,7 @@ public class ApartmentControllerTest {
     var response =
         mockMvc
             .perform(
-                get(String.format("/%s/apartment/%s", userId, apartmentId))
+                get(String.format("/%s/apartments/%s", userId, apartmentId))
                     .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andReturn()
@@ -129,7 +129,7 @@ public class ApartmentControllerTest {
     // When/Then
     mockMvc
         .perform(
-            post(String.format("/%s/apartment", userId))
+            post(String.format("/%s/apartments", userId))
                 .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(apartmentJacksonTester.write(apartment).getJson()))
@@ -158,7 +158,7 @@ public class ApartmentControllerTest {
     // When/Then
     mockMvc
         .perform(
-            put(String.format("/%s/apartment", userId))
+            put(String.format("/%s/apartments", userId))
                 .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(apartmentJacksonTester.write(apartment).getJson()))
@@ -177,7 +177,7 @@ public class ApartmentControllerTest {
 
     // When/Then
     mockMvc
-        .perform(delete(String.format("/%s/apartment/%s", userId, apartmentId)).with(csrf()))
+        .perform(delete(String.format("/%s/apartments/%s", userId, apartmentId)).with(csrf()))
         .andExpect(status().isOk())
         .andExpect(content().string("Apartment deleted successfully"));
     verify(apartmentService).deleteById(userId, apartmentId);
@@ -194,7 +194,7 @@ public class ApartmentControllerTest {
     // When/Then
     var response =
         mockMvc
-            .perform(get(String.format("/%s/apartment", userId)))
+            .perform(get(String.format("/%s/apartments", userId)))
             .andExpect(status().isOk())
             .andReturn()
             .getResponse();
@@ -212,7 +212,7 @@ public class ApartmentControllerTest {
 
     // When/Then
     mockMvc
-        .perform(get(String.format("/%s/apartment/%s", userId, apartmentId)))
+        .perform(get(String.format("/%s/apartments/%s", userId, apartmentId)))
         .andExpect(status().isNotFound());
     verify(apartmentService).getById(userId, apartmentId);
   }
@@ -237,7 +237,7 @@ public class ApartmentControllerTest {
     // When/Then
     mockMvc
         .perform(
-            put(String.format("/%s/apartment", userId))
+            put(String.format("/%s/apartments", userId))
                 .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(apartmentJacksonTester.write(apartment).getJson()))
@@ -257,7 +257,7 @@ public class ApartmentControllerTest {
 
     // When/Then
     mockMvc
-        .perform(delete(String.format("/%s/apartment/%s", userId, apartmentId)).with(csrf()))
+        .perform(delete(String.format("/%s/apartments/%s", userId, apartmentId)).with(csrf()))
         .andExpect(status().isNotFound());
     verify(apartmentService).deleteById(userId, apartmentId);
   }

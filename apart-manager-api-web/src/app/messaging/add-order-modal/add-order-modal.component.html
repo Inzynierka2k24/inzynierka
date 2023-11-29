@@ -1,0 +1,68 @@
+<p-dialog [(visible)]="visible" [modal]="true" header="Add Order">
+  <form [formGroup]="addOrderForm" class="flex flex-column gap-3">
+    <div class="flex flex-column gap-1">
+      <label for="apartments">Target Apartments</label>
+      <p-multiSelect
+        [options]="(apartments$ | async)!"
+        appendTo="body"
+        formControlName="apartments"
+        id="apartments"
+        optionLabel="title"
+        placeholder="Choose apartment"
+      ></p-multiSelect>
+    </div>
+
+    <div class="flex flex-column gap-1">
+      <label for="trigger">Trigger</label>
+      <p-dropdown
+        [options]="triggerTypes"
+        appendTo="body"
+        formControlName="triggerType"
+        id="trigger"
+      ></p-dropdown>
+    </div>
+    <div class="flex flex-column gap-1">
+      <label for="intervalType">Send message</label>
+      <div>
+        <input
+          formControlName="intervalValue"
+          id="intervalValue"
+          name="intervalValue"
+          pInputText
+          placeholder="Number"
+          type="number"
+        />
+        <p-dropdown
+          [options]="intervalTypes"
+          appendTo="body"
+          formControlName="intervalType"
+          id="intervalType"
+        ></p-dropdown>
+      </div>
+      <label for="intervalValue">before the chosen trigger</label>
+    </div>
+    <textarea
+      [maxLength]="255"
+      formControlName="message"
+      pInputTextarea
+      placeholder="Message content"
+    ></textarea>
+  </form>
+  <ng-template pTemplate="footer">
+    <button
+      (click)="visibleChange.emit(false)"
+      class="p-button-secondary"
+      pButton
+    >
+      Cancel
+    </button>
+    <button
+      (click)="sendOrder()"
+      [disabled]="!addOrderForm.valid"
+      class="p-button"
+      pButton
+    >
+      Accept
+    </button>
+  </ng-template>
+</p-dialog>

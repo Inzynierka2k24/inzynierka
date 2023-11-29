@@ -2,17 +2,38 @@ package com.inzynierka2k24.apiserver.web.dto;
 
 import com.inzynierka2k24.apiserver.model.Apartment;
 import com.inzynierka2k24.apiserver.model.ContactType;
-
+import com.inzynierka2k24.apiserver.model.NotificationSettings;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public record ContactDTO(
+    Optional<Long> id,
     ContactType contactType,
     String name,
-    List<String> messages,
-    List<Apartment> apartments){
-    public ContactDTO(ContactType contactType, String name) {
-        this(contactType,name, new ArrayList<>(), new ArrayList<>());
-    }
-}
+    float price,
+    String mail,
+    String phone,
+    NotificationSettings notificationSettings,
+    List<ScheduledMessageDTO> messages,
+    List<Apartment> apartments) {
 
+  public ContactDTO(
+      Long contactId,
+      ContactType contactType,
+      String name,
+      float price,
+      String mail,
+      String phone) {
+    this(
+        Optional.of(contactId),
+        contactType,
+        name,
+        price,
+        mail,
+        phone,
+        new NotificationSettings(false, false),
+        new ArrayList<>(),
+        new ArrayList<>());
+  }
+}

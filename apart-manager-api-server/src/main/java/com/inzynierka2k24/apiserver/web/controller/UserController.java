@@ -29,7 +29,6 @@ public class UserController {
   @PostMapping("/login")
   public ResponseEntity<String> login(@Valid @RequestBody AuthRequest request) {
     String token = authorizationService.getToken(request.login(), request.password());
-    log.info(token);
     return token != null
         ? ResponseEntity.ok(token)
         : ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
@@ -51,14 +50,15 @@ public class UserController {
     }
     String username = JwtAuthConverter.getLoginFromJWT(token);
     User u = userService.getUser(username);
-    UserDTO dto = new UserDTO(u.id().get(),u.login(),u.emailAddress());
+    UserDTO dto = new UserDTO(u.id().get(), u.login(), u.emailAddress());
     return ResponseEntity.ok(dto);
   }
+
   @PutMapping("/user/{userId}/edit")
   public ResponseEntity<String> edit(
       @PathVariable long userId, @Valid @RequestBody EditUserRequest request)
       throws UserNotFoundException {
-    authorizationService.edit(request.username(),request.emailAddress(), request.password());
+    authorizationService.edit(request.username(), request.emailAddress(), request.password());
     userService.update(new User(userId, request.username(), request.emailAddress()));
     return ResponseEntity.ok("User updated successfully");
   }

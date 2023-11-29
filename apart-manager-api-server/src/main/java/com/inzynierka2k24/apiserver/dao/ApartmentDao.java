@@ -14,13 +14,11 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class ApartmentDao {
 
-  private final JdbcTemplate template;
-
   private static final String GET_ALL_QUERY = "SELECT * FROM apartments WHERE user_id = ?";
   private static final String GET_BY_ID_QUERY =
       "SELECT * FROM apartments WHERE user_id = ? and apartment_id = ?";
   private static final String ADD_QUERY =
-      "INSERT INTO apartments VALUES (default, ?, ?, ?, ?, ?, ?, ?, ?)";
+      "INSERT INTO apartments VALUES (default, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
   private static final String DELETE_QUERY =
       "DELETE FROM apartments WHERE user_id = ? and apartment_id = ?";
   private static final String UPDATE_QUERY =
@@ -32,7 +30,8 @@ public class ApartmentDao {
           city = ?,
           street = ?,
           building_nr = ?,
-          apartment_nr = ?
+          apartment_nr = ?,
+          rating = ?
       WHERE user_id = ? and apartment_id = ?
       """;
   private static final RowMapper<Apartment> apartmentRowMapper =
@@ -45,7 +44,9 @@ public class ApartmentDao {
               rs.getString("city"),
               rs.getString("street"),
               rs.getString("building_nr"),
-              rs.getString("apartment_nr"));
+              rs.getString("apartment_nr"),
+              rs.getInt("rating"));
+  private final JdbcTemplate template;
 
   public List<Apartment> getAll(long userId) {
     return template.query(GET_ALL_QUERY, apartmentRowMapper, userId);
@@ -68,9 +69,10 @@ public class ApartmentDao {
           apartment.city(),
           apartment.street(),
           apartment.buildingNumber(),
-          apartment.apartmentNumber());
+          apartment.apartmentNumber(),
+          apartment.rating());
     } catch (DataIntegrityViolationException e) {
-      throw new IllegalArgumentException("The apartment doesn't belong to given userId", e);
+      throw new IllegalArgumentException("The apartments doesn't belong to given userId", e);
     }
   }
 

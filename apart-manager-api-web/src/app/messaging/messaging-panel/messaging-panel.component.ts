@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { first, map, Observable } from 'rxjs';
 import { AppState } from '../../core/store/app.store';
 import { Store } from '@ngrx/store';
-import { MessagingService } from '../messaging.service';
 import { ContactDTO, ContactType } from '../../../generated';
-import { apartmentStreetToString, MockFactory } from '../../core/utils';
+import { apartmentStreetToString } from '../../core/utils';
+import MessagingActions from '../../core/store/messaging/messaging.actions';
+import { userStateSelector } from '../../core/store/user/user.selectors';
+import { selectMessagingList } from '../../core/store/messaging/messaging.selectors';
 
 @Component({
   selector: 'app-messaging-panel',
@@ -14,38 +16,25 @@ import { apartmentStreetToString, MockFactory } from '../../core/utils';
 export class MessagingPanelComponent implements OnInit {
   chosenContact: ContactDTO;
 
-  apartment1 = MockFactory.createMockApartment({});
-  apartment2 = MockFactory.createMockApartment({});
-  contact1 = MockFactory.createMockContact({
-    apartments: [this.apartment1, this.apartment2],
-    name: 'Cleaner',
-    contactType: 'CLEANING',
-  });
-
-  services$ = of([
-    this.contact1,
-    {
-      name: 'zbyszek',
-      type: 'Zbyszek',
-      status: 'Tak',
-    },
-    {
-      name: 'zbyszek',
-      type: 'Zbyszek',
-      status: 'Tak',
-    },
-    {
-      name: 'zbyszek',
-      type: 'Zbyszek',
-      status: 'Tak',
-    },
-  ]) as Observable<any>;
+  contacts$: Observable<ContactDTO[]>;
+  addOrderVisible = false;
+  addContactVisible = false;
   protected readonly apartmentStreetToString = apartmentStreetToString;
 
-  constructor(
-    private store: Store<AppState>,
-    private messagingService: MessagingService,
-  ) {}
+  constructor(private store: Store<AppState>) {
+    this.store
+      .select(userStateSelector)
+      .pipe(first((state) => !!state?.user))
+      .subscribe((state) => {
+        if (state?.user?.id)
+          this.store.dispatch(
+            MessagingActions.loadContacts({ userId: state.user?.id }),
+          );
+      });
+    this.contacts$ = this.store
+      .select(selectMessagingList)
+      .pipe(map((contacts) => contacts || []));
+  }
 
   ngOnInit(): void {}
 

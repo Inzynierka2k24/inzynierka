@@ -1,44 +1,44 @@
 import { Component } from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {Store} from "@ngrx/store";
-import {MessageService} from "primeng/api";
-import {AppState} from "../../core/store/app.store";
-import {selectCurrentUser} from "../../core/store/user/user.selectors";
-import {Apartment, UserDTO} from "../../../generated";
-import {ApartmentService} from "../services/apartment.service";
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Store } from '@ngrx/store';
+import { MessageService } from 'primeng/api';
+import { AppState } from '../../core/store/app.store';
+import { selectCurrentUser } from '../../core/store/user/user.selectors';
+import { Apartment, UserDTO } from '../../../generated';
+import { ApartmentService } from '../services/apartment.service';
 import { switchMap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-add-apartment',
   templateUrl: './add-apartment.component.html',
-  styleUrls: ['./add-apartment.component.scss']
+  styleUrls: ['./add-apartment.component.scss'],
 })
 export class AddApartmentComponent {
-
   isUserLoggedIn = false;
   addApartForm;
   user: UserDTO;
   apartmentResult$: Observable<string | undefined>;
 
-  constructor(private formBuilder: FormBuilder,
-              private store: Store<AppState>,
-              private apartmentService: ApartmentService,
-              private messageService: MessageService){
-
-    this.addApartForm = formBuilder.nonNullable.group(
-      {
-        dailyPrice: ['', [Validators.required, Validators.min(0)]],
-        title: ['', [Validators.required]],
-        country: ['', [Validators.required]],
-        city: ['', [Validators.required]],
-        street: ['', [Validators.required]],
-        buildingNumber: ['', [Validators.required, Validators.min(0)]],
-        apartmentNumber: ['', [Validators.required, Validators.min(0)]],
-      })
+  constructor(
+    private formBuilder: FormBuilder,
+    private store: Store<AppState>,
+    private apartmentService: ApartmentService,
+    private messageService: MessageService,
+  ) {
+    this.addApartForm = formBuilder.nonNullable.group({
+      dailyPrice: ['', [Validators.required, Validators.min(0)]],
+      title: ['', [Validators.required]],
+      country: ['', [Validators.required]],
+      city: ['', [Validators.required]],
+      street: ['', [Validators.required]],
+      buildingNumber: ['', [Validators.required, Validators.min(0)]],
+      apartmentNumber: ['', [Validators.required, Validators.min(0)]],
+      rating: [0, [Validators.required, Validators.min(0), Validators.max(5)]],
+    });
   }
 
-    addApartment(): void {
+  addApartment(): void {
     if (this.addApartForm.valid) {
       this.store
         .select(selectCurrentUser)
@@ -58,30 +58,31 @@ export class AddApartmentComponent {
               street: this.addApartForm.value.street!,
               buildingNumber: this.addApartForm.value.buildingNumber!,
               apartmentNumber: this.addApartForm.value.apartmentNumber!,
+              rating: this.addApartForm.value.rating!,
             };
             return this.apartmentService.addApartment(this.user, apartmentData);
-          })
+          }),
         )
-        .subscribe(
-          {
+        .subscribe({
           //todo display message
-          next: response =>{
+          next: (response) => {
             this.addApartForm.reset();
             this.messageService.add({
               severity: 'success',
               summary: 'Apartment added correctly',
               detail: '',
-            })},
-          error:error => {
-              console.error('API call error:', error);
-            }
+            });
           },
-        );
+          error: (error) => {
+            console.error('API call error:', error);
+          },
+        });
     } else {
       this.messageService.add({
         severity: 'error',
         summary: 'Validation Error',
-        detail: 'Please fill in all required fields and correct validation errors.',
+        detail:
+          'Please fill in all required fields and correct validation errors.',
       });
       this.markAllFieldsAsTouched(this.addApartForm);
     }

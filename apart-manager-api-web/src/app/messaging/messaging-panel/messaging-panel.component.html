@@ -1,6 +1,16 @@
+<app-add-order-modal
+  [(visible)]="addOrderVisible"
+  [contact]="chosenContact"
+></app-add-order-modal>
+<app-add-contact-modal [(visible)]="addContactVisible"></app-add-contact-modal>
 <div class="flex flex-row" id="messaging-panel">
-  <div class="col-4 p-2 overflow-scroll">
-    <p-dataView [value]="services$ | async">
+  <div class="col-4 p-2 overflow-auto flex flex-column">
+    <button
+      (click)="addContactVisible = true"
+      class="p-button-rounded pi pi-plus"
+      pButton
+    ></button>
+    <p-dataView [value]="(contacts$ | async) || []">
       <ng-template let-service pTemplate="listItem">
         <div class="col-12 surface-card shadow-2 border-round mt-3">
           <div
@@ -41,7 +51,7 @@
     <div class="surface-card p-4 shadow-2 border-round w-full">
       <h2 *ngIf="!chosenContact">Choose a service to see details.</h2>
       <div *ngIf="chosenContact">
-        <div class="flex flex-row">
+        <div class="flex flex-row justify-content-between">
           <p-avatar
             [label]="chosenContact.name[0].toUpperCase()"
             [style]="{ 'background-color': '#2196F3', color: '#ffffff' }"
@@ -50,8 +60,12 @@
           ></p-avatar>
           <div>
             <div>{{ chosenContact.name }}</div>
-            <div>{{ chosenContact.contactType }}</div>
+            <div>Type: {{ chosenContact.contactType }}</div>
           </div>
+          <div></div>
+          <button (click)="addOrderVisible = true" class="p-button" pButton>
+            Add Order
+          </button>
         </div>
         <p-tabView>
           <p-tabPanel header="Apartments">
@@ -117,7 +131,7 @@
               velit, sed quia non numquam eius modi.
             </p>
           </p-tabPanel>
-          <p-tabPanel header="Notifications"> </p-tabPanel>
+          <p-tabPanel header="Notifications"></p-tabPanel>
         </p-tabView>
       </div>
     </div>

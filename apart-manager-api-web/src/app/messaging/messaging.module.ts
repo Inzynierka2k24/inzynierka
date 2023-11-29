@@ -7,10 +7,17 @@ import { ButtonModule } from 'primeng/button';
 import { AvatarModule } from 'primeng/avatar';
 import { TabViewModule } from 'primeng/tabview';
 import { RatingModule } from 'primeng/rating';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AddOrderModalComponent } from './add-order-modal/add-order-modal.component';
+import { DialogModule } from 'primeng/dialog';
+import { DropdownModule } from 'primeng/dropdown';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { InputTextModule } from 'primeng/inputtext';
+import { InputTextareaModule } from 'primeng/inputtextarea';
+import { AddContactModalComponent } from './add-contact-modal/add-contact-modal.component';
 
 @NgModule({
-  declarations: [MessagingPanelComponent],
+  declarations: [MessagingPanelComponent, AddOrderModalComponent, AddContactModalComponent],
   imports: [
     CommonModule,
     DataViewModule,
@@ -20,6 +27,12 @@ import { FormsModule } from '@angular/forms';
     TabViewModule,
     RatingModule,
     FormsModule,
+    DialogModule,
+    DropdownModule,
+    MultiSelectModule,
+    InputTextModule,
+    ReactiveFormsModule,
+    InputTextareaModule,
   ],
 })
 export class MessagingModule {}
