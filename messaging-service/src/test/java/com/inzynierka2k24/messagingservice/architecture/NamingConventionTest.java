@@ -7,8 +7,6 @@ import com.tngtech.archunit.junit.AnalyzeClasses;
 import com.tngtech.archunit.junit.ArchTest;
 import com.tngtech.archunit.lang.ArchRule;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.stereotype.Repository;
-import org.springframework.stereotype.Service;
 
 @AnalyzeClasses(packages = "com.inzynierka2k24.messagingservice", importOptions = DoNotIncludeTests.class)
 public class NamingConventionTest {
