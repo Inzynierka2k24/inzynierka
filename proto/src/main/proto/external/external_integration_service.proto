@@ -3,9 +3,10 @@ syntax = "proto3";
 package external;
 
 import "external/reservation.proto";
-import "external/external_service.proto";
 import "external/service_response.proto";
 import "external/apartment_details.proto";
+import "external/external_account.proto";
+import "google/protobuf/timestamp.proto";
 
 option java_package = "com.inzynierka2k24";
 option java_multiple_files = true;
@@ -20,7 +21,7 @@ service ExternalIntegrationService {
 
 message PropagateReservationRequest {
   Reservation reservation = 1;
-  repeated ExternalService service = 2;
+  repeated ExternalAccount accounts = 2;
 }
 
 message PropagateReservationResponse {
@@ -28,7 +29,9 @@ message PropagateReservationResponse {
 }
 
 message GetReservationsRequest {
-  repeated ExternalService service = 2;
+  repeated ExternalAccount accounts = 1;
+  google.protobuf.Timestamp from = 2;
+  google.protobuf.Timestamp to = 3;
 }
 
 message GetReservationsResponse {
@@ -37,7 +40,7 @@ message GetReservationsResponse {
 
 message UpdateApartmentDetailsRequest {
   ApartmentDetails details = 1;
-  repeated ExternalService service = 2;
+  repeated ExternalAccount accounts = 2;
 }
 
 message UpdateApartmentDetailsResponse {

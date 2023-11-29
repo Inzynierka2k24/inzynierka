@@ -21,11 +21,11 @@ public class UserDao {
   private static final String DELETE_QUERY = "DELETE FROM users WHERE user_id = ?";
   private static final String UPDATE_QUERY =
       """
-                    UPDATE users
-                    SET login = ?,
-                        mail = ?
-                    WHERE user_id = ?
-                    """;
+      UPDATE users
+      SET login = ?,
+          mail = ?
+      WHERE user_id = ?
+      """;
   private static final RowMapper<User> userRowMapper =
       (rs, rowNum) ->
           new User(

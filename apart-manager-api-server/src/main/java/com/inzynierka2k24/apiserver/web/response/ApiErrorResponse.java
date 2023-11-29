@@ -1,4 +1,4 @@
-package com.inzynierka2k24.apiserver.web.request;
+package com.inzynierka2k24.apiserver.web.response;
 
 import org.springframework.http.HttpStatus;
 

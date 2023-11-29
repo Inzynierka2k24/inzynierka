@@ -1,9 +1,11 @@
 package com.inzynierka2k24.external.server;
 
+import static com.inzynierka2k24.external.TestUtils.createExternalAccount;
 import static org.mockito.Mockito.*;
 
 import com.google.protobuf.Timestamp;
 import com.inzynierka2k24.*;
+import com.inzynierka2k24.external.TestUtils;
 import com.inzynierka2k24.external.server.request.InvalidRequestException;
 import com.inzynierka2k24.external.server.request.RequestValidator;
 import com.inzynierka2k24.external.server.request.ValidationError;
@@ -31,8 +33,8 @@ class GrpcServerTest {
                     .setStartDate(Timestamp.newBuilder().setSeconds(1630444800))
                     .setEndDate(Timestamp.newBuilder().setSeconds(1630531200))
                     .build())
-            .addService(ExternalService.BOOKING)
-            .addService(ExternalService.AIRBNB)
+            .addAccounts(createExternalAccount(ExternalService.BOOKING))
+            .addAccounts(createExternalAccount(ExternalService.AIRBNB))
             .build();
 
     when(validator.validate(request)).thenReturn(null);
@@ -66,8 +68,8 @@ class GrpcServerTest {
     // Given
     GetReservationsRequest request =
         GetReservationsRequest.newBuilder()
-            .addService(ExternalService.BOOKING)
-            .addService(ExternalService.AIRBNB)
+            .addAccounts(createExternalAccount(ExternalService.BOOKING))
+            .addAccounts(createExternalAccount(ExternalService.AIRBNB))
             .build();
 
     Set<com.inzynierka2k24.external.model.Reservation> reservations =
@@ -133,8 +135,8 @@ class GrpcServerTest {
                     .setStartDate(Timestamp.newBuilder().setSeconds(1630444800))
                     .setEndDate(Timestamp.newBuilder().setSeconds(1630531200))
                     .build())
-            .addService(ExternalService.BOOKING)
-            .addService(ExternalService.AIRBNB)
+            .addAccounts(createExternalAccount(ExternalService.BOOKING))
+            .addAccounts(createExternalAccount(ExternalService.AIRBNB))
             .build();
 
     ValidationError validationError = ValidationError.INVALID_DATE;
@@ -183,7 +185,7 @@ class GrpcServerTest {
                 .setBuildingNumber("123")
                 .setDescription("description")
                 .build())
-        .addAllService(services)
+        .addAllAccounts(services.stream().map(TestUtils::createExternalAccount).toList())
         .build();
   }
 }

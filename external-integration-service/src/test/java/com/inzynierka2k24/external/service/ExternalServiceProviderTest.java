@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 
 import com.inzynierka2k24.ExternalService;
+import com.inzynierka2k24.external.crawler.BrowserProvider;
+import com.inzynierka2k24.external.model.Account;
 import java.util.List;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
@@ -15,33 +17,35 @@ class ExternalServiceProviderTest {
 
   private final ExternalServiceProvider provider =
       new ExternalServiceProvider(
+          mock(BrowserProvider.class),
           mock(BookingService.class),
           mock(AirbnbService.class),
-          mock(TrivagoService.class),
-          mock(NocowaniePlService.class));
+          mock(TrivagoService.class));
 
   @ParameterizedTest
   @MethodSource
   void shouldGetMessageSender(
-      ExternalService externalService,
+      Account account,
       Class<? extends com.inzynierka2k24.external.service.ExternalService> expectedClass) {
     assertEquals(
-        expectedClass,
-        provider.getServices(List.of(externalService)).findAny().orElseThrow().getClass());
+        expectedClass, provider.getServices(List.of(account)).findAny().orElseThrow().getClass());
   }
 
   @Test
   void shouldReturnNullWhenUnrecognizedType() {
     assertThrows(
         IllegalArgumentException.class,
-        () -> provider.getServices(List.of(ExternalService.UNRECOGNIZED)).findAny());
+        () ->
+            provider
+                .getServices(List.of(new Account("", "", ExternalService.UNRECOGNIZED)))
+                .findAny());
   }
 
   static Stream<Arguments> shouldGetMessageSender() {
     return Stream.of(
-        Arguments.of(ExternalService.BOOKING, BookingService.class),
-        Arguments.of(ExternalService.AIRBNB, AirbnbService.class),
-        Arguments.of(ExternalService.TRIVAGO, TrivagoService.class),
-        Arguments.of(ExternalService.NOCOWANIEPL, NocowaniePlService.class));
+        Arguments.of(new Account("", "", ExternalService.BOOKING), BookingService.class),
+        Arguments.of(new Account("", "", ExternalService.AIRBNB), AirbnbService.class),
+        Arguments.of(new Account("", "", ExternalService.TRIVAGO), TrivagoService.class),
+        Arguments.of(new Account("", "", ExternalService.NOCOWANIEPL), NocowaniePlService.class));
   }
 }
