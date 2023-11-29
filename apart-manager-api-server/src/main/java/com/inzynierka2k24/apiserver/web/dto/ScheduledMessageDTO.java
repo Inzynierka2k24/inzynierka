@@ -10,7 +10,6 @@ public record ScheduledMessageDTO(
     Optional<Long> id,
     List<Apartment> apartments,
     String message,
-    ContactDTO contact,
     IntervalType intervalType,
     int intervalValue,
     TriggerType triggerType) {}

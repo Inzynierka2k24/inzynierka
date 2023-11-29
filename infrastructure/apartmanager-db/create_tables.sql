@@ -76,9 +76,15 @@ CREATE TABLE IF NOT EXISTS scheduled_messages
     message_id     bigserial   NOT NULL PRIMARY KEY,
     user_id        bigint      NOT NULL REFERENCES users (user_id),
     contact_id     bigint      NOT NULL REFERENCES contacts (contact_id),
-    apartment_id   bigint      NOT NULL REFERENCES apartments (apartment_id),
     message        varchar(50) NOT NULL,
     interval_type  int         NOT NULL,
     interval_value int         NOT NULL,
     trigger_type   int         NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS scheduled_messages_apartments
+(
+    message_id   bigint NOT NULL REFERENCES scheduled_messages (message_id),
+    apartment_id bigint NOT NULL REFERENCES apartments (apartment_id),
+    PRIMARY KEY (message_id, apartment_id)
 );

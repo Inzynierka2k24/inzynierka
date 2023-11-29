@@ -16,12 +16,14 @@ public class MessagingController {
 
   private final MessagingService messagingService;
 
-  @PostMapping("/messaging/{userId}")
+  @PostMapping("/messaging/{userId}/contact/{contactId}")
   public ResponseEntity<Boolean> addScheduledMessageForUser(
-      @PathVariable long userId, @RequestBody ScheduledMessageDTO message) {
+      @PathVariable long userId,
+      @PathVariable long contactId,
+      @RequestBody ScheduledMessageDTO message) {
     log.info("Got message: " + message.message());
     try {
-      messagingService.addMessage(userId, message);
+      messagingService.addMessage(userId, contactId, message);
     } catch (ApartmentNotFoundException | ContactNotFoundException e) {
       throw new RuntimeException(e);
     }

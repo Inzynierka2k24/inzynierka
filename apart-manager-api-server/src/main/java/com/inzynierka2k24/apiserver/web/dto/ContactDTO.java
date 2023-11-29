@@ -19,7 +19,7 @@ public record ContactDTO(
     List<Apartment> apartments) {
 
   public ContactDTO(
-      Long contactId,
+      long contactId,
       ContactType contactType,
       String name,
       float price,

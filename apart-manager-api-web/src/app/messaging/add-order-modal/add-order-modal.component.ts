@@ -58,17 +58,22 @@ export class AddOrderModalComponent implements OnInit {
   }
 
   sendOrder() {
-    const message = {
-      apartments: this.addOrderForm.controls['apartments'].value,
-      triggerType: this.addOrderForm.controls['triggerType'].value,
-      intervalType: this.addOrderForm.controls['intervalType'].value,
-      intervalValue: this.addOrderForm.controls['intervalValue'].value,
-      message: this.addOrderForm.controls['message'].value,
-      contact: this.contact,
-    };
-    console.log(message);
-    this.store.dispatch(
-      MessagingActions.addOrder({ userId: this.currentUser.id, message }),
-    );
+    if (this.addOrderForm.valid && this.contact.id && this.currentUser.id) {
+      const message = {
+        apartments: this.addOrderForm.controls['apartments'].value,
+        triggerType: this.addOrderForm.controls['triggerType'].value,
+        intervalType: this.addOrderForm.controls['intervalType'].value,
+        intervalValue: this.addOrderForm.controls['intervalValue'].value,
+        message: this.addOrderForm.controls['message'].value,
+        contact: this.contact,
+      };
+      this.store.dispatch(
+        MessagingActions.addOrder({
+          userId: this.currentUser.id,
+          contactId: this.contact.id,
+          message,
+        }),
+      );
+    }
   }
 }

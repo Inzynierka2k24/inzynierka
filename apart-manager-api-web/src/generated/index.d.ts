@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.1.1185 on 2023-11-29 19:49:54.
+// Generated using typescript-generator version 3.1.1185 on 2023-11-29 22:03:09.
 
 export interface Apartment {
     id?: number;
@@ -74,7 +74,6 @@ export interface ScheduledMessage {
     id?: number;
     userId: number;
     contactId: number;
-    apartmentId: number;
     message: string;
     intervalType: IntervalType;
     intervalValue: number;
@@ -111,7 +110,6 @@ export interface ScheduledMessageDTO {
     id?: number;
     apartments: Apartment[];
     message: string;
-    contact: ContactDTO;
     intervalType: IntervalType;
     intervalValue: number;
     triggerType: TriggerType;

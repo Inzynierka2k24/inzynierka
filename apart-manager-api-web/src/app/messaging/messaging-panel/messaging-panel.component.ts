@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { first, map, Observable } from 'rxjs';
 import { AppState } from '../../core/store/app.store';
 import { Store } from '@ngrx/store';
-import { ContactDTO, ContactType } from '../../../generated';
+import { Apartment, ContactDTO, ContactType } from '../../../generated';
 import { apartmentStreetToString } from '../../core/utils';
 import MessagingActions from '../../core/store/messaging/messaging.actions';
 import { userStateSelector } from '../../core/store/user/user.selectors';
@@ -19,6 +19,7 @@ export class MessagingPanelComponent implements OnInit {
   contacts$: Observable<ContactDTO[]>;
   addOrderVisible = false;
   addContactVisible = false;
+  contactApartments: Apartment[];
   protected readonly apartmentStreetToString = apartmentStreetToString;
 
   constructor(private store: Store<AppState>) {
@@ -48,5 +49,10 @@ export class MessagingPanelComponent implements OnInit {
       default:
         return 'pi pi-dollar';
     }
+  }
+
+  chooseContact(contact: ContactDTO) {
+    this.chosenContact = contact;
+    this.contactApartments = contact.messages.map((m) => m.apartments).flat();
   }
 }

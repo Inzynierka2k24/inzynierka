@@ -19,7 +19,7 @@ const loadContactsError = createAction(
 
 const addOrder = createAction(
   MessagingActionTypes.ADD_ORDER,
-  props<{ userId: number; message: ScheduledMessageDTO }>(),
+  props<{ userId: number; contactId: number; message: ScheduledMessageDTO }>(),
 );
 
 const addOrderComplete = createAction(MessagingActionTypes.ADD_ORDER_COMPLETE);

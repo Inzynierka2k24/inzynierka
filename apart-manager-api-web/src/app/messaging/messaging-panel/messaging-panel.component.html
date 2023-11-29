@@ -36,7 +36,7 @@
                 </div>
               </div>
               <button
-                (click)="chosenContact = service"
+                (click)="chooseContact(service)"
                 class="p-button-secondary p-button-rounded"
                 icon="pi pi-cog"
                 pButton
@@ -69,7 +69,7 @@
         </div>
         <p-tabView>
           <p-tabPanel header="Apartments">
-            <p-dataView [value]="chosenContact.apartments">
+            <p-dataView [value]="contactApartments">
               <ng-template let-apartment pTemplate="listItem">
                 <div class="col-12">
                   <div

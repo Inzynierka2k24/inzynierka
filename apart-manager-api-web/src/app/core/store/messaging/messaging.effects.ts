@@ -26,10 +26,12 @@ export const addOrder = createEffect(
     return $actions.pipe(
       ofType(MessagingActions.addOrder),
       exhaustMap((action) => {
-        return messagingService.addOrder(action.userId, action.message).pipe(
-          map(() => MessagingActions.addOrderComplete()),
-          catchError((err) => of(MessagingActions.addOrderError(err))),
-        );
+        return messagingService
+          .addOrder(action.userId, action.contactId, action.message)
+          .pipe(
+            map(() => MessagingActions.addOrderComplete()),
+            catchError((err) => of(MessagingActions.addOrderError(err))),
+          );
       }),
     );
   },

@@ -12,9 +12,9 @@ export class MessagingService {
     return this.httpClient.get<ContactDTO[]>('/api/contacts/' + userId);
   }
 
-  addOrder(userId: number, message: ScheduledMessageDTO) {
+  addOrder(userId: number, contactId: number, message: ScheduledMessageDTO) {
     return this.httpClient.post<ScheduledMessageDTO>(
-      '/api/messaging/' + userId,
+      '/api/messaging/' + userId + '/contact/' + contactId,
       message,
     );
   }
