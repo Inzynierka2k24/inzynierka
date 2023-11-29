@@ -1,6 +1,6 @@
 package com.inzynierka2k24.external.service;
 
-import com.inzynierka2k24.external.crawler.Crawler;
+import com.inzynierka2k24.external.crawler.BrowserProvider;
 import com.inzynierka2k24.external.model.Account;
 import java.util.Collection;
 import java.util.stream.Stream;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 class ExternalServiceProvider {
 
-  private final Crawler crawler;
+  private final BrowserProvider browserProvider;
 
   private final BookingService bookingService;
   private final AirbnbService airbnbService;
@@ -25,7 +25,7 @@ class ExternalServiceProvider {
                   case BOOKING -> bookingService;
                   case AIRBNB -> airbnbService;
                   case TRIVAGO -> trivagoService;
-                  case NOCOWANIEPL -> new NocowaniePlService(crawler, account);
+                  case NOCOWANIEPL -> new NocowaniePlService(browserProvider, account);
                   case UNRECOGNIZED -> throw new IllegalArgumentException("Unrecognized service!");
                 });
   }

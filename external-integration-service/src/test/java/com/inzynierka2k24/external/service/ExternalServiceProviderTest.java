@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 
 import com.inzynierka2k24.ExternalService;
-import com.inzynierka2k24.external.crawler.Crawler;
+import com.inzynierka2k24.external.crawler.BrowserProvider;
 import com.inzynierka2k24.external.model.Account;
 import java.util.List;
 import java.util.stream.Stream;
@@ -17,7 +17,7 @@ class ExternalServiceProviderTest {
 
   private final ExternalServiceProvider provider =
       new ExternalServiceProvider(
-          mock(Crawler.class),
+          mock(BrowserProvider.class),
           mock(BookingService.class),
           mock(AirbnbService.class),
           mock(TrivagoService.class));

@@ -7,7 +7,6 @@ import com.inzynierka2k24.apiserver.model.Apartment;
 import com.inzynierka2k24.apiserver.model.ExternalAccount;
 import com.inzynierka2k24.apiserver.model.Reservation;
 import java.time.Instant;
-import java.time.temporal.ChronoUnit;
 import java.util.Collection;
 
 public final class RequestBuilder {
@@ -39,8 +38,8 @@ public final class RequestBuilder {
 
   public static com.inzynierka2k24.Reservation toProto(Reservation reservation) {
     return com.inzynierka2k24.Reservation.newBuilder()
-        .setStartDate(toProtoTimestamp(Instant.now().plus(2L, ChronoUnit.DAYS)))
-        .setEndDate(toProtoTimestamp(Instant.now().plus(5L, ChronoUnit.DAYS)))
+        .setStartDate(toProtoTimestamp(reservation.startDate()))
+        .setEndDate(toProtoTimestamp(reservation.endDate()))
         .build();
   }
 

@@ -94,7 +94,7 @@ public class SimpleExternalIntegrationServiceClient {
   private ExternalAccount createAccount() {
     return ExternalAccount.newBuilder()
         .setAccount(Account.newBuilder().setLogin("").setPassword("").build())
-        .setService(NOCOWANIEPL)
+        .setService(BOOKING)
         .build();
   }
 }
