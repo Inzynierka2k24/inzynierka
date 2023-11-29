@@ -1,13 +1,16 @@
 package com.inzynierka2k24.external.service;
 
+import static com.inzynierka2k24.ExternalService.AIRBNB;
+import static com.inzynierka2k24.ExternalService.BOOKING;
+import static com.inzynierka2k24.external.TestUtils.createAccount;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import com.inzynierka2k24.ExternalService;
 import com.inzynierka2k24.ResponseStatus;
 import com.inzynierka2k24.ServiceResponse;
+import com.inzynierka2k24.external.model.Account;
 import com.inzynierka2k24.external.model.ApartmentDetails;
 import com.inzynierka2k24.external.model.Reservation;
 import java.time.Instant;
@@ -20,7 +23,7 @@ class IntegrationServiceTest {
   private final BookingService bookingService = mock(BookingService.class);
   private final AirbnbService airbnbService = mock(AirbnbService.class);
   private final ExternalServiceProvider externalServiceProvider =
-      new ExternalServiceProvider(bookingService, airbnbService, null, null);
+      new ExternalServiceProvider(null, bookingService, airbnbService, null);
   private final IntegrationService integrationService =
       new IntegrationService(externalServiceProvider);
 
@@ -29,18 +32,13 @@ class IntegrationServiceTest {
     // Given
     Reservation reservation =
         new Reservation(
-            Instant.now(),
-            Instant.now().plus(1, ChronoUnit.DAYS),
-            Optional.of(100.0f),
-            com.inzynierka2k24.ExternalService.BOOKING);
-    Collection<com.inzynierka2k24.ExternalService> externalServices =
-        List.of(
-            com.inzynierka2k24.ExternalService.BOOKING, com.inzynierka2k24.ExternalService.AIRBNB);
+            Instant.now(), Instant.now().plus(1, ChronoUnit.DAYS), Optional.of(100.0f), BOOKING);
+    Collection<Account> externalServices = List.of(createAccount(BOOKING), createAccount(AIRBNB));
 
     when(bookingService.propagateReservation(reservation)).thenReturn(ResponseStatus.SUCCESS);
-    when(bookingService.getServiceType()).thenReturn(ExternalService.BOOKING);
+    when(bookingService.getServiceType()).thenReturn(BOOKING);
     when(airbnbService.propagateReservation(reservation)).thenReturn(ResponseStatus.SUCCESS);
-    when(airbnbService.getServiceType()).thenReturn(ExternalService.AIRBNB);
+    when(airbnbService.getServiceType()).thenReturn(AIRBNB);
 
     // When
     Set<ServiceResponse> result =
@@ -65,15 +63,11 @@ class IntegrationServiceTest {
             Instant.parse("2022-01-01T00:00:00Z"),
             Instant.parse("2022-01-02T00:00:00Z"),
             Optional.of(100.0f),
-            ExternalService.BOOKING);
+            BOOKING);
     Reservation reservationAirbnb =
         new Reservation(
-            Instant.parse("2022-01-03T00:00:00Z"),
-            Instant.parse("2022-01-04T00:00:00Z"),
-            ExternalService.AIRBNB);
-    Collection<com.inzynierka2k24.ExternalService> externalServices =
-        Arrays.asList(
-            com.inzynierka2k24.ExternalService.BOOKING, com.inzynierka2k24.ExternalService.AIRBNB);
+            Instant.parse("2022-01-03T00:00:00Z"), Instant.parse("2022-01-04T00:00:00Z"), AIRBNB);
+    Collection<Account> externalServices = List.of(createAccount(BOOKING), createAccount(AIRBNB));
 
     when(bookingService.getReservations()).thenReturn(Set.of(reservationBooking));
     when(airbnbService.getReservations()).thenReturn(Set.of(reservationAirbnb));
@@ -91,14 +85,12 @@ class IntegrationServiceTest {
     // Given
     ApartmentDetails details =
         new ApartmentDetails("Title", "City", "Street", "BuildingNumber", "Description");
-    Collection<com.inzynierka2k24.ExternalService> externalServices =
-        Arrays.asList(
-            com.inzynierka2k24.ExternalService.BOOKING, com.inzynierka2k24.ExternalService.AIRBNB);
+    Collection<Account> externalServices = List.of(createAccount(BOOKING), createAccount(AIRBNB));
 
     when(bookingService.updateApartmentDetails(details)).thenReturn(ResponseStatus.SUCCESS);
-    when(bookingService.getServiceType()).thenReturn(ExternalService.BOOKING);
+    when(bookingService.getServiceType()).thenReturn(BOOKING);
     when(airbnbService.updateApartmentDetails(details)).thenReturn(ResponseStatus.SUCCESS);
-    when(airbnbService.getServiceType()).thenReturn(ExternalService.AIRBNB);
+    when(airbnbService.getServiceType()).thenReturn(AIRBNB);
 
     // When
     Set<ServiceResponse> result =

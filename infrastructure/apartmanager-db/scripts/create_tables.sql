@@ -35,7 +35,6 @@ CREATE TABLE IF NOT EXISTS external_accounts (
   user_id bigint NOT NULL REFERENCES users(user_id) ON DELETE CASCADE,
   login varchar(50) NOT NULL,
   password varchar(50) NOT NULL,
-  mail varchar(50) NOT NULL,
   service_type int NOT NULL
 );
 
