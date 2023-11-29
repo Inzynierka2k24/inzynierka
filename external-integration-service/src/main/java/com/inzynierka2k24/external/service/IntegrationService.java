@@ -1,7 +1,7 @@
 package com.inzynierka2k24.external.service;
 
-import com.inzynierka2k24.ExternalService;
 import com.inzynierka2k24.ServiceResponse;
+import com.inzynierka2k24.external.model.Account;
 import com.inzynierka2k24.external.model.ApartmentDetails;
 import com.inzynierka2k24.external.model.Reservation;
 import java.util.Collection;
@@ -17,9 +17,9 @@ public class IntegrationService {
   private final ExternalServiceProvider serviceProvider;
 
   public Set<ServiceResponse> propagateReservation(
-      Reservation reservation, Collection<ExternalService> externalServices) {
+      Reservation reservation, Collection<Account> accounts) {
     return serviceProvider
-        .getServices(externalServices)
+        .getServices(accounts)
         .map(
             externalService ->
                 ServiceResponse.newBuilder()
@@ -29,18 +29,18 @@ public class IntegrationService {
         .collect(Collectors.toSet());
   }
 
-  public Set<Reservation> getReservations(Collection<ExternalService> externalServices) {
+  public Set<Reservation> getReservations(Collection<Account> accounts) {
     return serviceProvider
-        .getServices(externalServices)
+        .getServices(accounts)
         .map(com.inzynierka2k24.external.service.ExternalService::getReservations)
         .flatMap(Collection::stream)
         .collect(Collectors.toSet());
   }
 
   public Set<ServiceResponse> updateApartmentDetails(
-      ApartmentDetails details, Collection<ExternalService> externalServices) {
+      ApartmentDetails details, Collection<Account> accounts) {
     return serviceProvider
-        .getServices(externalServices)
+        .getServices(accounts)
         .map(
             externalService ->
                 ServiceResponse.newBuilder()

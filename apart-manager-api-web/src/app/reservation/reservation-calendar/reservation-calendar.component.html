@@ -1,14 +1,23 @@
-<div style="display: flex; justify-content: center; align-items: flex-start; height: 100vh;">
-  <div *ngIf="events.length > 0">
+<div style="display: flex; justify-content: space-evenly;">
+  <p-card header="Resrvation Details" [style]="{ width: '300px' }">
+    <ng-template pTemplate="header">
+      <img alt="Card" src="https://primefaces.org/cdn/primeng/images/usercard.png" />
+    </ng-template>
+    <p class="m-0" id="tooltip-container">
+    </p>
+  </p-card>
+  <div *ngIf="events.length > 0" style="float: right">
     <full-calendar
-      [events] = "events"
-      (dateClick)="handleDateClick($event)"
-      [options]="calendarOptions" style="width: 800px; height: 700px; border-radius: 20px;">
+      [events]="events"
+      (eventClick)="handleEventClick($event)"
+      [options]="calendarOptions"
+      style="width: 800px; height: 700px; border-radius: 20px;"
+    >
       <ng-template #eventContent let-arg>
-        <b>{{arg.event.id}}</b>
+        <b>{{ arg.event.id }}</b>
         <i>_</i>
-        <i>{{arg.event.title}}</i>
+        <i>{{ arg.event.title }}</i>
       </ng-template>
     </full-calendar>
-  </div>
+  <div>
 </div>

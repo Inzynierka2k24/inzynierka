@@ -34,14 +34,12 @@ CREATE TABLE IF NOT EXISTS reservations
     end_date       date      NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS external_accounts
-(
-    account_id   bigserial   NOT NULL PRIMARY KEY,
-    user_id      bigint      NOT NULL REFERENCES users (user_id),
-    login        varchar(50) NOT NULL,
-    password     varchar(50) NOT NULL,
-    mail         varchar(50) NOT NULL,
-    service_type int         NOT NULL
+CREATE TABLE IF NOT EXISTS external_accounts (
+                                                 account_id bigserial NOT NULL PRIMARY KEY,
+                                                 user_id bigint NOT NULL REFERENCES users(user_id),
+                                                 login varchar(50) NOT NULL,
+                                                 password varchar(50) NOT NULL,
+                                                 service_type int NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS contacts

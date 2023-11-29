@@ -1,6 +1,5 @@
-import { Component } from '@angular/core';
+import {Component, ElementRef, HostListener, Renderer2} from '@angular/core';
 import 'zone.js';
-import {CalendarOptions, EventInput} from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import {Message, MessageService} from "primeng/api";
 import {Apartment, Reservation, UserDTO} from "../../../generated";
@@ -12,6 +11,7 @@ import {ApartmentService} from "../../apartment/services/apartment.service";
 import {Router} from "@angular/router";
 import {selectCurrentUser} from "../../core/store/user/user.selectors";
 import interactionPlugin from '@fullcalendar/interaction';
+
 
 @Component({
   selector: 'app-reservation-calendar',
@@ -26,29 +26,16 @@ export class ReservationCalendarComponent {
   apartments: Apartment[] = [];
   apartment: Apartment;
   user$: Observable<UserDTO | undefined>;
-  // events: {id: number | undefined, title: string, start: Date; end: Date}[]= [];
   events: any[] = [];
-
-  calendarOptions: CalendarOptions = {
-    plugins: [dayGridPlugin, interactionPlugin],
-    initialView: 'dayGridMonth',
-    events: this.events,
-    weekends: true,
-
-    selectable: true,
-    editable: true,
-    selectMirror: true,
-    // dateClick: this.handleDateClick.bind(this),
-    dateClick: function(arg){
-      alert('date click');
-    }
-  };
+  calendarOptions: any;
 
   constructor(private store: Store<AppState>,
               private reservationService: ReservationService,
               private apartmentService: ApartmentService,
               private messageService: MessageService,
-              private router: Router) {
+              private router: Router,
+              private el: ElementRef, private renderer: Renderer2
+             ) {
   }
 
   ngOnInit() {
@@ -74,18 +61,24 @@ export class ReservationCalendarComponent {
                     end: val.endDate
                   });
                 }
-
-                this.calendarOptions = {
-                  plugins: [dayGridPlugin],
-                  initialView: 'dayGridMonth',
-                  weekends: false,
-                  events: this.events as EventInput[],
-                };
             });
             }
         });
       }
     });
+
+    this.calendarOptions = {
+      plugins: [dayGridPlugin, interactionPlugin],
+      initialView: 'dayGridMonth',
+      events: this.events,
+      selectable: true,
+      editable: true,
+      selectMirror: true,
+      eventClick: this.handleEventClick.bind(this),
+      eventMouseEnter: this.handleMouseEnter.bind(this),
+      eventMouseLeave: this.handleMouseLeave.bind(this)
+    };
+    this.createTooltipOnEnter();
   }
 
   getApartmentTitle(id: number): string {
@@ -97,11 +90,9 @@ export class ReservationCalendarComponent {
     return "";
   }
 
-  handleDateClick(arg: any){
-    // const eventReservation = this.getReservation(info.event.id);
-    // this.router.navigate(['/reservations/edit', eventReservation]);
-    alert('date click! ' + arg.dateStr);
-
+  handleEventClick(arg: any){
+    const eventReservation = this.getReservation(arg.event.id);
+    this.router.navigate(['/reservations/edit', eventReservation]);
   }
 
   getReservation(id: number): Reservation | null {
@@ -112,6 +103,51 @@ export class ReservationCalendarComponent {
     }
     return null;
   }
+
+  createTooltipOnEnter(): void {
+    const htmlCode = `
+      <div class="custom-tooltip">
+        <b>Title:</b><br/>
+        Start: <br/>
+        End:
+      </div>
+    `;
+    const container = document.getElementById('tooltip-container');
+    this.renderer.appendChild(container, this.createHtmlElement(htmlCode));
+  }
+
+
+  handleMouseEnter(info: any): void {
+    const htmlCode = `
+      <div class="custom-tooltip">
+        <b>${info.event.title}</b><br/>
+        Start: ${info.event.start.toLocaleString()}<br/>
+        End: ${info.event.end.toLocaleString()}
+      </div>
+    `;
+    const container = document.getElementById('tooltip-container');
+    if (container){
+      container.innerHTML = '';
+      this.renderer.appendChild(container, this.createHtmlElement(htmlCode));
+    }
+  }
+
+  handleMouseLeave(info: any): void {
+    const container = document.getElementById('tooltip-container');
+    if (container) {
+      const tooltip = container.lastChild;
+      if (tooltip) {
+        this.renderer.removeChild(container, tooltip);
+      }
+    }
+  }
+
+  private createHtmlElement(htmlCode: string): HTMLElement {
+    const div = this.renderer.createElement('div');
+    this.renderer.setProperty(div, 'innerHTML', htmlCode);
+    return div;
+  }
+
 }
 
 

@@ -64,7 +64,7 @@ export class EditReservationComponent {
   }
 
   cancelEditing() {
-    this.router.navigate(['/reservations']);
+    window.history.back();
   }
 
   cleanMessages() {

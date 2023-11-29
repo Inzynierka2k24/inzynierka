@@ -31,7 +31,7 @@ export class AddReservationComponent {
 
     this.addReservationForm = formBuilder.nonNullable.group(
       {
-        apartmentId: ['', [Validators.required]],
+        apartmentId: ['', [Validators.required, Validators.min(1)]],
         startDate: ['', [Validators.required]],
         endDate: ['', [Validators.required]],
       })
@@ -57,21 +57,28 @@ export class AddReservationComponent {
               startDate: new Date(this.addReservationForm.value.startDate!),
               endDate: new Date(this.addReservationForm.value.endDate!),
             };
-            return this.reservationService.addReservation(this.user, reservationData.apartmentId, reservationData);
+            return this.reservationService.addReservation(this.user,
+              reservationData.apartmentId,
+              reservationData,
+              { responseType: 'text' });
           })
         )
         .subscribe(
           {
-            //todo display message
           next: response =>{
             this.addReservationForm.reset();
             this.messageService.add({
               severity: 'success',
               summary: 'Reservation added correctly',
-              detail: '',
+              detail: 'success',
             })},
           error:error => {
               console.error('API call error:', error);
+                this.messageService.add({
+                  severity: 'error',
+                  summary: 'Data Error',
+                  detail: 'Please correct passed data.',
+                });
             }
           },
         );

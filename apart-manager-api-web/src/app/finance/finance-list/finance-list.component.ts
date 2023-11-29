@@ -1,8 +1,8 @@
-import { Component } from '@angular/core';
-import {Apartment, EventType, Finance, Source, UserDTO} from "../../../generated";
+import {Component} from '@angular/core';
+import {Apartment, Finance, UserDTO} from "../../../generated";
 import {Observable} from "rxjs";
 import {Message, MessageService} from "primeng/api";
-import {FormBuilder, FormGroup, Validators, FormsModule} from "@angular/forms";
+import {FormBuilder, FormGroup} from "@angular/forms";
 import {FinanceService} from "../service/finance.service";
 import {Router} from "@angular/router";
 import {Store} from "@ngrx/store";
@@ -10,6 +10,7 @@ import {Store} from "@ngrx/store";
 import {selectCurrentUser} from "../../core/store/user/user.selectors";
 import {AppState} from "../../core/store/app.store";
 import {ApartmentService} from "../../apartment/services/apartment.service";
+import {switchMap} from "rxjs/operators";
 
 interface WeeklyRevenue {
   weekStartDate: Date;
@@ -51,6 +52,8 @@ export class FinanceListComponent {
   apartments: Apartment[] = [];
   apartment: Apartment;
   user: UserDTO;
+  user$: Observable<UserDTO | undefined>;
+
 
 
   constructor(private store: Store<AppState>,
@@ -74,24 +77,9 @@ export class FinanceListComponent {
   }
 
   ngAfterViewInit() {
-    const userDataSub = this.store
-      .select(selectCurrentUser)
-      .subscribe((user) => {
-        if (user) {
-          this.isUserLoggedIn = true;
-          this.user = user;
-          this.financeService.getFinances(this.user).subscribe((data: Finance[]) => {
-            this.finances = data;
-
-            this.filteredFinances = [...this.finances];
-            this.sumOfPrices = 0;
-            this.filteredFinances.forEach((f) => { this.sumOfPrices += f.price });
-          });
-        } else {
-          this.isUserLoggedIn = false;
-        }
-      });
+    this.fetchData();
   }
+
   // Filter criteria
   filterEventType: string | undefined;
   filterApartmentId: number | undefined;
@@ -99,9 +87,9 @@ export class FinanceListComponent {
 
   applyFilter(): void {
     this.filteredFinances = this.finances.filter((finance) => {
-      let eventTypeMatch = true;
+      let eventTypeMatch: boolean;
       let apartmentIdMatch = true;
-      let sourceMatch = true;
+      let sourceMatch: boolean;
 
       if (this.filterFinanceForm.value.filterEventType.name == null) eventTypeMatch = true
       else if ("ALL" === this.filterFinanceForm.value.filterEventType.name) eventTypeMatch = true;
@@ -140,18 +128,54 @@ export class FinanceListComponent {
     this.router.navigate(['/finances/edit', finance]);
   }
 
-  deleteFinance(event: any) {
-    console.log('Delete Finance:', event);
-    this.messages = [{
-      severity: 'info',
-      detail: 'Finance deleted successfully',
-    }];
-    this.cleanMessages();
+  deleteFinance(finance: Finance): void {
+    this.store
+      .select(selectCurrentUser)
+      .pipe(
+        switchMap((user) => {
+          if (!user) {
+            throw new Error('User not logged in');
+          }
+          this.user = user;
+          return this.financeService.deleteFinance(this.user, <number>finance.id, { responseType: 'text' });
+        })
+      )
+      .subscribe(
+        {
+        next: response =>{
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Finance deleted correctly',
+            detail: 'success',
+          });
+          this.fetchData();
+        },
+        error:error => {
+            console.error('API call error:', error);
+            this.fetchData();
+          },
+        },
+      );
   }
 
   cleanMessages() {
     setTimeout(() => {
       this.messages = [];
     }, 3000);
+  }
+
+  fetchData() {
+    this.user$ = this.store.select(selectCurrentUser);
+    this.user$.subscribe((user) => {
+      if (user) {
+        this.user = user;
+        this.financeService.getFinances(this.user).subscribe((data: Finance[]) => {
+          this.finances = data;
+          this.filteredFinances = [...this.finances];
+          this.sumOfPrices = 0;
+          this.filteredFinances.forEach((f) => { this.sumOfPrices += f.price });
+        });
+      }
+    });
   }
 }

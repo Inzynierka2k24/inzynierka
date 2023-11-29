@@ -7,9 +7,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
-@Service
+@Repository
 @RequiredArgsConstructor
 public class UserDao {
 
@@ -20,11 +21,11 @@ public class UserDao {
   private static final String DELETE_QUERY = "DELETE FROM users WHERE user_id = ?";
   private static final String UPDATE_QUERY =
       """
-                    UPDATE users
-                    SET login = ?,
-                        mail = ?
-                    WHERE user_id = ?
-                    """;
+      UPDATE users
+      SET login = ?,
+          mail = ?
+      WHERE user_id = ?
+      """;
   private static final RowMapper<User> userRowMapper =
       (rs, rowNum) ->
           new User(
