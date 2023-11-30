@@ -237,6 +237,4 @@ class AuthorizationServiceTest {
 
     return new HttpEntity<>(formData, headers);
   }
-
-
 }
