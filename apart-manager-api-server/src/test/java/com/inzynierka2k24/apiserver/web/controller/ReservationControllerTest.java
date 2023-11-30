@@ -10,6 +10,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.inzynierka2k24.apiserver.exception.reservation.ReservationNotFoundException;
 import com.inzynierka2k24.apiserver.exception.reservation.ReservationNotValidException;
 import com.inzynierka2k24.apiserver.model.Reservation;
+import com.inzynierka2k24.apiserver.service.ApartmentService;
 import com.inzynierka2k24.apiserver.service.ReservationService;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -227,7 +228,8 @@ public class ReservationControllerTest {
   @Test
   public void shouldReturnTrueIfStartDateIsAfterEndDate() {
     // Given
-    ReservationController controller = new ReservationController(mock(ReservationService.class));
+    ReservationController controller =
+        new ReservationController(mock(ReservationService.class), mock(ApartmentService.class));
     Reservation reservation =
         new Reservation(
             Optional.empty(), 1L, Instant.now().plus(1, ChronoUnit.DAYS), Instant.now());
@@ -239,7 +241,8 @@ public class ReservationControllerTest {
   @Test
   public void shouldReturnFalseIfReservationIsValid() {
     // Given
-    ReservationController controller = new ReservationController(mock(ReservationService.class));
+    ReservationController controller =
+        new ReservationController(mock(ReservationService.class), mock(ApartmentService.class));
     Reservation reservation =
         new Reservation(
             Optional.empty(), 1L, Instant.now(), Instant.now().plus(1, ChronoUnit.DAYS));

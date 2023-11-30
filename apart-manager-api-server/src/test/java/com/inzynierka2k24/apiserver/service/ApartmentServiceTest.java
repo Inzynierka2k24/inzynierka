@@ -30,7 +30,8 @@ public class ApartmentServiceTest {
             "City 1",
             "Street 1",
             "Building 1",
-            "Apartment 1"));
+            "Apartment 1",
+            4));
     expectedApartments.add(
         new Apartment(
             Optional.of(2L),
@@ -40,7 +41,8 @@ public class ApartmentServiceTest {
             "City 2",
             "Street 2",
             "Building 2",
-            "Apartment 2"));
+            "Apartment 2",
+            4));
     when(apartmentDao.getAll(userId)).thenReturn(expectedApartments);
 
     // When
@@ -64,7 +66,8 @@ public class ApartmentServiceTest {
             "City 1",
             "Street 1",
             "Building 1",
-            "Apartment 1");
+            "Apartment 1",
+            4);
     when(apartmentDao.getById(userId, apartmentId)).thenReturn(Optional.of(expectedApartment));
 
     // When
@@ -87,7 +90,8 @@ public class ApartmentServiceTest {
             "City 1",
             "Street 1",
             "Building 1",
-            "Apartment 1");
+            "Apartment 1",
+            4);
 
     // When
     apartmentService.add(userId, apartment);
@@ -111,7 +115,8 @@ public class ApartmentServiceTest {
             "Updated City",
             "Updated Street",
             "Updated Building",
-            "Updated Apartment");
+            "Updated Apartment",
+            4);
     when(apartmentDao.getById(userId, apartmentId)).thenReturn(Optional.of(apartment));
 
     // When
@@ -138,7 +143,8 @@ public class ApartmentServiceTest {
                     "City 1",
                     "Street 1",
                     "Building 1",
-                    "Apartment 1")));
+                    "Apartment 1",
+                    4)));
 
     // When
     apartmentService.deleteById(userId, apartmentId);
@@ -173,7 +179,8 @@ public class ApartmentServiceTest {
             "City 1",
             "Street 1",
             "Building 1",
-            "Apartment 1");
+            "Apartment 1",
+            4);
     doThrow(new IllegalArgumentException()).when(apartmentDao).add(userId, apartment);
 
     // When/Then
@@ -195,7 +202,8 @@ public class ApartmentServiceTest {
             "Updated City",
             "Updated Street",
             "Updated Building",
-            "Updated Apartment");
+            "Updated Apartment",
+            4);
     when(apartmentDao.getById(userId, apartmentId)).thenReturn(Optional.empty());
 
     // When/Then
@@ -232,7 +240,8 @@ public class ApartmentServiceTest {
                     "City 1",
                     "Street 1",
                     "Building 1",
-                    "Apartment 1")));
+                    "Apartment 1",
+                    4)));
 
     // When
     boolean exists = apartmentService.existsById(userId, apartmentId);
@@ -268,7 +277,8 @@ public class ApartmentServiceTest {
             "City 1",
             "Street 1",
             "Building 1",
-            "Apartment 1");
+            "Apartment 1",
+            4);
 
     // When
     assertThrows(

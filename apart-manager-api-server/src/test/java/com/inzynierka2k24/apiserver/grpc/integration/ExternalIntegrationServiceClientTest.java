@@ -81,7 +81,15 @@ class ExternalIntegrationServiceClientTest {
     ExternalIntegrationServiceClient client = new ExternalIntegrationServiceClient(blockingStub);
     Apartment apartment =
         new Apartment(
-            Optional.of(1L), 100.0f, "Title", "Country", "City", "Street", "Building", "Apartment");
+            Optional.of(1L),
+            100.0f,
+            "Title",
+            "Country",
+            "City",
+            "Street",
+            "Building",
+            "Apartment",
+            4);
     List<ExternalAccount> accounts = List.of(new ExternalAccount(1L, "login", "password", 1));
     UpdateApartmentDetailsRequest expectedRequest =
         UpdateApartmentDetailsRequest.newBuilder()

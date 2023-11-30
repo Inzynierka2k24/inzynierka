@@ -15,9 +15,16 @@ import { MultiSelectModule } from 'primeng/multiselect';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { AddContactModalComponent } from './add-contact-modal/add-contact-modal.component';
+import { TableModule } from 'primeng/table';
+import { CalendarModule } from 'primeng/calendar';
+import { FullCalendarModule } from '@fullcalendar/angular';
 
 @NgModule({
-  declarations: [MessagingPanelComponent, AddOrderModalComponent, AddContactModalComponent],
+  declarations: [
+    MessagingPanelComponent,
+    AddOrderModalComponent,
+    AddContactModalComponent,
+  ],
   imports: [
     CommonModule,
     DataViewModule,
@@ -33,6 +40,9 @@ import { AddContactModalComponent } from './add-contact-modal/add-contact-modal.
     InputTextModule,
     ReactiveFormsModule,
     InputTextareaModule,
+    TableModule,
+    CalendarModule,
+    FullCalendarModule,
   ],
 })
 export class MessagingModule {}

@@ -3,23 +3,66 @@
     <div class="menu-content">
       <h1 class="margin">ApartManager API</h1>
 
-      <p-tieredMenu #apartmentMenu [model]="apartmentItems" [popup]="true"></p-tieredMenu>
-      <button #btn class="margin" type="button" pButton icon="pi pi-home" label="Apartments" (click)="showClickApartments($event)"></button>
+      <p-tieredMenu
+        #apartmentMenu
+        [model]="apartmentItems"
+        [popup]="true"
+      ></p-tieredMenu>
+      <button
+        #btn
+        (click)="showClickApartments($event)"
+        class="margin"
+        icon="pi pi-home"
+        label="Apartments"
+        pButton
+        type="button"
+      ></button>
 
-      <p-tieredMenu #reservationMenu [model]="reservationItems" [popup]="true"></p-tieredMenu>
-      <button #btn class="margin" type="button" pButton icon="pi pi-calendar" label="Reservations" (click)="showClickReservations($event)"></button>
+      <p-tieredMenu
+        #reservationMenu
+        [model]="reservationItems"
+        [popup]="true"
+      ></p-tieredMenu>
+      <button
+        #btn
+        (click)="showClickReservations($event)"
+        class="margin"
+        icon="pi pi-calendar"
+        label="Reservations"
+        pButton
+        type="button"
+      ></button>
 
-      <p-tieredMenu #financeMenu [model]="financeItems" [popup]="true"></p-tieredMenu>
-      <button #btn class="margin" type="button" pButton icon="pi pi-chart-line" label="Finances" (click)="showClickFinances($event)"></button>
+      <p-tieredMenu
+        #financeMenu
+        [model]="financeItems"
+        [popup]="true"
+      ></p-tieredMenu>
+      <button
+        #btn
+        (click)="showClickFinances($event)"
+        class="margin"
+        icon="pi pi-chart-line"
+        label="Finances"
+        pButton
+        type="button"
+      ></button>
 
+      <button
+        #btn
+        (click)="router.navigate(['messaging'])"
+        class="margin"
+        icon="pi pi-envelope"
+        label="Messages"
+        pButton
+        type="button"
+      ></button>
     </div>
   </ng-template>
 
   <ng-template pTemplate="end">
-      <div class="relative">
-        <app-user-widget></app-user-widget>
-      </div>
+    <div class="relative">
+      <app-user-widget></app-user-widget>
+    </div>
   </ng-template>
 </p-menubar>
-
-

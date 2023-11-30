@@ -1,5 +1,3 @@
-import {Apartment} from '../../generated';
-
 // export class MockFactory {
 //   static createMockApartment(options: Partial<Apartment>): Apartment {
 //     return {
@@ -24,9 +22,3 @@ import {Apartment} from '../../generated';
 //     };
 //   }
 // }
-
-export function apartmentStreetToString(a: Apartment) {
-  return (
-    a.city + ', ' + a.street + ' ' + a.buildingNumber + '/' + a.apartmentNumber
-  );
-}

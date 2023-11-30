@@ -8,6 +8,7 @@ import {
   getDetails,
   login,
   loginComplete,
+  logout,
   register,
 } from './user/user.effects';
 import { MessagingState } from './messaging/messaging.store';
@@ -33,6 +34,7 @@ export interface AppState {
       //USER
       login,
       loginComplete,
+      logout,
       register,
       getDetails,
       edit,

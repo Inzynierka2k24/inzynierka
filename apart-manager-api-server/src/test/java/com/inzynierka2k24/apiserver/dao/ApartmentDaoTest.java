@@ -45,10 +45,26 @@ class ApartmentDaoTest {
     List<Apartment> expectedApartments = new ArrayList<>();
     expectedApartments.add(
         new Apartment(
-            Optional.of(1L), 100.0f, "Apartment 1", "Country 1", "City 1", "Street 1", "1", "1A"));
+            Optional.of(1L),
+            100.0f,
+            "Apartment 1",
+            "Country 1",
+            "City 1",
+            "Street 1",
+            "1",
+            "1A",
+            4));
     expectedApartments.add(
         new Apartment(
-            Optional.of(2L), 200.0f, "Apartment 2", "Country 2", "City 2", "Street 2", "2", "2B"));
+            Optional.of(2L),
+            200.0f,
+            "Apartment 2",
+            "Country 2",
+            "City 2",
+            "Street 2",
+            "2",
+            "2B",
+            4));
 
     // When
     List<Apartment> actualApartments = apartmentDao.getAll(userId);
@@ -64,7 +80,15 @@ class ApartmentDaoTest {
     long apartmentId = 1;
     Apartment expectedApartment =
         new Apartment(
-            Optional.of(1L), 100.0f, "Apartment 1", "Country 1", "City 1", "Street 1", "1", "1A");
+            Optional.of(1L),
+            100.0f,
+            "Apartment 1",
+            "Country 1",
+            "City 1",
+            "Street 1",
+            "1",
+            "1A",
+            4);
 
     // When
     Optional<Apartment> actualApartment = apartmentDao.getById(userId, apartmentId);
@@ -87,7 +111,8 @@ class ApartmentDaoTest {
             "City 3",
             "Street 3",
             "Building 3",
-            "Apartment 3");
+            "Apartment 3",
+            4);
 
     // When
     apartmentDao.add(userId, apartment);
@@ -109,7 +134,8 @@ class ApartmentDaoTest {
             "City 12",
             "Street 12",
             "Building 12",
-            "Apartment 12");
+            "Apartment 12",
+            4);
 
     // When
     apartmentDao.update(userId, apartment);
@@ -167,7 +193,8 @@ class ApartmentDaoTest {
             "City 1",
             "Street 1",
             "Building 1",
-            "Apartment 1");
+            "Apartment 1",
+            4);
 
     // When/Then
     assertThrows(IllegalArgumentException.class, () -> apartmentDao.add(userId, apartment));

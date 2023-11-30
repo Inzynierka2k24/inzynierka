@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.1.1185 on 2023-11-29 22:03:09.
+// Generated using typescript-generator version 3.1.1185 on 2023-11-30 17:18:07.
 
 export interface Apartment {
     id?: number;
@@ -30,13 +30,12 @@ export interface ExternalAccount {
     id?: number;
     login: string;
     password: string;
-    emailAddress: string;
-    serviceType: ServiceType;
+    serviceType: ExternalService;
 }
 
 export interface ExternalOffer {
     id?: number;
-    serviceType: ServiceType;
+    serviceType: ExternalService;
     externalLink: string;
 }
 
@@ -106,6 +105,13 @@ export interface ContactDTO {
     apartments: Apartment[];
 }
 
+export interface ReservationDTO {
+    id?: number;
+    apartment: Apartment;
+    startDate: Date;
+    endDate: Date;
+}
+
 export interface ScheduledMessageDTO {
     id?: number;
     apartments: Apartment[];
@@ -125,11 +131,6 @@ export interface UserDTO {
     emailNotifications: boolean;
 }
 
-export interface ApiErrorResponse {
-    status: number;
-    message: string;
-}
-
 export interface AuthRequest {
     login: string;
     password: string;
@@ -139,6 +140,11 @@ export interface EditUserRequest {
     username: string;
     emailAddress: string;
     password: string;
+}
+
+export interface GetReservationsRequest {
+    from: Date;
+    to: Date;
 }
 
 export interface RegisterRequest {
@@ -157,8 +163,8 @@ export type IntervalType = "HOURS" | "DAYS" | "WEEKS";
 
 export type MembershipLevel = "FREE" | "COMMERCIAL" | "ENTERPRISE";
 
-export type ServiceType = "UNKNOWN" | "AIRBNB" | "BOOKING";
-
 export type Source = "UNKNOWN" | "BOOKING" | "PROMOTION" | "FINE" | "TAX" | "CLEANING" | "REPAIR" | "MAINTENANCE";
 
 export type TriggerType = "RESERVATION" | "CHECKIN" | "CHECKOUT";
+
+export type ExternalService = "BOOKING" | "AIRBNB" | "TRIVAGO" | "NOCOWANIEPL" | "UNRECOGNIZED";

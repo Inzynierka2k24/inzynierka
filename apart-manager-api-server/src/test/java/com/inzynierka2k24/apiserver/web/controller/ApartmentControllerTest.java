@@ -48,7 +48,8 @@ public class ApartmentControllerTest {
             "City 1",
             "Street 1",
             "Building 1",
-            "Apartment 1"));
+            "Apartment 1",
+            4));
     expectedApartments.add(
         new Apartment(
             Optional.of(2L),
@@ -58,13 +59,15 @@ public class ApartmentControllerTest {
             "City 2",
             "Street 2",
             "Building 2",
-            "Apartment 2"));
+            "Apartment 2",
+            4));
     when(apartmentService.getAll(userId)).thenReturn(expectedApartments);
 
     // When/Then
     var response =
         mockMvc
-            .perform(get(String.format("/%s/apartments", userId)).accept(MediaType.APPLICATION_JSON))
+            .perform(
+                get(String.format("/%s/apartments", userId)).accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andReturn()
             .getResponse();
@@ -92,7 +95,8 @@ public class ApartmentControllerTest {
             "City 1",
             "Street 1",
             "Building 1",
-            "Apartment 1");
+            "Apartment 1",
+            4);
     when(apartmentService.getById(userId, apartmentId)).thenReturn(expectedApartment);
 
     // When/Then
@@ -123,7 +127,8 @@ public class ApartmentControllerTest {
             "City 1",
             "Street 1",
             "Building 1",
-            "Apartment 1");
+            "Apartment 1",
+            4);
     doNothing().when(apartmentService).add(userId, apartment);
 
     // When/Then
@@ -152,7 +157,8 @@ public class ApartmentControllerTest {
             "City 1",
             "Street 1",
             "Building 1",
-            "Apartment 1");
+            "Apartment 1",
+            4);
     doNothing().when(apartmentService).update(userId, apartment);
 
     // When/Then
@@ -231,7 +237,8 @@ public class ApartmentControllerTest {
             "City 1",
             "Street 1",
             "Building 1",
-            "Apartment 1");
+            "Apartment 1",
+            4);
     doThrow(ApartmentNotFoundException.class).when(apartmentService).update(userId, apartment);
 
     // When/Then

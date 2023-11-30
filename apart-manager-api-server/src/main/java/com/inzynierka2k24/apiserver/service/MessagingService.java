@@ -6,6 +6,7 @@ import com.inzynierka2k24.apiserver.dao.ScheduledMessageDao;
 import com.inzynierka2k24.apiserver.exception.apartment.ApartmentNotFoundException;
 import com.inzynierka2k24.apiserver.exception.messaging.ContactNotFoundException;
 import com.inzynierka2k24.apiserver.exception.user.UserNotFoundException;
+import com.inzynierka2k24.apiserver.grpc.messaging.MessagingServiceClient;
 import com.inzynierka2k24.apiserver.model.Apartment;
 import com.inzynierka2k24.apiserver.model.Contact;
 import com.inzynierka2k24.apiserver.model.ScheduledMessage;
@@ -23,6 +24,7 @@ public class MessagingService {
   private final ContactDao contactDao;
   private final ScheduledMessageDao messageDao;
   private final ApartmentDao apartmentDao;
+  private final MessagingServiceClient messagingServiceClient;
 
   public List<ContactDTO> getContacts(long userId) throws UserNotFoundException {
     List<Contact> contacts = contactDao.getAll(userId);
@@ -94,5 +96,8 @@ public class MessagingService {
 
               messageDao.add(userId, apartment.id().get(), scheduledMessage);
             });
+    // Contact contact = contactDao.getById(userId, contactId).get();
+
+    // messagingServiceClient.sendMessage(contact, message);
   }
 }

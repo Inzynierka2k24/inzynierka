@@ -70,7 +70,8 @@ class RequestBuilderTest {
             "City 1",
             "Street 1",
             "Building 1",
-            "Apartment 1");
+            "Apartment 1",
+            4);
     Collection<ExternalAccount> accounts =
         List.of(
             new ExternalAccount("login1", "password1", 1),
@@ -129,7 +130,7 @@ class RequestBuilderTest {
     // Given
     Apartment apartment =
         new Apartment(
-            Optional.of(1L), 100.0f, "Apartment 1", "Country", "City", "Street", "1", "A");
+            Optional.of(1L), 100.0f, "Apartment 1", "Country", "City", "Street", "1", "A", 4);
 
     // When
     ApartmentDetails protoApartment = RequestBuilder.toProto(apartment);

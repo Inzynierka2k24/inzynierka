@@ -94,7 +94,15 @@ public class IntegrationServiceTest {
 
     Apartment apartment =
         new Apartment(
-            Optional.of(1L), 100.0f, "Title", "Country", "City", "Street", "Building", "Apartment");
+            Optional.of(1L),
+            100.0f,
+            "Title",
+            "Country",
+            "City",
+            "Street",
+            "Building",
+            "Apartment",
+            4);
     List<ExternalAccount> accounts = List.of(new ExternalAccount(1L, "login", "password", 1));
     List<ServiceResponse> responses =
         List.of(
@@ -129,9 +137,7 @@ public class IntegrationServiceTest {
     // When/Then
     assertThrows(
         ReservationNotFoundException.class,
-        () -> {
-          integrationService.propagateReservation(userId, apartmentId, reservationId);
-        });
+        () -> integrationService.propagateReservation(userId, apartmentId, reservationId));
   }
 
   @Test
@@ -164,9 +170,7 @@ public class IntegrationServiceTest {
     // When/Then
     assertThrows(
         ApartmentNotFoundException.class,
-        () -> {
-          integrationService.updateApartmentDetails(userId, apartmentId);
-        });
+        () -> integrationService.updateApartmentDetails(userId, apartmentId));
   }
 
   @Test

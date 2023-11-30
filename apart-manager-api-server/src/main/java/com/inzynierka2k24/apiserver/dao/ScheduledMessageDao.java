@@ -19,7 +19,7 @@ public class ScheduledMessageDao {
   private static final String GET_ALL_FOR_USER_QUERY =
       "SELECT * FROM scheduled_messages WHERE user_id = ? AND contact_id = ?";
   private static final String BIND_APARTMENT_QUERY =
-      "INSERT INTO scheduled_message_apartments VALUES (?, ?)";
+      "INSERT INTO scheduled_messages_apartments VALUES (?, ?)";
 
   private static final String GET_APARTMENTS_FOR_MESSAGE_QUERY =
       "SELECT apartment_id FROM scheduled_messages_apartments WHERE message_id = ?";
