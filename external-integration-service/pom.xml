@@ -18,15 +18,17 @@
 	<properties>
 		<java.version>17</java.version>
 
-		<proto.version>0.0.4</proto.version>
+		<proto.version>0.0.5</proto.version>
 
 		<grpc-spring-boot.version>5.1.5</grpc-spring-boot.version>
 		<grpc.version>1.58.0</grpc.version>
+		<playwright.version>1.40.0</playwright.version>
         <lombok.version>1.18.30</lombok.version>
         <mockito.version>5.2.0</mockito.version>
         <testcontainers.version>1.17.6</testcontainers.version>
         <fmt.version>2.20</fmt.version>
         <snakeyaml.version>2.2</snakeyaml.version>
+    <archunit-junit5.version>1.2.0</archunit-junit5.version>
 	</properties>
 
 	<repositories>
@@ -76,6 +78,13 @@
 			<version>${grpc.version}</version>
 		</dependency>
 
+		<!--   Crawling   -->
+		<dependency>
+			<groupId>com.microsoft.playwright</groupId>
+			<artifactId>playwright</artifactId>
+			<version>${playwright.version}</version>
+		</dependency>
+
         <!--   Misc    -->
 		<dependency>
 			<groupId>org.projectlombok</groupId>
@@ -98,6 +107,12 @@
 			<groupId>io.grpc</groupId>
 			<artifactId>grpc-testing</artifactId>
 			<version>${grpc.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.tngtech.archunit</groupId>
+			<artifactId>archunit-junit5</artifactId>
+			<version>${archunit-junit5.version}</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>

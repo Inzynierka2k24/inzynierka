@@ -1,0 +1,47 @@
+name: Azure Auth Service deploy
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  build-and-deploy-auth-service:
+    runs-on: ubuntu-latest
+    environment: manual
+    steps:
+      # checkout the repo
+      - name: 'Checkout GitHub Action'
+        uses: actions/checkout@v4
+
+      - name: 'Login via Azure CLI'
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: 'Build and push image'
+        uses: azure/docker-login@v1
+        with:
+          login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
+          username: ${{ secrets.REGISTRY_USERNAME }}
+          password: ${{ secrets.REGISTRY_PASSWORD }}
+      - run: |
+          docker build  infrastructure/keycloak/. \
+          -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/auth-service:${{ github.sha }}
+          docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/auth-service:${{ github.sha }}
+
+      - name: 'Deploy to Azure Container Instances'
+        uses: 'azure/aci-deploy@v1'
+        with:
+          resource-group: ${{ secrets.RESOURCE_GROUP }}
+          dns-name-label: ${{ secrets.RESOURCE_GROUP }}-auth-service
+          image: ${{ secrets.REGISTRY_LOGIN_SERVER }}/auth-service:${{ github.sha }}
+          registry-login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
+          registry-username: ${{ secrets.REGISTRY_USERNAME }}
+          registry-password: ${{ secrets.REGISTRY_PASSWORD }}
+          name: auth-service-polandcentral
+          ports: 8090
+          location: 'polandcentral'
+          environment-variables: KC_HEALTH_ENABLED=true KC_HTTP_ENABLED=true KC_METRICS_ENABLED=true KC_HOSTNAME_PORT=8090 KC_PROXY=edge KC_HOSTNAME_STRICT_HTTPS=false
+          secure-environment-variables: KC_DB_PASSWORD=${{ secrets.KC_DB_PASSWORD }} KC_DB_URL="${{ secrets.KC_DB_URL }}" KC_DB_USERNAME=${{ secrets.KC_DB_USERNAME }} KC_DB=${{ secrets.KC_DB }} KEYCLOAK_ADMIN=${{ secrets.KEYCLOAK_ADMIN }} KEYCLOAK_ADMIN_PASSWORD=${{ secrets.KEYCLOAK_ADMIN_PASSWORD }} KC_HOSTNAME=${{ secrets.KC_HOSTNAME }}
