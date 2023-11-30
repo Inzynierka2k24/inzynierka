@@ -122,7 +122,6 @@ public class UserServiceTest {
     // When
     boolean result = userService.existsByMail(mail);
 
-
     // Then
     assertTrue(result);
   }
