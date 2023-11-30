@@ -1,6 +1,7 @@
 package com.inzynierka2k24.apiserver.service;
 
-import static org.junit.Assert.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -19,7 +20,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class IntegrationServiceTest {
 
@@ -57,8 +58,8 @@ public class IntegrationServiceTest {
         integrationService.propagateReservation(userId, apartmentId, reservationId);
 
     // Then
-    assertNotNull(result);
-    assertEquals(1, result.size());
+    assertThat(result).isNotNull();
+    assertThat(result).hasSize(1);
   }
 
   @Test
@@ -81,8 +82,8 @@ public class IntegrationServiceTest {
         integrationService.getReservations(userId, from, to);
 
     // Then
-    assertNotNull(result);
-    assertEquals(0, result.size()); // TODO Change after implementing this method
+    assertThat(result).isNotNull();
+    assertThat(result).isEmpty(); // TODO Change after implementing this method
   }
 
   @Test
@@ -111,8 +112,8 @@ public class IntegrationServiceTest {
     Map<String, String> result = integrationService.updateApartmentDetails(userId, apartmentId);
 
     // Then
-    assertNotNull(result);
-    assertEquals(1, result.size());
+    assertThat(result).isNotNull();
+    assertThat(result).hasSize(1);
   }
 
   @Test
@@ -127,11 +128,8 @@ public class IntegrationServiceTest {
         .thenThrow(ReservationNotFoundException.class);
 
     // When/Then
-    assertThrows(
-        ReservationNotFoundException.class,
-        () -> {
-          integrationService.propagateReservation(userId, apartmentId, reservationId);
-        });
+    assertThatThrownBy(() -> integrationService.propagateReservation(userId, apartmentId, reservationId))
+        .isInstanceOf(ReservationNotFoundException.class);
   }
 
   @Test
@@ -148,8 +146,8 @@ public class IntegrationServiceTest {
         integrationService.getReservations(userId, from, to);
 
     // Then
-    assertNotNull(result);
-    assertEquals(0, result.size());
+    assertThat(result).isNotNull();
+    assertThat(result).isEmpty();
   }
 
   @Test
@@ -162,11 +160,8 @@ public class IntegrationServiceTest {
     when(apartmentService.getById(userId, apartmentId)).thenThrow(ApartmentNotFoundException.class);
 
     // When/Then
-    assertThrows(
-        ApartmentNotFoundException.class,
-        () -> {
-          integrationService.updateApartmentDetails(userId, apartmentId);
-        });
+    assertThatThrownBy(() -> integrationService.updateApartmentDetails(userId, apartmentId))
+        .isInstanceOf(ApartmentNotFoundException.class);
   }
 
   @Test
@@ -188,7 +183,7 @@ public class IntegrationServiceTest {
         integrationService.propagateReservation(userId, apartmentId, reservationId);
 
     // Then
-    assertNotNull(result);
-    assertEquals(0, result.size());
+    assertThat(result).isNotNull();
+    assertThat(result).isEmpty();
   }
 }

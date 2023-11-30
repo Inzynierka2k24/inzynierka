@@ -29,6 +29,7 @@
         <snakeyaml.version>2.1</snakeyaml.version>
         <typescript-generator.version>3.1.1185</typescript-generator.version>
         <apache-collections4.version>4.4</apache-collections4.version>
+        <archunit-junit5.version>1.2.0</archunit-junit5.version>
     </properties>
 
     <repositories>
@@ -157,6 +158,12 @@
             <groupId>cz.habarta.typescript-generator</groupId>
             <artifactId>typescript-generator-maven-plugin</artifactId>
             <version>${typescript-generator.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.tngtech.archunit</groupId>
+            <artifactId>archunit-junit5</artifactId>
+            <version>${archunit-junit5.version}</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
