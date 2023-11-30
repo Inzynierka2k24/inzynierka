@@ -1,5 +1,6 @@
 package com.inzynierka2k24.apiserver.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -58,13 +59,26 @@ public class UserServiceTest {
   }
 
   @Test
+  public void shouldReturnUser() {
+    // Given
+    String username = "testUser";
+    User user = new User(username, "testUser@example.com");
+    when(userDao.get(username)).thenReturn(Optional.of(user));
+
+    // When
+    final var result = userService.getUser(username);
+
+    // Then
+    assertThat(result).isEqualTo(user);
+  }
+
+  @Test
   public void shouldThrowUsernameNotFoundExceptionWhenUserDoesNotExist() {
     // Given
-    String email = "testUser@gmail.com";
-    when(userDao.getByEmail(email)).thenReturn(Optional.empty());
+    String username = "testUser";
 
     // When/Then
-    assertThrows(UsernameNotFoundException.class, () -> userService.getUser(email));
+    assertThrows(UsernameNotFoundException.class, () -> userService.getUser(username));
   }
 
   @Test
@@ -107,6 +121,7 @@ public class UserServiceTest {
 
     // When
     boolean result = userService.existsByMail(mail);
+
 
     // Then
     assertTrue(result);
