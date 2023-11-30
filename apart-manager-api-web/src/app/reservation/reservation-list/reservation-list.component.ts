@@ -45,6 +45,39 @@ export class ReservationListComponent implements OnInit {
     this.router.navigate(['/reservations/edit', reservation]);
   }
 
+  propagateReservation(reservation: any) {
+    this.store
+      .select(selectCurrentUser)
+      .pipe(
+        switchMap((user) => {
+          if (!user) {
+            throw new Error('User not logged in');
+          }
+          this.user = user;
+          return this.reservationService.deleteReservation(this.user,
+            reservation.apartmentId,
+            <number>reservation.id,
+            { responseType: 'text' });
+        })
+      )
+      .subscribe(
+        {
+        next: response =>{
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Reservation propagated correctly',
+            detail: 'success',
+          });
+          this.fetchData();
+        },
+        error:error => {
+            console.error('API call error:', error);
+            this.fetchData();
+          }
+        },
+      );
+  }
+
   deleteReservation(reservation: Reservation) {
     this.store
       .select(selectCurrentUser)
