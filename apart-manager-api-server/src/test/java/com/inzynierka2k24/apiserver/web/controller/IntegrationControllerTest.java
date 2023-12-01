@@ -19,10 +19,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-public class IntegrationControllerTest {
+class IntegrationControllerTest {
 
   @Test
-  public void shouldGetPropagateReservationReturnsResponseEntityWithMap()
+  void shouldGetPropagateReservationReturnsResponseEntityWithMap()
       throws ReservationNotFoundException {
     // Given
     long userId = 1;
@@ -44,7 +44,7 @@ public class IntegrationControllerTest {
   }
 
   @Test
-  public void shouldPostGetReservationsReturnsResponseEntityWithListOfReservations() {
+  void shouldPostGetReservationsReturnsResponseEntityWithListOfReservations() {
     // Given
     long userId = 1;
     Instant from = Instant.now();
@@ -65,7 +65,7 @@ public class IntegrationControllerTest {
   }
 
   @Test
-  public void shouldGetUpdateApartmentDetailsReturnsResponseEntityWithMap()
+  void shouldGetUpdateApartmentDetailsReturnsResponseEntityWithMap()
       throws ApartmentNotFoundException {
     // Given
     long userId = 1;
@@ -85,7 +85,7 @@ public class IntegrationControllerTest {
   }
 
   @Test
-  public void shouldGetPropagateReservationThrowsReservationNotFoundException()
+  void shouldGetPropagateReservationThrowsReservationNotFoundException()
       throws ReservationNotFoundException {
     // Given
     long userId = 1;
@@ -97,12 +97,13 @@ public class IntegrationControllerTest {
     IntegrationController integrationController = new IntegrationController(integrationService);
 
     // When, Then
-    assertThatThrownBy(() -> integrationController.propagateReservation(userId, apartmentId, reservationId))
+    assertThatThrownBy(
+            () -> integrationController.propagateReservation(userId, apartmentId, reservationId))
         .isInstanceOf(ReservationNotFoundException.class);
   }
 
   @Test
-  public void shouldGetUpdateApartmentDetailsThrowsApartmentNotFoundException()
+  void shouldGetUpdateApartmentDetailsThrowsApartmentNotFoundException()
       throws ApartmentNotFoundException {
     // Given
     long userId = 1;

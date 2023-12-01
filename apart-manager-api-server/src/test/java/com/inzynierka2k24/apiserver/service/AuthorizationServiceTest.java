@@ -47,22 +47,19 @@ class AuthorizationServiceTest {
   private static final String ADMIN_USERNAME = "admin_username";
   private static final String ADMIN_PASSWORD = "admin_password";
 
+  @Mock RestTemplate restTemplate;
 
-  @Mock
-  RestTemplate restTemplate;
-
-  @InjectMocks
-  AuthorizationService authorizationService;
+  @InjectMocks AuthorizationService authorizationService;
 
   @BeforeEach
   void setUp() {
     ReflectionTestUtils.setField(authorizationService, "tokenEndpoint", TOKEN_ENDPOINT);
     ReflectionTestUtils.setField(authorizationService, "userEndpoint", USER_ENDPOINT);
-    ReflectionTestUtils.setField(authorizationService, "userDetailsEndpoint", USER_DETAILS_ENDPOINT);
+    ReflectionTestUtils.setField(
+        authorizationService, "userDetailsEndpoint", USER_DETAILS_ENDPOINT);
     ReflectionTestUtils.setField(authorizationService, "clientId", CLIENT_ID);
     ReflectionTestUtils.setField(authorizationService, "adminLogin", ADMIN_USERNAME);
     ReflectionTestUtils.setField(authorizationService, "adminPassword", ADMIN_PASSWORD);
-
   }
 
   @Test
@@ -102,7 +99,8 @@ class AuthorizationServiceTest {
         .willReturn(tokenResponse);
 
     // when then
-    assertThatCode(() -> authorizationService.register("emailAddress", USERNAME, PASSWORD)).doesNotThrowAnyException();
+    assertThatCode(() -> authorizationService.register("emailAddress", USERNAME, PASSWORD))
+        .doesNotThrowAnyException();
   }
 
   @Test
@@ -156,15 +154,15 @@ class AuthorizationServiceTest {
 
     var userIdRequest = getUserIdRequestEntity();
     var userIdResponse = new ResponseEntity<Map>(Map.of("sub", "id"), HttpStatus.OK);
-    given(restTemplate.exchange(userIdRequest, Map.class))
-        .willReturn(userIdResponse);
+    given(restTemplate.exchange(userIdRequest, Map.class)).willReturn(userIdResponse);
 
     var tokenResponse = getResponseEntity();
     given(restTemplate.postForEntity(eq(TOKEN_ENDPOINT), any(), eq(KeycloakTokenResponse.class)))
         .willReturn(tokenResponse);
 
     // when then
-    assertThatCode(() -> authorizationService.edit(TOKEN, editUserRequest)).doesNotThrowAnyException();
+    assertThatCode(() -> authorizationService.edit(TOKEN, editUserRequest))
+        .doesNotThrowAnyException();
   }
 
   @Test
@@ -188,14 +186,15 @@ class AuthorizationServiceTest {
 
     var userIdRequest = getUserIdRequestEntity();
     var userIdResponse = new ResponseEntity<Map>(Map.of("sub", "id"), HttpStatus.OK);
-    given(restTemplate.exchange(userIdRequest, Map.class))
-        .willReturn(userIdResponse);
+    given(restTemplate.exchange(userIdRequest, Map.class)).willReturn(userIdResponse);
 
     var tokenResponse = getResponseEntity();
     given(restTemplate.postForEntity(eq(TOKEN_ENDPOINT), any(), eq(KeycloakTokenResponse.class)))
         .willReturn(tokenResponse);
 
-    given(restTemplate.exchange(eq(USER_ENDPOINT + "id"), eq(HttpMethod.PUT), any(), eq(String.class)))
+    given(
+            restTemplate.exchange(
+                eq(USER_ENDPOINT + "id"), eq(HttpMethod.PUT), any(), eq(String.class)))
         .willThrow(HttpServerErrorException.class);
 
     // when then

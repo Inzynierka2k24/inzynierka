@@ -13,12 +13,16 @@ public class TestsRulesTest {
   @ArchTest
   static final ArchRule no_junit4 =
       noClasses()
-          .should().dependOnClassesThat().resideInAnyPackage("org.junit", "org.junit.*")
+          .should()
+          .dependOnClassesThat()
+          .resideInAnyPackage("org.junit", "org.junit.*")
           .because("we use junit5");
 
   @ArchTest
   static final ArchRule no_hamcrest_assertThat =
       noClasses()
-          .should().dependOnClassesThat().haveFullyQualifiedName("org.hamcrest.MatcherAssert")
+          .should()
+          .dependOnClassesThat()
+          .haveFullyQualifiedName("org.hamcrest.MatcherAssert")
           .because("we use AssertJ implementation of assertThat()");
 }

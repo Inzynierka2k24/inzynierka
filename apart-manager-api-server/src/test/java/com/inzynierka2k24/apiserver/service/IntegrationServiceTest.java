@@ -22,7 +22,7 @@ import java.util.Map;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
 
-public class IntegrationServiceTest {
+class IntegrationServiceTest {
 
   private final ExternalIntegrationServiceClient client =
       mock(ExternalIntegrationServiceClient.class);
@@ -33,7 +33,7 @@ public class IntegrationServiceTest {
       new IntegrationService(client, accountService, reservationService, apartmentService);
 
   @Test
-  public void shouldPropagateReservationValidIdsReturnsMap() throws ReservationNotFoundException {
+  void shouldPropagateReservationValidIdsReturnsMap() throws ReservationNotFoundException {
     // Given
     long userId = 1;
     long apartmentId = 1;
@@ -58,12 +58,11 @@ public class IntegrationServiceTest {
         integrationService.propagateReservation(userId, apartmentId, reservationId);
 
     // Then
-    assertThat(result).isNotNull();
-    assertThat(result).hasSize(1);
+    assertThat(result).isNotNull().hasSize(1);
   }
 
   @Test
-  public void shouldGetReservationsValidUserAndTimeRangeReturnsList() {
+  void shouldGetReservationsValidUserAndTimeRangeReturnsList() {
     // Given
     long userId = 1;
     Instant from = Instant.now();
@@ -82,12 +81,11 @@ public class IntegrationServiceTest {
         integrationService.getReservations(userId, from, to);
 
     // Then
-    assertThat(result).isNotNull();
-    assertThat(result).isEmpty(); // TODO Change after implementing this method
+    assertThat(result).isNotNull().isEmpty(); // TODO Change after implementing this method
   }
 
   @Test
-  public void shouldUpdateApartmentDetailsValidUserAndApartmentIdsReturnsList()
+  void shouldUpdateApartmentDetailsValidUserAndApartmentIdsReturnsList()
       throws ApartmentNotFoundException {
     // Given
     long userId = 1;
@@ -112,12 +110,11 @@ public class IntegrationServiceTest {
     Map<String, String> result = integrationService.updateApartmentDetails(userId, apartmentId);
 
     // Then
-    assertThat(result).isNotNull();
-    assertThat(result).hasSize(1);
+    assertThat(result).isNotNull().hasSize(1);
   }
 
   @Test
-  public void shouldPropagateReservationInvalidReservationIdThrowsException()
+  void shouldPropagateReservationInvalidReservationIdThrowsException()
       throws ReservationNotFoundException {
     // Given
     long userId = 1;
@@ -128,12 +125,13 @@ public class IntegrationServiceTest {
         .thenThrow(ReservationNotFoundException.class);
 
     // When/Then
-    assertThatThrownBy(() -> integrationService.propagateReservation(userId, apartmentId, reservationId))
+    assertThatThrownBy(
+            () -> integrationService.propagateReservation(userId, apartmentId, reservationId))
         .isInstanceOf(ReservationNotFoundException.class);
   }
 
   @Test
-  public void shouldGetReservationsInvalidUserIdReturnsEmptyList() {
+  void shouldGetReservationsInvalidUserIdReturnsEmptyList() {
     // Given
     long userId = 1;
     Instant from = Instant.now();
@@ -146,12 +144,11 @@ public class IntegrationServiceTest {
         integrationService.getReservations(userId, from, to);
 
     // Then
-    assertThat(result).isNotNull();
-    assertThat(result).isEmpty();
+    assertThat(result).isNotNull().isEmpty();
   }
 
   @Test
-  public void shouldUpdateApartmentDetailsInvalidApartmentIdThrowsException()
+  void shouldUpdateApartmentDetailsInvalidApartmentIdThrowsException()
       throws ApartmentNotFoundException {
     // Given
     long userId = 1;
@@ -165,7 +162,7 @@ public class IntegrationServiceTest {
   }
 
   @Test
-  public void shouldPropagateReservationNoAssociatedAccountsReturnsEmptyMap()
+  void shouldPropagateReservationNoAssociatedAccountsReturnsEmptyMap()
       throws ReservationNotFoundException {
     // Given
     long userId = 1;
@@ -183,7 +180,6 @@ public class IntegrationServiceTest {
         integrationService.propagateReservation(userId, apartmentId, reservationId);
 
     // Then
-    assertThat(result).isNotNull();
-    assertThat(result).isEmpty();
+    assertThat(result).isNotNull().isEmpty();
   }
 }
