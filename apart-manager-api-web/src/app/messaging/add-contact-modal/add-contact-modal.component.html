@@ -1,0 +1,79 @@
+<p-dialog [(visible)]="visible" [modal]="true" header="Add Contact">
+  <form [formGroup]="addContactForm" class="flex flex-column gap-3">
+    <div class="flex flex-column gap-1">
+      <label for="name">Name</label>
+      <input
+        formControlName="name"
+        id="name"
+        name="name"
+        pInputText
+        placeholder="Name"
+        type="text"
+      />
+    </div>
+
+    <div class="flex flex-column gap-1">
+      <label for="name">Email</label>
+      <input
+        formControlName="mail"
+        id="email"
+        name="email"
+        pInputText
+        placeholder="Email"
+        type="email"
+      />
+    </div>
+
+    <div class="flex flex-column gap-1">
+      <label for="name">Phone</label>
+      <input
+        formControlName="phone"
+        id="phone"
+        name="phone"
+        pInputText
+        placeholder="Phone"
+        type="text"
+      />
+    </div>
+
+    <div class="flex flex-column gap-1">
+      <label for="trigger">Type</label>
+      <p-dropdown
+        [autoDisplayFirst]="false"
+        [options]="contactTypes"
+        appendTo="body"
+        formControlName="contactType"
+        id="trigger"
+      ></p-dropdown>
+    </div>
+
+    <div class="flex flex-column gap-1">
+      <label for="price">Price</label>
+      <input
+        formControlName="price"
+        id="price"
+        name="price"
+        pInputText
+        placeholder="Price"
+        type="number"
+      />
+    </div>
+  </form>
+  <ng-template pTemplate="footer">
+    <button
+      (click)="visibleChange.emit(false)"
+      class="p-button-secondary"
+      pButton
+    >
+      Cancel
+    </button>
+    <button
+      (click)="sendContact()"
+      [disabled]="!addContactForm.valid"
+      class="p-button"
+      pButton
+    >
+      Accept
+    </button>
+  </ng-template>
+</p-dialog>

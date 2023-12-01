@@ -1,7 +1,6 @@
 package com.inzynierka2k24.apiserver.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -167,8 +166,9 @@ class IntegrationServiceTest {
     when(apartmentService.getById(userId, apartmentId)).thenThrow(ApartmentNotFoundException.class);
 
     // When/Then
-    assertThatThrownBy(() -> integrationService.updateApartmentDetails(userId, apartmentId))
-        .isInstanceOf(ApartmentNotFoundException.class);
+    assertThrows(
+        ApartmentNotFoundException.class,
+        () -> integrationService.updateApartmentDetails(userId, apartmentId));
   }
 
   @Test

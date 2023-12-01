@@ -28,10 +28,10 @@ import org.springframework.test.web.servlet.MockMvc;
 @AutoConfigureJsonTesters
 public class ApartmentControllerTest {
 
-  @Autowired private MockMvc mockMvc;
   @Autowired JacksonTester<Apartment> apartmentJacksonTester;
   @Autowired JacksonTester<List<Apartment>> apartmentListJacksonTester;
   @MockBean ApartmentService apartmentService;
+  @Autowired private MockMvc mockMvc;
 
   @Test
   @WithMockUser

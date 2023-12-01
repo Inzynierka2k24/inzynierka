@@ -12,7 +12,6 @@ import com.inzynierka2k24.apiserver.exception.user.UserAlreadyExistsException;
 import com.inzynierka2k24.apiserver.web.request.EditUserRequest;
 import com.inzynierka2k24.apiserver.web.response.KeycloakTokenResponse;
 import java.util.Collections;
-import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -223,6 +222,7 @@ class AuthorizationServiceTest {
   }
 
   private HttpEntity<MultiValueMap<String, String>> getRequestEntity() {
+
     HttpHeaders headers = new HttpHeaders();
     headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
     headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
@@ -232,7 +232,6 @@ class AuthorizationServiceTest {
     formData.add("client_id", CLIENT_ID);
     formData.add("username", AuthorizationServiceTest.USERNAME);
     formData.add("password", AuthorizationServiceTest.PASSWORD);
-    formData.add("scope", "openid");
 
     return new HttpEntity<>(formData, headers);
   }
