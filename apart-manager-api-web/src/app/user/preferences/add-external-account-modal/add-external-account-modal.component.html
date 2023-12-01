@@ -1,0 +1,68 @@
+<p-dialog
+  (onHide)="visibleChange.emit(false)"
+  [(visible)]="visible"
+  [modal]="true"
+  header="Add External Account"
+>
+  <form [formGroup]="addExternalAccountForm" class="flex flex-column gap-3">
+    <label>Service</label>
+    <div class="flex flex-row gap-3">
+      <ng-container *ngFor="let service of serviceTypes; let i = index">
+        <div class="flex flex-column align-items-center">
+          <img
+            [alt]="service"
+            [ngSrc]="'assets/img/' + service + '.png'"
+            height="32"
+            width="32"
+          />
+          <label [for]="'service' + i">{{ service }}</label>
+          <p-radioButton
+            [id]="'service' + i"
+            [value]="service"
+            formControlName="serviceType"
+            name="serviceType"
+          ></p-radioButton>
+        </div>
+      </ng-container>
+    </div>
+
+    <div class="flex flex-column">
+      <label for="login">Username</label>
+      <input
+        formControlName="login"
+        id="login"
+        name="login"
+        pInputText
+        placeholder="Username"
+        type="text"
+      />
+    </div>
+    <div class="flex flex-column">
+      <label for="password">Password</label>
+      <input
+        formControlName="password"
+        id="password"
+        name="password"
+        pInputText
+        placeholder="********"
+        type="password"
+      />
+    </div>
+  </form>
+  <ng-template pTemplate="footer">
+    <button
+      (click)="visibleChange.emit(false)"
+      class="p-button p-button-secondary"
+      type="button"
+    >
+      Cancel
+    </button>
+    <button
+      (click)="addExternalAccount()"
+      class="p-button p-button-primary"
+      type="button"
+    >
+      Add
+    </button>
+  </ng-template>
+</p-dialog>

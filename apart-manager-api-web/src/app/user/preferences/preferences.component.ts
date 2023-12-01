@@ -4,9 +4,10 @@ import { Store } from '@ngrx/store';
 import { FormBuilder, Validators } from '@angular/forms';
 import { selectCurrentUser } from '../../core/store/user/user.selectors';
 import UserActions from '../../core/store/user/user.actions';
-import { Subscription } from 'rxjs';
-import { UserDTO } from '../../../generated';
+import { Observable, Subscription } from 'rxjs';
+import { ExternalAccount, UserDTO } from '../../../generated';
 import { ConfirmationService } from 'primeng/api';
+import { ExternalAccountsService } from '../services/external-accounts.service';
 
 interface PreferencesCategory {
   title: string;
@@ -79,11 +80,14 @@ export class PreferencesComponent implements OnInit, OnDestroy {
   subscriptions: Subscription[] = [];
 
   currentUser?: UserDTO;
+  externalAccounts$: Observable<ExternalAccount[]>;
+  showAddExternalAccountModal: boolean;
 
   constructor(
     private store: Store<AppState>,
     private formBuilder: FormBuilder,
     private confirmationService: ConfirmationService,
+    private externalAccountsService: ExternalAccountsService,
   ) {}
 
   submitEditRequest() {
@@ -113,6 +117,8 @@ export class PreferencesComponent implements OnInit, OnDestroy {
         });
       }
       this.currentUser = user;
+      if (user)
+        this.externalAccounts$ = this.externalAccountsService.get(user.id);
     });
     this.subscriptions.push(dataSub);
   }
@@ -123,7 +129,7 @@ export class PreferencesComponent implements OnInit, OnDestroy {
 
   deleteUser() {
     this.confirmationService.confirm({
-      message: 'Do you want to delete this record?',
+      message: 'Do you want to delete this account?',
       header: 'Delete Confirmation',
       icon: 'pi pi-info-circle',
       accept: () => {

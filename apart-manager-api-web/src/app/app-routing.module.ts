@@ -120,7 +120,7 @@ const routes: Routes = [
         children: [
           { path: 'add', component: AddFinanceComponent },
           { path: 'edit', component: EditFinanceComponent },
-          { path: 'chart', component: FinanceChartComponent },
+          { path: 'chart', component: FinanceChartComponent},
           { path: '', component: FinanceListComponent },
         ],
       },
@@ -132,11 +132,13 @@ const routes: Routes = [
       { path: '**', component: WelcomePageComponent },
     ],
   },
+
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  providers: [],
-  exports: [RouterModule],
+    imports: [RouterModule.forRoot(routes)],
+    providers: [],
+    exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule {
+}
