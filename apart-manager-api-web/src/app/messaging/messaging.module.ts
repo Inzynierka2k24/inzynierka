@@ -6,7 +6,6 @@ import { TagModule } from 'primeng/tag';
 import { ButtonModule } from 'primeng/button';
 import { AvatarModule } from 'primeng/avatar';
 import { TabViewModule } from 'primeng/tabview';
-import { RatingModule } from 'primeng/rating';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AddOrderModalComponent } from './add-order-modal/add-order-modal.component';
 import { DialogModule } from 'primeng/dialog';
@@ -32,7 +31,6 @@ import { FullCalendarModule } from '@fullcalendar/angular';
     ButtonModule,
     AvatarModule,
     TabViewModule,
-    RatingModule,
     FormsModule,
     DialogModule,
     DropdownModule,

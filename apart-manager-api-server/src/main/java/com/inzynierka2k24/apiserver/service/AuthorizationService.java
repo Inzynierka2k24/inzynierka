@@ -72,7 +72,6 @@ public class AuthorizationService {
   public String getUserIdByLogin(String login) {
     try {
       ResponseEntity<Map> r = restTemplate.getForEntity(userDetailsEndpoint, Map.class);
-      System.out.println(r.getBody().toString());
       return r.getBody().get("userId").toString();
     } catch (HttpClientErrorException e) {
       throw new RuntimeException(e.getMessage());

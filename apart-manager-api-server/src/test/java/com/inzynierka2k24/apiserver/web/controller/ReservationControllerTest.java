@@ -33,6 +33,7 @@ public class ReservationControllerTest {
   @Autowired JacksonTester<Reservation> reservationJacksonTester;
   @Autowired JacksonTester<List<Reservation>> reservationListJacksonTester;
   @MockBean ReservationService reservationService;
+  @MockBean ApartmentService apartmentService;
   @Autowired private MockMvc mockMvc;
 
   @Test
@@ -58,7 +59,7 @@ public class ReservationControllerTest {
     var response =
         mockMvc
             .perform(
-                get(String.format("/1/apartments/%s/reservation", apartmentId))
+                get(String.format("/1/apartment/%s/reservation", apartmentId))
                     .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andReturn()
@@ -90,7 +91,7 @@ public class ReservationControllerTest {
     var response =
         mockMvc
             .perform(
-                get(String.format("/1/apartments/%s/reservation/%s", apartmentId, reservationId))
+                get(String.format("/1/apartment/%s/reservation/%s", apartmentId, reservationId))
                     .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andReturn()
@@ -114,7 +115,7 @@ public class ReservationControllerTest {
     // When/Then
     mockMvc
         .perform(
-            post(String.format("/1/apartments/%s/reservation", apartmentId))
+            post(String.format("/1/apartment/%s/reservation", apartmentId))
                 .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(reservationJacksonTester.write(reservation).getJson()))
@@ -136,7 +137,7 @@ public class ReservationControllerTest {
     // When/Then
     mockMvc
         .perform(
-            put(String.format("/1/apartments/%s/reservation", apartmentId))
+            put(String.format("/1/apartment/%s/reservation", apartmentId))
                 .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(reservationJacksonTester.write(reservation).getJson()))
@@ -156,7 +157,7 @@ public class ReservationControllerTest {
     // When/Then
     mockMvc
         .perform(
-            delete(String.format("/1/apartments/%s/reservation/%s", apartmentId, reservationId))
+            delete(String.format("/1/apartment/%s/reservation/%s", apartmentId, reservationId))
                 .with(csrf()))
         .andExpect(status().isOk())
         .andExpect(content().string("Reservation deleted successfully"));
@@ -176,7 +177,7 @@ public class ReservationControllerTest {
     // When/Then
     mockMvc
         .perform(
-            get(String.format("/1/apartments/%s/reservation/%s", apartmentId, reservationId))
+            get(String.format("/1/apartment/%s/reservation/%s", apartmentId, reservationId))
                 .accept(MediaType.APPLICATION_JSON))
         .andExpect(status().isNotFound());
     verify(reservationService).getById(apartmentId, reservationId);
@@ -197,7 +198,7 @@ public class ReservationControllerTest {
     // When/Then
     mockMvc
         .perform(
-            post(String.format("/1/apartments/%s/reservation", apartmentId))
+            post(String.format("/1/apartment/%s/reservation", apartmentId))
                 .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(reservationJacksonTester.write(reservation).getJson()))
@@ -217,7 +218,7 @@ public class ReservationControllerTest {
     // When/Then
     mockMvc
         .perform(
-            put(String.format("/1/apartments/%s/reservation", apartmentId))
+            put(String.format("/1/apartment/%s/reservation", apartmentId))
                 .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(reservationJacksonTester.write(reservation).getJson()))

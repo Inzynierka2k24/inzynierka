@@ -10,5 +10,4 @@ public record Apartment(
     String city,
     String street,
     String buildingNumber,
-    String apartmentNumber,
-    int rating) {}
+    String apartmentNumber) {}

@@ -34,7 +34,6 @@ export class AddApartmentComponent {
       street: ['', [Validators.required]],
       buildingNumber: ['', [Validators.required, Validators.min(0)]],
       apartmentNumber: ['', [Validators.required, Validators.min(0)]],
-      rating: [0, [Validators.required, Validators.min(0), Validators.max(5)]],
     });
   }
 
@@ -58,14 +57,13 @@ export class AddApartmentComponent {
               street: this.addApartForm.value.street!,
               buildingNumber: this.addApartForm.value.buildingNumber!,
               apartmentNumber: this.addApartForm.value.apartmentNumber!,
-              rating: this.addApartForm.value.rating!,
             };
             return this.apartmentService.addApartment(this.user, apartmentData);
           }),
         )
         .subscribe({
           //todo display message
-          next: (response) => {
+          next: () => {
             this.addApartForm.reset();
             this.messageService.add({
               severity: 'success',

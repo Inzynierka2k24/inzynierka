@@ -1,6 +1,7 @@
-package com.inzynierka2k24.apiserver.grpc.messaging;
+package com.inzynierka2k24.apiserver.grpc.messaging.config;
 
 import com.inzynierka2k24.MessagingServiceGrpc;
+import com.inzynierka2k24.apiserver.grpc.messaging.MessagingServiceProperties;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import java.util.concurrent.Executors;

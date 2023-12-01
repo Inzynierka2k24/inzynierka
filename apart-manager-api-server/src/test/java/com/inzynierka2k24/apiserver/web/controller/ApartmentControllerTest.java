@@ -48,8 +48,7 @@ public class ApartmentControllerTest {
             "City 1",
             "Street 1",
             "Building 1",
-            "Apartment 1",
-            4));
+            "Apartment 1"));
     expectedApartments.add(
         new Apartment(
             Optional.of(2L),
@@ -59,15 +58,13 @@ public class ApartmentControllerTest {
             "City 2",
             "Street 2",
             "Building 2",
-            "Apartment 2",
-            4));
+            "Apartment 2"));
     when(apartmentService.getAll(userId)).thenReturn(expectedApartments);
 
     // When/Then
     var response =
         mockMvc
-            .perform(
-                get(String.format("/%s/apartments", userId)).accept(MediaType.APPLICATION_JSON))
+            .perform(get(String.format("/%s/apartment", userId)).accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andReturn()
             .getResponse();
@@ -95,15 +92,14 @@ public class ApartmentControllerTest {
             "City 1",
             "Street 1",
             "Building 1",
-            "Apartment 1",
-            4);
+            "Apartment 1");
     when(apartmentService.getById(userId, apartmentId)).thenReturn(expectedApartment);
 
     // When/Then
     var response =
         mockMvc
             .perform(
-                get(String.format("/%s/apartments/%s", userId, apartmentId))
+                get(String.format("/%s/apartment/%s", userId, apartmentId))
                     .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andReturn()
@@ -127,14 +123,13 @@ public class ApartmentControllerTest {
             "City 1",
             "Street 1",
             "Building 1",
-            "Apartment 1",
-            4);
+            "Apartment 1");
     doNothing().when(apartmentService).add(userId, apartment);
 
     // When/Then
     mockMvc
         .perform(
-            post(String.format("/%s/apartments", userId))
+            post(String.format("/%s/apartment", userId))
                 .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(apartmentJacksonTester.write(apartment).getJson()))
@@ -157,14 +152,13 @@ public class ApartmentControllerTest {
             "City 1",
             "Street 1",
             "Building 1",
-            "Apartment 1",
-            4);
+            "Apartment 1");
     doNothing().when(apartmentService).update(userId, apartment);
 
     // When/Then
     mockMvc
         .perform(
-            put(String.format("/%s/apartments", userId))
+            put(String.format("/%s/apartment", userId))
                 .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(apartmentJacksonTester.write(apartment).getJson()))
@@ -183,7 +177,7 @@ public class ApartmentControllerTest {
 
     // When/Then
     mockMvc
-        .perform(delete(String.format("/%s/apartments/%s", userId, apartmentId)).with(csrf()))
+        .perform(delete(String.format("/%s/apartment/%s", userId, apartmentId)).with(csrf()))
         .andExpect(status().isOk())
         .andExpect(content().string("Apartment deleted successfully"));
     verify(apartmentService).deleteById(userId, apartmentId);
@@ -200,7 +194,7 @@ public class ApartmentControllerTest {
     // When/Then
     var response =
         mockMvc
-            .perform(get(String.format("/%s/apartments", userId)))
+            .perform(get(String.format("/%s/apartment", userId)))
             .andExpect(status().isOk())
             .andReturn()
             .getResponse();
@@ -218,7 +212,7 @@ public class ApartmentControllerTest {
 
     // When/Then
     mockMvc
-        .perform(get(String.format("/%s/apartments/%s", userId, apartmentId)))
+        .perform(get(String.format("/%s/apartment/%s", userId, apartmentId)))
         .andExpect(status().isNotFound());
     verify(apartmentService).getById(userId, apartmentId);
   }
@@ -237,14 +231,13 @@ public class ApartmentControllerTest {
             "City 1",
             "Street 1",
             "Building 1",
-            "Apartment 1",
-            4);
+            "Apartment 1");
     doThrow(ApartmentNotFoundException.class).when(apartmentService).update(userId, apartment);
 
     // When/Then
     mockMvc
         .perform(
-            put(String.format("/%s/apartments", userId))
+            put(String.format("/%s/apartment", userId))
                 .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(apartmentJacksonTester.write(apartment).getJson()))
@@ -264,7 +257,7 @@ public class ApartmentControllerTest {
 
     // When/Then
     mockMvc
-        .perform(delete(String.format("/%s/apartments/%s", userId, apartmentId)).with(csrf()))
+        .perform(delete(String.format("/%s/apartment/%s", userId, apartmentId)).with(csrf()))
         .andExpect(status().isNotFound());
     verify(apartmentService).deleteById(userId, apartmentId);
   }

@@ -32,4 +32,4 @@ grpc:
     port: ${EXTERNAL_INTEGRATION_SERVICE_PORT:6565}
   messaging-service:
     url: ${MESSAGING_SERVICE_URL:localhost}
-    port: ${MESSAGING_SERVICE_PORT:6566}
+    port: ${MESSAGING_SERVICE_PORT:6565}

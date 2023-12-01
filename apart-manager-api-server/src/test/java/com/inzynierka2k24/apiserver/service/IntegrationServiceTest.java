@@ -1,6 +1,6 @@
 package com.inzynierka2k24.apiserver.service;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -19,7 +19,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class IntegrationServiceTest {
 
@@ -94,15 +94,7 @@ public class IntegrationServiceTest {
 
     Apartment apartment =
         new Apartment(
-            Optional.of(1L),
-            100.0f,
-            "Title",
-            "Country",
-            "City",
-            "Street",
-            "Building",
-            "Apartment",
-            4);
+            Optional.of(1L), 100.0f, "Title", "Country", "City", "Street", "Building", "Apartment");
     List<ExternalAccount> accounts = List.of(new ExternalAccount(1L, "login", "password", 1));
     List<ServiceResponse> responses =
         List.of(

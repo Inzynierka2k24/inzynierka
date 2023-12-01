@@ -150,7 +150,7 @@ public class FinanceControllerTest {
     var response =
         mockMvc
             .perform(
-                get(String.format("/%s/finance/apartments/%s", userId, apartmentId))
+                get(String.format("/%s/finance/apartment/%s", userId, apartmentId))
                     .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andReturn()
@@ -273,7 +273,7 @@ public class FinanceControllerTest {
     // When/Then
     var response =
         mockMvc
-            .perform(get(String.format("/%s/finance/apartments/%s", userId, apartmentId)))
+            .perform(get(String.format("/%s/finance/apartment/%s", userId, apartmentId)))
             .andExpect(status().isOk())
             .andReturn()
             .getResponse();

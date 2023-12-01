@@ -6,7 +6,6 @@ import com.inzynierka2k24.apiserver.dao.ScheduledMessageDao;
 import com.inzynierka2k24.apiserver.exception.apartment.ApartmentNotFoundException;
 import com.inzynierka2k24.apiserver.exception.messaging.ContactNotFoundException;
 import com.inzynierka2k24.apiserver.exception.user.UserNotFoundException;
-import com.inzynierka2k24.apiserver.grpc.messaging.MessagingServiceClient;
 import com.inzynierka2k24.apiserver.model.Apartment;
 import com.inzynierka2k24.apiserver.model.Contact;
 import com.inzynierka2k24.apiserver.model.ScheduledMessage;
@@ -24,7 +23,6 @@ public class MessagingService {
   private final ContactDao contactDao;
   private final ScheduledMessageDao messageDao;
   private final ApartmentDao apartmentDao;
-  private final MessagingServiceClient messagingServiceClient;
 
   public List<ContactDTO> getContacts(long userId) throws UserNotFoundException {
     List<Contact> contacts = contactDao.getAll(userId);
@@ -34,11 +32,21 @@ public class MessagingService {
     }
     // map to ContactDTO
     return contacts.stream()
-        .map(contact -> mapContactToDTO(userId, contact))
+        .map(
+            contact -> {
+              try {
+                return mapContactToDTO(userId, contact);
+              } catch (ContactNotFoundException e) {
+                throw new RuntimeException(e);
+              }
+            })
         .collect(Collectors.toList());
   }
 
-  public ContactDTO mapContactToDTO(long userId, Contact contact) {
+  public ContactDTO mapContactToDTO(long userId, Contact contact) throws ContactNotFoundException {
+    if (contact.id().isEmpty()) {
+      throw new ContactNotFoundException();
+    }
     ContactDTO contactDTO =
         new ContactDTO(
             contact.id().get(),
@@ -52,6 +60,9 @@ public class MessagingService {
 
     messages.forEach(
         message -> {
+          if (message.id().isEmpty()) {
+            throw new RuntimeException("Message has no id");
+          }
           List<Long> apartmentIds = messageDao.getApartmentsForMessage(message.id().get());
           List<Apartment> apartments =
               apartmentIds.stream()
@@ -72,6 +83,9 @@ public class MessagingService {
   }
 
   public List<ScheduledMessage> getMessagesForContact(Contact contact) {
+    if (contact.userId().isEmpty() || contact.id().isEmpty()) {
+      throw new RuntimeException("Contact has no id or user id");
+    }
     return messageDao.getAllForUser(contact.userId().get(), contact.id().get());
   }
 
@@ -85,19 +99,21 @@ public class MessagingService {
         .apartments()
         .forEach(
             apartment -> {
-              ScheduledMessage scheduledMessage =
-                  new ScheduledMessage(
-                      userId,
-                      contactId,
-                      message.message(),
-                      message.intervalType(),
-                      message.intervalValue(),
-                      message.triggerType());
-
-              messageDao.add(userId, apartment.id().get(), scheduledMessage);
+              if (apartment.id().isPresent()) {
+                ScheduledMessage scheduledMessage =
+                    new ScheduledMessage(
+                        userId,
+                        contactId,
+                        message.message(),
+                        message.intervalType(),
+                        message.intervalValue(),
+                        message.triggerType());
+                messageDao.add(userId, apartment.id().get(), scheduledMessage);
+              }
             });
-    // Contact contact = contactDao.getById(userId, contactId).get();
+  }
 
-    // messagingServiceClient.sendMessage(contact, message);
+  public Contact getContactById(long userId, long contactId) {
+    return contactDao.getById(userId, contactId).orElseThrow();
   }
 }

@@ -41,7 +41,6 @@ export class EditApartmentComponent {
       street: ['', [Validators.required]],
       buildingNumber: ['', [Validators.required, Validators.min(0)]],
       apartmentNumber: ['', [Validators.required, Validators.min(0)]],
-      rating: [0, [Validators.required, Validators.min(0), Validators.max(5)]],
     });
 
     this.editApartmentForm.setValue({
@@ -52,7 +51,6 @@ export class EditApartmentComponent {
       street: this.apartment.street,
       buildingNumber: this.apartment.buildingNumber,
       apartmentNumber: this.apartment.apartmentNumber,
-      rating: this.apartment.rating,
     });
   }
 
@@ -77,7 +75,6 @@ export class EditApartmentComponent {
               street: this.editApartmentForm.value.street!,
               buildingNumber: this.editApartmentForm.value.buildingNumber!,
               apartmentNumber: this.editApartmentForm.value.apartmentNumber!,
-              rating: this.editApartmentForm.value.rating!,
             };
             return this.apartmentService.updateApartment(
               this.user,
@@ -86,7 +83,7 @@ export class EditApartmentComponent {
           }),
         )
         .subscribe({
-          next: (response) => {
+          next: () => {
             this.editApartmentForm.reset();
             this.messageService.add({
               severity: 'success',

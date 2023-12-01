@@ -97,7 +97,8 @@ public class IntegrationControllerTest {
     IntegrationController integrationController = new IntegrationController(integrationService);
 
     // When, Then
-    assertThatThrownBy(() -> integrationController.propagateReservation(userId, apartmentId, reservationId))
+    assertThatThrownBy(
+            () -> integrationController.propagateReservation(userId, apartmentId, reservationId))
         .isInstanceOf(ReservationNotFoundException.class);
   }
 

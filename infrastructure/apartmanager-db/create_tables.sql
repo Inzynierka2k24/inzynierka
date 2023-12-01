@@ -15,8 +15,7 @@ CREATE TABLE IF NOT EXISTS apartments
     city         varchar(50),
     street       varchar(50),
     building_nr  varchar(50),
-    apartment_nr varchar(50),
-    rating       int       NOT NULL DEFAULT 0
+    apartment_nr varchar(50)
 );
 
 CREATE TABLE IF NOT EXISTS external_offers
