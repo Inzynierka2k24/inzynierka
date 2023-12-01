@@ -8,4 +8,8 @@ public record ExternalOffer(Optional<Long> id, ExternalService serviceType, Stri
   public ExternalOffer(int serviceType, String externalLink) {
     this(Optional.empty(), ExternalService.forNumber(serviceType), externalLink);
   }
+
+  public ExternalOffer(long id, int serviceType, String externalLink) {
+    this(Optional.of(id), ExternalService.forNumber(serviceType), externalLink);
+  }
 }
