@@ -8,11 +8,9 @@ import com.inzynierka2k24.apiserver.dao.ExternalOfferDao;
 import com.inzynierka2k24.apiserver.exception.offers.OfferNotFoundException;
 import com.inzynierka2k24.apiserver.exception.offers.OfferNotValidException;
 import com.inzynierka2k24.apiserver.model.ExternalOffer;
-import org.junit.jupiter.api.Test;
-
 import java.util.List;
 import java.util.Optional;
-
+import org.junit.jupiter.api.Test;
 
 class ExternalOfferServiceTest {
 
@@ -99,6 +97,7 @@ class ExternalOfferServiceTest {
     // Then
     verify(offerDao).deleteById(apartmentId, offerId);
   }
+
   @Test
   public void shouldThrowOfferNotFoundExceptionWhenGettingNonExistingExternalOffer() {
     // Given
@@ -113,13 +112,15 @@ class ExternalOfferServiceTest {
   }
 
   @Test
-  public void shouldThrowOfferNotValidExceptionWhenAddingOrUpdatingExistingOffer() throws OfferNotValidException {
+  public void shouldThrowOfferNotValidExceptionWhenAddingOrUpdatingExistingOffer()
+      throws OfferNotValidException {
     // Given
     long apartmentId = 1;
     String externalLink = "link1";
     ExternalOffer existingOffer = new ExternalOffer(1, 1, externalLink);
     ExternalOffer newOffer = new ExternalOffer(2, 1, externalLink);
-    when(offerDao.getByServiceType(apartmentId, ExternalService.AIRBNB)).thenReturn(Optional.of(existingOffer));
+    when(offerDao.getByServiceType(apartmentId, ExternalService.AIRBNB))
+        .thenReturn(Optional.of(existingOffer));
 
     // When, Then
     assertThrows(OfferNotValidException.class, () -> service.add(apartmentId, newOffer));
