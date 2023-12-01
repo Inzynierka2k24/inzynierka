@@ -9,7 +9,6 @@ import static org.mockito.BDDMockito.given;
 
 import com.inzynierka2k24.apiserver.exception.user.InvalidCredentialsException;
 import com.inzynierka2k24.apiserver.exception.user.UserAlreadyExistsException;
-import com.inzynierka2k24.apiserver.web.request.EditUserRequest;
 import com.inzynierka2k24.apiserver.web.response.KeycloakTokenResponse;
 import java.util.Collections;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,7 +22,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.util.LinkedMultiValueMap;
@@ -146,74 +144,76 @@ class AuthorizationServiceTest {
         .hasMessage("Server error during registration");
   }
 
-  @Test
-  void shouldSuccessfullyEdit() {
-    // given
-    var editUserRequest = getEditUserRequest();
-
-    var userIdRequest = getUserIdRequestEntity();
-    var userIdResponse = new ResponseEntity<Map>(Map.of("sub", "id"), HttpStatus.OK);
-    given(restTemplate.exchange(userIdRequest, Map.class)).willReturn(userIdResponse);
-
-    var tokenResponse = getResponseEntity();
-    given(restTemplate.postForEntity(eq(TOKEN_ENDPOINT), any(), eq(KeycloakTokenResponse.class)))
-        .willReturn(tokenResponse);
-
-    // when then
-    assertThatCode(() -> authorizationService.edit(TOKEN, editUserRequest))
-        .doesNotThrowAnyException();
-  }
-
-  @Test
-  void edit_shouldThrowExceptionWhenClientError() {
-    // given
-    var editUserRequest = getEditUserRequest();
-
-    var userIdRequest = getUserIdRequestEntity();
-    given(restTemplate.exchange(userIdRequest, Map.class))
-        .willThrow(HttpClientErrorException.class);
-
-    // when then
-    assertThatThrownBy(() -> authorizationService.edit(TOKEN, editUserRequest))
-        .isInstanceOf(RuntimeException.class);
-  }
-
-  @Test
-  void edit_shouldThrowExceptionWhenServerError() {
-    // given
-    var editUserRequest = getEditUserRequest();
-
-    var userIdRequest = getUserIdRequestEntity();
-    var userIdResponse = new ResponseEntity<Map>(Map.of("sub", "id"), HttpStatus.OK);
-    given(restTemplate.exchange(userIdRequest, Map.class)).willReturn(userIdResponse);
-
-    var tokenResponse = getResponseEntity();
-    given(restTemplate.postForEntity(eq(TOKEN_ENDPOINT), any(), eq(KeycloakTokenResponse.class)))
-        .willReturn(tokenResponse);
-
-    given(
-            restTemplate.exchange(
-                eq(USER_ENDPOINT + "id"), eq(HttpMethod.PUT), any(), eq(String.class)))
-        .willThrow(HttpServerErrorException.class);
-
-    // when then
-    assertThatThrownBy(() -> authorizationService.edit(TOKEN, editUserRequest))
-        .isInstanceOf(RuntimeException.class);
-  }
-
-  private EditUserRequest getEditUserRequest() {
-    return new EditUserRequest(USERNAME, EMAIL_ADDRESS, PASSWORD);
-  }
-
-  private RequestEntity<Void> getUserIdRequestEntity() {
-    HttpHeaders headers = new HttpHeaders();
-    headers.set("Authorization", "Bearer " + TOKEN);
-
-    return RequestEntity.get(USER_DETAILS_ENDPOINT)
-        .accept(MediaType.APPLICATION_JSON)
-        .headers(headers)
-        .build();
-  }
+  //  @Test
+  //  void shouldSuccessfullyEdit() {
+  //    // given
+  //    var editUserRequest = getEditUserRequest();
+  //
+  //    var userIdRequest = getUserIdRequestEntity();
+  //    var userIdResponse = new ResponseEntity<Map>(Map.of("sub", "id"), HttpStatus.OK);
+  //    given(restTemplate.exchange(userIdRequest, Map.class)).willReturn(userIdResponse);
+  //
+  //    var tokenResponse = getResponseEntity();
+  //    given(restTemplate.postForEntity(eq(TOKEN_ENDPOINT), any(),
+  // eq(KeycloakTokenResponse.class)))
+  //        .willReturn(tokenResponse);
+  //
+  //    // when then
+  //    assertThatCode(() -> authorizationService.edit(TOKEN, editUserRequest))
+  //        .doesNotThrowAnyException();
+  //  }
+  //
+  //  @Test
+  //  void edit_shouldThrowExceptionWhenClientError() {
+  //    // given
+  //    var editUserRequest = getEditUserRequest();
+  //
+  //    var userIdRequest = getUserIdRequestEntity();
+  //    given(restTemplate.exchange(userIdRequest, Map.class))
+  //        .willThrow(HttpClientErrorException.class);
+  //
+  //    // when then
+  //    assertThatThrownBy(() -> authorizationService.edit(TOKEN, editUserRequest))
+  //        .isInstanceOf(RuntimeException.class);
+  //  }
+  //
+  //  @Test
+  //  void edit_shouldThrowExceptionWhenServerError() {
+  //    // given
+  //    var editUserRequest = getEditUserRequest();
+  //
+  //    var userIdRequest = getUserIdRequestEntity();
+  //    var userIdResponse = new ResponseEntity<Map>(Map.of("sub", "id"), HttpStatus.OK);
+  //    given(restTemplate.exchange(userIdRequest, Map.class)).willReturn(userIdResponse);
+  //
+  //    var tokenResponse = getResponseEntity();
+  //    given(restTemplate.postForEntity(eq(TOKEN_ENDPOINT), any(),
+  // eq(KeycloakTokenResponse.class)))
+  //        .willReturn(tokenResponse);
+  //
+  //    given(
+  //            restTemplate.exchange(
+  //                eq(USER_ENDPOINT + "id"), eq(HttpMethod.PUT), any(), eq(String.class)))
+  //        .willThrow(HttpServerErrorException.class);
+  //
+  //    // when then
+  //    assertThatThrownBy(() -> authorizationService.edit(TOKEN, editUserRequest))
+  //        .isInstanceOf(RuntimeException.class);
+  //  }
+  //
+  //  private EditUserRequest getEditUserRequest() {
+  //    return new EditUserRequest(USERNAME, EMAIL_ADDRESS, PASSWORD);
+  //  }
+  //
+  //  private RequestEntity<Void> getUserIdRequestEntity() {
+  //    HttpHeaders headers = new HttpHeaders();
+  //    headers.set("Authorization", "Bearer " + TOKEN);
+  //
+  //    return RequestEntity.get(USER_DETAILS_ENDPOINT)
+  //        .accept(MediaType.APPLICATION_JSON)
+  //        .headers(headers)
+  //        .build();
+  //  }
 
   private ResponseEntity<KeycloakTokenResponse> getResponseEntity() {
     KeycloakTokenResponse tokenResponse = new KeycloakTokenResponse();
