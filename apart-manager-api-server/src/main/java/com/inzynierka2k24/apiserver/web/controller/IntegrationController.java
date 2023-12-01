@@ -28,11 +28,13 @@ public class IntegrationController {
         integrationService.propagateReservation(userId, apartmentId, reservationId));
   }
 
-  @PostMapping("/get/reservations")
+  @PostMapping("/apartment/{apartmentId}/get/reservations")
   public ResponseEntity<List<Reservation>> getReservations(
-      @PathVariable long userId, @RequestBody GetReservationsRequest request) {
+      @PathVariable long userId,
+      @PathVariable long apartmentId,
+      @RequestBody GetReservationsRequest request) {
     return ResponseEntity.ok(
-        integrationService.getReservations(userId, request.from(), request.to()));
+        integrationService.getReservations(userId, apartmentId, request.from(), request.to()));
   }
 
   @GetMapping("/update/apartment/{apartmentId}")

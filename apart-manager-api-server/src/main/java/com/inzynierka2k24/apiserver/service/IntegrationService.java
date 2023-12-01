@@ -18,6 +18,7 @@ public class IntegrationService {
 
   private final ExternalIntegrationServiceClient client;
   private final ExternalAccountService accountService;
+  private final ExternalOfferService offerService;
   private final ReservationService reservationService;
   private final ApartmentService apartmentService;
 
@@ -25,11 +26,15 @@ public class IntegrationService {
       throws ReservationNotFoundException {
     return toStringMap(
         client.propagateReservation(
-            reservationService.getById(apartmentId, reservationId), accountService.getAll(userId)));
+            reservationService.getById(apartmentId, reservationId),
+            accountService.getAll(userId),
+            offerService.getAll(apartmentId)));
   }
 
-  public List<Reservation> getReservations(long userId, Instant from, Instant to) {
-    client.getReservations(from, to, accountService.getAll(userId));
+  public List<Reservation> getReservations(
+      long userId, long apartmentId, Instant from, Instant to) {
+    client.getReservations(
+        from, to, accountService.getAll(userId), offerService.getAll(apartmentId));
     return List.of();
   }
 
@@ -37,7 +42,9 @@ public class IntegrationService {
       throws ApartmentNotFoundException {
     return toStringMap(
         client.updateApartmentDetails(
-            apartmentService.getById(userId, apartmentId), accountService.getAll(userId)));
+            apartmentService.getById(userId, apartmentId),
+            accountService.getAll(userId),
+            offerService.getAll(apartmentId)));
   }
 
   private Map<String, String> toStringMap(List<ServiceResponse> responses) {

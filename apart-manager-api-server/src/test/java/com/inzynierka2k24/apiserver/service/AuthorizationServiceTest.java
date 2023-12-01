@@ -9,7 +9,6 @@ import static org.mockito.BDDMockito.given;
 
 import com.inzynierka2k24.apiserver.exception.user.InvalidCredentialsException;
 import com.inzynierka2k24.apiserver.exception.user.UserAlreadyExistsException;
-import com.inzynierka2k24.apiserver.web.request.EditUserRequest;
 import com.inzynierka2k24.apiserver.web.response.KeycloakTokenResponse;
 import java.util.Collections;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,7 +22,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.util.LinkedMultiValueMap;
@@ -153,8 +151,7 @@ class AuthorizationServiceTest {
   //
   //    var userIdRequest = getUserIdRequestEntity();
   //    var userIdResponse = new ResponseEntity<Map>(Map.of("sub", "id"), HttpStatus.OK);
-  //    given(restTemplate.exchange(userIdRequest, Map.class))
-  //        .willReturn(userIdResponse);
+  //    given(restTemplate.exchange(userIdRequest, Map.class)).willReturn(userIdResponse);
   //
   //    var tokenResponse = getResponseEntity();
   //    given(restTemplate.postForEntity(eq(TOKEN_ENDPOINT), any(),
@@ -162,8 +159,8 @@ class AuthorizationServiceTest {
   //        .willReturn(tokenResponse);
   //
   //    // when then
-  //    assertThatCode(() -> authorizationService.edit(TOKEN,
-  // editUserRequest)).doesNotThrowAnyException();
+  //    assertThatCode(() -> authorizationService.edit(TOKEN, editUserRequest))
+  //        .doesNotThrowAnyException();
   //  }
   //
   //  @Test

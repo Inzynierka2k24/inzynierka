@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import com.inzynierka2k24.*;
 import com.inzynierka2k24.apiserver.model.Apartment;
 import com.inzynierka2k24.apiserver.model.ExternalAccount;
+import com.inzynierka2k24.apiserver.model.ExternalOffer;
 import com.inzynierka2k24.apiserver.model.Reservation;
 import java.time.Instant;
 import java.util.Collection;
@@ -25,10 +26,12 @@ class RequestBuilderTest {
         List.of(
             new ExternalAccount("login1", "password1", 1),
             new ExternalAccount("login2", "password2", 2));
+    Collection<ExternalOffer> offers =
+        List.of(new ExternalOffer(1L, 1, "Apartment1"), new ExternalOffer(2L, 2, "Apartment2"));
 
     // When
     PropagateReservationRequest request =
-        RequestBuilder.buildPropagateReservationRequest(reservation, accounts);
+        RequestBuilder.buildPropagateReservationRequest(reservation, accounts, offers);
 
     // Then
     assertNotNull(request);
@@ -47,9 +50,12 @@ class RequestBuilderTest {
         List.of(
             new ExternalAccount("login1", "password1", 1),
             new ExternalAccount("login2", "password2", 2));
+    Collection<ExternalOffer> offers =
+        List.of(new ExternalOffer(1L, 1, "Apartment1"), new ExternalOffer(2L, 2, "Apartment2"));
 
     // When
-    GetReservationsRequest request = RequestBuilder.buildGetReservationsRequest(from, to, accounts);
+    GetReservationsRequest request =
+        RequestBuilder.buildGetReservationsRequest(from, to, accounts, offers);
 
     // Then
     assertNotNull(request);
@@ -75,10 +81,12 @@ class RequestBuilderTest {
         List.of(
             new ExternalAccount("login1", "password1", 1),
             new ExternalAccount("login2", "password2", 2));
+    Collection<ExternalOffer> offers =
+        List.of(new ExternalOffer(1L, 1, "Apartment1"), new ExternalOffer(2L, 2, "Apartment2"));
 
     // When
     UpdateApartmentDetailsRequest request =
-        RequestBuilder.buildUpdateApartmentDetailsRequest(apartment, accounts);
+        RequestBuilder.buildUpdateApartmentDetailsRequest(apartment, accounts, offers);
 
     // Then
     assertNotNull(request);
@@ -95,10 +103,11 @@ class RequestBuilderTest {
     Reservation reservation =
         new Reservation(Optional.of(1L), 2L, Instant.now(), Instant.now().plusSeconds(3600));
     Collection<ExternalAccount> accounts = Collections.emptyList();
+    Collection<ExternalOffer> offers = List.of(new ExternalOffer(1L, 1, "Apartment"));
 
     // When
     PropagateReservationRequest request =
-        RequestBuilder.buildPropagateReservationRequest(reservation, accounts);
+        RequestBuilder.buildPropagateReservationRequest(reservation, accounts, offers);
 
     // Then
     assertNotNull(request);
@@ -113,9 +122,10 @@ class RequestBuilderTest {
     // Given
     ExternalAccount account =
         new ExternalAccount(Optional.of(1L), "login", "password", ExternalService.forNumber(1));
+    ExternalOffer offer = new ExternalOffer(1L, 1, "Apartment");
 
     // When
-    com.inzynierka2k24.ExternalAccount protoAccount = RequestBuilder.toProto(account);
+    com.inzynierka2k24.ExternalAccount protoAccount = RequestBuilder.toProto(account, offer);
 
     // Then
     assertNotNull(protoAccount);
