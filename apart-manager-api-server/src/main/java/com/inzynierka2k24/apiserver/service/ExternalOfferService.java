@@ -30,8 +30,9 @@ public class ExternalOfferService {
     }
   }
 
-  public void update(ExternalOffer offer) throws OfferNotValidException {
-    if (offer.id().isPresent()) { // TODO Check if there is already offer with given service
+  public void update(long apartmentId, ExternalOffer offer) throws OfferNotValidException {
+    var offerToUpdate = offerDao.getByServiceType(apartmentId, offer.serviceType());
+    if (offerToUpdate.isEmpty() || hasSameId(offer, offerToUpdate.get())) {
       offerDao.update(offer);
     } else {
       throw new OfferNotValidException("External offer for given service already exists.");
@@ -40,5 +41,11 @@ public class ExternalOfferService {
 
   public void deleteById(long apartmentId, long offerId) {
     offerDao.deleteById(apartmentId, offerId);
+  }
+
+  private boolean hasSameId(ExternalOffer newOffer, ExternalOffer oldOffer) {
+    return oldOffer.id().isPresent()
+        && newOffer.id().isPresent()
+        && oldOffer.id().get().equals(newOffer.id().get());
   }
 }

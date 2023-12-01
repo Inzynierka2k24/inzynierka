@@ -2,6 +2,8 @@ package com.inzynierka2k24.apiserver.web.config;
 
 import com.inzynierka2k24.apiserver.exception.account.AccountNotFoundException;
 import com.inzynierka2k24.apiserver.exception.apartment.ApartmentNotFoundException;
+import com.inzynierka2k24.apiserver.exception.offers.OfferNotFoundException;
+import com.inzynierka2k24.apiserver.exception.offers.OfferNotValidException;
 import com.inzynierka2k24.apiserver.exception.reservation.ReservationNotFoundException;
 import com.inzynierka2k24.apiserver.exception.reservation.ReservationNotValidException;
 import com.inzynierka2k24.apiserver.exception.user.InvalidCredentialsException;
@@ -56,6 +58,18 @@ public class GlobalExceptionHandler {
   public ResponseEntity<ErrorResponse> handleAccountNotFoundException(AccountNotFoundException e) {
     return ResponseEntity.status(HttpStatus.NOT_FOUND)
         .body(new ErrorResponseException(HttpStatus.NOT_FOUND, e));
+  }
+
+  @ExceptionHandler(OfferNotFoundException.class)
+  public ResponseEntity<ErrorResponse> handleOfferNotFoundException(OfferNotFoundException e) {
+    return ResponseEntity.status(HttpStatus.NOT_FOUND)
+        .body(new ErrorResponseException(HttpStatus.NOT_FOUND, e));
+  }
+
+  @ExceptionHandler(OfferNotValidException.class)
+  public ResponseEntity<ErrorResponse> handleOfferNotValidException(OfferNotValidException e) {
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+        .body(new ErrorResponseException(HttpStatus.BAD_REQUEST, e));
   }
 
   @ExceptionHandler(RuntimeException.class)
