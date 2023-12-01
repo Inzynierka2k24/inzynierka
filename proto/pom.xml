@@ -6,7 +6,7 @@
 
     <groupId>com.inzynierka2k24</groupId>
     <artifactId>proto</artifactId>
-    <version>0.0.5</version> <!-- Update version when deploying changes! -->
+    <version>0.0.6</version> <!-- Update version when deploying changes! -->
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
