@@ -1,6 +1,7 @@
-package com.inzynierka2k24.apiserver.grpc.integration;
+package com.inzynierka2k24.apiserver.grpc.integration.config;
 
 import com.inzynierka2k24.ExternalIntegrationServiceGrpc;
+import com.inzynierka2k24.apiserver.grpc.integration.ExternalIntegrationServiceProperties;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import java.util.concurrent.Executors;

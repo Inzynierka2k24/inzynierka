@@ -28,6 +28,7 @@
         <testcontainers.version>1.17.6</testcontainers.version>
         <fmt.version>2.20</fmt.version>
         <snakeyaml.version>2.2</snakeyaml.version>
+    <archunit-junit5.version>1.2.0</archunit-junit5.version>
 	</properties>
 
 	<repositories>
@@ -106,6 +107,12 @@
 			<groupId>io.grpc</groupId>
 			<artifactId>grpc-testing</artifactId>
 			<version>${grpc.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.tngtech.archunit</groupId>
+			<artifactId>archunit-junit5</artifactId>
+			<version>${archunit-junit5.version}</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>

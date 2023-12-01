@@ -20,16 +20,17 @@
 
         <proto.version>0.0.5</proto.version>
 
-        <grpc-spring-boot.version>5.1.5</grpc-spring-boot.version>
-        <grpc.version>1.58.0</grpc.version>
-        <vonage.version>7.10.0</vonage.version>
-        <validator.version>1.7</validator.version>
-        <lombok.version>1.18.30</lombok.version>
-        <mockito.version>5.2.0</mockito.version>
-        <testcontainers.version>1.17.6</testcontainers.version>
-        <fmt.version>2.20</fmt.version>
-        <snakeyaml.version>2.1</snakeyaml.version>
-    </properties>
+		<grpc-spring-boot.version>5.1.5</grpc-spring-boot.version>
+		<grpc.version>1.58.0</grpc.version>
+		<vonage.version>7.10.0</vonage.version>
+		<validator.version>1.7</validator.version>
+		<lombok.version>1.18.30</lombok.version>
+		<mockito.version>5.2.0</mockito.version>
+		<testcontainers.version>1.17.6</testcontainers.version>
+		<fmt.version>2.20</fmt.version>
+		<snakeyaml.version>2.1</snakeyaml.version>
+		<archunit-junit5.version>1.2.0</archunit-junit5.version>
+	</properties>
 
     <repositories>
         <repository>
@@ -104,28 +105,34 @@
         </dependency>
 
         <!--   Testing    -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-testcontainers</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.testcontainers</groupId>
-            <artifactId>junit-jupiter</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.grpc</groupId>
-            <artifactId>grpc-testing</artifactId>
-            <version>${grpc.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.testcontainers</groupId>
-            <artifactId>mongodb</artifactId>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-testcontainers</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.testcontainers</groupId>
+			<artifactId>junit-jupiter</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.grpc</groupId>
+			<artifactId>grpc-testing</artifactId>
+			<version>${grpc.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.testcontainers</groupId>
+			<artifactId>mongodb</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.tngtech.archunit</groupId>
+			<artifactId>archunit-junit5</artifactId>
+			<version>${archunit-junit5.version}</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
 
     <build>
         <plugins>

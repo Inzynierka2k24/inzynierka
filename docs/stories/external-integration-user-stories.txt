@@ -1,0 +1,51 @@
+# Booking
+Jako zarządca
+Chciałbym żeby moja rezerwacja została wysłana do serwisu Booking.com
+Po to, aby ułatwić zarządzanie moimi rezerwacjami i apartamentami.
+
+Jako zarządca
+Chciałbym żeby rezerwacja dodana w serwisie Booking.com pojawiła się w systemie
+Po to, aby ułatwić zarządzanie moimi rezerwacjami i apartamentami.
+
+Jako zarządca
+Chciałbym żeby zmiany informacji dotyczących apartamentu zostały wysłane do serwisu Booking.com
+Po to, aby ułatwić zarządzanie moimi apartamentami.
+
+# Airbnb
+Jako zarządca
+Chciałbym żeby moja rezerwacja została wysłana do serwisu Airbnb.com
+Po to, aby ułatwić zarządzanie moimi rezerwacjami i apartamentami.
+
+Jako zarządca
+Chciałbym żeby rezerwacja dodana w serwisie Airbnb.com pojawiła się w systemie
+Po to, aby ułatwić zarządzanie moimi rezerwacjami i apartamentami.
+
+Jako zarządca
+Chciałbym żeby zmiany informacji dotyczących apartamentu zostały wysłane do serwisu Airbnb.com
+Po to, aby ułatwić zarządzanie moimi apartamentami.
+
+# Trivago
+Jako zarządca
+Chciałbym żeby moja rezerwacja została wysłana do serwisu Trivago.com
+Po to, aby ułatwić zarządzanie moimi rezerwacjami i apartamentami.
+
+Jako zarządca
+Chciałbym żeby rezerwacja dodana w serwisie Trivago.com pojawiła się w systemie
+Po to, aby ułatwić zarządzanie moimi rezerwacjami i apartamentami.
+
+Jako zarządca
+Chciałbym żeby zmiany informacji dotyczących apartamentu zostały wysłane do serwisu Trivago.com
+Po to, aby ułatwić zarządzanie moimi apartamentami.
+
+# Nocowanie.pl
+Jako zarządca
+Chciałbym żeby moja rezerwacja została wysłana do serwisu Nocowanie.pl
+Po to, aby ułatwić zarządzanie moimi rezerwacjami i apartamentami.
+
+Jako zarządca
+Chciałbym żeby rezerwacja dodana w serwisie Nocowanie.pl pojawiła się w systemie
+Po to, aby ułatwić zarządzanie moimi rezerwacjami i apartamentami.
+
+Jako zarządca
+Chciałbym żeby zmiany informacji dotyczących apartamentu zostały wysłane do serwisu Nocowanie.pl
+Po to, aby ułatwić zarządzanie moimi apartamentami.
