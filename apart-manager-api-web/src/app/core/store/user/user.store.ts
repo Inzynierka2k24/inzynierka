@@ -1,14 +1,16 @@
-import { UserDTO } from '../../../../generated';
+import { ExternalAccount, UserDTO } from '../../../../generated';
 
 export interface UserState {
   loading: boolean;
   user?: UserDTO;
+  externalAccounts?: ExternalAccount[];
   error?: any;
 }
 
 export const initialState: UserState = {
   loading: false,
   user: undefined,
+  externalAccounts: undefined,
   error: undefined,
 };
 

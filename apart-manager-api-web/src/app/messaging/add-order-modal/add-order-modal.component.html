@@ -1,4 +1,9 @@
-<p-dialog [(visible)]="visible" [modal]="true" header="Add Order">
+<p-dialog
+  (onHide)="visibleChange.emit(false)"
+  [(visible)]="visible"
+  [modal]="true"
+  header="Add Order"
+>
   <form [formGroup]="addOrderForm" class="flex flex-column gap-3">
     <div class="flex flex-column gap-1">
       <label for="apartments">Target Apartments</label>

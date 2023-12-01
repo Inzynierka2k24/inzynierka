@@ -1,116 +1,164 @@
+<app-add-external-account-modal
+  [(visible)]="showAddExternalAccountModal"
+></app-add-external-account-modal>
 <div class="surface-section p-4">
-  <div class="font-medium text-3xl text-900 mb-3">
-    {{ "PREFERENCES.TITLE" | translate }}
-  </div>
-  <div class="flex justify-content-between">
-    <div class="text-500 mb-5">
-      {{ "PREFERENCES.DESCRIPTION" | translate }}
-    </div>
-    <ng-container *ngIf="!editable">
-      <button
-        (click)="editable = !editable"
-        class="p-button-text"
-        icon="pi pi-pencil"
-        label="Edit"
-        pButton
-        pRipple
-      ></button>
-    </ng-container>
-    <div *ngIf="editable">
-      <button
-        (click)="submitEditRequest()"
-        class="p-button-success"
-        icon="pi pi-pencil"
-        label="Save"
-        pButton
-        pRipple
-      ></button>
-      <button
-        (click)="editable = !editable"
-        class="p-button-text p-button-danger"
-        icon="pi pi-times-circle"
-        label="Cancel"
-        pButton
-        pRipple
-      ></button>
-    </div>
-  </div>
-  <ng-container *ngIf="!editable; else editableTable">
-    <ul class="list-none p-0 m-0">
-      <ng-container *ngFor="let category of tableStructure">
-        <h3>{{ category.title | translate }}</h3>
-        <ng-container *ngFor="let row of category.rows">
-          <li
-            class="flex align-items-center py-3 px-2 border-top-1 surface-border flex-wrap"
-          >
-            <div class="text-500 w-6 md:w-2 font-medium">
-              {{ row.label | translate }}
-            </div>
-            <div class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">
-              {{ data.get(row.selector) }}
-            </div>
-          </li>
+  <div class="flex flex-row">
+    <div class="col-6">
+      <div class="font-medium text-3xl text-900 mb-3">Preferences</div>
+      <div class="flex justify-content-between">
+        <div class="text-500 mb-5">Edit the details of your account</div>
+        <ng-container *ngIf="!editable">
+          <button
+            (click)="editable = !editable"
+            class="p-button-text"
+            icon="pi pi-pencil"
+            label="Edit"
+            pButton
+            pRipple
+          ></button>
         </ng-container>
-      </ng-container>
-    </ul>
-  </ng-container>
-
-  <ng-template #editableTable>
-    <form [formGroup]="userEditForm">
-      <ul class="list-none p-0 m-0">
-        <ng-container *ngFor="let category of tableStructure">
-          <h3>{{ category.title | translate }}</h3>
-          <ng-container *ngFor="let row of category.rows">
-            <li
-              class="flex align-items-center py-3 px-2 border-top-1 surface-border flex-wrap"
-            >
-              <div class="text-500 w-6 md:w-2 font-medium">
-                {{ row.label | translate }}
-              </div>
-              <ng-container [ngSwitch]="row.inputType">
-                <ng-container *ngSwitchCase="'login'">{{
-                  data.get(row.selector)
-                }}</ng-container>
-                <ng-container *ngSwitchCase="'sms'">
-                  <p-checkbox
-                    [binary]="true"
-                    [formControlName]="row.selector"
-                  ></p-checkbox>
-                </ng-container>
-                <ng-container *ngSwitchCase="'password'">
-                  <p-password
-                    [feedback]="false"
-                    [placeholder]="'FORM.PASSWORD_LABEL' | translate"
-                    [toggleMask]="true"
-                    formControlName="password"
-                    id="password"
-                    inputStyleClass="w-full"
-                    styleClass="mb-3 w-full"
-                  ></p-password>
-                </ng-container>
-                <ng-container *ngSwitchDefault>
-                  <input
-                    [formControlName]="row.selector"
-                    [value]="data.get(row.selector)"
-                    pInputText
-                  />
-                </ng-container>
-              </ng-container>
-            </li>
+        <div *ngIf="editable">
+          <button
+            (click)="submitEditRequest()"
+            class="p-button-success"
+            icon="pi pi-pencil"
+            label="Save"
+            pButton
+            pRipple
+          ></button>
+          <button
+            (click)="editable = !editable"
+            class="p-button-text p-button-danger"
+            icon="pi pi-times-circle"
+            label="Cancel"
+            pButton
+            pRipple
+          ></button>
+        </div>
+      </div>
+      <ng-container *ngIf="!editable; else editableTable">
+        <ul class="list-none p-0 m-0">
+          <ng-container *ngFor="let category of tableStructure">
+            <h3>{{ category.title | translate }}</h3>
+            <ng-container *ngFor="let row of category.rows">
+              <li
+                class="flex align-items-center py-3 px-2 border-top-1 surface-border flex-wrap"
+              >
+                <div class="text-500 w-6 md:w-2 font-medium">
+                  {{ row.label | translate }}
+                </div>
+                <div
+                  class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1"
+                >
+                  {{ data.get(row.selector) }}
+                </div>
+              </li>
+            </ng-container>
           </ng-container>
-        </ng-container>
-      </ul>
-    </form>
-  </ng-template>
-  <div class="flex justify-content-end">
-    <button
-      (click)="deleteUser()"
-      class="p-button-danger"
-      icon="pi pi-trash"
-      label="Delete Account"
-      pButton
-      pRipple
-    ></button>
+        </ul>
+      </ng-container>
+
+      <ng-template #editableTable>
+        <form [formGroup]="userEditForm">
+          <ul class="list-none p-0 m-0">
+            <ng-container *ngFor="let category of tableStructure">
+              <h3>{{ category.title | translate }}</h3>
+              <ng-container *ngFor="let row of category.rows">
+                <li
+                  class="flex align-items-center py-3 px-2 border-top-1 surface-border flex-wrap"
+                >
+                  <div class="text-500 w-6 md:w-2 font-medium">
+                    {{ row.label | translate }}
+                  </div>
+                  <ng-container [ngSwitch]="row.inputType">
+                    <ng-container *ngSwitchCase="'login'">{{
+                      data.get(row.selector)
+                    }}</ng-container>
+                    <ng-container *ngSwitchCase="'sms'">
+                      <p-checkbox
+                        [binary]="true"
+                        [formControlName]="row.selector"
+                      ></p-checkbox>
+                    </ng-container>
+                    <ng-container *ngSwitchCase="'password'">
+                      <p-password
+                        [feedback]="false"
+                        [placeholder]="'FORM.PASSWORD_LABEL' | translate"
+                        [toggleMask]="true"
+                        formControlName="password"
+                        id="password"
+                        inputStyleClass="w-full"
+                        styleClass="mb-3 w-full"
+                      ></p-password>
+                    </ng-container>
+                    <ng-container *ngSwitchDefault>
+                      <input
+                        [formControlName]="row.selector"
+                        [value]="data.get(row.selector)"
+                        pInputText
+                      />
+                    </ng-container>
+                  </ng-container>
+                </li>
+              </ng-container>
+            </ng-container>
+          </ul>
+        </form>
+      </ng-template>
+    </div>
+    <div class="col-6">
+      <div class="surface-card p-4 shadow-7 border-round w-full h-full">
+        <div class="font-medium text-3xl text-900 mb-3">EXTERNAL ACCOUNTS</div>
+        <button
+          (click)="showAddExternalAccountModal = true"
+          class="p-button-rounded pi pi-plus"
+          pButton
+        ></button>
+        <p-table [value]="(externalAccounts$ | async)!">
+          <ng-template pTemplate="header">
+            <tr>
+              <th>Service</th>
+              <th>Account</th>
+              <th>Actions</th>
+            </tr>
+          </ng-template>
+          <ng-template let-account pTemplate="body">
+            <tr>
+              <td>
+                <img
+                  [src]="'assets/img/' + account.serviceType + '.png'"
+                  width="32"
+                />
+              </td>
+              <td>{{ account.login }}</td>
+              <td>
+                <button
+                  class="p-button-danger"
+                  icon="pi pi-trash"
+                  pButton
+                  pRipple
+                ></button>
+                <button
+                  class="p-button ml-1"
+                  icon="pi pi-key"
+                  pButton
+                  pRipple
+                ></button>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </div>
   </div>
+
+  <button
+    (click)="deleteUser()"
+    class="p-button-danger mt-3"
+    icon="pi pi-trash"
+    label="Delete Account"
+    pButton
+    pRipple
+  ></button>
   <p-confirmDialog></p-confirmDialog>
 </div>
