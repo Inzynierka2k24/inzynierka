@@ -37,15 +37,16 @@ class ExternalServiceProviderTest {
         IllegalArgumentException.class,
         () ->
             provider
-                .getServices(List.of(new Account("", "", ExternalService.UNRECOGNIZED)))
+                .getServices(List.of(new Account("", "", "", ExternalService.UNRECOGNIZED)))
                 .findAny());
   }
 
   static Stream<Arguments> shouldGetMessageSender() {
     return Stream.of(
-        Arguments.of(new Account("", "", ExternalService.BOOKING), BookingService.class),
-        Arguments.of(new Account("", "", ExternalService.AIRBNB), AirbnbService.class),
-        Arguments.of(new Account("", "", ExternalService.TRIVAGO), TrivagoService.class),
-        Arguments.of(new Account("", "", ExternalService.NOCOWANIEPL), NocowaniePlService.class));
+        Arguments.of(new Account("", "", "", ExternalService.BOOKING), BookingService.class),
+        Arguments.of(new Account("", "", "", ExternalService.AIRBNB), AirbnbService.class),
+        Arguments.of(new Account("", "", "", ExternalService.TRIVAGO), TrivagoService.class),
+        Arguments.of(
+            new Account("", "", "", ExternalService.NOCOWANIEPL), NocowaniePlService.class));
   }
 }
