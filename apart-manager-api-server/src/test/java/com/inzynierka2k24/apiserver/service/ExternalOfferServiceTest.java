@@ -112,8 +112,7 @@ class ExternalOfferServiceTest {
   }
 
   @Test
-  public void shouldThrowOfferNotValidExceptionWhenAddingOrUpdatingExistingOffer()
-      throws OfferNotValidException {
+  public void shouldThrowOfferNotValidExceptionWhenAddingOrUpdatingExistingOffer() {
     // Given
     long apartmentId = 1;
     String externalLink = "link1";
