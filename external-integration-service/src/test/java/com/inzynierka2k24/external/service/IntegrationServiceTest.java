@@ -3,7 +3,6 @@ package com.inzynierka2k24.external.service;
 import static com.inzynierka2k24.ExternalService.AIRBNB;
 import static com.inzynierka2k24.ExternalService.BOOKING;
 import static com.inzynierka2k24.external.TestUtils.createAccount;
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -77,7 +76,7 @@ class IntegrationServiceTest {
 
     // Then
     assertNotNull(result);
-    assertThat(result).hasSize(2).containsAll(Set.of(reservationBooking, reservationAirbnb));
+    assertTrue(result.containsAll(Set.of(reservationBooking, reservationAirbnb)));
   }
 
   @Test

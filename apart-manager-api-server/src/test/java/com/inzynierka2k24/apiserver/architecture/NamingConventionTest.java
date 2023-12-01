@@ -18,53 +18,58 @@ public class NamingConventionTest {
   @ArchTest
   static final ArchRule services_should_be_suffixed =
       classes()
-          .that().areAnnotatedWith(Service.class)
-          .should().haveSimpleNameEndingWith("Service")
+          .that()
+          .areAnnotatedWith(Service.class)
+          .should()
+          .haveSimpleNameEndingWith("Service")
           .because("we don't want developers to go creative with names");
 
   @ArchTest
   static final ArchRule controllers_should_be_suffixed =
       classes()
-          .that().areAnnotatedWith(RestController.class)
-          .or().areAnnotatedWith(Controller.class)
-          .should().haveSimpleNameEndingWith("Controller")
+          .that()
+          .areAnnotatedWith(RestController.class)
+          .or()
+          .areAnnotatedWith(Controller.class)
+          .should()
+          .haveSimpleNameEndingWith("Controller")
           .because("we don't want developers to go creative with names");
 
   @ArchTest
   static final ArchRule configs_should_be_suffixed =
       classes()
-          .that().areAnnotatedWith(Configuration.class)
-          .should().haveSimpleNameEndingWith("Config")
+          .that()
+          .areAnnotatedWith(Configuration.class)
+          .should()
+          .haveSimpleNameEndingWith("Config")
           .because("we don't want developers to go creative with names");
 
   @ArchTest
   static final ArchRule repositories_should_be_suffixed =
       classes()
-          .that().areAnnotatedWith(Repository.class)
-          .should().haveSimpleNameEndingWith("Dao")
+          .that()
+          .areAnnotatedWith(Repository.class)
+          .should()
+          .haveSimpleNameEndingWith("Dao")
           .because("that's the convention we agreed on");
 
   @ArchTest
   static final ArchRule controllers_should_be_in_controller_package =
       classes()
-          .that().haveSimpleNameContaining("Controller")
-          .should().resideInAPackage("..controller..");
+          .that()
+          .haveSimpleNameContaining("Controller")
+          .should()
+          .resideInAPackage("..controller..");
 
   @ArchTest
   static final ArchRule services_should_be_in_service_package =
-      classes()
-          .that().haveSimpleNameEndingWith("Service")
-          .should().resideInAPackage("..service..");
+      classes().that().haveSimpleNameEndingWith("Service").should().resideInAPackage("..service..");
 
   @ArchTest
   static final ArchRule configs_should_be_in_config_package =
-      classes()
-          .that().haveSimpleNameContaining("Config")
-          .should().resideInAPackage("..config..");
+      classes().that().haveSimpleNameContaining("Config").should().resideInAPackage("..config..");
 
   @ArchTest
   static final ArchRule repositories_should_be_in_dao_package =
-      classes()
-          .that().haveSimpleNameContaining("Dao")
-          .should().resideInAPackage("..dao..");
+      classes().that().haveSimpleNameContaining("Dao").should().resideInAPackage("..dao..");
 }

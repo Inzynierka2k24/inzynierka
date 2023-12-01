@@ -10,7 +10,7 @@ services:
     ports:
       - "5432:5432"
     volumes: 
-      - ../scripts/create_tables.sql:/docker-entrypoint-initdb.d/create_tables.sql
+      - ./apartmanager-db/create_tables.sql:/docker-entrypoint-initdb.d/create_tables.sql
     networks:
       - local
 
@@ -32,7 +32,7 @@ services:
     container_name: apartmanager_auth
     depends_on:
       - keycloak_db
-    build: ../../keycloak/
+    build: keycloak
     environment:
       KC_DB_PASSWORD: keycloak_db
       KC_DB_URL: jdbc:postgresql://apartmanager_keycloak_db/keycloak
@@ -51,6 +51,25 @@ services:
       - "8090:8090"
     networks:
       - local
+
+  mongo:
+    image: mongo
+    container_name: messaging-mongo
+    ports:
+      - 27017:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+
+  mongo-express:
+    image: mongo-express
+    container_name: mongo-express
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: example
+      ME_CONFIG_MONGODB_URL: mongodb://root:example@mongo:27017/
 
 networks:
   local:

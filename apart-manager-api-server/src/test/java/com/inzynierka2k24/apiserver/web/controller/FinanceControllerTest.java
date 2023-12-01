@@ -29,10 +29,10 @@ import org.springframework.test.web.servlet.MockMvc;
 @AutoConfigureJsonTesters
 public class FinanceControllerTest {
 
-  @Autowired private MockMvc mockMvc;
   @Autowired JacksonTester<Finance> financeJacksonTester;
   @Autowired JacksonTester<List<Finance>> financeListJacksonTester;
   @MockBean FinanceService financeService;
+  @Autowired private MockMvc mockMvc;
 
   @Test
   @WithMockUser

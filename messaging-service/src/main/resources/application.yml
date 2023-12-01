@@ -12,11 +12,11 @@ spring:
 
   data.mongodb:
     authentication-database: admin
-    username: ${MESSAGE_DB_USER}
-    password: ${MESSAGE_DB_PASSWORD}
+    username: ${MESSAGE_DB_USER:root}
+    password: ${MESSAGE_DB_PASSWORD:example}
     database: message
     port: 27017
-    host: ${MESSAGE_DB_URL}
+    host: ${MESSAGE_DB_URL:localhost}
 
 sms.client:
   key: ${SMS_CLIENT_KEY}

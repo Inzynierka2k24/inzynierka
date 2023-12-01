@@ -1,6 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.1.1185 on 2023-11-24 11:19:37.
+
+// Generated using typescript-generator version 3.1.1185 on 2023-12-01 19:17:16.
 
 export interface Apartment {
     id?: number;
@@ -15,22 +16,26 @@ export interface Apartment {
 
 export interface Contact {
     id?: number;
+    userId?: number;
     contactType: ContactType;
-    receiver: string;
-    message: string;
+    name: string;
+    mail: string;
+    phone: string;
+    emailNotifications: boolean;
+    smsNotifications: boolean;
+    price: number;
 }
 
 export interface ExternalAccount {
     id?: number;
     login: string;
     password: string;
-    emailAddress: string;
-    serviceType: ServiceType;
+    serviceType: ExternalService;
 }
 
 export interface ExternalOffer {
     id?: number;
-    serviceType: ServiceType;
+    serviceType: ExternalService;
     externalLink: string;
 }
 
@@ -52,11 +57,26 @@ export interface Membership {
     billingInfo: string;
 }
 
+export interface NotificationSettings {
+    emailNotifications: boolean;
+    smsNotifications: boolean;
+}
+
 export interface Reservation {
     id?: number;
     apartmentId: number;
     startDate: Date;
     endDate: Date;
+}
+
+export interface ScheduledMessage {
+    id?: number;
+    userId: number;
+    contactId: number;
+    message: string;
+    intervalType: IntervalType;
+    intervalValue: number;
+    triggerType: TriggerType;
 }
 
 export interface User {
@@ -73,6 +93,34 @@ export interface UserPreferences {
     email: boolean;
 }
 
+export interface ContactDTO {
+    id?: number;
+    contactType: ContactType;
+    name: string;
+    price: number;
+    mail: string;
+    phone: string;
+    notificationSettings: NotificationSettings;
+    messages: ScheduledMessageDTO[];
+    apartments: Apartment[];
+}
+
+export interface ReservationDTO {
+    id?: number;
+    apartment: Apartment;
+    startDate: Date;
+    endDate: Date;
+}
+
+export interface ScheduledMessageDTO {
+    id?: number;
+    apartments: Apartment[];
+    message: string;
+    intervalType: IntervalType;
+    intervalValue: number;
+    triggerType: TriggerType;
+}
+
 export interface UserDTO {
     id: number;
     login: string;
@@ -81,11 +129,6 @@ export interface UserDTO {
     billingType: BillingType;
     smsNotifications: boolean;
     emailNotifications: boolean;
-}
-
-export interface ApiErrorResponse {
-    status: number;
-    message: string;
 }
 
 export interface AuthRequest {
@@ -97,6 +140,11 @@ export interface EditUserRequest {
     username: string;
     emailAddress: string;
     password: string;
+}
+
+export interface GetReservationsRequest {
+    from: Date;
+    to: Date;
 }
 
 export interface RegisterRequest {
@@ -111,8 +159,12 @@ export type ContactType = "UNKNOWN" | "CLEANING" | "MECHANIC" | "ELECTRICIAN";
 
 export type EventType = "UNKNOWN" | "RESERVATION" | "RENOVATION";
 
+export type IntervalType = "HOURS" | "DAYS" | "WEEKS";
+
 export type MembershipLevel = "FREE" | "COMMERCIAL" | "ENTERPRISE";
 
-export type ServiceType = "UNKNOWN" | "AIRBNB" | "BOOKING";
-
 export type Source = "UNKNOWN" | "BOOKING" | "PROMOTION" | "FINE" | "TAX" | "CLEANING" | "REPAIR" | "MAINTENANCE";
+
+export type TriggerType = "RESERVATION" | "CHECKIN" | "CHECKOUT";
+
+export type ExternalService = "BOOKING" | "AIRBNB" | "TRIVAGO" | "NOCOWANIEPL" | "UNRECOGNIZED";

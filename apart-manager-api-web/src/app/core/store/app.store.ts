@@ -11,23 +11,36 @@ import {
   logout,
   register,
 } from './user/user.effects';
+import { MessagingState } from './messaging/messaging.store';
+import { messagingReducer } from './messaging/messaging.reducers';
+import { apartmentReducer } from './apartment/apartment.reducer';
+import { addOrder, loadContacts } from './messaging/messaging.effects';
+import { ApartmentState } from './apartment/apartment.store';
 
 export interface AppState {
   user: UserState;
+  messaging: MessagingState;
+  apartments: ApartmentState;
 }
 
 @NgModule({
   imports: [
     StoreModule.forRoot({
       user: userReducer,
+      apartments: apartmentReducer,
+      messaging: messagingReducer,
     }),
     EffectsModule.forRoot({
+      //USER
       login,
       loginComplete,
       logout,
       register,
       getDetails,
       edit,
+      //MESSAGING
+      loadContacts,
+      addOrder,
     }),
   ],
   exports: [StoreModule, EffectsModule],

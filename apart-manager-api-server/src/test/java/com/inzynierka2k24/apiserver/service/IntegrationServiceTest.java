@@ -1,7 +1,6 @@
 package com.inzynierka2k24.apiserver.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -58,8 +57,8 @@ public class IntegrationServiceTest {
         integrationService.propagateReservation(userId, apartmentId, reservationId);
 
     // Then
-    assertThat(result).isNotNull();
-    assertThat(result).hasSize(1);
+    assertNotNull(result);
+    assertEquals(1, result.size());
   }
 
   @Test
@@ -82,8 +81,8 @@ public class IntegrationServiceTest {
         integrationService.getReservations(userId, from, to);
 
     // Then
-    assertThat(result).isNotNull();
-    assertThat(result).isEmpty(); // TODO Change after implementing this method
+    assertNotNull(result);
+    assertEquals(0, result.size()); // TODO Change after implementing this method
   }
 
   @Test
@@ -112,8 +111,8 @@ public class IntegrationServiceTest {
     Map<String, String> result = integrationService.updateApartmentDetails(userId, apartmentId);
 
     // Then
-    assertThat(result).isNotNull();
-    assertThat(result).hasSize(1);
+    assertNotNull(result);
+    assertEquals(1, result.size());
   }
 
   @Test
@@ -128,8 +127,9 @@ public class IntegrationServiceTest {
         .thenThrow(ReservationNotFoundException.class);
 
     // When/Then
-    assertThatThrownBy(() -> integrationService.propagateReservation(userId, apartmentId, reservationId))
-        .isInstanceOf(ReservationNotFoundException.class);
+    assertThrows(
+        ReservationNotFoundException.class,
+        () -> integrationService.propagateReservation(userId, apartmentId, reservationId));
   }
 
   @Test
@@ -146,8 +146,8 @@ public class IntegrationServiceTest {
         integrationService.getReservations(userId, from, to);
 
     // Then
-    assertThat(result).isNotNull();
-    assertThat(result).isEmpty();
+    assertNotNull(result);
+    assertEquals(0, result.size());
   }
 
   @Test
@@ -160,8 +160,9 @@ public class IntegrationServiceTest {
     when(apartmentService.getById(userId, apartmentId)).thenThrow(ApartmentNotFoundException.class);
 
     // When/Then
-    assertThatThrownBy(() -> integrationService.updateApartmentDetails(userId, apartmentId))
-        .isInstanceOf(ApartmentNotFoundException.class);
+    assertThrows(
+        ApartmentNotFoundException.class,
+        () -> integrationService.updateApartmentDetails(userId, apartmentId));
   }
 
   @Test
@@ -183,7 +184,7 @@ public class IntegrationServiceTest {
         integrationService.propagateReservation(userId, apartmentId, reservationId);
 
     // Then
-    assertThat(result).isNotNull();
-    assertThat(result).isEmpty();
+    assertNotNull(result);
+    assertEquals(0, result.size());
   }
 }

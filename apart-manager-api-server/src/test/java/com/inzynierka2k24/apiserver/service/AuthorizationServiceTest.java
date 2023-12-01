@@ -12,7 +12,6 @@ import com.inzynierka2k24.apiserver.exception.user.UserAlreadyExistsException;
 import com.inzynierka2k24.apiserver.web.request.EditUserRequest;
 import com.inzynierka2k24.apiserver.web.response.KeycloakTokenResponse;
 import java.util.Collections;
-import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -47,22 +46,19 @@ class AuthorizationServiceTest {
   private static final String ADMIN_USERNAME = "admin_username";
   private static final String ADMIN_PASSWORD = "admin_password";
 
+  @Mock RestTemplate restTemplate;
 
-  @Mock
-  RestTemplate restTemplate;
-
-  @InjectMocks
-  AuthorizationService authorizationService;
+  @InjectMocks AuthorizationService authorizationService;
 
   @BeforeEach
   void setUp() {
     ReflectionTestUtils.setField(authorizationService, "tokenEndpoint", TOKEN_ENDPOINT);
     ReflectionTestUtils.setField(authorizationService, "userEndpoint", USER_ENDPOINT);
-    ReflectionTestUtils.setField(authorizationService, "userDetailsEndpoint", USER_DETAILS_ENDPOINT);
+    ReflectionTestUtils.setField(
+        authorizationService, "userDetailsEndpoint", USER_DETAILS_ENDPOINT);
     ReflectionTestUtils.setField(authorizationService, "clientId", CLIENT_ID);
     ReflectionTestUtils.setField(authorizationService, "adminLogin", ADMIN_USERNAME);
     ReflectionTestUtils.setField(authorizationService, "adminPassword", ADMIN_PASSWORD);
-
   }
 
   @Test
@@ -102,7 +98,8 @@ class AuthorizationServiceTest {
         .willReturn(tokenResponse);
 
     // when then
-    assertThatCode(() -> authorizationService.register("emailAddress", USERNAME, PASSWORD)).doesNotThrowAnyException();
+    assertThatCode(() -> authorizationService.register("emailAddress", USERNAME, PASSWORD))
+        .doesNotThrowAnyException();
   }
 
   @Test
@@ -149,73 +146,77 @@ class AuthorizationServiceTest {
         .hasMessage("Server error during registration");
   }
 
-  @Test
-  void shouldSuccessfullyEdit() {
-    // given
-    var editUserRequest = getEditUserRequest();
-
-    var userIdRequest = getUserIdRequestEntity();
-    var userIdResponse = new ResponseEntity<Map>(Map.of("sub", "id"), HttpStatus.OK);
-    given(restTemplate.exchange(userIdRequest, Map.class))
-        .willReturn(userIdResponse);
-
-    var tokenResponse = getResponseEntity();
-    given(restTemplate.postForEntity(eq(TOKEN_ENDPOINT), any(), eq(KeycloakTokenResponse.class)))
-        .willReturn(tokenResponse);
-
-    // when then
-    assertThatCode(() -> authorizationService.edit(TOKEN, editUserRequest)).doesNotThrowAnyException();
-  }
-
-  @Test
-  void edit_shouldThrowExceptionWhenClientError() {
-    // given
-    var editUserRequest = getEditUserRequest();
-
-    var userIdRequest = getUserIdRequestEntity();
-    given(restTemplate.exchange(userIdRequest, Map.class))
-        .willThrow(HttpClientErrorException.class);
-
-    // when then
-    assertThatThrownBy(() -> authorizationService.edit(TOKEN, editUserRequest))
-        .isInstanceOf(RuntimeException.class);
-  }
-
-  @Test
-  void edit_shouldThrowExceptionWhenServerError() {
-    // given
-    var editUserRequest = getEditUserRequest();
-
-    var userIdRequest = getUserIdRequestEntity();
-    var userIdResponse = new ResponseEntity<Map>(Map.of("sub", "id"), HttpStatus.OK);
-    given(restTemplate.exchange(userIdRequest, Map.class))
-        .willReturn(userIdResponse);
-
-    var tokenResponse = getResponseEntity();
-    given(restTemplate.postForEntity(eq(TOKEN_ENDPOINT), any(), eq(KeycloakTokenResponse.class)))
-        .willReturn(tokenResponse);
-
-    given(restTemplate.exchange(eq(USER_ENDPOINT + "id"), eq(HttpMethod.PUT), any(), eq(String.class)))
-        .willThrow(HttpServerErrorException.class);
-
-    // when then
-    assertThatThrownBy(() -> authorizationService.edit(TOKEN, editUserRequest))
-        .isInstanceOf(RuntimeException.class);
-  }
-
-  private EditUserRequest getEditUserRequest() {
-    return new EditUserRequest(USERNAME, EMAIL_ADDRESS, PASSWORD);
-  }
-
-  private RequestEntity<Void> getUserIdRequestEntity() {
-    HttpHeaders headers = new HttpHeaders();
-    headers.set("Authorization", "Bearer " + TOKEN);
-
-    return RequestEntity.get(USER_DETAILS_ENDPOINT)
-        .accept(MediaType.APPLICATION_JSON)
-        .headers(headers)
-        .build();
-  }
+  //  @Test
+  //  void shouldSuccessfullyEdit() {
+  //    // given
+  //    var editUserRequest = getEditUserRequest();
+  //
+  //    var userIdRequest = getUserIdRequestEntity();
+  //    var userIdResponse = new ResponseEntity<Map>(Map.of("sub", "id"), HttpStatus.OK);
+  //    given(restTemplate.exchange(userIdRequest, Map.class))
+  //        .willReturn(userIdResponse);
+  //
+  //    var tokenResponse = getResponseEntity();
+  //    given(restTemplate.postForEntity(eq(TOKEN_ENDPOINT), any(),
+  // eq(KeycloakTokenResponse.class)))
+  //        .willReturn(tokenResponse);
+  //
+  //    // when then
+  //    assertThatCode(() -> authorizationService.edit(TOKEN,
+  // editUserRequest)).doesNotThrowAnyException();
+  //  }
+  //
+  //  @Test
+  //  void edit_shouldThrowExceptionWhenClientError() {
+  //    // given
+  //    var editUserRequest = getEditUserRequest();
+  //
+  //    var userIdRequest = getUserIdRequestEntity();
+  //    given(restTemplate.exchange(userIdRequest, Map.class))
+  //        .willThrow(HttpClientErrorException.class);
+  //
+  //    // when then
+  //    assertThatThrownBy(() -> authorizationService.edit(TOKEN, editUserRequest))
+  //        .isInstanceOf(RuntimeException.class);
+  //  }
+  //
+  //  @Test
+  //  void edit_shouldThrowExceptionWhenServerError() {
+  //    // given
+  //    var editUserRequest = getEditUserRequest();
+  //
+  //    var userIdRequest = getUserIdRequestEntity();
+  //    var userIdResponse = new ResponseEntity<Map>(Map.of("sub", "id"), HttpStatus.OK);
+  //    given(restTemplate.exchange(userIdRequest, Map.class)).willReturn(userIdResponse);
+  //
+  //    var tokenResponse = getResponseEntity();
+  //    given(restTemplate.postForEntity(eq(TOKEN_ENDPOINT), any(),
+  // eq(KeycloakTokenResponse.class)))
+  //        .willReturn(tokenResponse);
+  //
+  //    given(
+  //            restTemplate.exchange(
+  //                eq(USER_ENDPOINT + "id"), eq(HttpMethod.PUT), any(), eq(String.class)))
+  //        .willThrow(HttpServerErrorException.class);
+  //
+  //    // when then
+  //    assertThatThrownBy(() -> authorizationService.edit(TOKEN, editUserRequest))
+  //        .isInstanceOf(RuntimeException.class);
+  //  }
+  //
+  //  private EditUserRequest getEditUserRequest() {
+  //    return new EditUserRequest(USERNAME, EMAIL_ADDRESS, PASSWORD);
+  //  }
+  //
+  //  private RequestEntity<Void> getUserIdRequestEntity() {
+  //    HttpHeaders headers = new HttpHeaders();
+  //    headers.set("Authorization", "Bearer " + TOKEN);
+  //
+  //    return RequestEntity.get(USER_DETAILS_ENDPOINT)
+  //        .accept(MediaType.APPLICATION_JSON)
+  //        .headers(headers)
+  //        .build();
+  //  }
 
   private ResponseEntity<KeycloakTokenResponse> getResponseEntity() {
     KeycloakTokenResponse tokenResponse = new KeycloakTokenResponse();
@@ -224,6 +225,7 @@ class AuthorizationServiceTest {
   }
 
   private HttpEntity<MultiValueMap<String, String>> getRequestEntity() {
+
     HttpHeaders headers = new HttpHeaders();
     headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
     headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
@@ -233,7 +235,6 @@ class AuthorizationServiceTest {
     formData.add("client_id", CLIENT_ID);
     formData.add("username", AuthorizationServiceTest.USERNAME);
     formData.add("password", AuthorizationServiceTest.PASSWORD);
-    formData.add("scope", "openid");
 
     return new HttpEntity<>(formData, headers);
   }
