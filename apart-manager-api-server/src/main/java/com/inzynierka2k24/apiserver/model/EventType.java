@@ -1,17 +1,20 @@
 package com.inzynierka2k24.apiserver.model;
 
+import java.util.List;
 import lombok.Getter;
 
 @Getter
 public enum EventType {
-  UNKNOWN(0),
-  RESERVATION(1),
-  RENOVATION(2);
+  UNKNOWN(0, List.of(Source.UNKNOWN)),
+  RESERVATION(1, List.of(Source.UNKNOWN, Source.BOOKING, Source.NOCOWANIE, Source.PROMOTION, Source.FINE, Source.TAX)),
+  RENOVATION(2, List.of(Source.UNKNOWN, Source.CLEANING, Source.REPAIR, Source.MAINTENANCE));
 
   private final int number;
+  private final List<Source> validSources;
 
-  EventType(int number) {
+  EventType(int number, List<Source> validSources) {
     this.number = number;
+    this.validSources = validSources;
   }
 
   public static EventType forNumber(int number) {

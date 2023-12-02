@@ -1,5 +1,8 @@
 package com.inzynierka2k24.apiserver.model;
 
+import lombok.Getter;
+
+@Getter
 public enum Source {
   UNKNOWN(0),
   BOOKING(1),
@@ -8,7 +11,8 @@ public enum Source {
   TAX(4),
   CLEANING(5),
   REPAIR(6),
-  MAINTENANCE(7);
+  MAINTENANCE(7),
+  NOCOWANIE(8);
 
   private final int number;
 
@@ -25,6 +29,7 @@ public enum Source {
       case 5 -> CLEANING;
       case 6 -> REPAIR;
       case 7 -> MAINTENANCE;
+      case 8 -> NOCOWANIE;
       default -> UNKNOWN;
     };
   }
