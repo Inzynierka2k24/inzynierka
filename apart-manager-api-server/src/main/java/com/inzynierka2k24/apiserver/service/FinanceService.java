@@ -1,15 +1,10 @@
 package com.inzynierka2k24.apiserver.service;
 
-
 import com.inzynierka2k24.apiserver.dao.FinanceDao;
-import com.inzynierka2k24.apiserver.dao.FinanceSourceDao;
 import com.inzynierka2k24.apiserver.exception.finance.FinanceNotFoundException;
-import com.inzynierka2k24.apiserver.model.EventType;
 import com.inzynierka2k24.apiserver.model.Finance;
-import com.inzynierka2k24.apiserver.model.Source;
 import com.inzynierka2k24.apiserver.web.dto.FinanceDTO;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
