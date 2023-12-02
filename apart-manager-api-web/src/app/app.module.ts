@@ -13,6 +13,8 @@ import { ButtonModule } from 'primeng/button';
 import { RippleModule } from 'primeng/ripple';
 import { FullCalendarModule } from "@fullcalendar/angular";
 import { CalendarModule } from 'primeng/calendar';
+import { AddExternalOfferComponent } from './apartment/add-external-offer/add-external-offer.component';
+import { EditExternalOfferComponent } from './apartment/edit-external-offer/edit-external-offer.component';
 
 @NgModule({
   declarations: [AppComponent, WelcomePageComponent],

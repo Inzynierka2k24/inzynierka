@@ -31,6 +31,9 @@ import {
 } from '@angular/common/http';
 import UserActions from './core/store/user/user.actions';
 import {FinanceChartComponent} from "./finance/finance-chart/finance-chart.component";
+import {ExternalOffersComponent} from "./apartment/external-offers/external-offers.component";
+import {AddExternalOfferComponent} from "./apartment/add-external-offer/add-external-offer.component";
+import {EditExternalOfferComponent} from "./apartment/edit-external-offer/edit-external-offer.component";
 
 
 
@@ -113,6 +116,9 @@ const routes: Routes = [
         children: [
           { path: 'add', component: AddApartmentComponent },
           { path: 'edit', component: EditApartmentComponent },
+          { path: 'externalOffers', component: ExternalOffersComponent },
+          { path: 'externalOffers/add', component: AddExternalOfferComponent },
+          { path: 'externalOffers/edit', component: EditExternalOfferComponent },
           { path: '', component: ApartmentListComponent },
         ],
       },

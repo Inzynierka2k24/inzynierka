@@ -34,6 +34,9 @@ import { ChartModule } from 'primeng/chart';
 import {FinanceChartComponent} from "../finance/finance-chart/finance-chart.component";
 import {TabView, TabViewModule} from "primeng/tabview";
 import { CardModule } from 'primeng/card';
+import {ExternalOffersComponent} from "../apartment/external-offers/external-offers.component";
+import {AddExternalOfferComponent} from "../apartment/add-external-offer/add-external-offer.component";
+import {EditExternalOfferComponent} from "../apartment/edit-external-offer/edit-external-offer.component";
 
 @NgModule({
   declarations: [
@@ -54,6 +57,9 @@ import { CardModule } from 'primeng/card';
     EditFinanceComponent,
     UserCardComponent,
     FinanceChartComponent,
+    ExternalOffersComponent,
+    AddExternalOfferComponent,
+    EditExternalOfferComponent,
 
   ],
   imports: [

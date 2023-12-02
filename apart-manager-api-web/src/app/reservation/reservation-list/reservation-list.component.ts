@@ -54,9 +54,9 @@ export class ReservationListComponent implements OnInit {
             throw new Error('User not logged in');
           }
           this.user = user;
-          return this.reservationService.deleteReservation(this.user,
+          return this.reservationService.propagateReservation(this.user,
             reservation.apartmentId,
-            <number>reservation.id,
+            reservation,
             { responseType: 'text' });
         })
       )

@@ -1,0 +1,25 @@
+<div class="surface-card p-4 shadow-7 border-round w-full">
+  <h2>External Offers List</h2>
+  <p-table [value]="externalOffers" [tableStyle]="{ 'min-width': '50rem' }">
+    <ng-template pTemplate="header">
+      <tr>
+        <th>ID</th>
+        <th>Service Type</th>
+        <th>External Link</th>
+        <th></th>
+        <th><p-button icon="pi pi-plus" (click)="addExternalOffer()"></p-button></th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-externalOffer>
+      <tr>
+<!--        <td>{{ externalOffer.id }}</td>-->
+<!--        <td>{{ externalOffer.serviceType }}</td>-->
+<!--        <td>{{ externalOffer.externalLink }}</td>-->
+        <td><p-button icon="pi pi-file-edit" (click)="startEditing(externalOffer)"></p-button></td>
+        <td><p-button icon="pi pi-trash" (click)="addExternalOffer()"></p-button></td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
+
+<p-messages [(value)]="messages" [enableService]="false" [closable]="false"></p-messages>

@@ -26,4 +26,10 @@ export class ReservationService {
   deleteReservation(user: UserDTO, apartmentId: number, reservationId: number, options?: any): Observable<HttpEvent<void>> {
     return this.http.delete<void>(`${environment.api_url}/`+ user.id +'/apartment/' + apartmentId +'/reservation/' + reservationId, options);
   }
+
+  propagateReservation(user: UserDTO, apartmentId: number, reservation: Reservation, options?: any): Observable<HttpEvent<boolean>> {
+    // return this.http.post<boolean>(`${environment.api_url}/`+ user.id + '/external/integration/propagate/apartment/' + apartmentId +'/reservation/' + reservation.id, reservation, options);
+    return this.http.post<boolean>(`${environment.api_url}/`+ user.id + '/external/integration/propagate/apartment/' + apartmentId +'/reservation/' + reservation.id, reservation, options);
+
+  }
 }
