@@ -4,9 +4,9 @@
   [modal]="true"
   header="Add External Account"
 >
-  <form [formGroup]="addExternalAccountForm" class="flex flex-column gap-3">
+  <form [formGroup]="externalAccountForm" class="flex flex-column gap-3">
     <label>Service</label>
-    <div class="flex flex-row gap-3">
+    <div *ngIf="!edit; else serviceIcon" class="flex flex-row gap-3">
       <ng-container *ngFor="let service of serviceTypes; let i = index">
         <div class="flex flex-column align-items-center">
           <img
@@ -25,6 +25,17 @@
         </div>
       </ng-container>
     </div>
+    <ng-template #serviceIcon>
+      <div class="flex flex-column align-items-center">
+        <img
+          [alt]="editedAccount?.serviceType"
+          [ngSrc]="'assets/img/' + editedAccount?.serviceType + '.png'"
+          height="32"
+          width="32"
+        />
+        <label [for]="'service'">{{ editedAccount?.serviceType }}</label>
+      </div>
+    </ng-template>
 
     <div class="flex flex-column">
       <label for="login">Username</label>
@@ -51,17 +62,13 @@
   </form>
   <ng-template pTemplate="footer">
     <button
-      (click)="visibleChange.emit(false)"
+      (click)="visibleChange.emit(false); resetForm()"
       class="p-button p-button-secondary"
       type="button"
     >
       Cancel
     </button>
-    <button
-      (click)="addExternalAccount()"
-      class="p-button p-button-primary"
-      type="button"
-    >
+    <button (click)="submit()" class="p-button p-button-primary" type="button">
       Add
     </button>
   </ng-template>

@@ -9,16 +9,30 @@ import { environment } from '../../../environments/environment';
 export class ExternalAccountsService {
   constructor(private httpClient: HttpClient) {}
 
-  get(id: number) {
+  get(userId: number) {
     return this.httpClient.get<ExternalAccount[]>(
-      `${environment.api_url}/${id}/external/account`,
+      `${environment.api_url}/${userId}/external/account`,
     );
   }
 
-  add(id: number, newAccount: ExternalAccount) {
-    return this.httpClient.post(
-      `${environment.api_url}/${id}/external/account`,
+  add(userId: number, newAccount: ExternalAccount) {
+    return this.httpClient.post<string>(
+      `${environment.api_url}/${userId}/external/account`,
       newAccount,
+    );
+  }
+
+  edit(userId: number, account: ExternalAccount) {
+    return this.httpClient.put<string>(
+      `${environment.api_url}/${userId}/external/account`,
+      account,
+      { responseType: 'text' as 'json' },
+    );
+  }
+
+  delete(userId: number, accountId: number) {
+    return this.httpClient.delete<string>(
+      `${environment.api_url}/${userId}/external/account/${accountId}`,
     );
   }
 }

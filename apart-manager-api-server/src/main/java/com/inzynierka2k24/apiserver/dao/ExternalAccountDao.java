@@ -52,7 +52,11 @@ public class ExternalAccountDao {
   public void add(long userId, ExternalAccount account) {
     try {
       template.update(
-          ADD_QUERY, userId, account.login(), account.password(), account.serviceType().ordinal());
+          ADD_QUERY,
+          userId,
+          account.login(),
+          account.password(),
+          account.serviceType().getNumber());
     } catch (DataIntegrityViolationException e) {
       throw new IllegalArgumentException("The account doesn't belong to given userId", e);
     }

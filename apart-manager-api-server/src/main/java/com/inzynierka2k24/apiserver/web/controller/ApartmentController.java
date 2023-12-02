@@ -6,7 +6,6 @@ import com.inzynierka2k24.apiserver.service.ApartmentService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,7 +31,7 @@ public class ApartmentController {
   @PostMapping()
   public ResponseEntity<String> add(@PathVariable long userId, @RequestBody Apartment apartment) {
     apartmentService.add(userId, apartment);
-    return ResponseEntity.status(HttpStatus.CREATED).body("Apartment created successfully");
+    return ResponseEntity.ok("Apartment created successfully");
   }
 
   @PutMapping()

@@ -1,0 +1,19 @@
+Jako użytkownik
+Chcę stworzyć konto
+Po to aby móc zapisywać swoje dane
+
+Jako użytkownik
+Chcę się zalogować
+Po to aby móc korzystać z aplikacji
+
+Jako użytkownik
+Chcę się wylogować
+Po to aby nie musieć się martwić o bezpieczeństwo moich danych
+
+Jako użytkownik
+Chcę edytować swoje dane
+Po to aby były aktualne
+
+Jako użytkownik
+Chcę decydować jaką drogą otrzymuję powiadomienia
+Po to aby nie być zalewanym informacjami

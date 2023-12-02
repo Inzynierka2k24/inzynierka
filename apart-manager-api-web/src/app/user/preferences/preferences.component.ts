@@ -41,6 +41,17 @@ export class PreferencesComponent implements OnInit, OnDestroy {
       ],
     },
     {
+      title: 'NOTIFICATIONS',
+      rows: [
+        { label: 'SMS', selector: 'smsNotifications', inputType: 'checkbox' },
+        {
+          label: 'EMAIL',
+          selector: 'emailNotifications',
+          inputType: 'checkbox',
+        },
+      ],
+    },
+    {
       title: 'MEMBERSHIP',
       rows: [
         {
@@ -57,12 +68,6 @@ export class PreferencesComponent implements OnInit, OnDestroy {
         },
       ],
     },
-    {
-      title: 'NOTIFICATIONS',
-      rows: [
-        { label: 'SMS', selector: 'smsNotifications', inputType: 'checkbox' },
-      ],
-    },
   ];
 
   editable = false;
@@ -73,6 +78,7 @@ export class PreferencesComponent implements OnInit, OnDestroy {
     level: [''],
     billingType: [''],
     smsNotifications: [false],
+    emailNotifications: [false],
   });
 
   data: Map<string, any> = new Map<string, any>();
@@ -81,7 +87,9 @@ export class PreferencesComponent implements OnInit, OnDestroy {
 
   currentUser?: UserDTO;
   externalAccounts$: Observable<ExternalAccount[]>;
-  showAddExternalAccountModal: boolean;
+  showExternalAccountModal: boolean;
+  editableModal: boolean = true;
+  chosenAccount: ExternalAccount | undefined;
 
   constructor(
     private store: Store<AppState>,
@@ -114,6 +122,7 @@ export class PreferencesComponent implements OnInit, OnDestroy {
           level: user.level ?? '',
           billingType: user.billingType ?? '',
           smsNotifications: user.smsNotifications,
+          emailNotifications: user.emailNotifications,
         });
       }
       this.currentUser = user;
@@ -137,4 +146,31 @@ export class PreferencesComponent implements OnInit, OnDestroy {
       },
     });
   }
+
+  openAddExternalAccountModal() {
+    this.editableModal = false;
+    this.showExternalAccountModal = true;
+  }
+
+  openEditExternalAccountModal(account: ExternalAccount) {
+    this.chosenAccount = account;
+    this.editableModal = true;
+    this.showExternalAccountModal = true;
+  }
+
+  deleteExternalAccount(account: ExternalAccount) {
+    if (this.currentUser?.id && account.id) {
+      this.externalAccountsService
+        .delete(this.currentUser.id, account.id)
+        .subscribe(() => {
+          this.externalAccounts$ = this.externalAccountsService.get(
+            this.currentUser!.id,
+          );
+        });
+    }
+  }
+
+  propagateData() {}
+
+  openBillingPage() {}
 }

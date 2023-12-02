@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AddExternalAccountModalComponent } from './add-external-account-modal.component';
+import { ExternalAccountModalComponent } from './external-account-modal.component';
 
 describe('AddExternalAccountModalComponent', () => {
-  let component: AddExternalAccountModalComponent;
-  let fixture: ComponentFixture<AddExternalAccountModalComponent>;
+  let component: ExternalAccountModalComponent;
+  let fixture: ComponentFixture<ExternalAccountModalComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [AddExternalAccountModalComponent]
+      declarations: [ExternalAccountModalComponent],
     });
-    fixture = TestBed.createComponent(AddExternalAccountModalComponent);
+    fixture = TestBed.createComponent(ExternalAccountModalComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
