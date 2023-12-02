@@ -1,9 +1,16 @@
 package com.inzynierka2k24.apiserver.service;
 
+
 import com.inzynierka2k24.apiserver.dao.FinanceDao;
+import com.inzynierka2k24.apiserver.dao.FinanceSourceDao;
 import com.inzynierka2k24.apiserver.exception.finance.FinanceNotFoundException;
+import com.inzynierka2k24.apiserver.model.EventType;
 import com.inzynierka2k24.apiserver.model.Finance;
+import com.inzynierka2k24.apiserver.model.Source;
+import com.inzynierka2k24.apiserver.web.dto.FinanceDTO;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +32,16 @@ public class FinanceService {
     return financeDao.getByApartmentId(apartmentId);
   }
 
-  public void add(Finance finance) {
+  public void add(FinanceDTO financeDto) {
+    Finance finance = new Finance(
+        Optional.empty(),
+        financeDto.userId(),
+        financeDto.apartmentId(),
+        financeDto.eventType(),
+        financeDto.source(),
+        financeDto.price(),
+        financeDto.date(),
+        financeDto.details());
     financeDao.add(finance);
   }
 

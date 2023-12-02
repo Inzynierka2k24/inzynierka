@@ -3,6 +3,7 @@ package com.inzynierka2k24.apiserver.web.controller;
 import com.inzynierka2k24.apiserver.exception.finance.FinanceNotFoundException;
 import com.inzynierka2k24.apiserver.model.Finance;
 import com.inzynierka2k24.apiserver.service.FinanceService;
+import com.inzynierka2k24.apiserver.web.dto.FinanceDTO;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/{userId}/finance")
 @RequiredArgsConstructor
 public class FinanceController {
+
   private final FinanceService financeService;
 
   @GetMapping()
@@ -32,8 +34,8 @@ public class FinanceController {
   }
 
   @PostMapping()
-  public ResponseEntity<String> add(@RequestBody Finance finance) {
-    financeService.add(finance);
+  public ResponseEntity<String> add(@RequestBody FinanceDTO financeDto) {
+    financeService.add(financeDto);
     return ResponseEntity.status(HttpStatus.CREATED).body("Finance created successfully");
   }
 
