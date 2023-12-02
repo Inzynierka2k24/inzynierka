@@ -5,7 +5,7 @@
                 <div class="p-grid">
 
                   <!-- Event Dropdown -->
-                  <div class="p-col-12" [ngClass]="{'input-error': addFinanceForm.get('eventType')?.hasError('required') && addFinanceForm.get('eventType')?.touched}">
+                  <div class="p-col-12 mb-2" [ngClass]="{'input-error': addFinanceForm.get('eventType')?.hasError('required') && addFinanceForm.get('eventType')?.touched}">
                     <label class="block text-900 font-medium mb-2">Event:</label>
                     <p-dropdown
                         formControlName="eventType"
@@ -19,7 +19,7 @@
                   </div>
 
                   <!-- Source Dropdown -->
-                  <div class="p-col-12" *ngIf="selectedEvent" [ngClass]="{'input-error': addFinanceForm.get('source')?.hasError('required') && addFinanceForm.get('source')?.touched}">
+                  <div class="p-col-12 mb-2" *ngIf="selectedEvent" [ngClass]="{'input-error': addFinanceForm.get('source')?.hasError('required') && addFinanceForm.get('source')?.touched}">
                     <label class="block text-900 font-medium mb-2">Source:</label>
                     <p-dropdown
                         formControlName="source"
@@ -31,7 +31,7 @@
                   </div>
 
                   <!-- Apartment Dropdown -->
-                  <div class="p-col-12" [ngClass]="{'input-error': addFinanceForm.get('apartment')?.hasError('required') && addFinanceForm.get('apartment')?.touched}">
+                  <div class="p-col-12 mb-2" [ngClass]="{'input-error': addFinanceForm.get('apartment')?.hasError('required') && addFinanceForm.get('apartment')?.touched}">
                     <label class="block text-900 font-medium mb-2">Apartment:</label>
                     <p-dropdown
                         formControlName="apartment"
@@ -47,17 +47,17 @@
         </div>
     </div>
 
-    <div class="surface-card p-4 shadow-7 border-round w-full">
+    <div class="surface-card p-4 shadow-5 border-round w-full">
         <div class="text-center mb-5">
             <form [formGroup]="addFinanceForm">
                 <div class="p-grid">
 
                   <!-- Price -->
-                    <div class="p-col-12">
+                    <div class="p-col-12 mb-2">
                       <label class="block text-900 font-medium mb-2">Price:</label>
                       <input
                         [placeholder]="'200'"
-                        class="w-full mb-3"
+                        class="w-full"
                         formControlName="price"
                         id="price"
                         pInputText
@@ -71,7 +71,7 @@
                   </div>
 
                   <!-- Date calendar -->
-                    <div class="p-col-12">
+                    <div class="p-col-12 mb-2">
                       <label class="block text-900 font-medium mb-2" for="date">Date:</label>
                       <p-calendar [showIcon]="true" formControlName="date"
                                   [ngClass]="{'error-outline': addFinanceForm.get('date')?.hasError('required')
@@ -80,11 +80,11 @@
                     </div>
 
                   <!-- Details -->
-                     <div class="p-col-12">
+                     <div class="p-col-12 mb-2">
                         <label class="block text-900 font-medium mb-2">Details:</label>
                         <input
                             [placeholder]="'Details'"
-                            class="w-full mb-3"
+                            class="w-full"
                             formControlName="details"
                             id="details"
                             pInputText
@@ -98,7 +98,7 @@
 
           <!-- Add finance button -->
             <button
-                  class="custom-button"
+                  class="custom-button mt-2"
                   icon="pi pi-check"
                   pButton
                   pRipple
