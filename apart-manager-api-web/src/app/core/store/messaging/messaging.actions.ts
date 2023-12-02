@@ -1,6 +1,10 @@
 import { createAction, props } from '@ngrx/store';
 import { MessagingActionTypes } from './messaging.store';
-import { ContactDTO, ScheduledMessageDTO } from '../../../../generated';
+import {
+  Contact,
+  ContactDTO,
+  ScheduledMessageDTO,
+} from '../../../../generated';
 
 const loadContacts = createAction(
   MessagingActionTypes.LOAD_CLIENTS,
@@ -22,10 +26,58 @@ const addOrder = createAction(
   props<{ userId: number; contactId: number; message: ScheduledMessageDTO }>(),
 );
 
-const addOrderComplete = createAction(MessagingActionTypes.ADD_ORDER_COMPLETE);
+const addOrderComplete = createAction(
+  MessagingActionTypes.ADD_ORDER_COMPLETE,
+  props<{ contactId: number; message: ScheduledMessageDTO }>(),
+);
 
 const addOrderError = createAction(
   MessagingActionTypes.ADD_ORDER_ERROR,
+  props<Error>(),
+);
+
+const addContact = createAction(
+  MessagingActionTypes.ADD_CONTACT,
+  props<{ userId: number; contact: Contact }>(),
+);
+
+const addContactComplete = createAction(
+  MessagingActionTypes.ADD_CONTACT_COMPLETE,
+  props<{ contact: Contact }>(),
+);
+
+const addContactError = createAction(
+  MessagingActionTypes.ADD_CONTACT_ERROR,
+  props<Error>(),
+);
+
+const deleteMessage = createAction(
+  MessagingActionTypes.DELETE_MESSAGE,
+  props<{ userId: number; contactId: number; messageId: number }>(),
+);
+
+const deleteMessageComplete = createAction(
+  MessagingActionTypes.DELETE_MESSAGE_COMPLETE,
+  props<{ contactId: number; messageId: number }>(),
+);
+
+const deleteMessageError = createAction(
+  MessagingActionTypes.DELETE_MESSAGE_ERROR,
+  props<Error>(),
+);
+
+const deleteContact = createAction(
+  MessagingActionTypes.DELETE_CONTACT,
+  props<{ userId: number; contactId: number }>(),
+);
+
+const deleteContactComplete = createAction(
+  MessagingActionTypes.DELETE_CONTACT_COMPLETE,
+  props<{ contactId: number }>(),
+);
+
+const deleteContactError = createAction(
+  MessagingActionTypes.DELETE_CONTACT_ERROR,
   props<Error>(),
 );
 
@@ -36,6 +88,15 @@ const MessagingActions = {
   addOrder,
   addOrderComplete,
   addOrderError,
+  deleteMessage,
+  deleteMessageComplete,
+  deleteMessageError,
+  addContact,
+  addContactComplete,
+  addContactError,
+  deleteContact,
+  deleteContactComplete,
+  deleteContactError,
 };
 
 export default MessagingActions;

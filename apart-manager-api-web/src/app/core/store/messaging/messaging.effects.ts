@@ -21,6 +21,44 @@ export const loadContacts = createEffect(
   { functional: true },
 );
 
+export const addContact = createEffect(
+  ($actions = inject(Actions), messagingService = inject(MessagingService)) => {
+    return $actions.pipe(
+      ofType(MessagingActions.addContact),
+      exhaustMap((action) => {
+        return messagingService.addContact(action.userId, action.contact).pipe(
+          map(() =>
+            MessagingActions.addContactComplete({ contact: action.contact }),
+          ),
+          catchError((err) => of(MessagingActions.addContactError(err))),
+        );
+      }),
+    );
+  },
+  { functional: true },
+);
+
+export const deleteContact = createEffect(
+  ($actions = inject(Actions), messagingService = inject(MessagingService)) => {
+    return $actions.pipe(
+      ofType(MessagingActions.deleteContact),
+      exhaustMap((action) => {
+        return messagingService
+          .deleteContact(action.userId, action.contactId)
+          .pipe(
+            map(() =>
+              MessagingActions.deleteContactComplete({
+                contactId: action.contactId,
+              }),
+            ),
+            catchError((err) => of(MessagingActions.deleteContactError(err))),
+          );
+      }),
+    );
+  },
+  { functional: true },
+);
+
 export const addOrder = createEffect(
   ($actions = inject(Actions), messagingService = inject(MessagingService)) => {
     return $actions.pipe(
@@ -29,8 +67,35 @@ export const addOrder = createEffect(
         return messagingService
           .addOrder(action.userId, action.contactId, action.message)
           .pipe(
-            map(() => MessagingActions.addOrderComplete()),
+            map(() =>
+              MessagingActions.addOrderComplete({
+                contactId: action.contactId,
+                message: action.message,
+              }),
+            ),
             catchError((err) => of(MessagingActions.addOrderError(err))),
+          );
+      }),
+    );
+  },
+  { functional: true },
+);
+
+export const deleteMessage = createEffect(
+  ($actions = inject(Actions), messagingService = inject(MessagingService)) => {
+    return $actions.pipe(
+      ofType(MessagingActions.deleteMessage),
+      exhaustMap((action) => {
+        return messagingService
+          .deleteMessage(action.userId, action.contactId, action.messageId)
+          .pipe(
+            map(() =>
+              MessagingActions.deleteMessageComplete({
+                contactId: action.contactId,
+                messageId: action.messageId,
+              }),
+            ),
+            catchError((err) => of(MessagingActions.deleteMessageError(err))),
           );
       }),
     );

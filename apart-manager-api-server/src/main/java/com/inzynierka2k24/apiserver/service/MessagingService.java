@@ -5,14 +5,13 @@ import com.inzynierka2k24.apiserver.dao.ContactDao;
 import com.inzynierka2k24.apiserver.dao.ScheduledMessageDao;
 import com.inzynierka2k24.apiserver.exception.apartment.ApartmentNotFoundException;
 import com.inzynierka2k24.apiserver.exception.messaging.ContactNotFoundException;
-import com.inzynierka2k24.apiserver.exception.user.UserNotFoundException;
 import com.inzynierka2k24.apiserver.model.Apartment;
 import com.inzynierka2k24.apiserver.model.Contact;
 import com.inzynierka2k24.apiserver.model.ScheduledMessage;
 import com.inzynierka2k24.apiserver.web.dto.ContactDTO;
 import com.inzynierka2k24.apiserver.web.dto.ScheduledMessageDTO;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -24,32 +23,20 @@ public class MessagingService {
   private final ScheduledMessageDao messageDao;
   private final ApartmentDao apartmentDao;
 
-  public List<ContactDTO> getContacts(long userId) throws UserNotFoundException {
+  public List<ContactDTO> getContacts(long userId) {
     List<Contact> contacts = contactDao.getAll(userId);
 
     if (contacts.isEmpty()) {
-      throw new UserNotFoundException();
+      return new ArrayList<>();
     }
     // map to ContactDTO
-    return contacts.stream()
-        .map(
-            contact -> {
-              try {
-                return mapContactToDTO(userId, contact);
-              } catch (ContactNotFoundException e) {
-                throw new RuntimeException(e);
-              }
-            })
-        .collect(Collectors.toList());
+    return contacts.stream().map(contact -> mapContactToDTO(userId, contact)).toList();
   }
 
-  public ContactDTO mapContactToDTO(long userId, Contact contact) throws ContactNotFoundException {
-    if (contact.id().isEmpty()) {
-      throw new ContactNotFoundException();
-    }
+  public ContactDTO mapContactToDTO(long userId, Contact contact) {
     ContactDTO contactDTO =
         new ContactDTO(
-            contact.id().get(),
+            contact.id().orElse(0L),
             contact.contactType(),
             contact.name(),
             contact.price(),
@@ -60,9 +47,6 @@ public class MessagingService {
 
     messages.forEach(
         message -> {
-          if (message.id().isEmpty()) {
-            throw new RuntimeException("Message has no id");
-          }
           List<Long> apartmentIds = messageDao.getApartmentsForMessage(message.id().get());
           List<Apartment> apartments =
               apartmentIds.stream()
@@ -115,5 +99,17 @@ public class MessagingService {
 
   public Contact getContactById(long userId, long contactId) {
     return contactDao.getById(userId, contactId).orElseThrow();
+  }
+
+  public void deleteMessage(long userId, long contactId, long messageId) {
+    messageDao.deleteById(userId, contactId, messageId);
+  }
+
+  public void deleteContact(long userId, long contactId) {
+    contactDao.deleteById(userId, contactId);
+  }
+
+  public void updateContact(long userId, Contact contact) {
+    contactDao.update(userId, contact);
   }
 }

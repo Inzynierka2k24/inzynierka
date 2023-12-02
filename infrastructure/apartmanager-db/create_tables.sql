@@ -98,7 +98,7 @@ CREATE TABLE IF NOT EXISTS scheduled_messages
 
 CREATE TABLE IF NOT EXISTS scheduled_messages_apartments
 (
-    message_id   bigint NOT NULL REFERENCES scheduled_messages (message_id),
-    apartment_id bigint NOT NULL REFERENCES apartments (apartment_id),
+    message_id   bigint NOT NULL REFERENCES scheduled_messages (message_id) ON DELETE CASCADE,
+    apartment_id bigint NOT NULL REFERENCES apartments (apartment_id) ON DELETE CASCADE,
     PRIMARY KEY (message_id, apartment_id)
 );

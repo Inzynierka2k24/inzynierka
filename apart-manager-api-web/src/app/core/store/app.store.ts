@@ -14,7 +14,13 @@ import {
 import { MessagingState } from './messaging/messaging.store';
 import { messagingReducer } from './messaging/messaging.reducers';
 import { apartmentReducer } from './apartment/apartment.reducer';
-import { addOrder, loadContacts } from './messaging/messaging.effects';
+import {
+  addContact,
+  addOrder,
+  deleteContact,
+  deleteMessage,
+  loadContacts,
+} from './messaging/messaging.effects';
 import { ApartmentState } from './apartment/apartment.store';
 
 export interface AppState {
@@ -41,6 +47,9 @@ export interface AppState {
       //MESSAGING
       loadContacts,
       addOrder,
+      addContact,
+      deleteMessage,
+      deleteContact,
     }),
   ],
   exports: [StoreModule, EffectsModule],

@@ -5,11 +5,15 @@
 <app-add-contact-modal [(visible)]="addContactVisible"></app-add-contact-modal>
 <div class="flex flex-row" id="messaging-panel">
   <div class="col-4 p-2 overflow-auto flex flex-column">
-    <button
-      (click)="addContactVisible = true"
-      class="p-button-rounded pi pi-plus"
-      pButton
-    ></button>
+    <div class="flex flex-row justify-content-between">
+      <div class="font-medium text-3xl text-900 mb-3">Contacts</div>
+      <p-button
+        (click)="addContactVisible = true"
+        [rounded]="true"
+        icon="pi pi-plus"
+      ></p-button>
+    </div>
+
     <p-dataView [value]="(contacts$ | async) || []">
       <ng-template let-service pTemplate="listItem">
         <div class="col-12 surface-card shadow-2 border-round mt-3">
@@ -68,9 +72,22 @@
             }}</span
             ><span class="text-xl"> per month</span>
           </div>
-          <button (click)="addOrderVisible = true" class="p-button" pButton>
-            Add Order
-          </button>
+          <div>
+            <p-button
+              (click)="addOrderVisible = true"
+              [rounded]="true"
+              class="mr-2"
+              icon="pi pi-envelope"
+            >
+            </p-button>
+            <p-button
+              (click)="deleteContact(chosenContact)"
+              [rounded]="true"
+              icon="pi pi-trash"
+              severity="danger"
+            >
+            </p-button>
+          </div>
         </div>
         <p-tabView>
           <p-tabPanel header="Apartments">
@@ -140,6 +157,7 @@
                   <th>Message</th>
                   <th>Interval</th>
                   <th>Trigger</th>
+                  <th>Actions</th>
                 </tr>
               </ng-template>
               <ng-template let-message pTemplate="body">
@@ -151,6 +169,13 @@
                     {{ message.intervalValue + " " + message.intervalType }}
                   </td>
                   <td>{{ message.triggerType }}</td>
+                  <td>
+                    <p-button
+                      (click)="deleteMessage(message)"
+                      icon="pi pi-trash"
+                      severity="danger"
+                    ></p-button>
+                  </td>
                 </tr>
               </ng-template>
             </p-table>

@@ -5,6 +5,8 @@ import { UserDTO } from '../../../generated';
 import { AppState } from '../../core/store/app.store';
 import { Store } from '@ngrx/store';
 import { selectCurrentUser } from '../../core/store/user/user.selectors';
+import MessagingActions from '../../core/store/messaging/messaging.actions';
+import { selectMessagingLoadingState } from '../../core/store/messaging/messaging.selectors';
 
 @Component({
   selector: 'app-add-contact-modal',
@@ -16,6 +18,8 @@ export class AddContactModalComponent {
   visible: boolean;
   @Output()
   visibleChange = new EventEmitter<boolean>();
+
+  isLoading$ = this.store.select(selectMessagingLoadingState);
 
   currentUser: UserDTO | undefined;
 
@@ -42,19 +46,23 @@ export class AddContactModalComponent {
 
   sendContact() {
     if (this.addContactForm.valid && this.currentUser) {
-      this.messagingService
-        .addContact(this.currentUser.id, {
-          name: this.addContactForm.value.name,
-          contactType: this.addContactForm.value.contactType,
-          price: this.addContactForm.value.price,
-          mail: this.addContactForm.value.mail,
-          phone: this.addContactForm.value.phone,
-          emailNotifications: !!this.addContactForm.value.email,
-          smsNotifications: !!this.addContactForm.value.phone,
-        })
-        .subscribe(() => {
+      const contact = {
+        name: this.addContactForm.value.name,
+        contactType: this.addContactForm.value.contactType,
+        price: this.addContactForm.value.price,
+        mail: this.addContactForm.value.mail,
+        phone: this.addContactForm.value.phone,
+        emailNotifications: !!this.addContactForm.value.email,
+        smsNotifications: !!this.addContactForm.value.phone,
+      };
+      this.store.dispatch(
+        MessagingActions.addContact({ userId: this.currentUser.id, contact }),
+      );
+      this.isLoading$.subscribe((loading) => {
+        if (!loading) {
           this.visibleChange.emit(false);
-        });
+        }
+      });
     }
   }
 }

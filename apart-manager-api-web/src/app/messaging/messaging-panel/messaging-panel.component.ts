@@ -11,8 +11,10 @@ import {
 } from '../../../generated';
 import MessagingActions from '../../core/store/messaging/messaging.actions';
 import { userStateSelector } from '../../core/store/user/user.selectors';
-import { selectMessagingList } from '../../core/store/messaging/messaging.selectors';
-import { ReservationService } from '../../reservation/services/reservation.service';
+import {
+  selectMessagingList,
+  selectMessagingLoadingState,
+} from '../../core/store/messaging/messaging.selectors';
 
 @Component({
   selector: 'app-messaging-panel',
@@ -20,9 +22,10 @@ import { ReservationService } from '../../reservation/services/reservation.servi
   styleUrls: ['./messaging-panel.component.scss'],
 })
 export class MessagingPanelComponent implements OnInit {
-  chosenContact: ContactDTO;
+  chosenContact: ContactDTO | undefined;
 
   contacts$: Observable<ContactDTO[]>;
+  isLoading$ = this.store.select(selectMessagingLoadingState);
   addOrderVisible = false;
   addContactVisible = false;
   contactApartments: Apartment[];
@@ -30,10 +33,7 @@ export class MessagingPanelComponent implements OnInit {
   public chosenApartment: Apartment;
   private currentUser: UserDTO;
 
-  constructor(
-    private store: Store<AppState>,
-    private reservationService: ReservationService,
-  ) {
+  constructor(private store: Store<AppState>) {
     this.store
       .select(userStateSelector)
       .pipe(first((state) => !!state?.user))
@@ -91,5 +91,33 @@ export class MessagingPanelComponent implements OnInit {
   showCalendarForApartment(apartment: any) {
     this.chosenApartment = apartment;
     this.apartmentCalendarVisible = true;
+  }
+
+  deleteMessage(message: ScheduledMessageDTO) {
+    if (this.currentUser.id && this.chosenContact?.id && message.id) {
+      this.store.dispatch(
+        MessagingActions.deleteMessage({
+          userId: this.currentUser.id,
+          contactId: this.chosenContact.id,
+          messageId: message.id,
+        }),
+      );
+    }
+  }
+
+  deleteContact(contact: ContactDTO) {
+    if (this.currentUser.id && contact.id) {
+      this.store.dispatch(
+        MessagingActions.deleteContact({
+          userId: this.currentUser.id,
+          contactId: contact.id,
+        }),
+      );
+    }
+    this.isLoading$.subscribe((isLoading) => {
+      if (!isLoading) {
+        this.chosenContact = undefined;
+      }
+    });
   }
 }
