@@ -28,11 +28,11 @@ class NocowaniePlService implements ExternalService {
       var end = reservation.end().plus(1, ChronoUnit.DAYS);
       var page = browserProvider.createPage(URL);
       logIn(page);
-      page.navigate(page.url().replace("reservations", "pricetable"));
+      page.navigate(String.join("/", URL, account.externalLink(), "pricetable"));
 
       while (date.isBefore(end)) {
         var shortDate = convertToShortDateString(date);
-        log.info("Changing availability for {}", shortDate);
+        log.info("Changing availability for {} for login {}", shortDate, account.login());
         changeToUnavailable(page, shortDate);
         date = date.plus(1, ChronoUnit.DAYS);
       }

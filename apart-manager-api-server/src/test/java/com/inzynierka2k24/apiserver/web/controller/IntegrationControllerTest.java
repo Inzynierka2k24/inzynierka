@@ -19,10 +19,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-public class IntegrationControllerTest {
+class IntegrationControllerTest {
 
   @Test
-  public void shouldGetPropagateReservationReturnsResponseEntityWithMap()
+  void shouldGetPropagateReservationReturnsResponseEntityWithMap()
       throws ReservationNotFoundException {
     // Given
     long userId = 1;
@@ -44,20 +44,21 @@ public class IntegrationControllerTest {
   }
 
   @Test
-  public void shouldPostGetReservationsReturnsResponseEntityWithListOfReservations() {
+  void shouldPostGetReservationsReturnsResponseEntityWithListOfReservations() {
     // Given
     long userId = 1;
+    long apartmentId = 1;
     Instant from = Instant.now();
     Instant to = Instant.now().plus(1, ChronoUnit.DAYS);
     com.inzynierka2k24.apiserver.web.request.GetReservationsRequest request =
         new GetReservationsRequest(from, to);
     IntegrationService integrationService = mock(IntegrationService.class);
-    when(integrationService.getReservations(userId, from, to)).thenReturn(List.of());
+    when(integrationService.getReservations(userId, apartmentId, from, to)).thenReturn(List.of());
     IntegrationController integrationController = new IntegrationController(integrationService);
 
     // When
     ResponseEntity<List<Reservation>> responseEntity =
-        integrationController.getReservations(userId, request);
+        integrationController.getReservations(userId, apartmentId, request);
 
     // Then
     assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
@@ -65,7 +66,7 @@ public class IntegrationControllerTest {
   }
 
   @Test
-  public void shouldGetUpdateApartmentDetailsReturnsResponseEntityWithMap()
+  void shouldGetUpdateApartmentDetailsReturnsResponseEntityWithMap()
       throws ApartmentNotFoundException {
     // Given
     long userId = 1;
@@ -85,7 +86,7 @@ public class IntegrationControllerTest {
   }
 
   @Test
-  public void shouldGetPropagateReservationThrowsReservationNotFoundException()
+  void shouldGetPropagateReservationThrowsReservationNotFoundException()
       throws ReservationNotFoundException {
     // Given
     long userId = 1;
@@ -103,7 +104,7 @@ public class IntegrationControllerTest {
   }
 
   @Test
-  public void shouldGetUpdateApartmentDetailsThrowsApartmentNotFoundException()
+  void shouldGetUpdateApartmentDetailsThrowsApartmentNotFoundException()
       throws ApartmentNotFoundException {
     // Given
     long userId = 1;
