@@ -34,7 +34,7 @@ public class FinanceController {
   @PostMapping()
   public ResponseEntity<String> add(@RequestBody Finance finance) {
     financeService.add(finance);
-    return ResponseEntity.status(HttpStatus.CREATED).body("Finance created successfully");
+    return ResponseEntity.ok("Finance created successfully");
   }
 
   @PutMapping("/{financeId}")

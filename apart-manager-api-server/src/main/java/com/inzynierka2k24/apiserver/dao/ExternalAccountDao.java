@@ -15,8 +15,6 @@ import org.springframework.stereotype.Repository;
 @RequiredArgsConstructor
 public class ExternalAccountDao {
 
-  private final JdbcTemplate template;
-
   private static final String GET_ALL_QUERY = "SELECT * FROM external_accounts WHERE user_id = ?";
   private static final String GET_BY_ID_QUERY =
       "SELECT * FROM external_accounts WHERE user_id = ? and account_id = ?";
@@ -39,6 +37,7 @@ public class ExternalAccountDao {
               rs.getString("login"),
               rs.getString("password"),
               ExternalService.forNumber(rs.getInt("service_type")));
+  private final JdbcTemplate template;
 
   public List<ExternalAccount> getAll(long userId) {
     return template.query(GET_ALL_QUERY, accountRowMapper, userId);

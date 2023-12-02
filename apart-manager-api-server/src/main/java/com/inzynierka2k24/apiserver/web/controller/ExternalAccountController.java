@@ -6,7 +6,6 @@ import com.inzynierka2k24.apiserver.service.ExternalAccountService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,7 +32,7 @@ public class ExternalAccountController {
   public ResponseEntity<String> add(
       @PathVariable long userId, @RequestBody ExternalAccount account) {
     accountService.add(userId, account);
-    return ResponseEntity.status(HttpStatus.CREATED).body("Account created successfully");
+    return ResponseEntity.ok().build();
   }
 
   @PutMapping()
@@ -41,13 +40,13 @@ public class ExternalAccountController {
       @PathVariable long userId, @RequestBody ExternalAccount account)
       throws AccountNotFoundException {
     accountService.update(userId, account);
-    return ResponseEntity.ok("Account edited successfully");
+    return ResponseEntity.ok().build();
   }
 
   @DeleteMapping("/{accountId}")
   public ResponseEntity<String> delete(@PathVariable long userId, @PathVariable long accountId)
       throws AccountNotFoundException {
     accountService.deleteById(userId, accountId);
-    return ResponseEntity.ok("Account deleted successfully");
+    return ResponseEntity.ok().build();
   }
 }

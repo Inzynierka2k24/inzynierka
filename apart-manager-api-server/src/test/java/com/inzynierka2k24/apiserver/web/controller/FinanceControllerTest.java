@@ -190,8 +190,7 @@ public class FinanceControllerTest {
                 .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(financeJacksonTester.write(finance).getJson()))
-        .andExpect(status().isCreated())
-        .andExpect(content().string("Finance created successfully"));
+        .andExpect(status().isOk());
     verify(financeService).add(finance);
   }
 

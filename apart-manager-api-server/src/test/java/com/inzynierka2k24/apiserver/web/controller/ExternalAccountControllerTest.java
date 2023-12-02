@@ -7,7 +7,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.inzynierka2k24.apiserver.exception.account.AccountNotFoundException;
@@ -29,10 +28,10 @@ import org.springframework.test.web.servlet.MockMvc;
 @AutoConfigureJsonTesters
 public class ExternalAccountControllerTest {
 
-  @Autowired private MockMvc mockMvc;
   @Autowired JacksonTester<ExternalAccount> accountJacksonTester;
   @Autowired JacksonTester<List<ExternalAccount>> accountListJacksonTester;
   @MockBean ExternalAccountService accountService;
+  @Autowired private MockMvc mockMvc;
 
   @Test
   @WithMockUser
@@ -101,8 +100,7 @@ public class ExternalAccountControllerTest {
                 .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(accountJacksonTester.write(account).getJson()))
-        .andExpect(status().isCreated())
-        .andExpect(content().string("Account created successfully"));
+        .andExpect(status().isOk());
     verify(accountService).add(userId, account);
   }
 
@@ -121,8 +119,7 @@ public class ExternalAccountControllerTest {
                 .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(accountJacksonTester.write(account).getJson()))
-        .andExpect(status().isOk())
-        .andExpect(content().string("Account edited successfully"));
+        .andExpect(status().isOk());
     verify(accountService).update(userId, account);
   }
 
@@ -137,8 +134,7 @@ public class ExternalAccountControllerTest {
     // When/Then
     mockMvc
         .perform(delete(String.format("/%s/external/account/%s", userId, accountId)).with(csrf()))
-        .andExpect(status().isOk())
-        .andExpect(content().string("Account deleted successfully"));
+        .andExpect(status().isOk());
     verify(accountService).deleteById(userId, accountId);
   }
 

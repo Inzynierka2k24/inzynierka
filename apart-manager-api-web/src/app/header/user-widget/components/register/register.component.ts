@@ -52,6 +52,11 @@ export class RegisterComponent {
           emailAddress: this.registrationForm.value.emailAddress!,
         }),
       );
+      this.isLoading$.subscribe((isLoading) => {
+        if (!isLoading) {
+          this.toggleForm();
+        }
+      });
     }
   }
 }
