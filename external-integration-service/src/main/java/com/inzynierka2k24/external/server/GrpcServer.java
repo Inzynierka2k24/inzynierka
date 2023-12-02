@@ -52,7 +52,10 @@ public class GrpcServer extends ExternalIntegrationServiceGrpc.ExternalIntegrati
   public void getReservations(
       GetReservationsRequest request, StreamObserver<GetReservationsResponse> responseObserver) {
     responseObserver.onNext(
-        getResponse(integrationService.getReservations(toInstant(request.getFrom()), toInstant(request.getTo()),
+        getResponse(
+            integrationService.getReservations(
+                toInstant(request.getFrom()),
+                toInstant(request.getTo()),
                 convert(request.getAccountsList()))));
     responseObserver.onCompleted();
   }

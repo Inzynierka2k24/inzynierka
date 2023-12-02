@@ -47,6 +47,7 @@ public class SimpleExternalIntegrationServiceClient {
                     .build())
             .addAccounts(createAccount())
             .build();
+    log.info(String.valueOf(request));
     var start = Instant.now();
     var response = blockingStub.propagateReservation(request);
 
@@ -58,7 +59,14 @@ public class SimpleExternalIntegrationServiceClient {
 
   private void getReservations(
       ExternalIntegrationServiceGrpc.ExternalIntegrationServiceBlockingStub blockingStub) {
-    var request = GetReservationsRequest.newBuilder().addAccounts(createAccount()).build();
+    var from = Instant.parse("2023-11-27T00:00:00Z");
+    var to = Instant.parse("2023-12-17T00:00:00Z");
+    var request =
+        GetReservationsRequest.newBuilder()
+            .setFrom(toProtoTimestamp(from))
+            .setTo(toProtoTimestamp(to))
+            .addAccounts(createAccount())
+            .build();
     var start = Instant.now();
     var response = blockingStub.getReservations(request);
 
@@ -93,8 +101,8 @@ public class SimpleExternalIntegrationServiceClient {
 
   private ExternalAccount createAccount() {
     return ExternalAccount.newBuilder()
-        .setAccount(Account.newBuilder().setLogin("").setPassword("").build())
-        .setService(BOOKING)
+        .setAccount(Account.newBuilder().setLogin("").setPassword("").setLink("").build())
+        .setService(NOCOWANIEPL)
         .build();
   }
 }

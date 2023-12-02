@@ -5,9 +5,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import com.inzynierka2k24.ExternalService;
 import com.inzynierka2k24.ResponseStatus;
-import org.junit.jupiter.api.Test;
-
 import java.time.Instant;
+import org.junit.jupiter.api.Test;
 
 // TODO Test it properly when methods will be implemented
 class BookingServiceTest {

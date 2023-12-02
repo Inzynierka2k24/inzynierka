@@ -4,7 +4,6 @@ import com.inzynierka2k24.ServiceResponse;
 import com.inzynierka2k24.external.model.Account;
 import com.inzynierka2k24.external.model.ApartmentDetails;
 import com.inzynierka2k24.external.model.Reservation;
-
 import java.time.Instant;
 import java.util.Collection;
 import java.util.Set;
