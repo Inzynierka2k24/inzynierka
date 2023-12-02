@@ -121,6 +121,12 @@
               </ng-template>
             </p-dataView>
             <ng-template #apartmentCalendarView>
+              <p-button
+                (click)="apartmentCalendarVisible = false"
+                class="mb-4"
+                icon="pi pi-arrow-left"
+                label="Back"
+              ></p-button>
               <app-apartment-calendar-view [apartment]="chosenApartment">
               </app-apartment-calendar-view>
             </ng-template>

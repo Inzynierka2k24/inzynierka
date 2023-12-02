@@ -24,9 +24,9 @@ export class ApartmentCalendarViewComponent implements OnInit {
 
   ngOnInit(): void {
     this.store.select(selectCurrentUser).subscribe((user) => {
-      if (user && this.apartment) {
+      if (user?.id && this.apartment?.id) {
         this.reservationService
-          .getReservationDTOs(user.id, this.apartment.id!)
+          .getReservationDTOs(user.id, this.apartment.id)
           .subscribe((data: ReservationDTO[]) => {
             for (const val of data) {
               this.events.push({
@@ -38,7 +38,7 @@ export class ApartmentCalendarViewComponent implements OnInit {
               this.events.push({
                 id: val.id + '_2',
                 title: val.apartment.title + ' Check-out',
-                start: val.startDate,
+                start: val.endDate,
                 end: val.endDate,
               });
             }
@@ -47,7 +47,7 @@ export class ApartmentCalendarViewComponent implements OnInit {
     });
     this.calendarOptions = {
       plugins: [dayGridPlugin, interactionPlugin],
-      initialView: 'dayGridMonth',
+      initialView: 'dayGridWeek',
       events: this.events,
       selectable: true,
       editable: true,
