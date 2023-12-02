@@ -86,4 +86,19 @@ export class ReservationService {
       options,
     );
   }
+
+  propagateReservation(
+    userId: number,
+    apartmentId: number,
+    reservationId: number,
+  ) {
+    return this.http.get<Map<string, string>>(
+      `${environment.api_url}/` +
+        userId +
+        '/external/integration//propagate/apartment/' +
+        apartmentId +
+        '/reservation/' +
+        reservationId,
+    );
+  }
 }
