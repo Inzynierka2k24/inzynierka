@@ -8,6 +8,7 @@ import com.inzynierka2k24.external.model.Reservation;
 import com.microsoft.playwright.Page;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.HashSet;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +28,7 @@ class NocowaniePlService implements ExternalService {
       var date = reservation.start();
       var end = reservation.end().plus(1, ChronoUnit.DAYS);
       var page = browserProvider.createPage(URL);
+
       logIn(page);
       page.navigate(String.join("/", URL, account.externalLink(), "pricetable"));
 
@@ -44,8 +46,29 @@ class NocowaniePlService implements ExternalService {
   }
 
   @Override
-  public Set<Reservation> getReservations() {
-    return Set.of();
+  public Set<Reservation> getReservations(Instant from, Instant to) {
+    try {
+      var date = from;
+      var end = to.plus(1, ChronoUnit.DAYS);
+      var page = browserProvider.createPage(URL);
+      HashSet<Reservation> reservations = new HashSet<>();
+
+      logIn(page);
+      page.navigate(String.join("/", URL, account.externalLink(), "pricetable"));
+
+      page.locator("[name='startDate']").click();
+
+//      while (date.isBefore(end)) {
+//        var shortDate = convertToShortDateString(date);
+//        log.info("Changing availability for {} for login {}", shortDate, account.login());
+//        changeToUnavailable(page, shortDate);
+//        date = date.plus(1, ChronoUnit.DAYS);
+//      }
+
+      return reservations;
+    } catch (Exception e) {
+      return Set.of();
+    }
   }
 
   @Override

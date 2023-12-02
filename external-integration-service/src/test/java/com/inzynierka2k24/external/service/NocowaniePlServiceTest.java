@@ -18,11 +18,11 @@ import org.junit.jupiter.api.Test;
 class NocowaniePlServiceTest {
 
   //  private final Crawler crawler = new Crawler();
-  private final BrowserProvider browserProvider = mock(BrowserProvider.class);
+  private final BrowserProvider browserProvider = new BrowserProvider();//mock(BrowserProvider.class);
 
   private final NocowaniePlService service =
       new NocowaniePlService(
-          browserProvider, new Account("test", "test", "test", ExternalService.NOCOWANIEPL));
+          browserProvider, new Account("apartmanager404@gmail.com", "inzynierka2k24", "1475481", ExternalService.NOCOWANIEPL));
 
   @Test
   void shouldPropagateReservation() {
@@ -57,7 +57,10 @@ class NocowaniePlServiceTest {
 
   @Test
   void shouldGetReservations() {
-    assertThat(service.getReservations()).isEmpty();
+    var start = Instant.parse("2023-12-03T00:00:00Z");
+    var end = Instant.parse("2023-12-07T00:00:00Z");
+
+    assertThat(service.getReservations(start, end)).isEmpty();
   }
 
   @Test

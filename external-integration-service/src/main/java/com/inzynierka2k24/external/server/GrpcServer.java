@@ -2,6 +2,7 @@ package com.inzynierka2k24.external.server;
 
 import static com.inzynierka2k24.external.server.request.RequestConverter.convert;
 import static com.inzynierka2k24.external.server.response.ResponseGenerator.getResponse;
+import static com.inzynierka2k24.external.util.TimeConverter.toInstant;
 
 import com.inzynierka2k24.ExternalIntegrationServiceGrpc;
 import com.inzynierka2k24.GetReservationsRequest;
@@ -51,7 +52,8 @@ public class GrpcServer extends ExternalIntegrationServiceGrpc.ExternalIntegrati
   public void getReservations(
       GetReservationsRequest request, StreamObserver<GetReservationsResponse> responseObserver) {
     responseObserver.onNext(
-        getResponse(integrationService.getReservations(convert(request.getAccountsList()))));
+        getResponse(integrationService.getReservations(toInstant(request.getFrom()), toInstant(request.getTo()),
+                convert(request.getAccountsList()))));
     responseObserver.onCompleted();
   }
 

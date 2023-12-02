@@ -7,6 +7,8 @@ import com.inzynierka2k24.ExternalService;
 import com.inzynierka2k24.ResponseStatus;
 import org.junit.jupiter.api.Test;
 
+import java.time.Instant;
+
 // TODO Test it properly when methods will be implemented
 class AirbnbServiceTest {
 
@@ -19,7 +21,7 @@ class AirbnbServiceTest {
 
   @Test
   void shouldGetReservations() {
-    assertThat(service.getReservations()).isEmpty();
+    assertThat(service.getReservations(Instant.EPOCH, Instant.EPOCH)).isEmpty();
   }
 
   @Test
