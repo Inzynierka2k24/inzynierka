@@ -17,12 +17,14 @@ import { AddContactModalComponent } from './add-contact-modal/add-contact-modal.
 import { TableModule } from 'primeng/table';
 import { CalendarModule } from 'primeng/calendar';
 import { FullCalendarModule } from '@fullcalendar/angular';
+import { ApartmentCalendarViewComponent } from './apartment-calendar-view/apartment-calendar-view.component';
 
 @NgModule({
   declarations: [
     MessagingPanelComponent,
     AddOrderModalComponent,
     AddContactModalComponent,
+    ApartmentCalendarViewComponent,
   ],
   imports: [
     CommonModule,

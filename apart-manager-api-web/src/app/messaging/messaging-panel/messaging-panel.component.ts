@@ -12,6 +12,7 @@ import {
 import MessagingActions from '../../core/store/messaging/messaging.actions';
 import { userStateSelector } from '../../core/store/user/user.selectors';
 import { selectMessagingList } from '../../core/store/messaging/messaging.selectors';
+import { ReservationService } from '../../reservation/services/reservation.service';
 
 @Component({
   selector: 'app-messaging-panel',
@@ -25,9 +26,14 @@ export class MessagingPanelComponent implements OnInit {
   addOrderVisible = false;
   addContactVisible = false;
   contactApartments: Apartment[];
+  apartmentCalendarVisible = false;
+  public chosenApartment: Apartment;
   private currentUser: UserDTO;
 
-  constructor(private store: Store<AppState>) {
+  constructor(
+    private store: Store<AppState>,
+    private reservationService: ReservationService,
+  ) {
     this.store
       .select(userStateSelector)
       .pipe(first((state) => !!state?.user))
@@ -44,41 +50,7 @@ export class MessagingPanelComponent implements OnInit {
       .pipe(map((contacts) => contacts || []));
   }
 
-  ngOnInit(): void {
-    // this.reservationService
-    //   .getReservationDTOs(this.currentUser.id, this.apartment)
-    //   .pipe(
-    //     map((reservations) =>
-    //       reservations.map((reservation) => ({
-    //         id: reservation.id,
-    //         title: reservation.apartment.title,
-    //         start: reservation.startDate,
-    //         end: reservation.endDate,
-    //       })),
-    //     ),
-    //   )
-    //   .subscribe((data: Reservation[]) => {
-    //     for (const val of this.reservations) {
-    //       this.events.push({
-    //         id: val.id,
-    //         title: this.getApartmentTitle(val.apartmentId),
-    //         start: val.startDate,
-    //         end: val.endDate,
-    //       });
-    //     }
-    //   });
-    // this.calendarOptions = {
-    //   plugins: [dayGridPlugin, interactionPlugin],
-    //   initialView: 'dayGridMonth',
-    //   events: this.events,
-    //   selectable: true,
-    //   editable: true,
-    //   selectMirror: true,
-    //   eventClick: this.handleEventClick.bind(this),
-    //   eventMouseEnter: this.handleMouseEnter.bind(this),
-    //   eventMouseLeave: this.handleMouseLeave.bind(this),
-    // };
-  }
+  ngOnInit(): void {}
 
   getIcon(ct: ContactType) {
     switch (ct) {
@@ -114,5 +86,10 @@ export class MessagingPanelComponent implements OnInit {
 
   apartmentsListForMessage(message: ScheduledMessageDTO) {
     return message.apartments.map((a) => a.title).join(', ');
+  }
+
+  showCalendarForApartment(apartment: any) {
+    this.chosenApartment = apartment;
+    this.apartmentCalendarVisible = true;
   }
 }
