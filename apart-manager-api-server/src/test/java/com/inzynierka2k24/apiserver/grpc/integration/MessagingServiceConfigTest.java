@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import com.inzynierka2k24.apiserver.grpc.integration.config.ExternalIntegrationServiceConfig;
 import org.junit.jupiter.api.Test;
 
-class ExternalIntegrationServiceConfigTest {
+class MessagingServiceConfigTest {
 
   @Test
   void shouldCreateBlockingStub() {

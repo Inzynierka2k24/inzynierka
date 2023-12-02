@@ -42,8 +42,8 @@ CREATE TABLE IF NOT EXISTS contacts (
   contact_id bigserial NOT NULL PRIMARY KEY,
   user_id bigint NOT NULL REFERENCES users(user_id) ON DELETE CASCADE,
   type int NOT NULL,
-  password varchar(50) NOT NULL,
-  mail varchar(50) NOT NULL
+  receiver varchar(50) NOT NULL,
+  message varchar(50) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS finances (

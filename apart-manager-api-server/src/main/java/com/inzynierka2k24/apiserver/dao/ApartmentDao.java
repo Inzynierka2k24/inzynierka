@@ -9,13 +9,10 @@ import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
-import org.springframework.stereotype.Service;
 
 @Repository
 @RequiredArgsConstructor
 public class ApartmentDao {
-
-  private final JdbcTemplate template;
 
   private static final String GET_ALL_QUERY = "SELECT * FROM apartments WHERE user_id = ?";
   private static final String GET_BY_ID_QUERY =
@@ -47,6 +44,7 @@ public class ApartmentDao {
               rs.getString("street"),
               rs.getString("building_nr"),
               rs.getString("apartment_nr"));
+  private final JdbcTemplate template;
 
   public List<Apartment> getAll(long userId) {
     return template.query(GET_ALL_QUERY, apartmentRowMapper, userId);
@@ -71,7 +69,7 @@ public class ApartmentDao {
           apartment.buildingNumber(),
           apartment.apartmentNumber());
     } catch (DataIntegrityViolationException e) {
-      throw new IllegalArgumentException("The apartment doesn't belong to given userId", e);
+      throw new IllegalArgumentException("The apartments doesn't belong to given userId", e);
     }
   }
 

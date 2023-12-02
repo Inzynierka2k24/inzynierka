@@ -10,6 +10,7 @@ option java_multiple_files = true;
 message Account {
   string login = 1;
   string password = 2;
+  string link = 3;
 }
 
 message ExternalAccount {

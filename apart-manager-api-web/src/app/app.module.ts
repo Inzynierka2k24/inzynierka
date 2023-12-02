@@ -11,10 +11,7 @@ import { UserModule } from './user/user.module';
 import { ToastModule } from 'primeng/toast';
 import { ButtonModule } from 'primeng/button';
 import { RippleModule } from 'primeng/ripple';
-import { FullCalendarModule } from "@fullcalendar/angular";
-import { CalendarModule } from 'primeng/calendar';
-import { AddExternalOfferComponent } from './apartment/add-external-offer/add-external-offer.component';
-import { EditExternalOfferComponent } from './apartment/edit-external-offer/edit-external-offer.component';
+import { MessagingModule } from './messaging/messaging.module';
 
 @NgModule({
   declarations: [AppComponent, WelcomePageComponent],
@@ -28,9 +25,7 @@ import { EditExternalOfferComponent } from './apartment/edit-external-offer/edit
     ToastModule,
     ButtonModule,
     RippleModule,
-    FullCalendarModule,
-    CalendarModule,
-
+    MessagingModule,
   ],
   providers: [
     {

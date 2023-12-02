@@ -11,13 +11,19 @@ import com.tngtech.archunit.lang.ArchRule;
 public class LayeredArchitectureTest {
 
   @ArchTest
-  static final ArchRule layer_dependencies_are_respected = layeredArchitecture().consideringAllDependencies()
-
-      .layer("Controllers").definedBy("com.inzynierka2k24.apiserver.web.controller..")
-      .layer("Services").definedBy("com.inzynierka2k24.apiserver.service..")
-      .layer("Persistence").definedBy("com.inzynierka2k24.apiserver.dao..")
-
-      .whereLayer("Controllers").mayNotBeAccessedByAnyLayer()
-      .whereLayer("Services").mayOnlyBeAccessedByLayers("Controllers")
-      .whereLayer("Persistence").mayOnlyBeAccessedByLayers("Services");
+  static final ArchRule layer_dependencies_are_respected =
+      layeredArchitecture()
+          .consideringAllDependencies()
+          .layer("Controllers")
+          .definedBy("com.inzynierka2k24.apiserver.web.controller..")
+          .layer("Services")
+          .definedBy("com.inzynierka2k24.apiserver.service..")
+          .layer("Persistence")
+          .definedBy("com.inzynierka2k24.apiserver.dao..")
+          .whereLayer("Controllers")
+          .mayNotBeAccessedByAnyLayer()
+          .whereLayer("Services")
+          .mayOnlyBeAccessedByLayers("Controllers")
+          .whereLayer("Persistence")
+          .mayOnlyBeAccessedByLayers("Services");
 }

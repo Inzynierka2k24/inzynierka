@@ -16,7 +16,7 @@ keycloak:
   base-url: http://${AUTH_URL:localhost}:8090/admin/realms/${keycloak.realm}
   token-endpoint: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/token/
   user-endpoint: ${keycloak.base-url}/users/
-  user-details: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/userinfo/
+  user-details: ${keycloak.base-url}/protocol/openid-connect/userinfo/
   credentials:
     login: ${KEYCLOAK_USER:admin}
     password: ${KEYCLOAK_PASSWORD:admin}
@@ -30,3 +30,6 @@ grpc:
   external-integration-service:
     url: ${EXTERNAL_INTEGRATION_SERVICE_URL:localhost}
     port: ${EXTERNAL_INTEGRATION_SERVICE_PORT:6565}
+  messaging-service:
+    url: ${MESSAGING_SERVICE_URL:localhost}
+    port: ${MESSAGING_SERVICE_PORT:6565}

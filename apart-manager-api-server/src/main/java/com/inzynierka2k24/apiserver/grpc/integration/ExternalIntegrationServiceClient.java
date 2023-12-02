@@ -5,6 +5,7 @@ import static com.inzynierka2k24.apiserver.grpc.integration.RequestBuilder.*;
 import com.inzynierka2k24.*;
 import com.inzynierka2k24.apiserver.model.Apartment;
 import com.inzynierka2k24.apiserver.model.ExternalAccount;
+import com.inzynierka2k24.apiserver.model.ExternalOffer;
 import com.inzynierka2k24.apiserver.model.Reservation;
 import java.time.Instant;
 import java.util.Collection;
@@ -21,8 +22,10 @@ public class ExternalIntegrationServiceClient {
   private final ExternalIntegrationServiceGrpc.ExternalIntegrationServiceBlockingStub blockingStub;
 
   public List<ServiceResponse> propagateReservation(
-      Reservation reservation, Collection<ExternalAccount> accounts) {
-    var request = buildPropagateReservationRequest(reservation, accounts);
+      Reservation reservation,
+      Collection<ExternalAccount> accounts,
+      Collection<ExternalOffer> offers) {
+    var request = buildPropagateReservationRequest(reservation, accounts, offers);
     log.info("Request to External Integration Service: {}", request);
 
     var response = blockingStub.propagateReservation(request);
@@ -32,8 +35,11 @@ public class ExternalIntegrationServiceClient {
   }
 
   public List<Reservation> getReservations(
-      Instant from, Instant to, Collection<ExternalAccount> accounts) {
-    var request = buildGetReservationsRequest(from, to, accounts);
+      Instant from,
+      Instant to,
+      Collection<ExternalAccount> accounts,
+      Collection<ExternalOffer> offers) {
+    var request = buildGetReservationsRequest(from, to, accounts, offers);
     log.info("Request to External Integration Service: {}", request);
 
     var response = blockingStub.getReservations(request);
@@ -43,8 +49,8 @@ public class ExternalIntegrationServiceClient {
   }
 
   public List<ServiceResponse> updateApartmentDetails(
-      Apartment apartment, Collection<ExternalAccount> accounts) {
-    var request = buildUpdateApartmentDetailsRequest(apartment, accounts);
+      Apartment apartment, Collection<ExternalAccount> accounts, Collection<ExternalOffer> offers) {
+    var request = buildUpdateApartmentDetailsRequest(apartment, accounts, offers);
     log.info("Request to External Integration Service: {}", request);
 
     var response = blockingStub.updateApartmentDetails(request);

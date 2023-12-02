@@ -1,7 +1,7 @@
-import {Component, ViewChild} from '@angular/core';
-import {Router} from "@angular/router";
-import {MenuItem} from "primeng/api";
-import {SlideMenu} from "primeng/slidemenu";
+import { Component, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
+import { MenuItem } from 'primeng/api';
+import { SlideMenu } from 'primeng/slidemenu';
 
 @Component({
   selector: 'app-header',
@@ -9,65 +9,68 @@ import {SlideMenu} from "primeng/slidemenu";
   styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent {
-  constructor(private router: Router) {}
   apartmentItems: MenuItem[];
   reservationItems: MenuItem[];
   financeItems: MenuItem[];
-
   @ViewChild('apartmentMenu') apartmentMenu!: SlideMenu;
   @ViewChild('reservationMenu') reservationMenu!: SlideMenu;
   @ViewChild('financeMenu') financeMenu!: SlideMenu;
 
+  constructor(public router: Router) {}
+
   ngOnInit() {
-      this.apartmentItems = [
-          {
-            label: 'Apartments List',
-            command: () => this.router.navigate(['/apartments']),
-          },
-          {
-            label: 'Add apartment',
-            command: () => this.router.navigate(['/apartments/add']),
-          },
-          {
-            label: 'External offers',
-            command: () => this.router.navigate(['/apartments/externalOffers']),
-          },
-      ];
-      this.reservationItems = [
-          {
-            label: 'Reservations Calendar',
-            command: () => this.router.navigate(['/reservations/calendar']),
-          },
-          {
-            label: 'Reservations List',
-            command: () => this.router.navigate(['/reservations']),
-          },
-          {
-            label: 'Add reservation',
-            command: () => this.router.navigate(['/reservations/add']),
-          },
-      ];
-      this.financeItems = [
-          {
-            label: 'Finances List',
-            command: () => this.router.navigate(['/finances']),
-          },
-          {
-            label: 'Add finance',
-            command: () => this.router.navigate(['/finances/add']),
-          },
-          {
-            label: 'Finance Chart',
-            command: () => this.router.navigate(['/finances/chart']),
-          },
-      ];
+    this.apartmentItems = [
+      {
+        label: 'Apartments List',
+        command: () => this.router.navigate(['/apartments']),
+      },
+      {
+        label: 'Add apartment',
+        command: () => this.router.navigate(['/apartments/add']),
+      },
+      {
+        label: 'External offers',
+        command: () => this.router.navigate(['/apartments/externalOffers']),
+      },
+    ];
+    this.reservationItems = [
+      {
+        label: 'Reservations Calendar',
+        command: () => this.router.navigate(['/reservations/calendar']),
+      },
+      {
+        label: 'Reservations List',
+        command: () => this.router.navigate(['/reservations']),
+      },
+      {
+        label: 'Add reservation',
+        command: () => this.router.navigate(['/reservations/add']),
+      },
+    ];
+    this.financeItems = [
+      {
+        label: 'Finances List',
+        command: () => this.router.navigate(['/finances']),
+      },
+      {
+        label: 'Add finance',
+        command: () => this.router.navigate(['/finances/add']),
+      },
+      {
+        label: 'Finance Chart',
+        command: () => this.router.navigate(['/finances/chart']),
+      },
+    ];
   }
+
   showClickApartments(event: any) {
-      this.apartmentMenu.show(event);
+    this.apartmentMenu.show(event);
   }
+
   showClickReservations(event: any) {
-      this.reservationMenu.show(event);
+    this.reservationMenu.show(event);
   }
+
   showClickFinances(event: any) {
     this.financeMenu.show(event);
   }

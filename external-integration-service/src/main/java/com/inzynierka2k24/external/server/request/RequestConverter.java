@@ -23,7 +23,8 @@ public final class RequestConverter {
 
   public static Account convert(ExternalAccount request) {
     var account = request.getAccount();
-    return new Account(account.getLogin(), account.getPassword(), request.getService());
+    return new Account(
+        account.getLogin(), account.getPassword(), account.getLink(), request.getService());
   }
 
   public static ApartmentDetails convert(com.inzynierka2k24.ApartmentDetails request) {
