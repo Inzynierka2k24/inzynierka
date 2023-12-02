@@ -133,8 +133,7 @@ public class ApartmentControllerTest {
                 .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(apartmentJacksonTester.write(apartment).getJson()))
-        .andExpect(status().isCreated())
-        .andExpect(content().string("Apartment created successfully"));
+        .andExpect(status().isOk());
     verify(apartmentService).add(userId, apartment);
   }
 

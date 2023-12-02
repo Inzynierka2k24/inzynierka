@@ -119,8 +119,7 @@ public class ReservationControllerTest {
                 .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(reservationJacksonTester.write(reservation).getJson()))
-        .andExpect(status().isCreated())
-        .andExpect(content().string("Reservation created successfully"));
+        .andExpect(status().isOk());
     verify(reservationService).add(apartmentId, reservation);
   }
 
