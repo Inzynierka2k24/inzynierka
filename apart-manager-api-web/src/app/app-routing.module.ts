@@ -21,7 +21,6 @@ import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest,} from '@angular/co
 import UserActions from './core/store/user/user.actions';
 import {MessagingPanelComponent} from './messaging/messaging-panel/messaging-panel.component';
 import {FinanceChartComponent} from './finance/finance-chart/finance-chart.component';
-import {FinanceChartComponent} from "./finance/finance-chart/finance-chart.component";
 import {ExternalOffersComponent} from "./apartment/external-offers/external-offers.component";
 import {AddExternalOfferComponent} from "./apartment/add-external-offer/add-external-offer.component";
 import {EditExternalOfferComponent} from "./apartment/edit-external-offer/edit-external-offer.component";
