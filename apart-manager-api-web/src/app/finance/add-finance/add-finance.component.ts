@@ -1,16 +1,15 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {resultMemoize, Store} from "@ngrx/store";
-import {Finance, Source, EventType, Apartment, UserDTO, Reservation} from "../../../generated";
+import {Store} from "@ngrx/store";
+import {Finance, Apartment, UserDTO} from "../../../generated";
 import {AppState} from "../../core/store/app.store";
 import {FinanceService} from "../service/finance.service";
 import {selectCurrentUser} from "../../core/store/user/user.selectors";
-import {MessageService, SelectItem} from "primeng/api";
+import {MessageService} from "primeng/api";
 import {switchMap} from "rxjs/operators";
 import {FinanceSourceService} from "../service/finance-source.service";
 import {Observable} from "rxjs";
 import {ApartmentService} from "../../apartment/services/apartment.service";
-import {co} from "@fullcalendar/core/internal-common";
 
 @Component({
   selector: 'app-add-finance',
