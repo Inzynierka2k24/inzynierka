@@ -53,6 +53,7 @@ export class FinanceListComponent {
   apartment: Apartment;
   user: UserDTO;
   user$: Observable<UserDTO | undefined>;
+  apartmentOptions: {label: string, value: number}[] = [];
 
 
 
@@ -165,6 +166,10 @@ export class FinanceListComponent {
   }
 
   fetchData() {
+    this.fetchFinancesForUser();
+    this.fetchApartmentsForUser()
+  }
+  fetchFinancesForUser() {
     this.user$ = this.store.select(selectCurrentUser);
     this.user$.subscribe((user) => {
       if (user) {
@@ -177,5 +182,26 @@ export class FinanceListComponent {
         });
       }
     });
+  }
+
+  fetchApartmentsForUser() {
+    this.user$ = this.store.select(selectCurrentUser);
+    this.user$.subscribe((user) => {
+      if (user) {
+        this.apartmentService.getApartments(user).subscribe((data: Apartment[]) => {
+          this.apartments = data;
+          this.apartmentOptions = data
+          .map(apartment => ({
+            label: `${apartment.title}, ${apartment.city}`,
+            value: apartment.id as number
+          }));
+        });
+      }
+    });
+  }
+
+  getApartmentTitleById(apartmentId: number): string {
+    const apartment = this.apartments.find(ap => ap.id === apartmentId);
+    return apartment ? `${apartment.title}, ${apartment.city}` : 'Unknown';
   }
 }

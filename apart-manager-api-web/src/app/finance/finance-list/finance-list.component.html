@@ -2,13 +2,14 @@
   <h2>Finances List</h2>
   <form [formGroup]="filterFinanceForm">
     <div class="labels">
-      <label class="text-900 font-medium mb-2 controls">Apartment ID:</label>
-      <input
-        formControlName="filterApartmentId"
-        pInputText
-        type="number"
-        required
-      />
+      <label class="text-900 font-medium mb-2 controls">Apartment:</label>
+      <p-dropdown
+          formControlName="filterApartmentId"
+          [options]="apartmentOptions"
+          optionLabel="label"
+          placeholder="Select an Apartment"
+          [showClear]="true">
+      </p-dropdown>
       <label class="text-900 font-medium mb-2 controls">Event Type:</label>
       <p-dropdown formControlName="filterEventType" [options]="eventTypes" optionLabel="name"></p-dropdown>
 
@@ -23,8 +24,7 @@
   <p-table [value]="filteredFinances" [tableStyle]="{ 'min-width': '50rem' }">
     <ng-template pTemplate="header">
       <tr>
-        <th>Apartment ID</th>
-        <th>Event ID</th>
+        <th>Apartment</th>
         <th>Event Type</th>
         <th>Source</th>
         <th>Price</th>
@@ -36,12 +36,11 @@
     </ng-template>
     <ng-template pTemplate="body" let-finance>
       <tr>
-        <td>{{ finance.apartmentId }}</td>
-        <td>{{ finance.eventId }}</td>
+        <td>{{ getApartmentTitleById(finance.apartmentId) }}</td>
         <td>{{ finance.eventType }}</td>
         <td>{{ finance.source }}</td>
         <td>{{ finance.price }}</td>
-        <td>{{ finance.date | date:'dd-MM-YYYY HH:mm' }}</td>
+        <td>{{ finance.date | date: 'dd MMM yyyy' }}</td>
         <td>{{ finance.details }}</td>
         <td><p-button icon="pi pi-file-edit" (click)="startEditing(finance)"></p-button></td>
         <td><p-button icon="pi pi-trash" (click)="deleteFinance(finance)"></p-button></td>
