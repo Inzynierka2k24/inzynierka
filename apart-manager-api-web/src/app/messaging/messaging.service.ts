@@ -10,12 +10,14 @@ export class MessagingService {
   constructor(private httpClient: HttpClient) {}
 
   getContactsForUser(userId: number) {
-    return this.httpClient.get<ContactDTO[]>('/api/contacts/' + userId);
+    return this.httpClient.get<ContactDTO[]>(
+      `${environment.api_url}/contacts/` + userId,
+    );
   }
 
   addOrder(userId: number, contactId: number, message: ScheduledMessageDTO) {
     return this.httpClient.post<ScheduledMessageDTO>(
-      '/api/messaging/' + userId + '/contact/' + contactId,
+      `${environment.api_url}/messaging/` + userId + '/contact/' + contactId,
       message,
     );
   }
