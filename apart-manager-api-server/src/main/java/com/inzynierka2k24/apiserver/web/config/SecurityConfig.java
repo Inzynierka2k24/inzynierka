@@ -54,6 +54,7 @@ public class SecurityConfig {
             "http://salmon-moss-003628103-34.westeurope.4.azurestaticapps.net/",
             "http://localhost:80",
             "http://localhost",
+            "http://localhost:4200",
             "*.azurestaticapps.net"));
     configuration.addAllowedMethod("*");
     configuration.addAllowedHeader("*");
