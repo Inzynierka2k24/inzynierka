@@ -2,10 +2,9 @@ package com.inzynierka2k24.apiserver.service;
 
 import com.inzynierka2k24.apiserver.exception.user.InvalidCredentialsException;
 import com.inzynierka2k24.apiserver.exception.user.UserAlreadyExistsException;
+import com.inzynierka2k24.apiserver.exception.user.UserNotFoundException;
 import com.inzynierka2k24.apiserver.web.response.KeycloakTokenResponse;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
@@ -22,7 +21,7 @@ public class AuthorizationService {
   private static final String CLIENT_ID = "client_id";
   private static final String USERNAME = "username";
   private static final String PASSWORD = "password";
-
+  private static final String SCOPE = "scope";
   private final RestTemplate restTemplate;
 
   @Value("${keycloak.client-id}")
@@ -40,9 +39,6 @@ public class AuthorizationService {
   @Value("${keycloak.user-endpoint}")
   private String userEndpoint;
 
-  @Value("${keycloak.user-details}")
-  private String userDetailsEndpoint;
-
   public AuthorizationService(RestTemplate restTemplate) {
     this.restTemplate = restTemplate;
   }
@@ -57,6 +53,7 @@ public class AuthorizationService {
     formData.add(CLIENT_ID, clientId);
     formData.add(USERNAME, username);
     formData.add(PASSWORD, password);
+    formData.add(SCOPE, "openid");
 
     HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(formData, headers);
 
@@ -69,13 +66,24 @@ public class AuthorizationService {
     }
   }
 
-  public String getUserIdByLogin(String login) {
+  public String getUserIdByLogin(String login) throws UserNotFoundException {
+    Map<String, String> params = new HashMap<>();
+    params.put("username", login);
+    HttpEntity<Map<String, Object>> requestEntity = new HttpEntity<>(headersWithAdminToken());
     try {
-      ResponseEntity<Map> r = restTemplate.getForEntity(userDetailsEndpoint, Map.class);
-      return r.getBody().get("userId").toString();
+      ResponseEntity<UserRepresentation[]> r =
+          restTemplate.exchange(
+              userEndpoint, HttpMethod.GET, requestEntity, UserRepresentation[].class, params);
+      for (UserRepresentation user : Objects.requireNonNull(r.getBody())) {
+        if (user.username.equals(login)) {
+          return user.id;
+        }
+      }
+
     } catch (HttpClientErrorException e) {
-      throw new RuntimeException(e.getMessage());
+      throw new RuntimeException("User id failed:" + e.getMessage());
     }
+    throw new UserNotFoundException();
   }
 
   public void register(String emailAddress, String username, String password) {
@@ -113,7 +121,8 @@ public class AuthorizationService {
     }
   }
 
-  public void edit(String username, String emailAddress, String password) {
+  public void edit(String username, String emailAddress, String password)
+      throws UserNotFoundException {
     String userId = getUserIdByLogin(username);
     // request body
     Map<String, Object> requestBody = new HashMap<>();
@@ -142,5 +151,10 @@ public class AuthorizationService {
     headers.setContentType(MediaType.APPLICATION_JSON);
     headers.set("Authorization", "Bearer " + token);
     return headers;
+  }
+
+  private static class UserRepresentation {
+    public String id;
+    public String username;
   }
 }

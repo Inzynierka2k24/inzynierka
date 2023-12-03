@@ -34,9 +34,9 @@ public class UserServiceTest {
   @Test
   public void shouldUpdateUserInDatabaseWhenUserExists() throws UserNotFoundException {
     // Given
-    String email = "testUser@gmail.com";
-    User user = new User("testUser", email);
-    when(userDao.getByEmail(email)).thenReturn(Optional.of(user));
+    long id = 2L;
+    User user = new User(id, "testUser", "testUser@gmail.com");
+    when(userDao.get(id)).thenReturn(Optional.of(user));
 
     // When
     userService.update(user);
@@ -105,9 +105,9 @@ public class UserServiceTest {
   @Test
   public void shouldNotRemoveUserThatNotExists() {
     // Given
-    String email = "testUser@gmail.com";
-    User user = new User("testUser", email);
-    when(userDao.getByEmail(email)).thenReturn(Optional.empty());
+    long userId = 2L;
+    User user = new User(userId, "testUser", "testUser@gmail.com");
+    when(userDao.get(userId)).thenReturn(Optional.empty());
 
     // When/Then
     assertThrows(UserNotFoundException.class, () -> userService.update(user));

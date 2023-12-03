@@ -35,7 +35,6 @@ class AuthorizationServiceTest {
 
   private static final String TOKEN_ENDPOINT = "https://token-endpoint.com";
   private static final String USER_ENDPOINT = "https://user-endpoint.com";
-  private static final String USER_DETAILS_ENDPOINT = "https://user-details-endpoint.com";
   private static final String CLIENT_ID = "client-id";
   private static final String TOKEN = "testToken";
   private static final String USERNAME = "username";
@@ -52,8 +51,6 @@ class AuthorizationServiceTest {
   void setUp() {
     ReflectionTestUtils.setField(authorizationService, "tokenEndpoint", TOKEN_ENDPOINT);
     ReflectionTestUtils.setField(authorizationService, "userEndpoint", USER_ENDPOINT);
-    ReflectionTestUtils.setField(
-        authorizationService, "userDetailsEndpoint", USER_DETAILS_ENDPOINT);
     ReflectionTestUtils.setField(authorizationService, "clientId", CLIENT_ID);
     ReflectionTestUtils.setField(authorizationService, "adminLogin", ADMIN_USERNAME);
     ReflectionTestUtils.setField(authorizationService, "adminPassword", ADMIN_PASSWORD);
@@ -232,6 +229,7 @@ class AuthorizationServiceTest {
     formData.add("client_id", CLIENT_ID);
     formData.add("username", AuthorizationServiceTest.USERNAME);
     formData.add("password", AuthorizationServiceTest.PASSWORD);
+    formData.add("scope", "openid");
 
     return new HttpEntity<>(formData, headers);
   }
