@@ -1,112 +1,101 @@
 <div class="form-container">
-    <div class="surface-card p-4 shadow-7 border-round w-full">
-        <div class="text-center mb-5">
-            <form [formGroup]="editFinanceForm">
-                <div class="p-grid">
-                    <div class="p-col-12">
-                      <label class="block text-900 font-medium mb-2" for="userId">User ID:</label>
-                      <input
-                          [placeholder]="'User ID'"
-                          class="w-full mb-3"
-                          formControlName="userId"
-                          id="userId"
-                          pInputText
-                          type="number"
-                          [value]="editFinanceForm.get('userId')?.value"
-                          required
-                      />
-                    </div>
-                    <div class="p-col-12">
-                      <label class="block text-900 font-medium mb-2">Apartment Id:</label>
-                      <input
-                        [placeholder]="'1'"
-                        class="w-full mb-3"
-                        formControlName="apartmentId"
-                        id="apartmentId"
-                        pInputText
-                        type="number"
-                        [value]="editFinanceForm.get('apartmentId')?.value"
-                        required
-                      />
-                    </div>
+  <div class="surface-card p-4 shadow-5 border-round w-full">
+    <div class=" mb-5">
+      <form [formGroup]="editFinanceForm">
+        <div class="p-grid">
+          <!-- Event Dropdown -->
+          <div class="p-col-12 mb-3">
+            <label class="block text-900 font-medium mb-2 flex justify-content-center">Event:</label>
+            <div class="flex justify-content-center">
+              <p-dropdown
+                formControlName="eventType"
+                [options]="eventKeys"
+                (onChange)="onEventSelect()"
+                [style]="{'width':'300px'}"
+                placeholder="Select an Event">
+              </p-dropdown>
+            </div>
+          </div>
 
-                    <div class="p-col-12">
-                      <label class="block text-900 font-medium mb-2">Event Id:</label>
-                      <input
-                        [placeholder]="'1'"
-                        class="w-full mb-3"
-                        formControlName="eventId"
-                        id="eventId"
-                        pInputText
-                        type="number"
-                        [value]="editFinanceForm.get('eventId')?.value"
-                        required
-                      />
-                    </div>
+          <!-- Source Dropdown -->
+          <div class="p-col-12 mb-3">
+            <label class="block text-900 font-medium mb-2 flex justify-content-center">Source:</label>
+            <div class="flex justify-content-center">
+              <p-dropdown
+                formControlName="source"
+                [options]="eventSources"
+                [style]="{'width':'300px'}">
+              </p-dropdown>
+            </div>
+          </div>
 
-                    <div class="p-col-12">
-                      <label class="block text-900 font-medium mb-2">Event Type:</label>
-                      <p-dropdown formControlName="eventType" [options]="eventTypes" optionLabel="name"
-                      >Select an Event</p-dropdown>
-                    </div>
-                </div>
-            </form>
+          <!-- Apartment Dropdown -->
+          <div class="p-col-12 mb-3">
+            <label class="block text-900 font-medium mb-2 flex justify-content-center">Apartment:</label>
+            <div class="flex justify-content-center">
+              <p-dropdown
+                formControlName="apartment"
+                [options]="apartments"
+                [style]="{'width':'300px'}">
+              </p-dropdown>
+            </div>
+          </div>
         </div>
+      </form>
     </div>
+  </div>
 
-    <div class="surface-card p-4 shadow-7 border-round w-full">
-        <div class="text-center mb-5">
-            <form [formGroup]="editFinanceForm">
-                <div class="p-grid">
-                    <div class="p-col-12">
-                      <label class="block text-900 font-medium mb-2">Source:</label>
-                      <p-dropdown formControlName="sources"
-                                  [options]="sources"
-                                  optionLabel="name">
-                      </p-dropdown>
-                    </div>
+  <div class="surface-card p-4 shadow-5 border-round w-full">
+    <div class="text-center mb-5">
+      <form [formGroup]="editFinanceForm">
+        <div class="p-grid">
 
-                    <div class="p-col-12">
-                      <label class="block text-900 font-medium mb-2">Price:</label>
-                      <input
-                        [placeholder]="'200'"
-                        class="w-full mb-3"
-                        formControlName="price"
-                        id="price"
-                        pInputText
-                        type="number"
-                        [value]="editFinanceForm.get('price')?.value"
-                        required
-                      />
-                    </div>
+          <!-- Price -->
+          <div class="p-col-12 mb-3">
+            <label class="block text-900 font-medium mb-2">Price:</label>
+            <input
+              [placeholder]="'200'"
+              formControlName="price"
+              id="price"
+              pInputText
+              type="number"
+              [style]="{'width':'300px'}"
+              required
+            />
+          </div>
 
-                    <div class="p-col-12">
-                      <label class="block text-900 font-medium mb-2" for="apartmentNumber">Date:</label>
-                      <p-calendar [showIcon]="true" formControlName="date"></p-calendar>
-                    </div>
-                     <div class="p-col-12">
-                        <label class="block text-900 font-medium mb-2">Details:</label>
-                        <input
-                            [placeholder]="'Details'"
-                            class="w-full mb-3"
-                            formControlName="details"
-                            id="details"
-                            pInputText
-                            type="text"
-                            [value]="editFinanceForm.get('details')?.value"
-                            required
-                        />
-                    </div>
-                </div>
-            </form>
-            <button
-                  class="custom-button"
-                  icon="pi pi-check"
-                  pButton
-                  pRipple
-                  type="submit"
-                  (click)="saveChanges(finance)"
-            >Submit</button>
+          <!-- Date calendar -->
+          <div class="p-col-12 mb-3">
+            <label class="block text-900 font-medium mb-2">Date:</label>
+            <p-calendar [showIcon]="true" formControlName="date"
+                        [style]="{'width':'300px'}"
+            ></p-calendar>
+          </div>
+
+          <!-- Details -->
+          <div class="p-col-12 mb-3">
+            <label class="block text-900 font-medium mb-2">Details:</label>
+            <input
+              [placeholder]="'Details'"
+              formControlName="details"
+              [style]="{'width':'300px'}"
+              pInputText
+              type="text"
+              required
+            />
+          </div>
         </div>
+      </form>
+
+      <!-- Update finance button -->
+      <button
+        class="custom-button mt-1"
+        icon="pi pi-check"
+        pButton
+        pRipple
+        type="submit"
+        (click)="updateFinance()"
+      >Add finance</button>
     </div>
+  </div>
 </div>

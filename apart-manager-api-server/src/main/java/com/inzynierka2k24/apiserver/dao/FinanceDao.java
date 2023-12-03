@@ -92,7 +92,7 @@ public class FinanceDao {
           finance.eventType().getNumber(),
           finance.source().getNumber(),
           finance.price(),
-          finance.date(),
+          Timestamp.from(finance.date()),
           finance.details(),
           finance.id().orElseThrow());
     } catch (DataAccessException e) {

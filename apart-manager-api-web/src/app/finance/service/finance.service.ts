@@ -19,8 +19,8 @@ export class FinanceService {
     return this.http.post<boolean>(`${environment.api_url}/`+ user.id +'/finance', finance, options);
   }
 
-  updateFinance(user: UserDTO, finance: Finance): Observable<Finance> {
-    return this.http.put<Finance>(`${environment.api_url}/`+ user.id +'/finance/' + finance.id, finance);
+  updateFinance(user: UserDTO, financeData: Finance, options?: any): Observable<HttpEvent<boolean>> {
+    return this.http.put<boolean>(`${environment.api_url}/${user.id}/finance/${financeData.id}`, financeData, options);
   }
 
   deleteFinance(user: UserDTO, financeId: number, options?: any): Observable<HttpEvent<void>>{

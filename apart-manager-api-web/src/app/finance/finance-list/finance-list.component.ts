@@ -81,7 +81,12 @@ export class FinanceListComponent implements OnInit {
   }
 
   startEditing(finance: Finance) {
-    this.router.navigate(['/finances/edit', finance]);
+    const selectedApartment =
+        this.apartmentOptions.find(ap => ap.value === finance.apartmentId);
+    const financeWithApartmentLabel =
+        { ...finance, apartment: selectedApartment?.label };
+
+    this.router.navigate(['/finances/edit', financeWithApartmentLabel]);
   }
 
   deleteFinance(finance: Finance): void {

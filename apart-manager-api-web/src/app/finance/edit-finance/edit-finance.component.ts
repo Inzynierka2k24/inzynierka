@@ -1,101 +1,160 @@
-import { Component } from '@angular/core';
-import {Message, MessageService} from "primeng/api";
+import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {FinanceService} from "../../finance/service/finance.service";
+import {Store} from "@ngrx/store";
+import {Apartment, Finance, UserDTO} from "../../../generated";
+import {AppState} from "../../core/store/app.store";
+import {FinanceService} from "../service/finance.service";
+import {selectCurrentUser} from "../../core/store/user/user.selectors";
+import {Message, MessageService} from "primeng/api";
+import {FinanceSourceService} from "../service/finance-source.service";
+import {Observable} from "rxjs";
+import {ApartmentService} from "../../apartment/services/apartment.service";
 import {ActivatedRoute, Router} from "@angular/router";
-import {EventType, Finance, Source} from "../../../generated";
+import defaultCallbacks from "chart.js/dist/plugins/plugin.tooltip";
+import {switchMap} from "rxjs/operators";
 
 @Component({
   selector: 'app-edit-finance',
   templateUrl: './edit-finance.component.html',
-  styleUrls: ['../add-finance/add-finance.component.scss']
+  styleUrls: ['./edit-finance.component.scss']
 })
-export class EditFinanceComponent {
-  finance: any;
+export class EditFinanceComponent implements OnInit {
   messages: Message[] = [];
   editFinanceForm: FormGroup;
-  eventTypes = [
-    { name: "UNKNOWN" },
-    { name: "RESERVATION" },
-    { name: "RENOVATION" },
-  ];
-  sources = [
-    { name: "UNKNOWN" },
-    { name: "BOOKING" },
-    { name: "AIRBNB" },
-    { name: "TRIVAGO" },
-    { name: "NOCOWANIEPL" },
-    { name: "PROMOTION" },
-    { name: "FINE" },
-    { name: "TAX" },
-    { name: "CLEANING" },
-    { name: "REPAIR" },
-    { name: "MAINTENANCE" },
-  ];
+  finance: any;
+  eventsWithSources: Map<string, string[]>;
+  eventKeys: string[] = [];
+  eventSources: string[] = [];
+  isUserLoggedIn = false;
+  user$: Observable<UserDTO | undefined>;
+  user: UserDTO;
+  userApartments: Apartment[]= [];
+  apartments: {label: string, value: number}[];
 
-  constructor(private financeService: FinanceService,
+  constructor(private store: Store<AppState>,
+              private apartmentService: ApartmentService,
+              private financeService: FinanceService,
+              private financeSourceService: FinanceSourceService,
               private messageService: MessageService,
               private router: Router,
               private fb: FormBuilder,
-              private route: ActivatedRoute) {
-
+              private route: ActivatedRoute){
     this.route.params.subscribe((params) => {
       this.finance = params;
+      console.log(this.finance)
+
+      // to ensure that data for Source and Apartment dropdowns is not empty
+      this.eventSources = [this.finance.source!];
+      this.apartments = [{label: this.finance.apartment!, value: this.finance.apartmentId!}]
     });
 
     this.editFinanceForm = this.fb.group({
-        userId: ['', Validators.required],
-        apartmentId: ['', Validators.required],
-        eventId: ['', Validators.required],
-        eventType: ['', [Validators.required]],
-        source: ['', [Validators.required]],
-        price: ['', [Validators.required, Validators.min(0)]],
-        date: ['', [Validators.required]],
-        details: ['', [Validators.required]],
+      userId: ['', Validators.required],
+      apartment: ['', Validators.required],
+      eventType: ['', [Validators.required]],
+      source: ['', [Validators.required]],
+      price: ['', [Validators.required, Validators.min(0)]],
+      date: ['', [Validators.required]],
+      details: ['', [Validators.required]],
     });
 
     this.editFinanceForm.setValue({
-        userId: this.finance.userId!,
-        apartmentId: this.finance.apartmentId!,
-        eventId: this.finance.eventId!,
-        eventType: this.finance.eventType! as EventType,
-        source: this.finance.source! as Source,
-        price: this.finance.price!,
-        date: this.finance.date!,
-        details: this.finance.details!,
+      userId: this.finance.userId!,
+      apartment: this.finance.apartment,
+      eventType: this.finance.eventType!,
+      source: this.finance.source!,
+      price: this.finance.price!,
+      date: this.convertDate(this.finance.date!),
+      details: this.finance.details!,
     });
   }
 
-  addFinance() {
-    this.router.navigate(['/finances/add']);
+  ngOnInit(): void {
+    this.fetchEventsWithSources();
+    this.fetchApartmentsForUser();
   }
 
-  saveChanges(finance: Finance) {
-    console.log('Edit Finance:', event);
-    this.messages = [{
-      severity: 'success',
-      detail: 'Finance edited successfully',
-    }];
-    this.cleanMessages();
-    // this.financeService.updateFinance(this.finance).subscribe((response) => {
-    //   this.isEditing = false;
-    // }, (error) => {
-    //   this.messages = [{
-    //     severity: 'warn',
-    //     detail: 'Cannot update finance',
-    //   }];
-    // });
-    this.router.navigate(['/finances']);
-
+  convertDate(date: string) {
+    return new Date(date);
   }
 
-  cancelEditing() {
-    this.router.navigate(['/finances']);
+  fetchEventsWithSources() {
+    this.financeSourceService.getEventsWithSources().subscribe((data: Map<string, string[]>) => {
+      this.eventsWithSources = new Map(Object.entries(data));
+      this.eventSources = this.eventsWithSources.get(this.finance.eventType)!;
+      this.eventKeys = Array.from(this.eventsWithSources.keys());
+    });
   }
 
-  cleanMessages() {
-    setTimeout(() => {
-      this.messages = [];
-    }, 3000);
+  fetchApartmentsForUser(){
+    this.user$ = this.store.select(selectCurrentUser);
+    this.user$.subscribe((user) => {
+      if (user) {
+        this.apartmentService.getApartments(user).subscribe((data: Apartment[]) => {
+          this.userApartments = data;
+          this.apartments = data.map(apartment => ({
+            label: `${apartment.title}, ${apartment.city}`,
+            value: apartment.id!
+          }));
+        });
+      }
+    });
+  }
+
+  onEventSelect() {
+    this.eventSources = this.eventsWithSources.get(this.editFinanceForm.value.eventType!) || [];
+  }
+
+  updateFinance(): void {
+    if (this.editFinanceForm.valid) {
+      this.store
+      .select(selectCurrentUser)
+      .pipe(
+        switchMap((user) => {
+          if (!user) {
+            this.isUserLoggedIn = false;
+            throw new Error('User not logged in');
+          }
+          this.isUserLoggedIn = true;
+          this.user = user;
+          const financeData: Finance = {
+            id: this.finance.id!,
+            userId: this.user.id,
+            apartmentId: parseInt(this.editFinanceForm.value.apartment!),
+            eventType: this.editFinanceForm.value.eventType!,
+            source: this.editFinanceForm.value.source!,
+            price: parseFloat(this.editFinanceForm.value.price!),
+            date: new Date(this.editFinanceForm.value.date!),
+            details: this.editFinanceForm.value.details!,
+          };
+          return this.financeService.updateFinance(this.user,
+            financeData,
+              { responseType: 'text' });
+        })
+      )
+      .subscribe(
+        {
+          next: response =>{
+            this.editFinanceForm.reset();
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Finance updated correctly',
+              detail: 'success',
+            })
+
+            this.router.navigate(['/finances']); // Replace 'your-target-route' with the desired route
+          },
+          error:error => {
+            console.error('API call error:', error);
+          }
+        },
+      );
+    } else {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Validation Error',
+        detail: 'Please fill in all required fields and correct validation errors.',
+      });
+    }
   }
 }
