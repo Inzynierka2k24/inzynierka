@@ -79,7 +79,7 @@ class GrpcServerTest {
                 Instant.EPOCH.plus(10, ChronoUnit.DAYS),
                 Optional.of(100f),
                 ExternalService.BOOKING));
-    when(integrationService.getReservations(any())).thenReturn(reservations);
+    when(integrationService.getReservations(any(), any(), any())).thenReturn(reservations);
 
     StreamObserver<GetReservationsResponse> responseObserver = mock(StreamObserver.class);
 
@@ -87,7 +87,7 @@ class GrpcServerTest {
     grpcServer.getReservations(request, responseObserver);
 
     // Then
-    verify(integrationService).getReservations(any());
+    verify(integrationService).getReservations(any(), any(), any());
     verify(responseObserver).onNext(any(GetReservationsResponse.class));
     verify(responseObserver).onCompleted();
   }

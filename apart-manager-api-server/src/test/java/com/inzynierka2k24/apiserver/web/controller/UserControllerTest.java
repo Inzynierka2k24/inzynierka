@@ -87,7 +87,7 @@ public class UserControllerTest {
                         + "\", \"password\":\""
                         + password
                         + "\"}"))
-        .andExpect(status().isCreated());
+        .andExpect(status().isOk());
 
     verify(authorizationService).register(email, login, password);
   }

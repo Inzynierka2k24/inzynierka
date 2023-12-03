@@ -39,7 +39,7 @@ public class UserController {
       throws UserAlreadyExistsException {
     authorizationService.register(request.emailAddress(), request.login(), request.password());
     userService.register(new User(request.login(), request.emailAddress()));
-    return ResponseEntity.status(HttpStatus.CREATED).build();
+    return ResponseEntity.ok().build();
   }
 
   @GetMapping("/user/details")
@@ -60,12 +60,12 @@ public class UserController {
       throws UserNotFoundException {
     authorizationService.edit(request.username(), request.emailAddress(), request.password());
     userService.update(new User(userId, request.username(), request.emailAddress()));
-    return ResponseEntity.ok("User updated successfully");
+    return ResponseEntity.ok().build();
   }
 
   @DeleteMapping("/user/{userId}/remove")
   public ResponseEntity<String> delete(@PathVariable long userId) throws UserNotFoundException {
     userService.deleteById(userId);
-    return ResponseEntity.ok("User deleted successfully");
+    return ResponseEntity.ok().build();
   }
 }

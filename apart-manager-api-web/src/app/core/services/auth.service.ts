@@ -17,6 +17,10 @@ export class AuthService {
   }
 
   register(request: RegisterRequest): Observable<string> {
-    return this.httpClient.post<string>(`${environment.api_url}` + '/register', request);
+    return this.httpClient.post(
+      `${environment.api_url}` + '/register',
+      request,
+      { responseType: 'text' },
+    );
   }
 }

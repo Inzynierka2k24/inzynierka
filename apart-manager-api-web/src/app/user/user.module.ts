@@ -10,9 +10,19 @@ import { RippleModule } from 'primeng/ripple';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService } from 'primeng/api';
 import { PasswordModule } from 'primeng/password';
+import { TableModule } from 'primeng/table';
+import { ExternalAccountModalComponent } from './preferences/add-external-account-modal/external-account-modal.component';
+import { DialogModule } from 'primeng/dialog';
+import { DropdownModule } from 'primeng/dropdown';
+import { RadioButtonModule } from 'primeng/radiobutton';
+import { NgOptimizedImage } from '@angular/common';
 
 @NgModule({
-  declarations: [DashboardComponent, PreferencesComponent],
+  declarations: [
+    DashboardComponent,
+    PreferencesComponent,
+    ExternalAccountModalComponent,
+  ],
   imports: [
     SharedModule,
     ReactiveFormsModule,
@@ -22,6 +32,11 @@ import { PasswordModule } from 'primeng/password';
     RippleModule,
     ConfirmDialogModule,
     PasswordModule,
+    TableModule,
+    DialogModule,
+    DropdownModule,
+    RadioButtonModule,
+    NgOptimizedImage,
   ],
   providers: [ConfirmationService],
 })

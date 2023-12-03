@@ -9,7 +9,6 @@ import com.inzynierka2k24.apiserver.service.ReservationService;
 import com.inzynierka2k24.apiserver.web.dto.ReservationDTO;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -65,7 +64,7 @@ public class ReservationController {
     }
 
     reservationService.add(apartmentId, reservation);
-    return ResponseEntity.status(HttpStatus.CREATED).body("Reservation created successfully");
+    return ResponseEntity.ok("Reservation created successfully");
   }
 
   @PutMapping()

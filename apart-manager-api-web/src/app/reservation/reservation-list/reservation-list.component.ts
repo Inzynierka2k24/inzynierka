@@ -1,20 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { ReservationService } from '../services/reservation.service';
-import {Apartment, Reservation, UserDTO} from '../../../generated';
-import { ApartmentService} from "../../apartment/services/apartment.service";
+import { Apartment, Reservation, UserDTO } from '../../../generated';
+import { ApartmentService } from '../../apartment/services/apartment.service';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { MessageService } from 'primeng/api';
-import { Message } from 'primeng/api';
-import {Router} from "@angular/router";
-import {selectCurrentUser} from "../../core/store/user/user.selectors";
-import {AppState} from "../../core/store/app.store";
-import {switchMap} from "rxjs/operators";
+import { Message, MessageService } from 'primeng/api';
+import { Router } from '@angular/router';
+import { selectCurrentUser } from '../../core/store/user/user.selectors';
+import { AppState } from '../../core/store/app.store';
+import { switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-reservation-list',
   templateUrl: './reservation-list.component.html',
-  styleUrls: ['./reservation-list.component.scss']
+  styleUrls: ['./reservation-list.component.scss'],
 })
 export class ReservationListComponent implements OnInit {
   messages: Message[] = [];
@@ -26,12 +25,13 @@ export class ReservationListComponent implements OnInit {
   user$: Observable<UserDTO | undefined>;
   user: UserDTO;
 
-  constructor(private store: Store<AppState>,
-              private reservationService: ReservationService,
-              private apartmentService: ApartmentService,
-              private messageService: MessageService,
-              private router: Router) {
-  }
+  constructor(
+    private store: Store<AppState>,
+    private reservationService: ReservationService,
+    private apartmentService: ApartmentService,
+    private messageService: MessageService,
+    private router: Router,
+  ) {}
 
   ngOnInit() {
     this.fetchData();
@@ -54,15 +54,16 @@ export class ReservationListComponent implements OnInit {
             throw new Error('User not logged in');
           }
           this.user = user;
-          return this.reservationService.deleteReservation(this.user,
+          return this.reservationService.deleteReservation(
+            this.user,
             reservation.apartmentId,
             <number>reservation.id,
-            { responseType: 'text' });
-        })
+            { responseType: 'text' },
+          );
+        }),
       )
-      .subscribe(
-        {
-        next: response =>{
+      .subscribe({
+        next: (response) => {
           this.messageService.add({
             severity: 'success',
             summary: 'Reservation deleted correctly',
@@ -70,12 +71,11 @@ export class ReservationListComponent implements OnInit {
           });
           this.fetchData();
         },
-        error:error => {
-            console.error('API call error:', error);
-            this.fetchData();
-          }
+        error: (error) => {
+          console.error('API call error:', error);
+          this.fetchData();
         },
-      );
+      });
   }
 
   cleanMessages() {
@@ -88,18 +88,49 @@ export class ReservationListComponent implements OnInit {
     this.user$ = this.store.select(selectCurrentUser);
     this.user$.subscribe((user) => {
       if (user) {
-        this.apartmentService.getApartments(user).subscribe((data: Apartment[]) => {
-          this.apartments = data;
+        this.apartmentService
+          .getApartments(user)
+          .subscribe((data: Apartment[]) => {
+            this.apartments = data;
 
-          if (this.apartments && this.apartments.length > 0) {
-            this.reservations = [];
-            for(const val of this.apartments) {
-              this.reservationService.getReservations(user, val).subscribe((data: Reservation[]) => {
-                this.reservations = this.reservations.concat(data);
-              });
+            if (this.apartments && this.apartments.length > 0) {
+              this.reservations = [];
+              for (const val of this.apartments) {
+                this.reservationService
+                  .getReservations(user, val)
+                  .subscribe((data: Reservation[]) => {
+                    this.reservations = this.reservations.concat(data);
+                  });
+              }
             }
-          }
-        });
+          });
+      }
+    });
+  }
+
+  propagateReservation(reservation: Reservation) {
+    this.user$.subscribe((user) => {
+      if (user) {
+        this.reservationService
+          .propagateReservation(
+            user.id,
+            reservation.apartmentId,
+            reservation.id!,
+          )
+          .subscribe({
+            next: (response) => {
+              this.messageService.add({
+                severity: 'success',
+                summary: 'Reservation propagated correctly',
+                detail: 'success',
+              });
+              this.fetchData();
+            },
+            error: (error) => {
+              console.error('API call error:', error);
+              this.fetchData();
+            },
+          });
       }
     });
   }

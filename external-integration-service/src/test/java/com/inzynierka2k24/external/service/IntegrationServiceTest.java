@@ -4,6 +4,7 @@ import static com.inzynierka2k24.ExternalService.AIRBNB;
 import static com.inzynierka2k24.ExternalService.BOOKING;
 import static com.inzynierka2k24.external.TestUtils.createAccount;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -57,6 +58,8 @@ class IntegrationServiceTest {
   @Test
   void shouldGetReservations() {
     // Given
+    Instant from = Instant.parse("2022-01-01T00:00:00Z");
+    Instant to = Instant.parse("2022-01-04T00:00:00Z");
     Reservation reservationBooking =
         new Reservation(
             Instant.parse("2022-01-01T00:00:00Z"),
@@ -68,11 +71,11 @@ class IntegrationServiceTest {
             Instant.parse("2022-01-03T00:00:00Z"), Instant.parse("2022-01-04T00:00:00Z"), AIRBNB);
     Collection<Account> externalServices = List.of(createAccount(BOOKING), createAccount(AIRBNB));
 
-    when(bookingService.getReservations()).thenReturn(Set.of(reservationBooking));
-    when(airbnbService.getReservations()).thenReturn(Set.of(reservationAirbnb));
+    when(bookingService.getReservations(any(), any())).thenReturn(Set.of(reservationBooking));
+    when(airbnbService.getReservations(any(), any())).thenReturn(Set.of(reservationAirbnb));
 
     // When
-    Set<Reservation> result = integrationService.getReservations(externalServices);
+    Set<Reservation> result = integrationService.getReservations(from, to, externalServices);
 
     // Then
     assertNotNull(result);
