@@ -49,7 +49,6 @@ class ContactControllerTest {
             "test",
             "test",
             new NotificationSettings(false, false),
-            new ArrayList<>(),
             new ArrayList<>());
     when(messagingService.getContacts(userId)).thenReturn(List.of(contactDTO));
 
