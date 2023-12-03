@@ -1,8 +1,8 @@
 package com.inzynierka2k24.apiserver.web.controller;
 
-import com.inzynierka2k24.Reservation;
 import com.inzynierka2k24.apiserver.exception.apartment.ApartmentNotFoundException;
 import com.inzynierka2k24.apiserver.exception.reservation.ReservationNotFoundException;
+import com.inzynierka2k24.apiserver.model.ExternalReservation;
 import com.inzynierka2k24.apiserver.service.IntegrationService;
 import com.inzynierka2k24.apiserver.web.request.GetReservationsRequest;
 import java.util.List;
@@ -29,7 +29,7 @@ public class IntegrationController {
   }
 
   @PostMapping("/apartment/{apartmentId}/get/reservations")
-  public ResponseEntity<List<Reservation>> getReservations(
+  public ResponseEntity<List<ExternalReservation>> getReservations(
       @PathVariable long userId,
       @PathVariable long apartmentId,
       @RequestBody GetReservationsRequest request) {

@@ -4,5 +4,5 @@ import com.inzynierka2k24.ExternalService;
 
 public interface External {
 
-  ExternalService getService();
+  ExternalService getServiceType();
 }

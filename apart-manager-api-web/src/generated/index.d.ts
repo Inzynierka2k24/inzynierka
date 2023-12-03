@@ -1,7 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-
-// Generated using typescript-generator version 3.1.1185 on 2023-12-01 19:17:16.
+// Generated using typescript-generator version 3.1.1185 on 2023-12-03 13:18:18.
 
 export interface Apartment {
     id?: number;
@@ -26,17 +25,27 @@ export interface Contact {
     price: number;
 }
 
-export interface ExternalAccount {
+export interface External {
+    serviceType: ExternalService;
+}
+
+export interface ExternalAccount extends External {
     id?: number;
     login: string;
     password: string;
     serviceType: ExternalService;
 }
 
-export interface ExternalOffer {
+export interface ExternalOffer extends External {
     id?: number;
     serviceType: ExternalService;
     externalLink: string;
+}
+
+export interface ExternalReservation {
+    reservation: Reservation;
+    price?: number;
+    serviceType: ExternalService;
 }
 
 export interface Finance {
@@ -163,7 +172,7 @@ export type IntervalType = "HOURS" | "DAYS" | "WEEKS";
 
 export type MembershipLevel = "FREE" | "COMMERCIAL" | "ENTERPRISE";
 
-export type Source = "UNKNOWN" | "BOOKING" | "PROMOTION" | "FINE" | "TAX" | "CLEANING" | "REPAIR" | "MAINTENANCE";
+export type Source = "UNKNOWN" | "BOOKING" | "AIRBNB" | "TRIVAGO" | "NOCOWANIEPL" | "PROMOTION" | "FINE" | "TAX" | "CLEANING" | "REPAIR" | "MAINTENANCE";
 
 export type TriggerType = "RESERVATION" | "CHECKIN" | "CHECKOUT";
 

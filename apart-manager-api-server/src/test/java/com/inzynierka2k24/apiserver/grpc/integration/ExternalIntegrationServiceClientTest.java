@@ -1,6 +1,7 @@
 package com.inzynierka2k24.apiserver.grpc.integration;
 
 import static com.inzynierka2k24.apiserver.grpc.util.TimeConverter.toProtoTimestamp;
+import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -69,11 +70,12 @@ class ExternalIntegrationServiceClientTest {
     when(blockingStub.getReservations(expectedRequest)).thenReturn(response);
 
     // When
-    List<Reservation> result = client.getReservations(from, to, accounts, offers);
+    List<com.inzynierka2k24.apiserver.model.ExternalReservation> result =
+        client.getReservations(from, to, accounts, offers, 1);
 
     // Then
     verify(blockingStub).getReservations(expectedRequest);
-    assertEquals(0, result.size()); // TODO Change after implementing method
+    assertThat(result).hasSize(1);
   }
 
   @Test

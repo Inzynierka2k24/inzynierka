@@ -7,6 +7,10 @@ import java.util.Optional;
 public record Reservation(
     Instant start, Instant end, Optional<Float> price, ExternalService serviceType) {
 
+  public Reservation(Instant start, Instant end, float price, ExternalService externalService) {
+    this(start, end, Optional.of(price), externalService);
+  }
+
   public Reservation(Instant start, Instant end, ExternalService externalService) {
     this(start, end, Optional.empty(), externalService);
   }
