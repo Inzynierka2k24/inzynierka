@@ -23,6 +23,9 @@ export class AddFinanceComponent {
   sources = [
     { name: "UNKNOWN" },
     { name: "BOOKING" },
+    { name: "AIRBNB" },
+    { name: "TRIVAGO" },
+    { name: "NOCOWANIEPL" },
     { name: "PROMOTION" },
     { name: "FINE" },
     { name: "TAX" },

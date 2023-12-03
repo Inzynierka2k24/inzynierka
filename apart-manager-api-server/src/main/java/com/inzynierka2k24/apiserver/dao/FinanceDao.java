@@ -77,8 +77,8 @@ public class FinanceDao {
           finance.userId(),
           finance.apartmentId(),
           finance.eventId(),
-          finance.eventType().ordinal(),
-          finance.source().ordinal(),
+          finance.eventType().getNumber(),
+          finance.source().getNumber(),
           finance.price(),
           from(finance.date()),
           finance.details());

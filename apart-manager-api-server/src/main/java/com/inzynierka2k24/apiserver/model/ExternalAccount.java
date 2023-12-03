@@ -16,7 +16,7 @@ public record ExternalAccount(
   }
 
   @Override
-  public ExternalService getService() {
+  public ExternalService getServiceType() {
     return serviceType;
   }
 }

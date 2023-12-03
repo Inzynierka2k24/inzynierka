@@ -47,12 +47,17 @@ public class IntegrationService {
 
     reservations.forEach(
         reservation -> {
+          boolean shouldSaveToFinances = true;
+
           try {
             reservationService.add(apartmentId, reservation.reservation());
           } catch (ReservationNotValidException e) {
-            log.error("Couldn't save external reservation {}. Cause: {}", reservation, e);
+            log.error(
+                "Couldn't save external reservation {}. Cause: {}", reservation, e.getMessage());
+            shouldSaveToFinances = false;
           }
-          if (reservation.price().isPresent()) {
+
+          if (shouldSaveToFinances && reservation.price().isPresent()) {
             financeService.add(
                 new Finance(
                     Optional.empty(),
@@ -60,7 +65,7 @@ public class IntegrationService {
                     apartmentId,
                     0,
                     EventType.RESERVATION,
-                    Source.BOOKING,
+                    Source.forServiceType(reservation.serviceType()),
                     reservation.price().get(),
                     Instant.now(),
                     "Reservation from external service"));

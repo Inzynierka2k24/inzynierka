@@ -15,7 +15,7 @@ public record ExternalOffer(Optional<Long> id, ExternalService serviceType, Stri
   }
 
   @Override
-  public ExternalService getService() {
+  public ExternalService getServiceType() {
     return serviceType;
   }
 }
