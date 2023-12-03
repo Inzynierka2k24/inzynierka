@@ -18,11 +18,10 @@ export class AddContactModalComponent {
   visible: boolean;
   @Output()
   visibleChange = new EventEmitter<boolean>();
-
+  @Input()
+  editedContact: any;
   isLoading$ = this.store.select(selectMessagingLoadingState);
-
   currentUser: UserDTO | undefined;
-
   addContactForm: any;
   readonly contactTypes = ['CLEANING', 'MECHANIC', 'ELECTRICIAN', 'UNKNOWN'];
 
@@ -44,6 +43,26 @@ export class AddContactModalComponent {
       .subscribe((user) => (this.currentUser = user));
   }
 
+  private _editable = false;
+
+  get editable(): boolean {
+    return this._editable;
+  }
+
+  @Input()
+  set editable(edit: boolean) {
+    this._editable = edit;
+    if (edit && this.editedContact) {
+      this.addContactForm.setValue({
+        name: this.editedContact.name,
+        contactType: this.editedContact.contactType,
+        price: this.editedContact.price,
+        mail: this.editedContact.mail,
+        phone: this.editedContact.phone,
+      });
+    }
+  }
+
   sendContact() {
     if (this.addContactForm.valid && this.currentUser) {
       const contact = {
@@ -55,9 +74,22 @@ export class AddContactModalComponent {
         emailNotifications: !!this.addContactForm.value.email,
         smsNotifications: !!this.addContactForm.value.phone,
       };
-      this.store.dispatch(
-        MessagingActions.addContact({ userId: this.currentUser.id, contact }),
-      );
+      if (this.editable) {
+        this.store.dispatch(
+          MessagingActions.editContact({
+            userId: this.currentUser.id,
+            contact: { ...contact, id: this.editedContact.id },
+          }),
+        );
+      } else {
+        this.store.dispatch(
+          MessagingActions.addContact({
+            userId: this.currentUser.id,
+            contact,
+          }),
+        );
+      }
+
       this.isLoading$.subscribe((loading) => {
         if (!loading) {
           this.visibleChange.emit(false);

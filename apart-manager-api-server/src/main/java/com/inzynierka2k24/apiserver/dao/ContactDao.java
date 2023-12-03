@@ -24,16 +24,16 @@ public class ContactDao {
       "DELETE FROM contacts WHERE user_id = ? and contact_id = ?";
   private static final String UPDATE_QUERY =
       """
-                    UPDATE contacts
-                    SET name = ?,
-                        type = ?,
-                        mail = ?,
-                        phone = ?,
-                        email_notifications = ?,
-                        sms_notifications = ?,
-                        price = ?
-                    WHERE user_id = ? and contact_id = ?
-                    """;
+        UPDATE contacts
+        SET name = ?,
+            type = ?,
+            mail = ?,
+            phone = ?,
+            email_notifications = ?,
+            sms_notifications = ?,
+            price = ?
+        WHERE user_id = ? and contact_id = ?
+        """;
   private static final RowMapper<Contact> contactRowMapper =
       (rs, rowNum) ->
           new Contact(
@@ -79,14 +79,14 @@ public class ContactDao {
     template.update(
         UPDATE_QUERY,
         contact.name(),
-        contact.contactType(),
+        contact.contactType().ordinal(),
         contact.mail(),
         contact.phone(),
         contact.emailNotifications(),
         contact.smsNotifications(),
         contact.price(),
         userId,
-        contact.id());
+        contact.id().get());
   }
 
   public void deleteById(long userId, long contactId) {

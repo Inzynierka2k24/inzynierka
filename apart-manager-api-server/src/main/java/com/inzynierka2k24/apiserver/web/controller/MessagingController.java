@@ -1,7 +1,5 @@
 package com.inzynierka2k24.apiserver.web.controller;
 
-import com.inzynierka2k24.apiserver.exception.apartment.ApartmentNotFoundException;
-import com.inzynierka2k24.apiserver.exception.messaging.ContactNotFoundException;
 import com.inzynierka2k24.apiserver.grpc.messaging.MessagingServiceClient;
 import com.inzynierka2k24.apiserver.model.Contact;
 import com.inzynierka2k24.apiserver.service.MessagingService;
@@ -24,8 +22,7 @@ public class MessagingController {
   public ResponseEntity<String> addScheduledMessageForContact(
       @PathVariable long userId,
       @PathVariable long contactId,
-      @RequestBody ScheduledMessageDTO message)
-      throws ApartmentNotFoundException, ContactNotFoundException {
+      @RequestBody ScheduledMessageDTO message) {
     log.info("Got message: " + message.message());
     messagingService.addMessage(userId, contactId, message);
     Contact contact = messagingService.getContactById(userId, contactId);

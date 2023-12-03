@@ -11,6 +11,7 @@ export const messagingReducer = createReducer(
     MessagingActions.deleteMessage,
     MessagingActions.addContact,
     MessagingActions.deleteContact,
+    MessagingActions.editContact,
     (state) => ({
       ...state,
       loading: true,
@@ -71,12 +72,24 @@ export const messagingReducer = createReducer(
       (contact) => contact.id !== action.contactId,
     ),
   })),
+  on(MessagingActions.editContactComplete, (state, action) => ({
+    ...state,
+    loading: false,
+    contacts:
+      state.contacts?.map((contact) => {
+        if (contact.id === action.contact.id) {
+          return { ...contact, ...action.contact };
+        }
+        return contact;
+      }) ?? [],
+  })),
   on(
     MessagingActions.loadContactsError,
     MessagingActions.addOrderError,
     MessagingActions.deleteMessageError,
     MessagingActions.addContactError,
     MessagingActions.deleteContactError,
+    MessagingActions.editContactError,
     (state, action) => ({
       ...state,
       loading: false,

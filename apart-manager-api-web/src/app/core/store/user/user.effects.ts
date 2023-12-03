@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
 import { UserService } from '../../../user/services/user.service';
 import { LocalStorageService } from '../../services/local-storage.service';
 
-export const login = createEffect(
+const login = createEffect(
   (actions$ = inject(Actions), authService = inject(AuthService)) => {
     return actions$.pipe(
       ofType(UserActions.login),
@@ -27,7 +27,7 @@ export const login = createEffect(
   { functional: true },
 );
 
-export const loginComplete = createEffect(
+const loginComplete = createEffect(
   (
     actions$ = inject(Actions),
     localStorageService = inject(LocalStorageService),
@@ -45,7 +45,7 @@ export const loginComplete = createEffect(
   { functional: true },
 );
 
-export const logout = createEffect(
+const logout = createEffect(
   (
     actions$ = inject(Actions),
     localStorageService = inject(LocalStorageService),
@@ -62,7 +62,7 @@ export const logout = createEffect(
   { functional: true, dispatch: false },
 );
 
-export const register = createEffect(
+const register = createEffect(
   (actions$ = inject(Actions), authService = inject(AuthService)) => {
     return actions$.pipe(
       ofType(UserActions.register),
@@ -83,7 +83,7 @@ export const register = createEffect(
   { functional: true },
 );
 
-export const edit = createEffect(
+const edit = createEffect(
   (actions$ = inject(Actions), userService = inject(UserService)) => {
     return actions$.pipe(
       ofType(UserActions.edit),
@@ -98,7 +98,7 @@ export const edit = createEffect(
   { functional: true },
 );
 
-export const getDetails = createEffect(
+const getDetails = createEffect(
   (
     actions$ = inject(Actions),
     userService = inject(UserService),
@@ -119,3 +119,12 @@ export const getDetails = createEffect(
   },
   { functional: true },
 );
+
+export default {
+    login,
+    loginComplete,
+    logout,
+    register,
+    getDetails,
+    edit,
+}

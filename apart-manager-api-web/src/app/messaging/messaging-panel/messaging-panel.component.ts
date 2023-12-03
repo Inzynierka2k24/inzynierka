@@ -30,7 +30,8 @@ export class MessagingPanelComponent implements OnInit {
   addContactVisible = false;
   contactApartments: Apartment[];
   apartmentCalendarVisible = false;
-  public chosenApartment: Apartment;
+  chosenApartment: Apartment;
+  editContact: any;
   private currentUser: UserDTO;
 
   constructor(private store: Store<AppState>) {
@@ -119,5 +120,10 @@ export class MessagingPanelComponent implements OnInit {
         this.chosenContact = undefined;
       }
     });
+  }
+
+  openEditContactModal() {
+    this.editContact = true;
+    this.addContactVisible = true;
   }
 }

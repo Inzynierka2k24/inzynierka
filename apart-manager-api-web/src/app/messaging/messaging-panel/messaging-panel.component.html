@@ -2,7 +2,11 @@
   [(visible)]="addOrderVisible"
   [contact]="chosenContact"
 ></app-add-order-modal>
-<app-add-contact-modal [(visible)]="addContactVisible"></app-add-contact-modal>
+<app-add-contact-modal
+  [(visible)]="addContactVisible"
+  [editable]="editContact"
+  [editedContact]="chosenContact"
+></app-add-contact-modal>
 <div class="flex flex-row" id="messaging-panel">
   <div class="col-4 p-2 overflow-auto flex flex-column">
     <div class="flex flex-row justify-content-between">
@@ -80,6 +84,13 @@
               icon="pi pi-envelope"
             >
             </p-button>
+            <p-button
+              (click)="openEditContactModal()"
+              [rounded]="true"
+              class="mr-2"
+              icon="pi pi-pencil"
+              severity="info"
+            ></p-button>
             <p-button
               (click)="deleteContact(chosenContact)"
               [rounded]="true"

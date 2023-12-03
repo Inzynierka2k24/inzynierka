@@ -4,7 +4,7 @@ import MessagingActions from './messaging.actions';
 import { catchError, exhaustMap, map, of } from 'rxjs';
 import { MessagingService } from '../../../messaging/messaging.service';
 
-export const loadContacts = createEffect(
+const loadContacts = createEffect(
   ($actions = inject(Actions), messagingService = inject(MessagingService)) => {
     return $actions.pipe(
       ofType(MessagingActions.loadContacts),
@@ -21,7 +21,7 @@ export const loadContacts = createEffect(
   { functional: true },
 );
 
-export const addContact = createEffect(
+const addContact = createEffect(
   ($actions = inject(Actions), messagingService = inject(MessagingService)) => {
     return $actions.pipe(
       ofType(MessagingActions.addContact),
@@ -38,7 +38,7 @@ export const addContact = createEffect(
   { functional: true },
 );
 
-export const deleteContact = createEffect(
+const deleteContact = createEffect(
   ($actions = inject(Actions), messagingService = inject(MessagingService)) => {
     return $actions.pipe(
       ofType(MessagingActions.deleteContact),
@@ -59,7 +59,7 @@ export const deleteContact = createEffect(
   { functional: true },
 );
 
-export const addOrder = createEffect(
+const addOrder = createEffect(
   ($actions = inject(Actions), messagingService = inject(MessagingService)) => {
     return $actions.pipe(
       ofType(MessagingActions.addOrder),
@@ -81,7 +81,7 @@ export const addOrder = createEffect(
   { functional: true },
 );
 
-export const deleteMessage = createEffect(
+const deleteMessage = createEffect(
   ($actions = inject(Actions), messagingService = inject(MessagingService)) => {
     return $actions.pipe(
       ofType(MessagingActions.deleteMessage),
@@ -102,3 +102,31 @@ export const deleteMessage = createEffect(
   },
   { functional: true },
 );
+
+const editContact = createEffect(
+  ($actions = inject(Actions), messagingService = inject(MessagingService)) => {
+    return $actions.pipe(
+      ofType(MessagingActions.editContact),
+      exhaustMap((action) => {
+        return messagingService.editContact(action.userId, action.contact).pipe(
+          map(() =>
+            MessagingActions.editContactComplete({
+              contact: action.contact,
+            }),
+          ),
+          catchError((err) => of(MessagingActions.editContactError(err))),
+        );
+      }),
+    );
+  },
+  { functional: true },
+);
+
+export default {
+  loadContacts,
+  addContact,
+  deleteContact,
+  addOrder,
+  deleteMessage,
+  editContact,
+};

@@ -46,4 +46,12 @@ export class MessagingService {
       { responseType: 'text' },
     );
   }
+
+  editContact(userId: number, contact: Contact) {
+    return this.httpClient.put(
+      `${environment.api_url}/contacts/` + userId + '/edit',
+      contact,
+      { responseType: 'text' },
+    );
+  }
 }

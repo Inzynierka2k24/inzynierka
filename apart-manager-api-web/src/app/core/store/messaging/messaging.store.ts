@@ -28,4 +28,7 @@ export enum MessagingActionTypes {
   DELETE_CONTACT = '[MESSAGING] Delete Contact Action',
   DELETE_CONTACT_COMPLETE = '[MESSAGING] Delete Contact Action Complete',
   DELETE_CONTACT_ERROR = '[MESSAGING] Delete Contact Action Error',
+  EDIT_CONTACT = '[MESSAGING] Edit Contact Action',
+  EDIT_CONTACT_COMPLETE = '[MESSAGING] Edit Contact Action Complete',
+  EDIT_CONTACT_ERROR = '[MESSAGING] Edit Contact Action Error',
 }

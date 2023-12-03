@@ -81,6 +81,21 @@ const deleteContactError = createAction(
   props<Error>(),
 );
 
+const editContact = createAction(
+  MessagingActionTypes.EDIT_CONTACT,
+  props<{ userId: number; contact: Contact }>(),
+);
+
+const editContactComplete = createAction(
+  MessagingActionTypes.EDIT_CONTACT_COMPLETE,
+  props<{ contact: Contact }>(),
+);
+
+const editContactError = createAction(
+  MessagingActionTypes.EDIT_CONTACT_ERROR,
+  props<Error>(),
+);
+
 const MessagingActions = {
   loadContacts,
   loadContactsComplete,
@@ -97,6 +112,9 @@ const MessagingActions = {
   deleteContact,
   deleteContactComplete,
   deleteContactError,
+  editContact,
+  editContactComplete,
+  editContactError,
 };
 
 export default MessagingActions;

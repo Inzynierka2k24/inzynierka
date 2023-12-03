@@ -3,8 +3,6 @@ package com.inzynierka2k24.apiserver.service;
 import com.inzynierka2k24.apiserver.dao.ApartmentDao;
 import com.inzynierka2k24.apiserver.dao.ContactDao;
 import com.inzynierka2k24.apiserver.dao.ScheduledMessageDao;
-import com.inzynierka2k24.apiserver.exception.apartment.ApartmentNotFoundException;
-import com.inzynierka2k24.apiserver.exception.messaging.ContactNotFoundException;
 import com.inzynierka2k24.apiserver.model.Apartment;
 import com.inzynierka2k24.apiserver.model.Contact;
 import com.inzynierka2k24.apiserver.model.ScheduledMessage;
@@ -77,8 +75,7 @@ public class MessagingService {
     contactDao.add(userId, contact);
   }
 
-  public void addMessage(long userId, long contactId, ScheduledMessageDTO message)
-      throws ApartmentNotFoundException, ContactNotFoundException {
+  public void addMessage(long userId, long contactId, ScheduledMessageDTO message) {
     message
         .apartments()
         .forEach(
