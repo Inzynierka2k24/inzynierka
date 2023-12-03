@@ -7,14 +7,22 @@
           formControlName="filterApartmentId"
           [options]="apartmentOptions"
           optionLabel="label"
+          optionValue="value"
           placeholder="Select an Apartment"
           [showClear]="true">
       </p-dropdown>
       <label class="text-900 font-medium mb-2 controls">Event Type:</label>
-      <p-dropdown formControlName="filterEventType" [options]="eventTypes" optionLabel="name"></p-dropdown>
+      <p-dropdown formControlName="filterEventType" [options]="eventTypes" optionLabel="name" optionValue="name" placeholder="Event"></p-dropdown>
 
       <label class="text-900 font-medium mb-2 controls">Source:</label>
-      <p-dropdown formControlName="filterSource" [options]="sources" optionLabel="name" ></p-dropdown>
+      <p-dropdown
+          formControlName="filterSource"
+          [options]="sources"
+          optionLabel="name"
+          optionValue="name"
+          placeholder="Source">
+      </p-dropdown>
+
 
       <p-button class="p-button-text controls" icon="pi pi-filter" label="Filter" (click)="applyFilter()"></p-button>
       <p-button class="p-button-text controls" icon="pi pi-filter-slash" label="Disable" (click)="disableFilter()"></p-button>
