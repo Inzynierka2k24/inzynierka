@@ -15,8 +15,10 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class IntegrationService {
@@ -48,7 +50,7 @@ public class IntegrationService {
           try {
             reservationService.add(apartmentId, reservation.reservation());
           } catch (ReservationNotValidException e) {
-            throw new RuntimeException(e);
+            log.error("Couldn't save external reservation {}. Cause: {}", reservation, e);
           }
           if (reservation.price().isPresent()) {
             financeService.add(
