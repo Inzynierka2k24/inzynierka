@@ -34,6 +34,7 @@ import { ChartModule } from 'primeng/chart';
 import {FinanceChartComponent} from "../finance/finance-chart/finance-chart.component";
 import {TabView, TabViewModule} from "primeng/tabview";
 import { CardModule } from 'primeng/card';
+import {ConfirmDialogModule} from "primeng/confirmdialog";
 
 @NgModule({
   declarations: [
@@ -77,6 +78,7 @@ import { CardModule } from 'primeng/card';
     ChartModule,
     TabViewModule,
     CardModule,
+    ConfirmDialogModule,
 
   ],
   exports: [
