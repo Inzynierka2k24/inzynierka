@@ -19,6 +19,7 @@ import {ConfirmationService} from "primeng/api";
 })
 export class ApartmentListComponent implements OnInit {
   apartments: Apartment[] = [];
+  apartmentOptions: {label: string, value: number}[] = [];
   apartment: Apartment;
   countApartments$: Observable<number>;
   messages: Message[] = [];

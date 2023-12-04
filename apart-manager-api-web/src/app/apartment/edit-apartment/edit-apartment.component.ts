@@ -55,7 +55,6 @@ export class EditApartmentComponent {
   }
 
   editApartment(): void {
-    //todo
     if (this.editApartmentForm.valid) {
       this.store
         .select(selectCurrentUser)
