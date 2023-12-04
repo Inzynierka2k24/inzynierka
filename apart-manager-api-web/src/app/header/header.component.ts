@@ -28,6 +28,10 @@ export class HeaderComponent {
         label: 'Add apartment',
         command: () => this.router.navigate(['/apartments/add']),
       },
+      {
+        label: 'External offers',
+        command: () => this.router.navigate(['/apartments/externalOffers']),
+      },
     ];
     this.reservationItems = [
       {

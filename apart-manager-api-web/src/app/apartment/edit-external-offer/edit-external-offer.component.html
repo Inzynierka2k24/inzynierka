@@ -1,0 +1,55 @@
+<div class="form-container " style="margin: auto; width: 50%;padding: 10px;">
+    <div class="surface-card p-4 shadow-7 border-round w-full ">
+        <div class="text-center mb-5" >
+            <form [formGroup]="editExternalOfferForm">
+                <div class="p-grid">
+                    <div class="p-col-12">
+                      <label class="block text-900 font-medium mb-2">Service Name:</label>
+                      <p-dropdown formControlName="serviceType"
+                                  [options]="serviceTypes"
+                                  optionLabel="name"
+                                  optionValue="id"
+                                  [ngClass]="{'error-outline': editExternalOfferForm.get('externalLink')?.hasError('required')
+                                    && editExternalOfferForm.get('externalLink')?.touched}"
+                      ></p-dropdown>
+                    </div>
+                  <br>
+                    <div class="p-col-12">
+                      <label class="block text-900 font-medium mb-2" for="link">External Link:</label>
+                      <input
+                        [placeholder]="'Link'"
+                        class="w-full mb-3"
+                        formControlName="externalLink"
+                        id="externalLink"
+                        pInputText
+                        type="text"
+                        [ngClass]="{'error-outline': editExternalOfferForm.get('externalLink')?.hasError('required')
+                        && editExternalOfferForm.get('externalLink')?.touched}"
+                        required
+                      />
+                    </div>
+                </div>
+                <div class="p-col-12">
+                  <label class="block text-900 font-medium mb-2">Apartment:</label>
+                  <p-dropdown formControlName="apartmentId" [options]="apartments" optionLabel="title" optionValue="id"
+                              [ngClass]="{'error-outline': editExternalOfferForm.get('apartmentId')?.hasError('required')
+                              && editExternalOfferForm.get('apartmentId')?.touched}">
+                    <ng-template let-apartment pTemplate="item">
+                      {{ apartment.id }} - {{ apartment.title }} - {{ apartment.dailyPrice }} - {{ apartment.street }} {{ apartment.buildingNumber }}/{{ apartment.apartmentNumber }}, {{ apartment.city }}
+                    </ng-template>
+                  </p-dropdown>
+                </div>
+            </form>
+          <br>
+          <button
+                class="custom-button"
+                icon="pi pi-check"
+                pButton
+                pRipple
+                type="submit"
+                (click)="editExternalOffer()"
+          >Edit External Offer</button>
+          <p-button class="custom-button" severity="danger" (click)="cancelEditing()">Back</p-button>
+        </div>
+    </div>
+</div>

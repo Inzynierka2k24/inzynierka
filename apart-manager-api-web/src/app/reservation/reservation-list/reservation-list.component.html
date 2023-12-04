@@ -8,6 +8,13 @@
         <th>End Date</th>
         <th></th>
         <th>
+          <p-button
+            label="Fetch"
+            (click)="fetchReservations()"
+            icon="pi pi-cloud-download"
+          ></p-button>
+        </th>
+        <th>
           <p-button (click)="addReservation()" icon="pi pi-plus"></p-button>
         </th>
       </tr>
@@ -17,6 +24,7 @@
         <td>{{ getApartmentLabelById(reservation.apartmentId) }}</td>
         <td>{{ reservation.startDate | date: "dd-MM-YYYY" }}</td>
         <td>{{ reservation.endDate | date: "dd-MM-YYYY" }}</td>
+        <td><p-button label="Propagate" icon="pi pi-cloud-upload" (click)="propagateReservation(reservation)"></p-button></td>
         <td>
           <p-button
             (click)="editReservation(reservation)"
@@ -28,12 +36,6 @@
             (click)="deleteReservation(reservation)"
             icon="pi pi-trash"
             severity="danger"
-          ></p-button>
-        </td>
-        <td>
-          <p-button
-            (click)="propagateReservation(reservation)"
-            icon="pi pi-sync"
           ></p-button>
         </td>
       </tr>

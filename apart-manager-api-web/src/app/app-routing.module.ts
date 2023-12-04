@@ -21,6 +21,11 @@ import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest,} from '@angular/co
 import UserActions from './core/store/user/user.actions';
 import {MessagingPanelComponent} from './messaging/messaging-panel/messaging-panel.component';
 import {FinanceChartComponent} from './finance/finance-chart/finance-chart.component';
+import {ExternalOffersComponent} from "./apartment/external-offers/external-offers.component";
+import {AddExternalOfferComponent} from "./apartment/add-external-offer/add-external-offer.component";
+import {EditExternalOfferComponent} from "./apartment/edit-external-offer/edit-external-offer.component";
+
+
 
 /**
  * Appends bearer token to each request when present.
@@ -101,6 +106,9 @@ const routes: Routes = [
         children: [
           { path: 'add', component: AddApartmentComponent },
           { path: 'edit', component: EditApartmentComponent },
+          { path: 'externalOffers', component: ExternalOffersComponent },
+          { path: 'externalOffers/add', component: AddExternalOfferComponent },
+          { path: 'externalOffers/edit/:externalOfferId/:apartmentId', component: EditExternalOfferComponent },
           { path: '', component: ApartmentListComponent },
         ],
       },

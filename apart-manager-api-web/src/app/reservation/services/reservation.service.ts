@@ -90,18 +90,23 @@ export class ReservationService {
     );
   }
 
-  propagateReservation(
-    userId: number,
-    apartmentId: number,
-    reservationId: number,
-  ) {
-    return this.http.get<Map<string, string>>(
-      `${environment.api_url}/` +
-        userId +
-        '/external/integration/propagate/apartment/' +
-        apartmentId +
-        '/reservation/' +
-        reservationId,
-    );
+
+  propagateReservation(user: UserDTO, apartmentId: number, reservation: Reservation, options?: any):
+    Observable<HttpEvent<boolean>> {
+    return this.http.get<boolean>(
+      `${environment.api_url}/`+
+      user.id +
+      '/external/integration/propagate/apartment/' +
+      apartmentId +
+      '/reservation/' +
+      reservation.id, options);
   }
+
+  fetchReservations(user: UserDTO, apartmentId: number, requestBody: any): Observable<boolean> {
+    return this.http.post<boolean>(
+      `${environment.api_url}/${user.id}/external/integration/apartment/${apartmentId}/get/reservations`,
+      requestBody,
+      // { responseType: 'text' }
+  }
+
 }
