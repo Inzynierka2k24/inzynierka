@@ -44,7 +44,7 @@ export class ExternalOfferService {
 
   deleteExternalOffer(user: UserDTO, apartment: Apartment, externalOffer: ExternalOffer, options?: any): Observable<HttpEvent<void>> {
     return this.http.delete<void>(
-      `${environment.api_url}/` + '/apartment/' + apartment.id +'/external/offer' + externalOffer.id, options
+      `${environment.api_url}/` + '/apartment/' + apartment.id +'/external/offer/' + externalOffer.id, options
     );
   }
 }

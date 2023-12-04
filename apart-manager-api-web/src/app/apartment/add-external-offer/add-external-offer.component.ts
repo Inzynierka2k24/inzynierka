@@ -62,8 +62,7 @@ export class AddExternalOfferComponent {
   }
 
   addExternalOffer(): void {
-    if (this.addExternalOfferForm.valid) {
-      console.log('wchodzi');
+    if (this.addExternalOfferForm.valid && Object.keys(this.apartments).length !== 0) {
       this.store
         .select(selectCurrentUser)
         .pipe(
@@ -75,21 +74,25 @@ export class AddExternalOfferComponent {
             this.isUserLoggedIn = true;
             this.user = user;
 
-            if (this.addExternalOfferForm.value.apartmentId != null){
-              const apartment = this.getApartmentById(this.addExternalOfferForm.value.apartmentId as unknown as number);
-              const externalOfferData: ExternalOffer = {
-                serviceType: this.addExternalOfferForm.value.serviceType! as ExternalService,
-                externalLink: this.addExternalOfferForm.value.externalLink!,
-              };
-              return this.externalOfferService.addExternalOffer(
-                this.user,
-                <Apartment>apartment,
-                externalOfferData,
-                { responseType: 'text' });
+            if (this.addExternalOfferForm.value.apartmentId == null){
+              if (this.apartments[0].id != null){
+                this.addExternalOfferForm.controls['apartmentId'].setValue(this.apartments[0].id.toString()!);
+              }
             }
-            else {
-               return of();
+            if (this.addExternalOfferForm.value.serviceType == null){
+              this.addExternalOfferForm.controls['serviceType'].setValue(this.serviceTypes[0].name);
             }
+            const apartment = this.getApartmentById(this.addExternalOfferForm.value.apartmentId as unknown as number);
+            const externalOfferData: ExternalOffer = {
+              serviceType: this.addExternalOfferForm.value.serviceType! as ExternalService,
+              externalLink: this.addExternalOfferForm.value.externalLink!,
+            };
+            return this.externalOfferService.addExternalOffer(
+              this.user,
+              <Apartment>apartment,
+              externalOfferData,
+              { responseType: 'text' });
+
           })
         )
         .subscribe(

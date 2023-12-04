@@ -4,18 +4,14 @@
             <form [formGroup]="editExternalOfferForm">
                 <div class="p-grid">
                     <div class="p-col-12">
-                      <label class="block text-900 font-medium mb-2" for="serviceType">Service Name:</label>
-                      <input
-                        [placeholder]="'ServiceType'"
-                        class="w-full mb-3"
-                        formControlName="serviceType"
-                        id="serviceType"
-                        pInputText
-                        type="text"
-                        [ngClass]="{'error-outline': editExternalOfferForm.get('serviceType')?.hasError('required')
-                          && editExternalOfferForm.get('serviceType')?.touched}"
-                        required
-                      />
+                      <label class="block text-900 font-medium mb-2">Service Name:</label>
+                      <p-dropdown formControlName="serviceType"
+                                  [options]="serviceTypes"
+                                  optionLabel="name"
+                                  optionValue="id"
+                                  [ngClass]="{'error-outline': editExternalOfferForm.get('externalLink')?.hasError('required')
+                                    && editExternalOfferForm.get('externalLink')?.touched}"
+                      ></p-dropdown>
                     </div>
                   <br>
                     <div class="p-col-12">

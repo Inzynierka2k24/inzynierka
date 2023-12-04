@@ -76,6 +76,11 @@ export class AddApartmentComponent {
             })},
           error:error => {
               console.error('API call error:', error);
+              this.messageService.add({
+                severity: 'error',
+                summary: 'Validation Error',
+                detail: error,
+              });
             }
           },
         );

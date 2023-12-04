@@ -11,6 +11,7 @@ import {MessageService} from "primeng/api";
 import {selectCurrentUser} from "../../core/store/user/user.selectors";
 import {map, switchMap} from "rxjs/operators";
 import { forkJoin } from 'rxjs';
+import {HttpErrorResponse} from "@angular/common/http";
 
 @Component({
   selector: 'app-edit-external-offer',
@@ -31,6 +32,12 @@ export class EditExternalOfferComponent {
   externalOfferId: number;
   apartmentId: number;
   externalOffersFlatten: any = [];
+  serviceTypes = [
+    { name: "BOOKING", id: 0 },
+    { name: "AIRBNB", id: 1 },
+    { name: "TRIVAGO", id: 2 },
+    { name: "NOCOWANIEPL", id: 3 },
+  ];
 
   constructor(private formBuilder: FormBuilder,
               private store: Store<AppState>,
@@ -43,7 +50,7 @@ export class EditExternalOfferComponent {
     this.editExternalOfferForm = formBuilder.nonNullable.group(
       {
         serviceType: ['', [Validators.required]],
-        externalLink: ['', [Validators.required, this.urlValidator()]],
+        externalLink: ['', [Validators.required]], //, this.urlValidator()
         apartmentId: ['', [Validators.required]]
       });
   }
@@ -146,9 +153,10 @@ export class EditExternalOfferComponent {
               summary: 'External Offer edited correctly',
               detail: 'success'
             })},
-          error:error => {
+            error: (error: HttpErrorResponse) => {
               console.error('API call error:', error);
-            }
+
+            },
           },
         );
     } else {

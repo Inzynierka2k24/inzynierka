@@ -100,66 +100,46 @@ export class ExternalOffersComponent {
     //   [this.getExternalOfferById(externalOfferId), apartmentId]]);
   }
 
+  deleteExternalOffer(externalOfferId: number, apartmentId: number): void {
+    this.store
+      .select(selectCurrentUser)
+      .pipe(
+        switchMap((user) => {
+          if (!user) {
+            throw new Error('User not logged in');
+          }
+          this.user = user;
+          const deletedApartment = this.getApartmentById(apartmentId);
+          const deletedOffer = this.getExternalOfferById(externalOfferId);
 
-  deleteExternalOffer(): void {
-    console.log('elele')
-
+          if (!deletedApartment || !deletedOffer) {
+            throw new Error('Apartment and External Offer cannot be null');
+          }
+          return this.externalOfferService.deleteExternalOffer(
+            this.user,
+            deletedApartment,
+            deletedOffer,
+            { responseType: 'text' }
+          );
+        })
+      )
+      .subscribe(
+        {
+        next: response =>{
+          this.messageService.add({
+            severity: 'success',
+            summary: 'External Offer deleted correctly',
+            detail: 'success'
+          });
+          this.fetchData();
+        },
+        error:error => {
+            console.error('API call error:', error);
+            this.fetchData();
+          },
+        },
+      );
   }
-  // deleteExternalOffer(externalOfferId: number, apartmentId: number): void {
-  //   console.log('elele')
-  //   this.store
-  //     .select(selectCurrentUser)
-  //     .pipe(
-  //       switchMap((user) => {
-  //         if (!user) {
-  //           throw new Error('User not logged in');
-  //         }
-  //         this.user = user;
-  //         const deletedApartment = this.getApartmentById(apartmentId);
-  //         const deletedOffer = this.getExternalOfferById(externalOfferId);
-  //
-  //         if (!deletedApartment || !deletedOffer) {
-  //           throw new Error('Apartment and External Offer cannot be null');
-  //         }
-  //         return this.externalOfferService.deleteExternalOffer(
-  //           this.user,
-  //           deletedApartment,
-  //           deletedOffer,
-  //           { responseType: 'text' }
-  //         );
-  //       })
-  //     )
-  //     .subscribe(
-  //       {
-  //       next: response =>{
-  //         this.editExternalOfferForm.reset();
-  //         this.messageService.add({
-  //           severity: 'success',
-  //           summary: 'External Offer deleted correctly',
-  //           detail: 'success'
-  //         });
-  //         this.fetchData();
-  //       },
-  //       error:error => {
-  //           console.error('API call error:', error);
-  //           this.fetchData();
-  //         },
-  //       },
-  //     );
-  // }
-
-  // flattenExternalOffers(): any[] {
-  //   const result: any[] = [];
-  //   console.log(this.externalOffers)
-  //   for (const apartmentId in this.externalOffers) {
-  //     const externalOffersForApartment = this.externalOffers[apartmentId];
-  //     externalOffersForApartment.forEach((externalOffer:any) => {
-  //       result.push({ apartmentId: apartmentId, ...externalOffer });
-  //     });
-  //   }
-  //   console.log(result)
-  //   return result;
-  // }
 
   getApartmentById(id: number): Apartment | null{
     for (const apartment of this.apartments){
