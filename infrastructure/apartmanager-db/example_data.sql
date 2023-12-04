@@ -14,3 +14,4 @@ INSERT INTO finances VALUES (default, 1, 1, 1, 2, 2, 1000, '2023-10-31', 'Abc');
 INSERT INTO finances VALUES (default, 1, 2, 1, 2, 3, 120, '2023-11-10', 'Abc');
 
 INSERT INTO external_offers VALUES (default, 1, 2, 'https://www.trivago.pl/pl');
+

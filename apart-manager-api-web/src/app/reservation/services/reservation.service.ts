@@ -87,9 +87,14 @@ export class ReservationService {
     );
   }
 
-  propagateReservation(user: UserDTO, apartmentId: number, reservation: Reservation, options?: any): Observable<HttpEvent<boolean>> {
-    // return this.http.post<boolean>(`${environment.api_url}/`+ user.id + '/external/integration/propagate/apartment/' + apartmentId +'/reservation/' + reservation.id, reservation, options);
-    return this.http.post<boolean>(`${environment.api_url}/`+ user.id + '/external/integration/propagate/apartment/' + apartmentId +'/reservation/' + reservation.id, reservation, options);
-
+  propagateReservation(user: UserDTO, apartmentId: number, reservation: Reservation, options?: any):
+    Observable<HttpEvent<boolean>> {
+    return this.http.get<boolean>(
+      `${environment.api_url}/`+
+      user.id +
+      '/external/integration/propagate/apartment/' +
+      apartmentId +
+      '/reservation/' +
+      reservation.id, options);
   }
 }
