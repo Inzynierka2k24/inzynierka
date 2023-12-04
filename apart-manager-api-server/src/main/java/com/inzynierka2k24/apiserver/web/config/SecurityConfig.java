@@ -48,18 +48,7 @@ public class SecurityConfig {
   @Bean
   public CorsConfigurationSource corsConfigurationSource() {
     CorsConfiguration configuration = new CorsConfiguration();
-    configuration.setAllowedOrigins(
-        List.of(
-            "https://salmon-moss-003628103-34.westeurope.4.azurestaticapps.net",
-            "http://salmon-moss-003628103-34.westeurope.4.azurestaticapps.net",
-            "https://salmon-moss-003628103.4.azurestaticapps.net",
-            "http://salmon-moss-003628103.4.azurestaticapps.net",
-            "https://salmon-moss-003628103-57.westeurope.4.azurestaticapps.net/",
-            "http://salmon-moss-003628103-57.westeurope.4.azurestaticapps.net/",
-            "http://localhost:80",
-            "http://localhost",
-            "http://localhost:4200",
-            "*.azurestaticapps.net"));
+    configuration.setAllowedOriginPatterns(List.of("*"));
     configuration.addAllowedMethod("*");
     configuration.addAllowedHeader("*");
     configuration.setAllowCredentials(true);
