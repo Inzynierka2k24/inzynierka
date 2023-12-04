@@ -73,7 +73,7 @@ export class ApartmentListComponent implements OnInit {
     console.log("CLIKED")
     this.confirmationService.confirm({
       message: 'Are you sure you want to delete ' + "`"+ apartment.title + "`? "+
-          'This action cannot be undone and will delete all reservation and finances for this apartment.',
+          'This action cannot be undone and will delete all reservations and finances for this apartment.',
       header: 'Confirmation',
       icon: 'pi pi-exclamation-triangle',
       accept: () => this.acceptDelete(apartment),
