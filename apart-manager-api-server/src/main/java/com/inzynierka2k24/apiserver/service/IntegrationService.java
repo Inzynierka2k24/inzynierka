@@ -7,12 +7,11 @@ import com.inzynierka2k24.apiserver.exception.reservation.ReservationNotValidExc
 import com.inzynierka2k24.apiserver.grpc.integration.ExternalIntegrationServiceClient;
 import com.inzynierka2k24.apiserver.model.EventType;
 import com.inzynierka2k24.apiserver.model.ExternalReservation;
-import com.inzynierka2k24.apiserver.model.Finance;
 import com.inzynierka2k24.apiserver.model.Source;
+import com.inzynierka2k24.apiserver.web.dto.FinanceDTO;
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -59,13 +58,11 @@ public class IntegrationService {
 
           if (shouldSaveToFinances && reservation.price().isPresent()) {
             financeService.add(
-                new Finance(
-                    Optional.empty(),
+                new FinanceDTO(
                     userId,
                     apartmentId,
-                    0,
-                    EventType.RESERVATION,
-                    Source.forServiceType(reservation.serviceType()),
+                    EventType.forNumber(0).name(),
+                    Source.forServiceType(reservation.serviceType()).name(),
                     reservation.price().get(),
                     Instant.now(),
                     "Reservation from external service"));

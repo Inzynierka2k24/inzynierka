@@ -6,6 +6,7 @@ import static org.mockito.Mockito.*;
 import com.inzynierka2k24.apiserver.dao.FinanceDao;
 import com.inzynierka2k24.apiserver.exception.finance.FinanceNotFoundException;
 import com.inzynierka2k24.apiserver.model.Finance;
+import com.inzynierka2k24.apiserver.web.dto.FinanceDTO;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +28,6 @@ public class FinanceServiceTest {
             Optional.of(1L),
             1L,
             1L,
-            1L,
             1,
             1,
             200.5f,
@@ -36,7 +36,6 @@ public class FinanceServiceTest {
     expectedFinances.add(
         new Finance(
             Optional.of(2L),
-            1L,
             1L,
             1L,
             1,
@@ -61,7 +60,6 @@ public class FinanceServiceTest {
     Finance expectedFinance =
         new Finance(
             Optional.of(1L),
-            1L,
             1L,
             1L,
             1,
@@ -89,7 +87,6 @@ public class FinanceServiceTest {
             Optional.of(1L),
             1L,
             1L,
-            1L,
             1,
             1,
             200.5f,
@@ -98,7 +95,6 @@ public class FinanceServiceTest {
     expectedFinances.add(
         new Finance(
             Optional.of(2L),
-            1L,
             1L,
             1L,
             1,
@@ -123,16 +119,23 @@ public class FinanceServiceTest {
         new Finance(
             Optional.empty(),
             1L,
-            1L,
-            1L,
+            33L,
             1,
-            1,
+            103,
             200.5f,
             Instant.parse("2023-01-01T00:00:00Z"),
-            "Washing machine repair");
-
+            "none");
+    FinanceDTO financeDto =
+        new FinanceDTO(
+            1L,
+            33L,
+            "RESERVATION",
+            "NOCOWANIEPL",
+            200.5f,
+            Instant.parse("2023-01-01T00:00:00Z"),
+            "none");
     // When
-    financeService.add(finance);
+    financeService.add(financeDto);
 
     // Then
     verify(financeDao).add(finance);
@@ -145,7 +148,6 @@ public class FinanceServiceTest {
     Finance finance =
         new Finance(
             Optional.of(1L),
-            1L,
             1L,
             1L,
             1,
@@ -172,7 +174,6 @@ public class FinanceServiceTest {
             Optional.of(
                 new Finance(
                     Optional.of(1L),
-                    1L,
                     1L,
                     1L,
                     1,
@@ -204,18 +205,26 @@ public class FinanceServiceTest {
     Finance finance =
         new Finance(
             Optional.empty(),
+            1L,
             33L,
-            1L,
-            1L,
             1,
-            1,
+            8,
+            200.5f,
+            Instant.parse("2023-01-01T00:00:00Z"),
+            "none");
+    FinanceDTO financeDto =
+        new FinanceDTO(
+            1L,
+            33L,
+            "RESERVATION",
+            "NOCOWANIE",
             200.5f,
             Instant.parse("2023-01-01T00:00:00Z"),
             "none");
     doThrow(new IllegalArgumentException()).when(financeDao).add(finance);
 
     // When/Then
-    assertThrows(IllegalArgumentException.class, () -> financeService.add(finance));
+    assertThrows(IllegalArgumentException.class, () -> financeService.add(financeDto));
   }
 
   @Test
@@ -226,16 +235,24 @@ public class FinanceServiceTest {
             Optional.empty(),
             1L,
             33L,
+            1,
+            8,
+            200.5f,
+            Instant.parse("2023-01-01T00:00:00Z"),
+            "none");
+    FinanceDTO financeDto =
+        new FinanceDTO(
             1L,
-            1,
-            1,
+            33L,
+            "RESERVATION",
+            "NOCOWANIE",
             200.5f,
             Instant.parse("2023-01-01T00:00:00Z"),
             "none");
     doThrow(new IllegalArgumentException()).when(financeDao).add(finance);
 
     // When/Then
-    assertThrows(IllegalArgumentException.class, () -> financeService.add(finance));
+    assertThrows(IllegalArgumentException.class, () -> financeService.add(financeDto));
   }
 
   @Test
@@ -246,8 +263,7 @@ public class FinanceServiceTest {
         new Finance(
             Optional.of(33L),
             1L,
-            1L,
-            1L,
+            33L,
             1,
             1,
             200.5f,
@@ -266,7 +282,6 @@ public class FinanceServiceTest {
         new Finance(
             Optional.of(1L),
             33L,
-            1L,
             1L,
             1,
             1,
@@ -287,7 +302,6 @@ public class FinanceServiceTest {
             Optional.of(1L),
             1L,
             33L,
-            1L,
             1,
             1,
             200.5f,
@@ -318,7 +332,6 @@ public class FinanceServiceTest {
             Optional.of(
                 new Finance(
                     Optional.of(1L),
-                    1L,
                     1L,
                     1L,
                     1,
@@ -353,7 +366,6 @@ public class FinanceServiceTest {
     Finance finance =
         new Finance(
             Optional.empty(),
-            1L,
             1L,
             1L,
             1,
