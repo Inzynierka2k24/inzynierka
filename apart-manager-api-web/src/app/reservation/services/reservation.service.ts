@@ -90,6 +90,7 @@ export class ReservationService {
     );
   }
 
+
   propagateReservation(user: UserDTO, apartmentId: number, reservation: Reservation, options?: any):
     Observable<HttpEvent<boolean>> {
     return this.http.get<boolean>(
@@ -106,7 +107,6 @@ export class ReservationService {
       `${environment.api_url}/${user.id}/external/integration/apartment/${apartmentId}/get/reservations`,
       requestBody,
       // { responseType: 'text' }
-    );
   }
 
 }

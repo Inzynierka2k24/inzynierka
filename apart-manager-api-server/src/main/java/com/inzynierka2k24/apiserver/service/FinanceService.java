@@ -28,15 +28,16 @@ public class FinanceService {
   }
 
   public void add(FinanceDTO financeDto) {
-    Finance finance = new Finance(
-        Optional.empty(),
-        financeDto.userId(),
-        financeDto.apartmentId(),
-        financeDto.eventType(),
-        financeDto.source(),
-        financeDto.price(),
-        financeDto.date(),
-        financeDto.details());
+    Finance finance =
+        new Finance(
+            Optional.empty(),
+            financeDto.userId(),
+            financeDto.apartmentId(),
+            financeDto.eventType(),
+            financeDto.source(),
+            financeDto.price(),
+            financeDto.date(),
+            financeDto.details());
     financeDao.add(finance);
   }
 

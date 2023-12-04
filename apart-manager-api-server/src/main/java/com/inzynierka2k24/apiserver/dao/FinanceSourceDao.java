@@ -15,12 +15,12 @@ public class FinanceSourceDao {
 
   static {
     for (EventType eventType : EventType.values()) {
-      List<String> sources = eventType.getValidSources().stream()
-          .map(Enum::name)
-          .collect(Collectors.toList());
+      List<String> sources =
+          eventType.getValidSources().stream().map(Enum::name).collect(Collectors.toList());
       eventToSources.put(eventType.name(), sources);
     }
   }
+
   public Map<String, List<String>> getAll() {
     return eventToSources;
   }

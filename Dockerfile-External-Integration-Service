@@ -12,7 +12,7 @@ RUN mvn -f inzynierka/external-integration-service/pom.xml clean package
 
 
 # Package stage
-FROM eclipse-temurin:17-alpine
+FROM mcr.microsoft.com/playwright/java:v1.40.0-focal
 COPY --from=build inzynierka/external-integration-service/target/*.jar /usr/app/service.jar
 EXPOSE 8080 6565
 ENTRYPOINT ["java","-jar","/usr/app/service.jar"]

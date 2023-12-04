@@ -56,14 +56,7 @@ class FinanceDaoTest {
             "Washing machine repair"));
     expectedFinances.add(
         new Finance(
-            Optional.of(2L),
-            1L,
-            1L,
-            1,
-            1,
-            200.5f,
-            Instant.parse("2023-01-01T00:00:00Z"),
-            "none"));
+            Optional.of(2L), 1L, 1L, 1, 1, 200.5f, Instant.parse("2023-01-01T00:00:00Z"), "none"));
 
     // When
     List<Finance> actualFinances = financeDao.getAll(userId);
@@ -110,14 +103,7 @@ class FinanceDaoTest {
             "Washing machine repair"));
     expectedFinances.add(
         new Finance(
-            Optional.of(2L),
-            1L,
-            1L,
-            1,
-            1,
-            200.5f,
-            Instant.parse("2023-01-01T00:00:00Z"),
-            "none"));
+            Optional.of(2L), 1L, 1L, 1, 1, 200.5f, Instant.parse("2023-01-01T00:00:00Z"), "none"));
 
     // When
     List<Finance> actualFinance = financeDao.getByApartmentId(apartmentId);
