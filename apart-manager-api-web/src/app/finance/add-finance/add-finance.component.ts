@@ -149,9 +149,9 @@ export class AddFinanceComponent implements OnInit {
         "or negative value for losses. "
 
     if (eventType === 'RESERVATION') {
-      return message + "Generally Reservations shall be incomes."
+      return message + "Reservations should be incomes."
     } else if (eventType === 'RENOVATION') {
-      return message + "Generally Renovations shall be losses."
+      return message + "Renovations should be losses."
     } else {
       return message;
     }
