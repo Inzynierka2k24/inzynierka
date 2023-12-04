@@ -121,7 +121,7 @@ public class FinanceServiceTest {
             1L,
             33L,
             1,
-            8,
+            103,
             200.5f,
             Instant.parse("2023-01-01T00:00:00Z"),
             "none");
@@ -130,7 +130,7 @@ public class FinanceServiceTest {
             1L,
             33L,
             "RESERVATION",
-            "NOCOWANIE",
+            "NOCOWANIEPL",
             200.5f,
             Instant.parse("2023-01-01T00:00:00Z"),
             "none");
