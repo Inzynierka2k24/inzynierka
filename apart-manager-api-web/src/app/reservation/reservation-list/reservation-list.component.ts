@@ -155,6 +155,14 @@ export class ReservationListComponent implements OnInit {
               throw new Error('User not logged in');
             }
             this.user = user;
+            const today = new Date();
+            const nextYear = new Date(today);
+            nextYear.setFullYear(today.getFullYear() + 1);
+            const requestBody = {
+                from: today.toISOString().split('T')[0],
+                to: nextYear.toISOString().split('T')[0],
+            };
+
             return this.reservationService.fetchReservations(
               this.user,
               <number>apart.id,

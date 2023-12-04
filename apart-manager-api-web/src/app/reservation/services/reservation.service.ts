@@ -101,14 +101,12 @@ export class ReservationService {
       reservation.id, options);
   }
 
-  fetchReservations(user: UserDTO, apartmentId: number, options?: any):
-    Observable<boolean> {
+  fetchReservations(user: UserDTO, apartmentId: number, requestBody: any): Observable<boolean> {
     return this.http.post<boolean>(
-      `${environment.api_url}/`+
-      user.id +
-      '/external/integration/apartment/' +
-      apartmentId +
-      '/get/reservations', options);
+      `${environment.api_url}/${user.id}/external/integration/apartment/${apartmentId}/get/reservations`,
+      requestBody,
+      // { responseType: 'text' }
+    );
   }
 
 }
