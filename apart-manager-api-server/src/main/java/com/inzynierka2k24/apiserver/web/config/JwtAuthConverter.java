@@ -31,7 +31,7 @@ public class JwtAuthConverter implements Converter<Jwt, AbstractAuthenticationTo
   @Value("${jwt.auth.converter.resource-id}")
   private String resourceId;
 
-  public static String getLoginFromJWT(String jwt) {
+  public String getLoginFromJWT(String jwt) {
     String[] chunks = jwt.split("\\.");
     Base64.Decoder decoder = Base64.getUrlDecoder();
     String payload = new String(decoder.decode(chunks[1]));

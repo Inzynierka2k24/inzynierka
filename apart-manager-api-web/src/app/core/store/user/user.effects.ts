@@ -89,7 +89,7 @@ const edit = createEffect(
       ofType(UserActions.edit),
       exhaustMap(({ userId, editUserRequest }) =>
         userService.editUser(userId, editUserRequest).pipe(
-          map((user) => UserActions.editComplete(user)),
+          map(() => UserActions.editComplete(editUserRequest)),
           catchError((error) => of(UserActions.editError(error))),
         ),
       ),

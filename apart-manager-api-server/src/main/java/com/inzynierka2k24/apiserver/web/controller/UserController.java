@@ -25,6 +25,7 @@ public class UserController {
 
   private final AuthorizationService authorizationService;
   private final UserService userService;
+  private final JwtAuthConverter jwtAuthConverter;
 
   @PostMapping("/login")
   public ResponseEntity<String> login(@Valid @RequestBody AuthRequest request) {
@@ -48,9 +49,9 @@ public class UserController {
     if (token == null) {
       return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
-    String username = JwtAuthConverter.getLoginFromJWT(token);
+    String username = jwtAuthConverter.getLoginFromJWT(token);
     User u = userService.getUser(username);
-    UserDTO dto = new UserDTO(u.id().get(), u.login(), u.emailAddress());
+    UserDTO dto = new UserDTO(u.id().orElseThrow(), u.login(), u.emailAddress());
     return ResponseEntity.ok(dto);
   }
 
@@ -60,12 +61,12 @@ public class UserController {
       throws UserNotFoundException {
     authorizationService.edit(request.username(), request.emailAddress(), request.password());
     userService.update(new User(userId, request.username(), request.emailAddress()));
-    return ResponseEntity.ok().build();
+    return ResponseEntity.ok("User updated successfully");
   }
 
   @DeleteMapping("/user/{userId}/remove")
   public ResponseEntity<String> delete(@PathVariable long userId) throws UserNotFoundException {
     userService.deleteById(userId);
-    return ResponseEntity.ok().build();
+    return ResponseEntity.ok("User deleted successfully");
   }
 }

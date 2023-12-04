@@ -1,9 +1,13 @@
-<form [formGroup]="filterForm">
-  <label class="text-900 font-medium mb-2 controls">Source:</label>
-  <p-dropdown formControlName="filterYear" [options]="years" optionLabel="name" ></p-dropdown>
-  <p-button class="p-button-text controls" icon="pi pi-filter" label="Filter" (click)="calculateRevenue()"></p-button>
-</form>
+<div class="mx-5">
+  <form [formGroup]="filterForm">
+    <label class="text-900 font-medium mb-2 ml-5 mr-1 controls">Year:</label>
+    <p-dropdown formControlName="filterYear" [options]="years" optionLabel="name"
+                optionValue="name"></p-dropdown>
+    <p-button class="p-button-text controls ml-2" icon="pi pi-filter" label="Filter"
+              (click)="calculateRevenue()"></p-button>
+  </form>
 
-<div class="card">
+  <div class="card">
     <p-chart type="line" [data]="data" [options]="options"></p-chart>
+  </div>
 </div>

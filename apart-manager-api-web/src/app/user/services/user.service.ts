@@ -14,9 +14,10 @@ export class UserService {
   }
 
   editUser(user: number, editUserRequest: EditUserRequest) {
-    return this.httpClient.put<EditUserRequest>(
+    return this.httpClient.put(
       `${environment.api_url}/user/` + user + '/edit',
       editUserRequest,
+      { responseType: 'text' },
     );
   }
 }
