@@ -1,152 +1,198 @@
 <app-add-order-modal
-        [(visible)]="addOrderVisible"
-        [contact]="chosenContact"
+  [(visible)]="addOrderVisible"
+  [contact]="chosenContact"
 ></app-add-order-modal>
-<app-add-contact-modal [(visible)]="addContactVisible"></app-add-contact-modal>
+<app-add-contact-modal
+  [(visible)]="addContactVisible"
+  [editable]="editContact"
+  [editedContact]="chosenContact"
+></app-add-contact-modal>
 <div class="flex flex-row" id="messaging-panel">
-    <div class="col-4 p-2 overflow-auto flex flex-column">
-        <button
-                (click)="addContactVisible = true"
-                class="p-button-rounded pi pi-plus"
-                pButton
-        ></button>
-        <p-dataView [value]="(contacts$ | async) || []">
-            <ng-template let-service pTemplate="listItem">
-                <div class="col-12 surface-card shadow-2 border-round mt-3">
-                    <div
-                            class="flex flex-column xl:flex-row xl:align-items-start p-4 gap-4"
-                    >
-                        <div
-                                class="flex flex-column sm:flex-row justify-content-between align-items-center xl:align-items-start flex-1 gap-4"
-                        >
-                            <div
-                                    class="flex flex-column align-items-center sm:align-items-start gap-3"
-                            >
-                                <div class="text-2xl font-bold text-900">
-                                    {{ service.name }}
-                                </div>
-                                <div class="flex align-items-center gap-3">
+  <div class="col-4 p-2 overflow-auto flex flex-column">
+    <div class="flex flex-row justify-content-between">
+      <div class="font-medium text-3xl text-900 mb-3">Contacts</div>
+      <p-button
+        (click)="addContactVisible = true"
+        [rounded]="true"
+        icon="pi pi-plus"
+      ></p-button>
+    </div>
+
+    <p-dataView [value]="(contacts$ | async) || []">
+      <ng-template let-service pTemplate="listItem">
+        <div class="col-12 surface-card shadow-2 border-round mt-3">
+          <div
+            class="flex flex-column xl:flex-row xl:align-items-start p-4 gap-4"
+          >
+            <div
+              class="flex flex-column sm:flex-row justify-content-between align-items-center xl:align-items-start flex-1 gap-4"
+            >
+              <div
+                class="flex flex-column align-items-center sm:align-items-start gap-3"
+              >
+                <div class="text-2xl font-bold text-900">
+                  {{ service.name }}
+                </div>
+                <div class="flex align-items-center gap-3">
                   <span class="flex align-items-center gap-2">
                     <i [class]="getIcon(service.contactType)"></i>
                   </span>
-                                    <p-tag
-                                            [value]="service.contactType ?? 'Contact'"
-                                            severity="success"
-                                    ></p-tag>
-                                </div>
-                            </div>
-                            <button
-                                    (click)="chooseContact(service)"
-                                    class="p-button-secondary p-button-rounded"
-                                    icon="pi pi-cog"
-                                    pButton
-                            ></button>
-                        </div>
-                    </div>
+                  <p-tag
+                    [value]="service.contactType ?? 'Contact'"
+                    severity="success"
+                  ></p-tag>
                 </div>
-            </ng-template>
-        </p-dataView>
-    </div>
-    <div class="col-8 pl-8 pt-4">
-        <div class="surface-card p-4 shadow-2 border-round w-full">
-            <h2 *ngIf="!chosenContact">Choose a service to see details.</h2>
-            <div *ngIf="chosenContact">
-                <div class="flex flex-row justify-content-between">
-                    <p-avatar
-                            [label]="chosenContact.name[0].toUpperCase()"
-                            [style]="{ 'background-color': '#2196F3', color: '#ffffff' }"
-                            size="xlarge"
-                            styleClass="mr-2"
-                    ></p-avatar>
-                    <div>
-                        <div>{{ chosenContact.name }}</div>
-                        <div>Type: {{ chosenContact.contactType }}</div>
-                    </div>
-                    <div></div>
-                    <button (click)="addOrderVisible = true" class="p-button" pButton>
-                        Add Order
-                    </button>
-                </div>
-                <p-tabView>
-                    <p-tabPanel header="Apartments">
-                        <p-dataView [value]="contactApartments">
-                            <ng-template let-apartment pTemplate="listItem">
-                                <div class="col-12">
-                                    <div
-                                            class="flex flex-column xl:flex-row xl:align-items-start p-4 gap-4"
-                                    >
-                                        <img
-                                                [alt]="apartment.title"
-                                                [src]="
+              </div>
+              <button
+                (click)="chooseContact(service)"
+                class="p-button-secondary p-button-rounded"
+                icon="pi pi-cog"
+                pButton
+              ></button>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+    </p-dataView>
+  </div>
+  <div class="col-8 pl-8 pt-4">
+    <div class="surface-card p-4 shadow-2 border-round w-full">
+      <h2 *ngIf="!chosenContact">Choose a service to see details.</h2>
+      <div *ngIf="chosenContact">
+        <div class="flex flex-row justify-content-between">
+          <p-avatar
+            [label]="chosenContact.name[0].toUpperCase()"
+            [style]="{ 'background-color': '#2196F3', color: '#ffffff' }"
+            size="xlarge"
+            styleClass="mr-2"
+          ></p-avatar>
+          <div>
+            <div>{{ chosenContact.name }}</div>
+            <div>Type: {{ chosenContact.contactType }}</div>
+          </div>
+          <div>
+            <span class="text-xl font-semibold">{{
+              "$" + chosenContact.price
+            }}</span
+            ><span class="text-xl"> per month</span>
+          </div>
+          <div>
+            <p-button
+              (click)="addOrderVisible = true"
+              [rounded]="true"
+              class="mr-2"
+              icon="pi pi-envelope"
+            >
+            </p-button>
+            <p-button
+              (click)="openEditContactModal()"
+              [rounded]="true"
+              class="mr-2"
+              icon="pi pi-pencil"
+              severity="info"
+            ></p-button>
+            <p-button
+              (click)="deleteContact(chosenContact)"
+              [rounded]="true"
+              icon="pi pi-trash"
+              severity="danger"
+            >
+            </p-button>
+          </div>
+        </div>
+        <p-tabView>
+          <p-tabPanel header="Apartments">
+            <p-dataView
+              *ngIf="!apartmentCalendarVisible; else apartmentCalendarView"
+              [value]="contactApartments"
+            >
+              <ng-template let-apartment pTemplate="listItem">
+                <div class="col-12">
+                  <div
+                    class="flex flex-column xl:flex-row xl:align-items-start p-4 gap-4"
+                  >
+                    <img
+                      [alt]="apartment.title"
+                      [src]="
                         apartment.image ??
                         'https://source.unsplash.com/random/400x300'
                       "
-                                                class="w-9 sm:w-16rem xl:w-10rem shadow-2 block xl:block mx-auto border-round"
-                                        />
-                                        <div
-                                                class="flex flex-column sm:flex-row justify-content-between align-items-center xl:align-items-start flex-1 gap-4"
-                                        >
-                                            <div
-                                                    class="flex flex-column align-items-center sm:align-items-start gap-3"
-                                            >
-                                                <div class="text-2xl font-bold text-900">
-                                                    {{ apartment.title }}
-                                                    <br/>
-                                                    <small>{{
-                                                        apartmentStreetToString(apartment)
-                                                        }}</small>
-                                                </div>
-                                            </div>
-                                            <div
-                                                    class="flex sm:flex-column align-items-center sm:align-items-end gap-3 sm:gap-2"
-                                            >
-                        <span class="text-2xl font-semibold">{{
-                            "$" + apartment.dailyPrice
-                            }}</span>
-                                                <button
-                                                        class="md:align-self-end mb-2 p-button-rounded"
-                                                        icon="pi pi-cog"
-                                                        pButton
-                                                ></button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </ng-template>
-                        </p-dataView>
-                    </p-tabPanel>
-                    <p-tabPanel header="Calendar">
-                        <!--            <full-calendar-->
-                        <!--              [events]="events"-->
-                        <!--              [options]="calendarOptions"-->
-                        <!--            ></full-calendar>-->
-                    </p-tabPanel>
-                    <p-tabPanel header="Notifications">
-                        <p-table [value]="chosenContact.messages">
-                            <ng-template pTemplate="header">
-                                <tr>
-                                    <th>Id</th>
-                                    <th>Apartments</th>
-                                    <th>Message</th>
-                                    <th>Interval</th>
-                                    <th>Trigger</th>
-                                </tr>
-                            </ng-template>
-                            <ng-template let-message pTemplate="body">
-                                <tr>
-                                    <td>{{ message.id }}</td>
-                                    <td>{{ apartmentsListForMessage(message) }}</td>
-                                    <td>{{ message.message }}</td>
-                                    <td>
-                                        {{ message.intervalValue + " " + message.intervalType }}
-                                    </td>
-                                    <td>{{ message.triggerType }}</td>
-                                </tr>
-                            </ng-template>
-                        </p-table>
-                    </p-tabPanel>
-                </p-tabView>
-            </div>
-        </div>
+                      class="w-9 sm:w-16rem xl:w-10rem shadow-2 block xl:block mx-auto border-round"
+                    />
+                    <div
+                      class="flex flex-column sm:flex-row justify-content-between align-items-center xl:align-items-start flex-1 gap-4"
+                    >
+                      <div
+                        class="flex flex-column align-items-center sm:align-items-start gap-3"
+                      >
+                        <div class="text-2xl font-bold text-900">
+                          {{ apartment.title }}
+                          <br />
+                          <small>{{
+                            apartmentStreetToString(apartment)
+                          }}</small>
+                        </div>
+                      </div>
+                      <div
+                        class="flex sm:flex-column align-items-center sm:align-items-end gap-3 sm:gap-2"
+                      >
+                        <button
+                          (click)="showCalendarForApartment(apartment)"
+                          class="md:align-self-end mb-2 p-button-rounded p-button-help"
+                          icon="pi pi-calendar"
+                          pButton
+                        ></button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </ng-template>
+            </p-dataView>
+            <ng-template #apartmentCalendarView>
+              <p-button
+                (click)="apartmentCalendarVisible = false"
+                class="mb-4"
+                icon="pi pi-arrow-left"
+                label="Back"
+              ></p-button>
+              <app-apartment-calendar-view [apartment]="chosenApartment">
+              </app-apartment-calendar-view>
+            </ng-template>
+          </p-tabPanel>
+          <p-tabPanel header="Notifications">
+            <p-table [value]="chosenContact.messages">
+              <ng-template pTemplate="header">
+                <tr>
+                  <th>Id</th>
+                  <th>Apartments</th>
+                  <th>Message</th>
+                  <th>Interval</th>
+                  <th>Trigger</th>
+                  <th>Actions</th>
+                </tr>
+              </ng-template>
+              <ng-template let-message pTemplate="body">
+                <tr>
+                  <td>{{ message.id }}</td>
+                  <td>{{ apartmentsListForMessage(message) }}</td>
+                  <td>{{ message.message }}</td>
+                  <td>
+                    {{ message.intervalValue + " " + message.intervalType }}
+                  </td>
+                  <td>{{ message.triggerType }}</td>
+                  <td>
+                    <p-button
+                      (click)="deleteMessage(message)"
+                      icon="pi pi-trash"
+                      severity="danger"
+                    ></p-button>
+                  </td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </p-tabPanel>
+        </p-tabView>
+      </div>
     </div>
+  </div>
 </div>

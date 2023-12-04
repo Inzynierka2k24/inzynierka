@@ -19,7 +19,7 @@ public class MessagingServiceClient {
 
   private final MessagingServiceGrpc.MessagingServiceBlockingStub blockingStub;
 
-  public SendMessageResponse sendMessage(Contact contact, ScheduledMessageDTO messageDTO) {
+  public void sendMessage(Contact contact, ScheduledMessageDTO messageDTO) {
     var eventData =
         EventData.newBuilder()
             .setEventId(0)
@@ -38,7 +38,5 @@ public class MessagingServiceClient {
 
     var response = blockingStub.sendMessage(request);
     log.info("SendMessage response: {}", response);
-
-    return response;
   }
 }

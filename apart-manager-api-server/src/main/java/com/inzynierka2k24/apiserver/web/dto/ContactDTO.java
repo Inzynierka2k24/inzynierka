@@ -1,6 +1,5 @@
 package com.inzynierka2k24.apiserver.web.dto;
 
-import com.inzynierka2k24.apiserver.model.Apartment;
 import com.inzynierka2k24.apiserver.model.ContactType;
 import com.inzynierka2k24.apiserver.model.NotificationSettings;
 import java.util.ArrayList;
@@ -15,8 +14,7 @@ public record ContactDTO(
     String mail,
     String phone,
     NotificationSettings notificationSettings,
-    List<ScheduledMessageDTO> messages,
-    List<Apartment> apartments) {
+    List<ScheduledMessageDTO> messages) {
 
   public ContactDTO(
       long contactId,
@@ -33,7 +31,6 @@ public record ContactDTO(
         mail,
         phone,
         new NotificationSettings(false, false),
-        new ArrayList<>(),
         new ArrayList<>());
   }
 }
