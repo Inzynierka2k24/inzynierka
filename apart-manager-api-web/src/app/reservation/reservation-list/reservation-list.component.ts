@@ -42,7 +42,11 @@ export class ReservationListComponent implements OnInit {
   }
 
   editReservation(reservation: any) {
-    this.router.navigate(['/reservations/edit', reservation]);
+    const selectedApartment = this.getApartmentLabelById(reservation.apartmentId);
+    const reservationWithApartmentLabel =
+      { ...reservation, apartment: selectedApartment };
+
+    this.router.navigate(['/reservations/edit', reservationWithApartmentLabel]);
   }
 
   propagateReservation(reservation: any) {
@@ -139,6 +143,11 @@ export class ReservationListComponent implements OnInit {
           });
       }
     });
+  }
+
+  getApartmentLabelById(id: number) {
+    const apartment = this.apartments.find(ap => ap.id === id);
+    return apartment?.title + ', ' + apartment?.city;
   }
 
   propagateReservation(reservation: Reservation) {

@@ -61,16 +61,15 @@ export class ReservationService {
   updateReservation(
     user: UserDTO,
     apartmentId: number,
-    reservation: Reservation,
-  ): Observable<Reservation> {
-    return this.http.put<Reservation>(
+    reservation: Reservation, options?: any
+  ): Observable<HttpEvent<string>> {
+    return this.http.put<string>(
       `${environment.api_url}/` +
         user.id +
         '/apartment/' +
         apartmentId +
-        '/reservation/' +
-        reservation.id,
-      reservation,
+        '/reservation',
+      reservation, options
     );
   }
 

@@ -35,6 +35,8 @@ public class ReservationDao {
         WHERE
           apartment_id = ? AND reservation_id = ?
         """;
+
+  // TODO: this is not valid query to check if period is free
   private static final String PERIOD_FREE_QUERY =
       """
         SELECT
@@ -70,8 +72,8 @@ public class ReservationDao {
   public void update(Reservation reservation) {
     template.update(
         UPDATE_QUERY,
-        reservation.startDate(),
-        reservation.endDate(),
+        Timestamp.from(reservation.startDate()),
+        Timestamp.from(reservation.endDate()),
         reservation.apartmentId(),
         reservation.id().orElseThrow());
   }

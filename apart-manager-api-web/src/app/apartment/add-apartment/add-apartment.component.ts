@@ -1,44 +1,40 @@
 import { Component } from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {Store} from "@ngrx/store";
-import {MessageService} from "primeng/api";
-import {AppState} from "../../core/store/app.store";
-import {selectCurrentUser} from "../../core/store/user/user.selectors";
-import {Apartment, UserDTO} from "../../../generated";
-import {ApartmentService} from "../services/apartment.service";
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Store } from '@ngrx/store';
+import { MessageService } from 'primeng/api';
+import { AppState } from '../../core/store/app.store';
+import { selectCurrentUser } from '../../core/store/user/user.selectors';
+import { Apartment, UserDTO } from '../../../generated';
+import { ApartmentService } from '../services/apartment.service';
 import { switchMap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
-import {Router} from "@angular/router";
-import {HttpErrorResponse} from "@angular/common/http";
 
 @Component({
   selector: 'app-add-apartment',
   templateUrl: './add-apartment.component.html',
-  styleUrls: ['./add-apartment.component.scss']
+  styleUrls: ['./add-apartment.component.scss'],
 })
 export class AddApartmentComponent {
-
   isUserLoggedIn = false;
   addApartForm;
   user: UserDTO;
   apartmentResult$: Observable<string | undefined>;
 
-  constructor(private formBuilder: FormBuilder,
-              private store: Store<AppState>,
-              private apartmentService: ApartmentService,
-              private router: Router,
-              private messageService: MessageService){
-
-    this.addApartForm = formBuilder.nonNullable.group(
-      {
-        dailyPrice: ['', [Validators.required, Validators.min(0)]],
-        title: ['', [Validators.required]],
-        country: ['', [Validators.required]],
-        city: ['', [Validators.required]],
-        street: ['', [Validators.required]],
-        buildingNumber: ['', [Validators.required, Validators.min(0)]],
-        apartmentNumber: ['', [Validators.required, Validators.min(0)]],
-      })
+  constructor(
+    private formBuilder: FormBuilder,
+    private store: Store<AppState>,
+    private apartmentService: ApartmentService,
+    private messageService: MessageService,
+  ) {
+    this.addApartForm = formBuilder.nonNullable.group({
+      dailyPrice: ['', [Validators.required, Validators.min(0)]],
+      title: ['', [Validators.required]],
+      country: ['', [Validators.required]],
+      city: ['', [Validators.required]],
+      street: ['', [Validators.required]],
+      buildingNumber: ['', [Validators.required, Validators.min(0)]],
+      apartmentNumber: ['', [Validators.required, Validators.min(0)]],
+    });
   }
 
   addApartment(): void {
@@ -62,33 +58,29 @@ export class AddApartmentComponent {
               buildingNumber: this.addApartForm.value.buildingNumber!,
               apartmentNumber: this.addApartForm.value.apartmentNumber!,
             };
-            return this.apartmentService.addApartment(this.user, apartmentData, { responseType: 'text' });
-          })
+            return this.apartmentService.addApartment(this.user, apartmentData,
+              { responseType: 'text' });
+          }),
         )
-        .subscribe(
-          {
-          next: response =>{
+        .subscribe({
+          next: () => {
             this.addApartForm.reset();
             this.messageService.add({
               severity: 'success',
               summary: 'Apartment added correctly',
-              detail: 'success'
-            })},
-          error:error => {
-              console.error('API call error:', error);
-              this.messageService.add({
-                severity: 'error',
-                summary: 'Validation Error',
-                detail: error,
-              });
-            }
+              detail: '',
+            });
           },
-        );
+          error: (error) => {
+            console.error('API call error:', error);
+          },
+        });
     } else {
       this.messageService.add({
         severity: 'error',
         summary: 'Validation Error',
-        detail: 'Please fill in all required fields and correct validation errors.',
+        detail:
+          'Please fill in all required fields and correct validation errors.',
       });
       this.markAllFieldsAsTouched(this.addApartForm);
     }

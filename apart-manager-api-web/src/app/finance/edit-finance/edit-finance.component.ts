@@ -10,7 +10,6 @@ import {FinanceSourceService} from "../service/finance-source.service";
 import {Observable} from "rxjs";
 import {ApartmentService} from "../../apartment/services/apartment.service";
 import {ActivatedRoute, Router} from "@angular/router";
-import defaultCallbacks from "chart.js/dist/plugins/plugin.tooltip";
 import {switchMap} from "rxjs/operators";
 
 @Component({
@@ -41,7 +40,6 @@ export class EditFinanceComponent implements OnInit {
               private route: ActivatedRoute){
     this.route.params.subscribe((params) => {
       this.finance = params;
-      console.log(this.finance)
 
       // to ensure that data for Source and Apartment dropdowns is not empty
       this.eventSources = [this.finance.source!];
@@ -157,7 +155,7 @@ export class EditFinanceComponent implements OnInit {
               detail: 'success',
             })
 
-            this.router.navigate(['/finances']); // Replace 'your-target-route' with the desired route
+            this.router.navigate(['/finances']);
           },
           error:error => {
             console.error('API call error:', error);

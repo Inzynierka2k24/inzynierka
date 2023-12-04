@@ -55,7 +55,6 @@ export class EditApartmentComponent {
   }
 
   editApartment(): void {
-    //todo
     if (this.editApartmentForm.valid) {
       this.store
         .select(selectCurrentUser)
@@ -68,6 +67,7 @@ export class EditApartmentComponent {
             this.isUserLoggedIn = true;
             this.user = user;
             const apartmentData: Apartment = {
+              id: this.apartment.id!,
               dailyPrice: parseInt(this.editApartmentForm.value.dailyPrice!),
               title: this.editApartmentForm.value.title!,
               country: this.editApartmentForm.value.country!,
@@ -79,17 +79,17 @@ export class EditApartmentComponent {
             return this.apartmentService.updateApartment(
               this.user,
               apartmentData,
+                { responseType: 'text' }
             );
           }),
         )
         .subscribe({
           next: () => {
-            this.editApartmentForm.reset();
             this.messageService.add({
               severity: 'success',
-              summary: 'Apartment edited correctly',
-              detail: '',
+              summary: 'Apartment edited correctly'
             });
+            this.router.navigate(['/apartments']);
           },
           error: (error) => {
             console.error('API call error:', error);

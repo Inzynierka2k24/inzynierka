@@ -37,6 +37,7 @@ import { CardModule } from 'primeng/card';
 import {ExternalOffersComponent} from "../apartment/external-offers/external-offers.component";
 import {AddExternalOfferComponent} from "../apartment/add-external-offer/add-external-offer.component";
 import {EditExternalOfferComponent} from "../apartment/edit-external-offer/edit-external-offer.component";
+import {ConfirmDialogModule} from "primeng/confirmdialog";
 
 @NgModule({
   declarations: [
@@ -83,6 +84,7 @@ import {EditExternalOfferComponent} from "../apartment/edit-external-offer/edit-
     ChartModule,
     TabViewModule,
     CardModule,
+    ConfirmDialogModule,
 
   ],
   exports: [
