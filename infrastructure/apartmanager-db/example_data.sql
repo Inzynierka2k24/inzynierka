@@ -9,6 +9,6 @@ INSERT INTO reservations VALUES (default, 1, '2023-11-11', '2023-11-30');
 INSERT INTO reservations VALUES (default, 2, '2023-11-12', '2023-11-15');
 INSERT INTO reservations VALUES (default, 2, '2023-11-01', '2023-11-07');
 
-INSERT INTO finances VALUES (default, 1, 1, 1, 1, 1, 333, '2023-11-30', 'Abc');
-INSERT INTO finances VALUES (default, 1, 1, 1, 2, 2, 1000, '2023-10-31', 'Abc');
-INSERT INTO finances VALUES (default, 1, 2, 1, 2, 3, 120, '2023-11-10', 'Abc');
+INSERT INTO finances VALUES (default, 1, 1, 1, 1, 333, '2023-11-30', 'Abc');
+INSERT INTO finances VALUES (default, 1, 1, 2, 2, 1000, '2023-10-31', 'Abc');
+INSERT INTO finances VALUES (default, 1, 2, 2, 3, 120, '2023-11-10', 'Abc');

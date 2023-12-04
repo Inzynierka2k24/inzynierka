@@ -35,6 +35,8 @@ public class ReservationDao {
         WHERE
           apartment_id = ? AND reservation_id = ?
         """;
+
+  // TODO: this is not valid query to check if period is free
   private static final String PERIOD_FREE_QUERY =
       """
         SELECT
