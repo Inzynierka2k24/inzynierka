@@ -31,9 +31,13 @@ export class ReservationService {
   getReservationDTOs(
     userId: number,
     apartmentId: number,
-  ): Observable<ReservationDTO> {
-    return this.http.get<ReservationDTO>(
-      `${environment.api_url}/` + userId + '/apartment/' + apartmentId + '/dto',
+  ): Observable<ReservationDTO[]> {
+    return this.http.get<ReservationDTO[]>(
+      `${environment.api_url}/` +
+        userId +
+        '/apartment/' +
+        apartmentId +
+        '/reservation/dto',
     );
   }
 

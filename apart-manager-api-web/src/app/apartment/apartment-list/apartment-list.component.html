@@ -1,6 +1,6 @@
 <div class="surface-card p-4 shadow-7 border-round w-full">
   <h2>Apartments List</h2>
-  <p-table [value]="apartments" [tableStyle]="{ 'min-width': '50rem' }">
+  <p-table [tableStyle]="{ 'min-width': '50rem' }" [value]="apartments">
     <ng-template pTemplate="header">
       <tr>
         <th>Daily Price</th>
@@ -11,10 +11,12 @@
         <th>Building Number</th>
         <th>Apartment Number</th>
         <th></th>
-        <th><p-button icon="pi pi-plus" (click)="addApartment()"></p-button></th>
+        <th>
+          <p-button (click)="addApartment()" icon="pi pi-plus"></p-button>
+        </th>
       </tr>
     </ng-template>
-    <ng-template pTemplate="body" let-apartment>
+    <ng-template let-apartment pTemplate="body">
       <tr>
         <td>{{ apartment.dailyPrice }}</td>
         <td>{{ apartment.title }}</td>
@@ -23,12 +25,28 @@
         <td>{{ apartment.street }}</td>
         <td>{{ apartment.buildingNumber }}</td>
         <td>{{ apartment.apartmentNumber }}</td>
-        <td><p-button icon="pi pi-file-edit" (click)="startEditing(apartment)"></p-button></td>
-        <td><p-button icon="pi pi-trash" (click)="deleteApartment(apartment)"></p-button></td>
+        <td>
+          <p-button
+            (click)="startEditing(apartment)"
+            icon="pi pi-file-edit"
+          ></p-button>
+        </td>
+        <td>
+          <p-button
+            (click)="deleteApartment(apartment)"
+            icon="pi pi-trash"
+            severity="danger"
+          ></p-button>
+        </td>
       </tr>
     </ng-template>
   </p-table>
 </div>
 
 <p-confirmDialog [style]="{width: '50vw'}"></p-confirmDialog>
-<p-messages [(value)]="messages" [enableService]="false" [closable]="false"></p-messages>
+<p-messages
+  [(value)]="messages"
+  [closable]="false"
+  [enableService]="false"
+></p-messages>
+

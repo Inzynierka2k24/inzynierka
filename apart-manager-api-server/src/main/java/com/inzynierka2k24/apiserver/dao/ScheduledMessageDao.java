@@ -61,4 +61,12 @@ public class ScheduledMessageDao {
 
     template.update(BIND_APARTMENT_QUERY, id, apartmentId);
   }
+
+  public void deleteById(long userId, long contactId, long messageId) {
+    template.update(
+        "DELETE FROM scheduled_messages WHERE user_id = ? AND contact_id = ? AND message_id = ?",
+        userId,
+        contactId,
+        messageId);
+  }
 }

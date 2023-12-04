@@ -4,7 +4,7 @@ import MessagingActions from './messaging.actions';
 import { catchError, exhaustMap, map, of } from 'rxjs';
 import { MessagingService } from '../../../messaging/messaging.service';
 
-export const loadContacts = createEffect(
+const loadContacts = createEffect(
   ($actions = inject(Actions), messagingService = inject(MessagingService)) => {
     return $actions.pipe(
       ofType(MessagingActions.loadContacts),
@@ -21,7 +21,45 @@ export const loadContacts = createEffect(
   { functional: true },
 );
 
-export const addOrder = createEffect(
+const addContact = createEffect(
+  ($actions = inject(Actions), messagingService = inject(MessagingService)) => {
+    return $actions.pipe(
+      ofType(MessagingActions.addContact),
+      exhaustMap((action) => {
+        return messagingService.addContact(action.userId, action.contact).pipe(
+          map(() =>
+            MessagingActions.addContactComplete({ contact: action.contact }),
+          ),
+          catchError((err) => of(MessagingActions.addContactError(err))),
+        );
+      }),
+    );
+  },
+  { functional: true },
+);
+
+const deleteContact = createEffect(
+  ($actions = inject(Actions), messagingService = inject(MessagingService)) => {
+    return $actions.pipe(
+      ofType(MessagingActions.deleteContact),
+      exhaustMap((action) => {
+        return messagingService
+          .deleteContact(action.userId, action.contactId)
+          .pipe(
+            map(() =>
+              MessagingActions.deleteContactComplete({
+                contactId: action.contactId,
+              }),
+            ),
+            catchError((err) => of(MessagingActions.deleteContactError(err))),
+          );
+      }),
+    );
+  },
+  { functional: true },
+);
+
+const addOrder = createEffect(
   ($actions = inject(Actions), messagingService = inject(MessagingService)) => {
     return $actions.pipe(
       ofType(MessagingActions.addOrder),
@@ -29,7 +67,12 @@ export const addOrder = createEffect(
         return messagingService
           .addOrder(action.userId, action.contactId, action.message)
           .pipe(
-            map(() => MessagingActions.addOrderComplete()),
+            map(() =>
+              MessagingActions.addOrderComplete({
+                contactId: action.contactId,
+                message: action.message,
+              }),
+            ),
             catchError((err) => of(MessagingActions.addOrderError(err))),
           );
       }),
@@ -37,3 +80,53 @@ export const addOrder = createEffect(
   },
   { functional: true },
 );
+
+const deleteMessage = createEffect(
+  ($actions = inject(Actions), messagingService = inject(MessagingService)) => {
+    return $actions.pipe(
+      ofType(MessagingActions.deleteMessage),
+      exhaustMap((action) => {
+        return messagingService
+          .deleteMessage(action.userId, action.contactId, action.messageId)
+          .pipe(
+            map(() =>
+              MessagingActions.deleteMessageComplete({
+                contactId: action.contactId,
+                messageId: action.messageId,
+              }),
+            ),
+            catchError((err) => of(MessagingActions.deleteMessageError(err))),
+          );
+      }),
+    );
+  },
+  { functional: true },
+);
+
+const editContact = createEffect(
+  ($actions = inject(Actions), messagingService = inject(MessagingService)) => {
+    return $actions.pipe(
+      ofType(MessagingActions.editContact),
+      exhaustMap((action) => {
+        return messagingService.editContact(action.userId, action.contact).pipe(
+          map(() =>
+            MessagingActions.editContactComplete({
+              contact: action.contact,
+            }),
+          ),
+          catchError((err) => of(MessagingActions.editContactError(err))),
+        );
+      }),
+    );
+  },
+  { functional: true },
+);
+
+export default {
+  loadContacts,
+  addContact,
+  deleteContact,
+  addOrder,
+  deleteMessage,
+  editContact,
+};

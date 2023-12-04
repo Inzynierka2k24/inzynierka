@@ -5,6 +5,13 @@
   header="Add Contact"
 >
   <form [formGroup]="addContactForm" class="flex flex-column gap-3">
+    <div
+      *ngIf="isLoading$ | async"
+      class="absolute w-full h-full left-0 top-0 flex justify-content-center align-items-center"
+    >
+      <p-progressSpinner></p-progressSpinner>
+    </div>
+
     <div class="flex flex-column gap-1">
       <label for="name">Name</label>
       <input
