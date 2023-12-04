@@ -6,7 +6,7 @@ import { EffectsModule } from '@ngrx/effects';
 import UserEffects from './user/user.effects';
 import { MessagingState } from './messaging/messaging.store';
 import { messagingReducer } from './messaging/messaging.reducers';
-import { apartmentReducer } from './apartment/apartment.reducer';
+import { apartmentReducer } from './apartment/apartment.reducers';
 import MessagingEffects from './messaging/messaging.effects';
 import { ApartmentState } from './apartment/apartment.store';
 

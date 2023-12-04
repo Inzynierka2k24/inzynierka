@@ -1,0 +1,12 @@
+[
+  {
+    "id": 1,
+    "dailyPrice": 120.0,
+    "title": "Appa",
+    "country": "Polska",
+    "city": "Wroclaw",
+    "street": "Zbyszkowa",
+    "buildingNumber": "24",
+    "apartmentNumber": "9"
+  }
+]

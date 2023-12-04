@@ -3,6 +3,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { MessageService } from 'primeng/api';
 import { Actions } from '@ngrx/effects';
 import { UserActionTypes } from './core/store/user/user.store';
+import { MessagingActionTypes } from './core/store/messaging/messaging.store';
 
 @Component({
   selector: 'app-root',
@@ -27,6 +28,11 @@ export class AppComponent implements OnInit {
         case UserActionTypes.DETAILS_COMPLETE:
         case UserActionTypes.REGISTER_COMPLETE:
         case UserActionTypes.EDIT_COMPLETE:
+        case MessagingActionTypes.LOAD_CLIENTS_COMPLETE:
+        case MessagingActionTypes.ADD_CONTACT_COMPLETE:
+        case MessagingActionTypes.DELETE_CONTACT_COMPLETE:
+        case MessagingActionTypes.DELETE_MESSAGE_COMPLETE:
+        case MessagingActionTypes.ADD_ORDER_COMPLETE:
           this.messageService.add({
             severity: 'success',
             summary: action.type,
@@ -37,18 +43,17 @@ export class AppComponent implements OnInit {
         case UserActionTypes.REGISTER_ERROR:
         case UserActionTypes.DETAILS_ERROR:
         case UserActionTypes.EDIT_ERROR:
+        case MessagingActionTypes.LOAD_CLIENTS_ERROR:
+        case MessagingActionTypes.ADD_CONTACT_ERROR:
+        case MessagingActionTypes.DELETE_CONTACT_ERROR:
+        case MessagingActionTypes.DELETE_MESSAGE_ERROR:
+        case MessagingActionTypes.ADD_ORDER_ERROR:
           this.messageService.add({
             severity: 'error',
             summary: this.translate.instant('ERROR_MESSAGE.DEFAULT'),
             detail: action.type,
           });
           break;
-        default:
-          this.messageService.add({
-            severity: 'info',
-            summary: action.type,
-            detail: action.type,
-          });
       }
     });
   }
