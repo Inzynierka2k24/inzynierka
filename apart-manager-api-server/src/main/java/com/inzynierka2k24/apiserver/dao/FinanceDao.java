@@ -1,8 +1,7 @@
 package com.inzynierka2k24.apiserver.dao;
 
-import static java.sql.Timestamp.from;
-
 import com.inzynierka2k24.apiserver.model.Finance;
+import java.sql.Timestamp;
 import java.time.ZoneOffset;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -24,7 +23,7 @@ public class FinanceDao {
   private static final String GET_BY_APARTMENT_QUERY =
       "SELECT * FROM finances WHERE apartment_id = ?";
   private static final String ADD_QUERY =
-      "INSERT INTO finances VALUES (default, ?, ?, ?, ?, ?, ?, ?, ?)";
+      "INSERT INTO finances VALUES (default, ?, ?, ?, ?, ?, ?, ?)";
   private static final String DELETE_QUERY = "DELETE FROM finances WHERE finance_id = ?";
   private static final String UPDATE_QUERY =
       """
@@ -33,7 +32,6 @@ public class FinanceDao {
         SET
           user_id = ?,
           apartment_id = ?,
-          event_id = ?,
           event_type = ?,
           source = ?,
           price = ?,
@@ -49,7 +47,6 @@ public class FinanceDao {
               Optional.of(rs.getLong("finance_id")),
               rs.getLong("user_id"),
               rs.getLong("apartment_id"),
-              rs.getLong("event_id"),
               rs.getInt("event_type"),
               rs.getInt("source"),
               rs.getFloat("price"),
@@ -76,11 +73,10 @@ public class FinanceDao {
           ADD_QUERY,
           finance.userId(),
           finance.apartmentId(),
-          finance.eventId(),
-          finance.eventType().ordinal(),
-          finance.source().ordinal(),
+          finance.eventType().getNumber(),
+          finance.source().getNumber(),
           finance.price(),
-          from(finance.date()),
+          Timestamp.from(finance.date()),
           finance.details());
     } catch (DataIntegrityViolationException e) {
       throw new IllegalArgumentException("The given userId or apartmentId doesn't exist", e);
@@ -93,11 +89,10 @@ public class FinanceDao {
           UPDATE_QUERY,
           finance.userId(),
           finance.apartmentId(),
-          finance.eventId(),
-          finance.eventType().ordinal(),
-          finance.source().ordinal(),
+          finance.eventType().getNumber(),
+          finance.source().getNumber(),
           finance.price(),
-          finance.date(),
+          Timestamp.from(finance.date()),
           finance.details(),
           finance.id().orElseThrow());
     } catch (DataAccessException e) {

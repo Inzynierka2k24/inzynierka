@@ -9,20 +9,18 @@ import static org.mockito.BDDMockito.given;
 
 import com.inzynierka2k24.apiserver.exception.user.InvalidCredentialsException;
 import com.inzynierka2k24.apiserver.exception.user.UserAlreadyExistsException;
+import com.inzynierka2k24.apiserver.exception.user.UserNotFoundException;
 import com.inzynierka2k24.apiserver.web.response.KeycloakTokenResponse;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -35,7 +33,6 @@ class AuthorizationServiceTest {
 
   private static final String TOKEN_ENDPOINT = "https://token-endpoint.com";
   private static final String USER_ENDPOINT = "https://user-endpoint.com";
-  private static final String USER_DETAILS_ENDPOINT = "https://user-details-endpoint.com";
   private static final String CLIENT_ID = "client-id";
   private static final String TOKEN = "testToken";
   private static final String USERNAME = "username";
@@ -52,8 +49,6 @@ class AuthorizationServiceTest {
   void setUp() {
     ReflectionTestUtils.setField(authorizationService, "tokenEndpoint", TOKEN_ENDPOINT);
     ReflectionTestUtils.setField(authorizationService, "userEndpoint", USER_ENDPOINT);
-    ReflectionTestUtils.setField(
-        authorizationService, "userDetailsEndpoint", USER_DETAILS_ENDPOINT);
     ReflectionTestUtils.setField(authorizationService, "clientId", CLIENT_ID);
     ReflectionTestUtils.setField(authorizationService, "adminLogin", ADMIN_USERNAME);
     ReflectionTestUtils.setField(authorizationService, "adminPassword", ADMIN_PASSWORD);
@@ -63,7 +58,7 @@ class AuthorizationServiceTest {
   void shouldReturnToken() {
     // given
     var request = getRequestEntity();
-    var response = getResponseEntity();
+    var response = getTokenResponseEntity();
 
     given(restTemplate.postForEntity(TOKEN_ENDPOINT, request, KeycloakTokenResponse.class))
         .willReturn(response);
@@ -91,7 +86,7 @@ class AuthorizationServiceTest {
   @Test
   void shouldSuccessfullyRegisterWhenValidCredentials() {
     // given
-    var tokenResponse = getResponseEntity();
+    var tokenResponse = getTokenResponseEntity();
     given(restTemplate.postForEntity(eq(TOKEN_ENDPOINT), any(), eq(KeycloakTokenResponse.class)))
         .willReturn(tokenResponse);
 
@@ -103,7 +98,7 @@ class AuthorizationServiceTest {
   @Test
   void register_shouldThrowExceptionWhenUserAlreadyExists() {
     // given
-    var tokenResponse = getResponseEntity();
+    var tokenResponse = getTokenResponseEntity();
     given(restTemplate.postForEntity(eq(TOKEN_ENDPOINT), any(), eq(KeycloakTokenResponse.class)))
         .willReturn(tokenResponse);
     given(restTemplate.exchange(eq(USER_ENDPOINT), eq(HttpMethod.POST), any(), eq(String.class)))
@@ -117,7 +112,7 @@ class AuthorizationServiceTest {
   @Test
   void register_shouldThrowExceptionWhenClientError() {
     // given
-    var tokenResponse = getResponseEntity();
+    var tokenResponse = getTokenResponseEntity();
     given(restTemplate.postForEntity(eq(TOKEN_ENDPOINT), any(), eq(KeycloakTokenResponse.class)))
         .willReturn(tokenResponse);
     given(restTemplate.exchange(eq(USER_ENDPOINT), eq(HttpMethod.POST), any(), eq(String.class)))
@@ -132,7 +127,7 @@ class AuthorizationServiceTest {
   @Test
   void register_shouldThrowExceptionWhenServerError() {
     // given
-    var tokenResponse = getResponseEntity();
+    var tokenResponse = getTokenResponseEntity();
     given(restTemplate.postForEntity(eq(TOKEN_ENDPOINT), any(), eq(KeycloakTokenResponse.class)))
         .willReturn(tokenResponse);
     given(restTemplate.exchange(eq(USER_ENDPOINT), eq(HttpMethod.POST), any(), eq(String.class)))
@@ -144,81 +139,115 @@ class AuthorizationServiceTest {
         .hasMessage("Server error during registration");
   }
 
-  //  @Test
-  //  void shouldSuccessfullyEdit() {
-  //    // given
-  //    var editUserRequest = getEditUserRequest();
-  //
-  //    var userIdRequest = getUserIdRequestEntity();
-  //    var userIdResponse = new ResponseEntity<Map>(Map.of("sub", "id"), HttpStatus.OK);
-  //    given(restTemplate.exchange(userIdRequest, Map.class)).willReturn(userIdResponse);
-  //
-  //    var tokenResponse = getResponseEntity();
-  //    given(restTemplate.postForEntity(eq(TOKEN_ENDPOINT), any(),
-  // eq(KeycloakTokenResponse.class)))
-  //        .willReturn(tokenResponse);
-  //
-  //    // when then
-  //    assertThatCode(() -> authorizationService.edit(TOKEN, editUserRequest))
-  //        .doesNotThrowAnyException();
-  //  }
-  //
-  //  @Test
-  //  void edit_shouldThrowExceptionWhenClientError() {
-  //    // given
-  //    var editUserRequest = getEditUserRequest();
-  //
-  //    var userIdRequest = getUserIdRequestEntity();
-  //    given(restTemplate.exchange(userIdRequest, Map.class))
-  //        .willThrow(HttpClientErrorException.class);
-  //
-  //    // when then
-  //    assertThatThrownBy(() -> authorizationService.edit(TOKEN, editUserRequest))
-  //        .isInstanceOf(RuntimeException.class);
-  //  }
-  //
-  //  @Test
-  //  void edit_shouldThrowExceptionWhenServerError() {
-  //    // given
-  //    var editUserRequest = getEditUserRequest();
-  //
-  //    var userIdRequest = getUserIdRequestEntity();
-  //    var userIdResponse = new ResponseEntity<Map>(Map.of("sub", "id"), HttpStatus.OK);
-  //    given(restTemplate.exchange(userIdRequest, Map.class)).willReturn(userIdResponse);
-  //
-  //    var tokenResponse = getResponseEntity();
-  //    given(restTemplate.postForEntity(eq(TOKEN_ENDPOINT), any(),
-  // eq(KeycloakTokenResponse.class)))
-  //        .willReturn(tokenResponse);
-  //
-  //    given(
-  //            restTemplate.exchange(
-  //                eq(USER_ENDPOINT + "id"), eq(HttpMethod.PUT), any(), eq(String.class)))
-  //        .willThrow(HttpServerErrorException.class);
-  //
-  //    // when then
-  //    assertThatThrownBy(() -> authorizationService.edit(TOKEN, editUserRequest))
-  //        .isInstanceOf(RuntimeException.class);
-  //  }
-  //
-  //  private EditUserRequest getEditUserRequest() {
-  //    return new EditUserRequest(USERNAME, EMAIL_ADDRESS, PASSWORD);
-  //  }
-  //
-  //  private RequestEntity<Void> getUserIdRequestEntity() {
-  //    HttpHeaders headers = new HttpHeaders();
-  //    headers.set("Authorization", "Bearer " + TOKEN);
-  //
-  //    return RequestEntity.get(USER_DETAILS_ENDPOINT)
-  //        .accept(MediaType.APPLICATION_JSON)
-  //        .headers(headers)
-  //        .build();
-  //  }
+  @Test
+  void shouldGetHeaderWithAdminToken() {
+    // given
+    var request = getAdminRequestEntity();
+    var response = getTokenResponseEntity();
 
-  private ResponseEntity<KeycloakTokenResponse> getResponseEntity() {
+    given(restTemplate.postForEntity(TOKEN_ENDPOINT, request, KeycloakTokenResponse.class))
+        .willReturn(response);
+
+    // when
+    final var result = authorizationService.headersWithAdminToken();
+
+    // then
+    assertThat(result.get("Authorization").get(0)).isEqualTo("Bearer " + TOKEN);
+  }
+
+  @Test
+  void edit_shouldGetIdForUserByLogin() throws UserNotFoundException {
+    // given
+
+    HttpEntity<MultiValueMap<String, String>> tokenRequest = getAdminRequestEntity();
+    var response = getTokenResponseEntity();
+    given(restTemplate.postForEntity(TOKEN_ENDPOINT, tokenRequest, KeycloakTokenResponse.class))
+        .willReturn(response);
+
+    Map<String, String> params = new HashMap<>();
+    params.put("username", USERNAME);
+    HttpEntity<Map<String, Object>> requestEntity =
+        new HttpEntity<>(authorizationService.headersWithAdminToken());
+
+    AuthorizationService.UserRepresentation userRepresentation =
+        new AuthorizationService.UserRepresentation();
+    userRepresentation.id = "id";
+    userRepresentation.username = USERNAME;
+    ResponseEntity<AuthorizationService.UserRepresentation[]> responseEntityWithBody =
+        getResponseEntityWithBody(
+            new AuthorizationService.UserRepresentation[] {userRepresentation});
+
+    given(
+            restTemplate.exchange(
+                USER_ENDPOINT,
+                HttpMethod.GET,
+                requestEntity,
+                AuthorizationService.UserRepresentation[].class,
+                params))
+        .willReturn(responseEntityWithBody);
+
+    // when
+    final var result = authorizationService.getUserIdByLogin(USERNAME);
+
+    // then
+    assertThat(result).isEqualTo("id");
+  }
+
+  @Test
+  void shouldSuccessfullyEdit() {
+    // given
+    var tokenResponse = getTokenResponseEntity();
+    given(restTemplate.postForEntity(eq(TOKEN_ENDPOINT), any(), eq(KeycloakTokenResponse.class)))
+        .willReturn(tokenResponse);
+    AuthorizationService.UserRepresentation userRepresentation =
+        new AuthorizationService.UserRepresentation();
+    userRepresentation.id = "id";
+    userRepresentation.username = USERNAME;
+    var userRepresentationResponseEntity =
+        getResponseEntityWithBody(
+            new AuthorizationService.UserRepresentation[] {userRepresentation});
+    Map<String, String> params = new HashMap<>();
+    params.put("username", USERNAME);
+    given(
+            restTemplate.exchange(
+                eq(USER_ENDPOINT),
+                eq(HttpMethod.GET),
+                any(),
+                eq(AuthorizationService.UserRepresentation[].class),
+                eq(params)))
+        .willReturn(userRepresentationResponseEntity);
+
+    Map<String, Object> requestBody = new HashMap<>();
+    requestBody.put("username", USERNAME);
+    requestBody.put("email", EMAIL_ADDRESS);
+    requestBody.put("enabled", true);
+    requestBody.put("emailVerified", true);
+    Map<String, String> credentials = new HashMap<>();
+    credentials.put("type", "password");
+    credentials.put("value", PASSWORD);
+    requestBody.put("credentials", Collections.singletonList(credentials));
+
+    HttpEntity<Map<String, Object>> requestEntity =
+        new HttpEntity<>(requestBody, authorizationService.headersWithAdminToken());
+
+    given(
+            restTemplate.exchange(
+                eq(USER_ENDPOINT + "id"), eq(HttpMethod.PUT), eq(requestEntity), eq(String.class)))
+        .willReturn(getResponseEntityWithBody(""));
+
+    // when then
+    assertThatCode(() -> authorizationService.edit(USERNAME, EMAIL_ADDRESS, PASSWORD))
+        .doesNotThrowAnyException();
+  }
+
+  private ResponseEntity<KeycloakTokenResponse> getTokenResponseEntity() {
     KeycloakTokenResponse tokenResponse = new KeycloakTokenResponse();
     tokenResponse.setAccessToken(TOKEN);
     return new ResponseEntity<>(tokenResponse, HttpStatus.OK);
+  }
+
+  private <T> ResponseEntity<T> getResponseEntityWithBody(T body) {
+    return new ResponseEntity<>(body, HttpStatus.OK);
   }
 
   private HttpEntity<MultiValueMap<String, String>> getRequestEntity() {
@@ -232,6 +261,23 @@ class AuthorizationServiceTest {
     formData.add("client_id", CLIENT_ID);
     formData.add("username", AuthorizationServiceTest.USERNAME);
     formData.add("password", AuthorizationServiceTest.PASSWORD);
+    formData.add("scope", "openid");
+
+    return new HttpEntity<>(formData, headers);
+  }
+
+  private HttpEntity<MultiValueMap<String, String>> getAdminRequestEntity() {
+
+    HttpHeaders headers = new HttpHeaders();
+    headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+    headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+
+    MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
+    formData.add("grant_type", "password");
+    formData.add("client_id", CLIENT_ID);
+    formData.add("username", AuthorizationServiceTest.ADMIN_USERNAME);
+    formData.add("password", AuthorizationServiceTest.ADMIN_PASSWORD);
+    formData.add("scope", "openid");
 
     return new HttpEntity<>(formData, headers);
   }

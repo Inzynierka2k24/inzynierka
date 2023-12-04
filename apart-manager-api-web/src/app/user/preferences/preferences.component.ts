@@ -4,9 +4,10 @@ import { Store } from '@ngrx/store';
 import { FormBuilder, Validators } from '@angular/forms';
 import { selectCurrentUser } from '../../core/store/user/user.selectors';
 import UserActions from '../../core/store/user/user.actions';
-import { Subscription } from 'rxjs';
-import { UserDTO } from '../../../generated';
+import { Observable, Subscription } from 'rxjs';
+import { ExternalAccount, UserDTO } from '../../../generated';
 import { ConfirmationService } from 'primeng/api';
+import { ExternalAccountsService } from '../services/external-accounts.service';
 
 interface PreferencesCategory {
   title: string;
@@ -40,6 +41,17 @@ export class PreferencesComponent implements OnInit, OnDestroy {
       ],
     },
     {
+      title: 'NOTIFICATIONS',
+      rows: [
+        { label: 'SMS', selector: 'smsNotifications', inputType: 'checkbox' },
+        {
+          label: 'EMAIL',
+          selector: 'emailNotifications',
+          inputType: 'checkbox',
+        },
+      ],
+    },
+    {
       title: 'MEMBERSHIP',
       rows: [
         {
@@ -56,12 +68,6 @@ export class PreferencesComponent implements OnInit, OnDestroy {
         },
       ],
     },
-    {
-      title: 'NOTIFICATIONS',
-      rows: [
-        { label: 'SMS', selector: 'smsNotifications', inputType: 'checkbox' },
-      ],
-    },
   ];
 
   editable = false;
@@ -72,6 +78,7 @@ export class PreferencesComponent implements OnInit, OnDestroy {
     level: [''],
     billingType: [''],
     smsNotifications: [false],
+    emailNotifications: [false],
   });
 
   data: Map<string, any> = new Map<string, any>();
@@ -79,11 +86,16 @@ export class PreferencesComponent implements OnInit, OnDestroy {
   subscriptions: Subscription[] = [];
 
   currentUser?: UserDTO;
+  externalAccounts$: Observable<ExternalAccount[]>;
+  showExternalAccountModal: boolean;
+  editableModal: boolean = true;
+  chosenAccount: ExternalAccount | undefined;
 
   constructor(
     private store: Store<AppState>,
     private formBuilder: FormBuilder,
     private confirmationService: ConfirmationService,
+    private externalAccountsService: ExternalAccountsService,
   ) {}
 
   submitEditRequest() {
@@ -110,9 +122,12 @@ export class PreferencesComponent implements OnInit, OnDestroy {
           level: user.level ?? '',
           billingType: user.billingType ?? '',
           smsNotifications: user.smsNotifications,
+          emailNotifications: user.emailNotifications,
         });
       }
       this.currentUser = user;
+      if (user)
+        this.externalAccounts$ = this.externalAccountsService.get(user.id);
     });
     this.subscriptions.push(dataSub);
   }
@@ -123,7 +138,7 @@ export class PreferencesComponent implements OnInit, OnDestroy {
 
   deleteUser() {
     this.confirmationService.confirm({
-      message: 'Do you want to delete this record?',
+      message: 'Do you want to delete this account?',
       header: 'Delete Confirmation',
       icon: 'pi pi-info-circle',
       accept: () => {
@@ -131,4 +146,31 @@ export class PreferencesComponent implements OnInit, OnDestroy {
       },
     });
   }
+
+  openAddExternalAccountModal() {
+    this.editableModal = false;
+    this.showExternalAccountModal = true;
+  }
+
+  openEditExternalAccountModal(account: ExternalAccount) {
+    this.chosenAccount = account;
+    this.editableModal = true;
+    this.showExternalAccountModal = true;
+  }
+
+  deleteExternalAccount(account: ExternalAccount) {
+    if (this.currentUser?.id && account.id) {
+      this.externalAccountsService
+        .delete(this.currentUser.id, account.id)
+        .subscribe(() => {
+          this.externalAccounts$ = this.externalAccountsService.get(
+            this.currentUser!.id,
+          );
+        });
+    }
+  }
+
+  propagateData() {}
+
+  openBillingPage() {}
 }

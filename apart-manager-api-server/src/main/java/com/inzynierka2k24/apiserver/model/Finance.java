@@ -7,7 +7,6 @@ public record Finance(
     Optional<Long> id,
     long userId,
     long apartmentId,
-    long eventId,
     EventType eventType,
     Source source,
     float price,
@@ -18,7 +17,6 @@ public record Finance(
       Optional<Long> id,
       long userId,
       long apartmentId,
-      long eventId,
       int eventType,
       int source,
       float price,
@@ -28,9 +26,28 @@ public record Finance(
         id,
         userId,
         apartmentId,
-        eventId,
         EventType.forNumber(eventType),
         Source.forNumber(source),
+        price,
+        date,
+        details);
+  }
+
+  public Finance(
+      Optional<Long> id,
+      long userId,
+      long apartmentId,
+      String eventType,
+      String source,
+      float price,
+      Instant date,
+      String details) {
+    this(
+        id,
+        userId,
+        apartmentId,
+        EventType.valueOf(eventType.toUpperCase()),
+        Source.valueOf(source.toUpperCase()),
         price,
         date,
         details);

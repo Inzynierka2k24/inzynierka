@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import com.inzynierka2k24.ExternalService;
 import com.inzynierka2k24.ResponseStatus;
+import java.time.Instant;
 import org.junit.jupiter.api.Test;
 
 // TODO Test it properly when methods will be implemented
@@ -19,7 +20,7 @@ class BookingServiceTest {
 
   @Test
   void shouldGetReservations() {
-    assertThat(service.getReservations()).isEmpty();
+    assertThat(service.getReservations(Instant.EPOCH, Instant.EPOCH)).isEmpty();
   }
 
   @Test

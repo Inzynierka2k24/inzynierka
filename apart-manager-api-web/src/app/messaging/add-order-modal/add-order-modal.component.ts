@@ -16,7 +16,7 @@ import MessagingActions from '../../core/store/messaging/messaging.actions';
 })
 export class AddOrderModalComponent implements OnInit {
   @Input()
-  contact: ContactDTO;
+  contact: ContactDTO | undefined;
   @Input()
   visible: boolean;
   @Output()
@@ -58,7 +58,7 @@ export class AddOrderModalComponent implements OnInit {
   }
 
   sendOrder() {
-    if (this.addOrderForm.valid && this.contact.id && this.currentUser.id) {
+    if (this.addOrderForm.valid && this.contact?.id && this.currentUser.id) {
       const message = {
         apartments: this.addOrderForm.controls['apartments'].value,
         triggerType: this.addOrderForm.controls['triggerType'].value,

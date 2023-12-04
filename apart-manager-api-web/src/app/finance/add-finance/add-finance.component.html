@@ -1,80 +1,77 @@
 <div class="form-container">
-    <div class="surface-card p-4 shadow-7 border-round w-full">
-        <div class="text-center mb-5">
+    <div class="surface-card p-4 shadow-5 border-round w-full">
+        <div class=" mb-5">
             <form [formGroup]="addFinanceForm">
                 <div class="p-grid">
-                    <div class="p-col-12">
-                      <label class="block text-900 font-medium mb-2" for="userId">User ID:</label>
-                      <input
-                          [placeholder]="'User ID'"
-                          class="w-full mb-3"
-                          formControlName="userId"
-                          id="userId"
-                          pInputText
-                          type="number"
-                          [ngClass]="{'error-outline': addFinanceForm.get('userId')?.hasError('required') && addFinanceForm.get('userId')?.touched}"
-                          required
-                      />
+                  <!-- Event Dropdown -->
+                  <div class="p-col-12 mb-3">
+                    <label class="block text-900 font-medium mb-2 flex justify-content-center">Event:</label>
+                    <div class="flex justify-content-center">
+                    <p-dropdown
+                        formControlName="eventType"
+                        [options]="eventKeys"
+                        [(ngModel)]="selectedEvent"
+                        (onChange)="onEventSelect()"
+                        [required]="true"
+                        [style]="{'width':'300px'}"
+                        placeholder="Select an Event"
+                        [ngClass]="{'error-outline': addFinanceForm.get('eventType')?.hasError('required') && addFinanceForm.get('eventType')?.touched}">
+                    </p-dropdown>
                     </div>
+                  </div>
 
-                    <div class="p-col-12" [ngClass]="{'input-error': addFinanceForm.get('apartmentId')?.hasError('required') && addFinanceForm.get('apartmentId')?.touched}">
-                      <label class="block text-900 font-medium mb-2">Apartment Id:</label>
-                      <input
-                        [placeholder]="'1'"
-                        class="w-full mb-3"
-                        formControlName="apartmentId"
-                        id="apartmentId"
-                        pInputText
-                        type="number"
-                        [ngClass]="{'error-outline': addFinanceForm.get('apartmentId')?.hasError('required') && addFinanceForm.get('apartmentId')?.touched}"
-                        required
-                      />
+                  <!-- Source Dropdown -->
+                  <div class="p-col-12 mb-3">
+                    <label class="block text-900 font-medium mb-2 flex justify-content-center">Source:</label>
+                    <div class="flex justify-content-center">
+                      <p-dropdown
+                          formControlName="source"
+                          [options]="eventSources"
+                          [placeholder]="selectedEvent ? 'Select a Source' : 'Select an Event first'"
+                          [required]="true"
+                          [style]="{'width':'300px'}"
+                          [ngClass]="{'error-outline': addFinanceForm.get('source')?.hasError('required') && addFinanceForm.get('source')?.touched}">
+                      </p-dropdown>
                     </div>
+                  </div>
 
-                    <div class="p-col-12">
-                      <label class="block text-900 font-medium mb-2">Event Id:</label>
-                      <input
-                        [placeholder]="'1'"
-                        class="w-full mb-3"
-                        formControlName="eventId"
-                        id="eventId"
-                        pInputText
-                        type="number"
-                        [ngClass]="{'error-outline': addFinanceForm.get('eventId')?.hasError('required') && addFinanceForm.get('eventId')?.touched}"
-                        required
-                      />
-                    </div>
-
-                    <div class="p-col-12">
-                      <label class="block text-900 font-medium mb-2">Event Type:</label>
-                      <p-dropdown formControlName="eventType" [options]="eventTypes" optionLabel="name"
-                          [ngClass]="{'error-outline': addFinanceForm.get('eventType')?.hasError('required') && addFinanceForm.get('eventType')?.touched}"
-                      >Select an Event</p-dropdown>
-                    </div>
+                  <!-- Apartment Dropdown -->
+                  <div class="p-col-12 mb-3">
+                    <label class="block text-900 font-medium mb-2 flex justify-content-center">Apartment:</label>
+                    <div class="flex justify-content-center">
+                    <p-dropdown
+                        formControlName="apartment"
+                        [options]="apartments"
+                        optionLabel="label"
+                        optionValue="value.id"
+                        placeholder="Select an Apartment"
+                        [required]="true"
+                        [style]="{'width':'300px'}"
+                        [ngClass]="{'error-outline': addFinanceForm.get('apartment')?.hasError('required') && addFinanceForm.get('apartment')?.touched}">
+                    </p-dropdown>
+                  </div>
+                  </div>
                 </div>
             </form>
         </div>
     </div>
 
-    <div class="surface-card p-4 shadow-7 border-round w-full">
+    <div class="surface-card p-4 shadow-5 border-round w-full">
         <div class="text-center mb-5">
             <form [formGroup]="addFinanceForm">
                 <div class="p-grid">
-                    <div class="p-col-12">
-                      <label class="block text-900 font-medium mb-2">Source:</label>
-                      <p-dropdown formControlName="source" [options]="sources" optionLabel="name"
-                      [ngClass]="{'error-outline': addFinanceForm.get('source')?.hasError('required') && addFinanceForm.get('source')?.touched}"
-                      ></p-dropdown>
-                    </div>
-                    <div class="p-col-12">
+
+                  <!-- Price -->
+                    <div class="p-col-12 mb-3">
                       <label class="block text-900 font-medium mb-2">Price:</label>
                       <input
                         [placeholder]="'200'"
-                        class="w-full mb-3"
                         formControlName="price"
                         id="price"
                         pInputText
+                        [pTooltip]="getPriceTooltip()"
                         type="number"
+                        [style]="{'width':'300px'}"
                         [ngClass]="{'error-outline': addFinanceForm.get('price')?.hasError('required') && addFinanceForm.get('price')?.touched}"
                         required
                       />
@@ -83,20 +80,24 @@
                     Price must be greater than 0
                   </div>
 
-                    <div class="p-col-12">
+                  <!-- Date calendar -->
+                    <div class="p-col-12 mb-3">
                       <label class="block text-900 font-medium mb-2" for="date">Date:</label>
                       <p-calendar [showIcon]="true" formControlName="date"
                                   [ngClass]="{'error-outline': addFinanceForm.get('date')?.hasError('required')
                                   && addFinanceForm.get('date')?.touched}"
+                                  [style]="{'width':'300px'}"
                       ></p-calendar>
                     </div>
-                     <div class="p-col-12">
+
+                  <!-- Details -->
+                     <div class="p-col-12 mb-3">
                         <label class="block text-900 font-medium mb-2">Details:</label>
                         <input
                             [placeholder]="'Details'"
-                            class="w-full mb-3"
                             formControlName="details"
                             id="details"
+                            [style]="{'width':'300px'}"
                             pInputText
                             type="text"
                             [ngClass]="{'error-outline': addFinanceForm.get('details')?.hasError('required') && addFinanceForm.get('details')?.touched}"
@@ -105,8 +106,10 @@
                     </div>
                 </div>
             </form>
+
+          <!-- Add finance button -->
             <button
-                  class="custom-button"
+                  class="custom-button mt-1"
                   icon="pi pi-check"
                   pButton
                   pRipple

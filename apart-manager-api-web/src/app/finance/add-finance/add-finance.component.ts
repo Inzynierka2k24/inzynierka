@@ -1,47 +1,43 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {resultMemoize, Store} from "@ngrx/store";
-import {Finance, Source, EventType, Apartment, UserDTO, Reservation} from "../../../generated";
+import {Store} from "@ngrx/store";
+import {Finance, Apartment, UserDTO} from "../../../generated";
 import {AppState} from "../../core/store/app.store";
 import {FinanceService} from "../service/finance.service";
 import {selectCurrentUser} from "../../core/store/user/user.selectors";
 import {MessageService} from "primeng/api";
 import {switchMap} from "rxjs/operators";
+import {FinanceSourceService} from "../service/finance-source.service";
+import {Observable} from "rxjs";
+import {ApartmentService} from "../../apartment/services/apartment.service";
 
 @Component({
   selector: 'app-add-finance',
   templateUrl: './add-finance.component.html',
   styleUrls: ['./add-finance.component.scss']
 })
-export class AddFinanceComponent {
+export class AddFinanceComponent implements OnInit {
   addFinanceForm;
-  eventTypes = [
-    { name: "UNKNOWN" },
-    { name: "RESERVATION" },
-    { name: "RENOVATION" },
-  ];
-  sources = [
-    { name: "UNKNOWN" },
-    { name: "BOOKING" },
-    { name: "PROMOTION" },
-    { name: "FINE" },
-    { name: "TAX" },
-    { name: "CLEANING" },
-    { name: "REPAIR" },
-    { name: "MAINTENANCE" },
-  ];
+  eventsWithSources: Map<string, string[]>;
+  selectedEvent: string;
+  eventKeys: string[] = [];
+  eventSources: string[] = [];
   isUserLoggedIn = false;
+  user$: Observable<UserDTO | undefined>;
   user: UserDTO;
+  apartments: {label: string, value: Apartment}[];
+  apartment: Apartment;
+
 
   constructor(private store: Store<AppState>,
+              private apartmentService: ApartmentService,
               private financeService: FinanceService,
+              private financeSourceService: FinanceSourceService,
               private formBuilder: FormBuilder,
               private messageService: MessageService){
     this.addFinanceForm = formBuilder.nonNullable.group(
       {
-        userId: ['', Validators.required],
-        apartmentId: ['', Validators.required],
-        eventId: ['', Validators.required],
+        apartment: ['', Validators.required],
         eventType: ['', [Validators.required]],
         source: ['', [Validators.required]],
         price: ['', [Validators.required]],
@@ -50,30 +46,43 @@ export class AddFinanceComponent {
       })
   }
 
+  ngOnInit(): void {
+    this.fetchEventsWithSources();
+    this.fetchApartmentsForUser();
+  }
+
+  fetchEventsWithSources() {
+    this.financeSourceService.getEventsWithSources().subscribe((data: Map<string, string[]>) => {
+      this.eventsWithSources = new Map(Object.entries(data));
+      this.eventKeys = Array.from(this.eventsWithSources.keys());
+    });
+  }
+
+  fetchApartmentsForUser(){
+    this.user$ = this.store.select(selectCurrentUser);
+    this.user$.subscribe((user) => {
+      if (user) {
+        this.apartmentService.getApartments(user).subscribe((data: Apartment[]) => {
+          this.apartments = data.map(apartment => ({
+            label: `${apartment.title}, ${apartment.city}`,
+            value: apartment
+          }));
+        });
+      }
+    });
+  }
+
+  onEventSelect() {
+    if (this.selectedEvent) {
+      const sources = this.eventsWithSources.get(this.selectedEvent) || [];
+      this.eventSources = sources;
+    } else {
+      this.eventSources = [];
+    }
+  }
+
   addFinance(): void {
     if (this.addFinanceForm.valid) {
-      // const financeData: Finance = {
-      //   userId: parseInt(this.addFinanceForm.value.userId!),
-      //   apartmentId: parseInt(this.addFinanceForm.value.apartmentId!),
-      //   eventId: parseInt(this.addFinanceForm.value.eventId!),
-      //   eventType: this.addFinanceForm.value.eventType! as EventType,
-      //   source: this.addFinanceForm.value.source! as Source,
-      //   price: parseFloat(this.addFinanceForm.value.price!),
-      //   date: new Date(this.addFinanceForm.value.date!),
-      //   details: this.addFinanceForm.value.details!,
-      // };
-      // TODO pass enums
-      // const financeData: Finance = {
-      //   userId: parseInt(this.addFinanceForm.value.userId!),
-      //   apartmentId: parseInt(this.addFinanceForm.value.apartmentId!),
-      //   eventId: parseInt(this.addFinanceForm.value.eventId!),
-      //   eventType: EventType[this.addFinanceForm.value.eventType],
-      //   source: Source[this.addFinanceForm.value.source],
-      //   price: parseFloat(this.addFinanceForm.value.price!),
-      //   date: new Date(this.addFinanceForm.value.date!),
-      //   details: this.addFinanceForm.value.details!,
-      // };
-
       this.store
         .select(selectCurrentUser)
         .pipe(
@@ -85,11 +94,10 @@ export class AddFinanceComponent {
             this.isUserLoggedIn = true;
             this.user = user;
             const financeData: Finance = {
-              userId: parseInt(this.addFinanceForm.value.userId!),
-              apartmentId: parseInt(this.addFinanceForm.value.apartmentId!),
-              eventId: parseInt(this.addFinanceForm.value.eventId!),
-              eventType: this.addFinanceForm.value.eventType! as EventType,
-              source: this.addFinanceForm.value.source! as Source,
+              userId: this.user.id,
+              apartmentId: parseInt(this.addFinanceForm.value.apartment!),
+              eventType: this.addFinanceForm.value.eventType!,
+              source: this.addFinanceForm.value.source!,
               price: parseFloat(this.addFinanceForm.value.price!),
               date: new Date(this.addFinanceForm.value.date!),
               details: this.addFinanceForm.value.details!,
@@ -132,5 +140,20 @@ export class AddFinanceComponent {
         control?.markAsTouched();
       }
     });
+  }
+
+  getPriceTooltip(): string {
+    const eventType = this.addFinanceForm.value.eventType;
+    const message =
+        "Enter the price as a positive value for incomes " +
+        "or negative value for losses. "
+
+    if (eventType === 'RESERVATION') {
+      return message + "Reservations should be incomes."
+    } else if (eventType === 'RENOVATION') {
+      return message + "Renovations should be losses."
+    } else {
+      return message;
+    }
   }
 }

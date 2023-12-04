@@ -31,9 +31,13 @@ export class ReservationService {
   getReservationDTOs(
     userId: number,
     apartmentId: number,
-  ): Observable<ReservationDTO> {
-    return this.http.get<ReservationDTO>(
-      `${environment.api_url}/` + userId + '/apartment/' + apartmentId + '/dto',
+  ): Observable<ReservationDTO[]> {
+    return this.http.get<ReservationDTO[]>(
+      `${environment.api_url}/` +
+        userId +
+        '/apartment/' +
+        apartmentId +
+        '/reservation/dto',
     );
   }
 
@@ -96,5 +100,20 @@ export class ReservationService {
       apartmentId +
       '/reservation/' +
       reservation.id, options);
+  }
+
+  propagateReservation(
+    userId: number,
+    apartmentId: number,
+    reservationId: number,
+  ) {
+    return this.http.get<Map<string, string>>(
+      `${environment.api_url}/` +
+        userId +
+        '/external/integration//propagate/apartment/' +
+        apartmentId +
+        '/reservation/' +
+        reservationId,
+    );
   }
 }

@@ -34,7 +34,7 @@ public class UserService {
   }
 
   public void update(User user) throws UserNotFoundException {
-    if (existsByMail(user.emailAddress())) {
+    if (user.id().isPresent() && existsById(user.id().get())) {
       userDao.update(user);
     } else {
       throw new UserNotFoundException();

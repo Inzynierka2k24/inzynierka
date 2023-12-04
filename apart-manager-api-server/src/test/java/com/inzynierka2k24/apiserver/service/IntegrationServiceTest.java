@@ -2,19 +2,17 @@ package com.inzynierka2k24.apiserver.service;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 
 import com.inzynierka2k24.ExternalService;
 import com.inzynierka2k24.ResponseStatus;
 import com.inzynierka2k24.ServiceResponse;
 import com.inzynierka2k24.apiserver.exception.apartment.ApartmentNotFoundException;
 import com.inzynierka2k24.apiserver.exception.reservation.ReservationNotFoundException;
+import com.inzynierka2k24.apiserver.exception.reservation.ReservationNotValidException;
 import com.inzynierka2k24.apiserver.grpc.integration.ExternalIntegrationServiceClient;
-import com.inzynierka2k24.apiserver.model.Apartment;
-import com.inzynierka2k24.apiserver.model.ExternalAccount;
-import com.inzynierka2k24.apiserver.model.ExternalOffer;
-import com.inzynierka2k24.apiserver.model.Reservation;
+import com.inzynierka2k24.apiserver.model.*;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Collections;
@@ -31,9 +29,15 @@ class IntegrationServiceTest {
   private final ExternalOfferService offerService = mock(ExternalOfferService.class);
   private final ReservationService reservationService = mock(ReservationService.class);
   private final ApartmentService apartmentService = mock(ApartmentService.class);
+  private final FinanceService financeService = mock(FinanceService.class);
   private final IntegrationService integrationService =
       new IntegrationService(
-          client, accountService, offerService, reservationService, apartmentService);
+          client,
+          accountService,
+          offerService,
+          reservationService,
+          apartmentService,
+          financeService);
 
   @Test
   void shouldPropagateReservationValidIdsReturnsMap() throws ReservationNotFoundException {
@@ -67,7 +71,7 @@ class IntegrationServiceTest {
   }
 
   @Test
-  void shouldGetReservationsValidUserAndTimeRangeReturnsList() {
+  void shouldGetReservationsValidUserAndTimeRangeReturnsList() throws ReservationNotValidException {
     // Given
     long userId = 1;
     long apartmentId = 1;
@@ -75,20 +79,23 @@ class IntegrationServiceTest {
     Instant to = Instant.now().plus(Duration.ofDays(7));
     List<ExternalAccount> accounts = List.of(new ExternalAccount(1L, "login", "password", 1));
     List<ExternalOffer> offers = List.of(new ExternalOffer(1L, 1, "Apartment"));
+    ExternalReservation reservation =
+        new ExternalReservation(
+            new Reservation(Optional.of(1L), 1L, Instant.now(), Instant.now().plusSeconds(3600)),
+            Optional.of(100f),
+            ExternalService.BOOKING);
 
     when(accountService.getAll(userId)).thenReturn(accounts);
-    when(client.getReservations(from, to, accounts, offers))
-        .thenReturn(
-            List.of(
-                new Reservation(
-                    Optional.of(1L), 1L, Instant.now(), Instant.now().plusSeconds(3600))));
+    when(offerService.getAll(userId)).thenReturn(offers);
+    when(client.getReservations(any(), any(), any(), any(), any(long.class)))
+        .thenReturn(List.of(reservation));
 
     // When
-    List<com.inzynierka2k24.Reservation> result =
+    List<ExternalReservation> result =
         integrationService.getReservations(userId, apartmentId, from, to);
 
     // Then
-    assertThat(result).isNotNull().isEmpty(); // TODO Change after implementing this method
+    assertThat(result).hasSize(1).contains(reservation);
   }
 
   @Test
@@ -150,7 +157,7 @@ class IntegrationServiceTest {
     when(accountService.getAll(userId)).thenReturn(Collections.emptyList());
 
     // When
-    List<com.inzynierka2k24.Reservation> result =
+    List<ExternalReservation> result =
         integrationService.getReservations(userId, apartmentId, from, to);
 
     // Then

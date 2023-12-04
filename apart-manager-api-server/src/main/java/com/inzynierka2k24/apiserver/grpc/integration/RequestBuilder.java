@@ -92,6 +92,7 @@ public final class RequestBuilder {
 
   private static <T extends External> Map<ExternalService, T> groupByServiceType(
       Collection<T> externals) {
-    return externals.stream().collect(Collectors.toMap(External::getService, Function.identity()));
+    return externals.stream()
+        .collect(Collectors.toMap(External::getServiceType, Function.identity()));
   }
 }

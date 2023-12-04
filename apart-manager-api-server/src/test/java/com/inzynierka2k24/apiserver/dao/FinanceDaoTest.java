@@ -49,7 +49,6 @@ class FinanceDaoTest {
             Optional.of(1L),
             1L,
             1L,
-            1L,
             1,
             1,
             200.5f,
@@ -58,7 +57,6 @@ class FinanceDaoTest {
     expectedFinances.add(
         new Finance(
             Optional.of(2L),
-            1L,
             1L,
             1L,
             1,
@@ -80,7 +78,6 @@ class FinanceDaoTest {
     Finance expectedFinance =
         new Finance(
             Optional.of(1L),
-            1L,
             1L,
             1L,
             1,
@@ -106,7 +103,6 @@ class FinanceDaoTest {
             Optional.of(1L),
             1L,
             1L,
-            1L,
             1,
             1,
             200.5f,
@@ -115,7 +111,6 @@ class FinanceDaoTest {
     expectedFinances.add(
         new Finance(
             Optional.of(2L),
-            1L,
             1L,
             1L,
             1,
@@ -140,7 +135,6 @@ class FinanceDaoTest {
             Optional.of(financeId),
             1L,
             1L,
-            1L,
             1,
             1,
             200.5f,
@@ -160,7 +154,6 @@ class FinanceDaoTest {
     Finance finance =
         new Finance(
             Optional.of(1L),
-            1L,
             1L,
             1L,
             1,
@@ -219,7 +212,6 @@ class FinanceDaoTest {
             1L,
             1,
             1,
-            1,
             200.5f,
             Instant.parse("2023-01-01T00:00:00Z"),
             "Washing machine repair");
@@ -236,7 +228,6 @@ class FinanceDaoTest {
             Optional.empty(),
             1L,
             100L,
-            1,
             1,
             1,
             200.5f,
@@ -257,7 +248,6 @@ class FinanceDaoTest {
             1L,
             1,
             1,
-            1,
             200.5f,
             Instant.parse("2023-01-01T00:00:00Z"),
             "Washing machine repair");
@@ -276,7 +266,6 @@ class FinanceDaoTest {
             100L,
             1,
             1,
-            1,
             200.5f,
             Instant.parse("2023-01-01T00:00:00Z"),
             "Washing machine repair");
@@ -293,7 +282,6 @@ class FinanceDaoTest {
             Optional.empty(),
             1L,
             1L,
-            1,
             1,
             1,
             200.5f,

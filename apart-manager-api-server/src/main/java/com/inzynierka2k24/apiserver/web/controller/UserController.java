@@ -25,6 +25,7 @@ public class UserController {
 
   private final AuthorizationService authorizationService;
   private final UserService userService;
+  private final JwtAuthConverter jwtAuthConverter;
 
   @PostMapping("/login")
   public ResponseEntity<String> login(@Valid @RequestBody AuthRequest request) {
@@ -39,7 +40,7 @@ public class UserController {
       throws UserAlreadyExistsException {
     authorizationService.register(request.emailAddress(), request.login(), request.password());
     userService.register(new User(request.login(), request.emailAddress()));
-    return ResponseEntity.status(HttpStatus.CREATED).build();
+    return ResponseEntity.ok().build();
   }
 
   @GetMapping("/user/details")
@@ -48,9 +49,9 @@ public class UserController {
     if (token == null) {
       return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
-    String username = JwtAuthConverter.getLoginFromJWT(token);
+    String username = jwtAuthConverter.getLoginFromJWT(token);
     User u = userService.getUser(username);
-    UserDTO dto = new UserDTO(u.id().get(), u.login(), u.emailAddress());
+    UserDTO dto = new UserDTO(u.id().orElseThrow(), u.login(), u.emailAddress());
     return ResponseEntity.ok(dto);
   }
 

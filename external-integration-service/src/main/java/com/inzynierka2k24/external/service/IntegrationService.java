@@ -4,6 +4,7 @@ import com.inzynierka2k24.ServiceResponse;
 import com.inzynierka2k24.external.model.Account;
 import com.inzynierka2k24.external.model.ApartmentDetails;
 import com.inzynierka2k24.external.model.Reservation;
+import java.time.Instant;
 import java.util.Collection;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -29,10 +30,10 @@ public class IntegrationService {
         .collect(Collectors.toSet());
   }
 
-  public Set<Reservation> getReservations(Collection<Account> accounts) {
+  public Set<Reservation> getReservations(Instant from, Instant to, Collection<Account> accounts) {
     return serviceProvider
         .getServices(accounts)
-        .map(com.inzynierka2k24.external.service.ExternalService::getReservations)
+        .map(externalService -> externalService.getReservations(from, to))
         .flatMap(Collection::stream)
         .collect(Collectors.toSet());
   }

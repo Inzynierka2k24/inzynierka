@@ -1,0 +1,35 @@
+Jako właściciel
+Chciałbym dostać powiadomienie o nowych rezerwacjach
+Po to, aby mieć kontrolę nad obłożeniem obiektu
+
+Jako zarządca
+Chciałbym móc w łatwy sposób komunikować się z właścicielami obiektów
+Po to, aby móc szybko reagować na ich potrzeby
+
+Jako zarządca
+Chciałbym móc w łatwy sposób komunikować się z obsługą obiektu
+Po to, aby koordynować pracę obsługi
+
+Jako zarządca
+Chciałbym aby system automatycznie informował obsługę o konieczności wykonania czynności
+Po to, aby nie musieć tego robić ręcznie
+
+Jako zarządca
+Chciałbym móc tworzyć spersonalizowane wiadomości do obsługi
+Po to, aby móc przekazać im dodatkowe informacje
+
+Jako zarządca
+Chciałbym móc dodawać dowolne kontakty
+Po to, aby móc komunikować się z nimi
+
+Jako zarządca
+Chciałbym móc kategoryzowac moje kontakty
+Po to, aby móc łatwo je wyszukiwać
+
+Jako zarządca
+Chciałbym móc dodać cenę usługi
+Po to, aby przewidywać koszta związane z używaniem usługodawcy
+
+Jako zarządca
+Chciałbym wysyłać powiadomienie do firmy sprzątającej dzień przed wyjazdem gościa
+Po to, aby firma sprzątająca mogła przygotować apartament na przyjazd kolejnego gościa

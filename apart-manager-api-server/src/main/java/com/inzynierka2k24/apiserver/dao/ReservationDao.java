@@ -42,7 +42,7 @@ public class ReservationDao {
         FROM
           reservations
         WHERE
-        	apartment_id = ? AND start_date BETWEEN ? AND ? OR end_date BETWEEN ? AND ?
+        	apartment_id = ? AND (start_date BETWEEN ? AND ? OR end_date BETWEEN ? AND ?)
         """;
   private static final RowMapper<Reservation> reservationRowMapper =
       (rs, rowNum) ->

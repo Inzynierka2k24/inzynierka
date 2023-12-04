@@ -5,9 +5,9 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import com.inzynierka2k24.Reservation;
 import com.inzynierka2k24.apiserver.exception.apartment.ApartmentNotFoundException;
 import com.inzynierka2k24.apiserver.exception.reservation.ReservationNotFoundException;
+import com.inzynierka2k24.apiserver.model.ExternalReservation;
 import com.inzynierka2k24.apiserver.service.IntegrationService;
 import com.inzynierka2k24.apiserver.web.request.GetReservationsRequest;
 import java.time.Instant;
@@ -57,7 +57,7 @@ class IntegrationControllerTest {
     IntegrationController integrationController = new IntegrationController(integrationService);
 
     // When
-    ResponseEntity<List<Reservation>> responseEntity =
+    ResponseEntity<List<ExternalReservation>> responseEntity =
         integrationController.getReservations(userId, apartmentId, request);
 
     // Then

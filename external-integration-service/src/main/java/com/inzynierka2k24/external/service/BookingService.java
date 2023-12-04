@@ -3,6 +3,7 @@ package com.inzynierka2k24.external.service;
 import com.inzynierka2k24.ResponseStatus;
 import com.inzynierka2k24.external.model.ApartmentDetails;
 import com.inzynierka2k24.external.model.Reservation;
+import java.time.Instant;
 import java.util.Set;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +16,7 @@ class BookingService implements ExternalService {
   }
 
   @Override
-  public Set<Reservation> getReservations() {
+  public Set<Reservation> getReservations(Instant from, Instant to) {
     return Set.of();
   }
 
