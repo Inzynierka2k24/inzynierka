@@ -1,0 +1,51 @@
+{
+  "apartments": [
+    {
+      "id": 1,
+      "dailyPrice": 120,
+      "title": "Appa",
+      "country": "Polska",
+      "city": "Wroclaw",
+      "street": "Zbyszkowa",
+      "buildingNumber": "24",
+      "apartmentNumber": "9"
+    }
+  ],
+  "triggerType": "RESERVATION",
+  "intervalType": "HOURS",
+  "intervalValue": 1,
+  "message": "Test message",
+  "contact": {
+    "id": 4,
+    "contactType": "UNKNOWN",
+    "name": "Kubol",
+    "price": 66,
+    "mail": "testmail@gmail.com",
+    "phone": "1234141143142",
+    "notificationSettings": {
+      "emailNotifications": false,
+      "smsNotifications": false
+    },
+    "messages": [
+      {
+        "id": 2,
+        "apartments": [
+          {
+            "id": 1,
+            "dailyPrice": 120,
+            "title": "Appa",
+            "country": "Polska",
+            "city": "Wroclaw",
+            "street": "Zbyszkowa",
+            "buildingNumber": "24",
+            "apartmentNumber": "9"
+          }
+        ],
+        "message": "AWOOGA",
+        "intervalType": "HOURS",
+        "intervalValue": 1,
+        "triggerType": "RESERVATION"
+      }
+    ]
+  }
+}

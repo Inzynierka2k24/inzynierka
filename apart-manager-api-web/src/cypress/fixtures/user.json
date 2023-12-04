@@ -1,0 +1,9 @@
+{
+  "id": 1,
+  "login": "user",
+  "emailAddress": "testUser@gmail.com",
+  "level": "FREE",
+  "billingType": "NONE",
+  "smsNotifications": false,
+  "emailNotifications": false
+}
