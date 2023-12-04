@@ -52,9 +52,8 @@ export interface Finance {
     id?: number;
     userId: number;
     apartmentId: number;
-    eventId: number;
-    eventType: EventType;
-    source: Source;
+    eventType: string;
+    source: string;
     price: number;
     date: Date;
     details: string;
