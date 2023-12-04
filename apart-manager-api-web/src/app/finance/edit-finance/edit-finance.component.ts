@@ -105,6 +105,21 @@ export class EditFinanceComponent implements OnInit {
     this.eventSources = this.eventsWithSources.get(this.editFinanceForm.value.eventType!) || [];
   }
 
+  getPriceTooltip(): string {
+    const eventType = this.editFinanceForm.value.eventType;
+    const message =
+        "Enter the price as a positive value for incomes " +
+        "or negative value for losses. "
+
+    if (eventType === 'RESERVATION') {
+      return message + "Generally Reservations shall be incomes."
+    } else if (eventType === 'RENOVATION') {
+      return message + "Generally Renovations shall be losses."
+    } else {
+      return message;
+    }
+  }
+
   updateFinance(): void {
     if (this.editFinanceForm.valid) {
       this.store

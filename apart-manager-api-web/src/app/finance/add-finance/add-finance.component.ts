@@ -141,4 +141,19 @@ export class AddFinanceComponent implements OnInit {
       }
     });
   }
+
+  getPriceTooltip(): string {
+    const eventType = this.addFinanceForm.value.eventType;
+    const message =
+        "Enter the price as a positive value for incomes " +
+        "or negative value for losses. "
+
+    if (eventType === 'RESERVATION') {
+      return message + "Generally Reservations shall be incomes."
+    } else if (eventType === 'RENOVATION') {
+      return message + "Generally Renovations shall be losses."
+    } else {
+      return message;
+    }
+  }
 }

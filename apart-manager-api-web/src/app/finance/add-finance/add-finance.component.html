@@ -28,7 +28,6 @@
                           formControlName="source"
                           [options]="eventSources"
                           [placeholder]="selectedEvent ? 'Select a Source' : 'Select an Event first'"
-                          [disabled]="!selectedEvent"
                           [required]="true"
                           [style]="{'width':'300px'}"
                           [ngClass]="{'error-outline': addFinanceForm.get('source')?.hasError('required') && addFinanceForm.get('source')?.touched}">
@@ -70,6 +69,7 @@
                         formControlName="price"
                         id="price"
                         pInputText
+                        [pTooltip]="getPriceTooltip()"
                         type="number"
                         [style]="{'width':'300px'}"
                         [ngClass]="{'error-outline': addFinanceForm.get('price')?.hasError('required') && addFinanceForm.get('price')?.touched}"
