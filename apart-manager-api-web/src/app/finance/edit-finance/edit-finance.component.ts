@@ -40,7 +40,6 @@ export class EditFinanceComponent implements OnInit {
               private route: ActivatedRoute){
     this.route.params.subscribe((params) => {
       this.finance = params;
-      console.log(this.finance)
 
       // to ensure that data for Source and Apartment dropdowns is not empty
       this.eventSources = [this.finance.source!];
