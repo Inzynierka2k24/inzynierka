@@ -43,4 +43,4 @@ jobs:
           name: apart-manager-server-polandcentral
           ports: 8080 80
           location: 'polandcentral'
-          secure-environment-variables: APART_DB_URL=${{ secrets.APART_DB_URL }} APART_DB_USER="${{ secrets.APART_DB_USER }}" APART_DB_PASSWORD=${{ secrets.APART_DB_PASSWORD }} KEYCLOAK_USER=${{ secrets.KEYCLOAK_USER }} KEYCLOAK_PASSWORD=${{ secrets.KEYCLOAK_PASSWORD }} AUTH_URL=${{ secrets.AUTH_URL }}
+          secure-environment-variables: APART_DB_URL=${{ secrets.APART_DB_URL }} APART_DB_USER="${{ secrets.APART_DB_USER }}" APART_DB_PASSWORD=${{ secrets.APART_DB_PASSWORD }} KEYCLOAK_USER=${{ secrets.KEYCLOAK_USER }} KEYCLOAK_PASSWORD=${{ secrets.KEYCLOAK_PASSWORD }} AUTH_URL=${{ secrets.AUTH_URL }} EXTERNAL_INTEGRATION_SERVICE_URL=${{ secrets.EXTERNAL_INTEGRATION_SERVICE_URL }} EXTERNAL_INTEGRATION_SERVICE_PORT=${{ secrets.EXTERNAL_INTEGRATION_SERVICE_PORT }} MESSAGING_SERVICE_URL=${{ secrets.MESSAGING_SERVICE_URL }} MESSAGING_SERVICE_PORT=${{ secrets.MESSAGING_SERVICE_PORT }}

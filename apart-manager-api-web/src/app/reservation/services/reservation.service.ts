@@ -98,7 +98,7 @@ export class ReservationService {
     return this.http.get<Map<string, string>>(
       `${environment.api_url}/` +
         userId +
-        '/external/integration//propagate/apartment/' +
+        '/external/integration/propagate/apartment/' +
         apartmentId +
         '/reservation/' +
         reservationId,
