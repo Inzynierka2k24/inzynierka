@@ -6,7 +6,17 @@ import lombok.Getter;
 @Getter
 public enum EventType {
   UNKNOWN(0, List.of(Source.UNKNOWN)),
-  RESERVATION(1, List.of(Source.UNKNOWN, Source.BOOKING, Source.AIRBNB, Source.TRIVAGO, Source.NOCOWANIEPL, Source.PROMOTION, Source.FINE, Source.TAX)),
+  RESERVATION(
+      1,
+      List.of(
+          Source.UNKNOWN,
+          Source.BOOKING,
+          Source.AIRBNB,
+          Source.TRIVAGO,
+          Source.NOCOWANIEPL,
+          Source.PROMOTION,
+          Source.FINE,
+          Source.TAX)),
   RENOVATION(2, List.of(Source.UNKNOWN, Source.CLEANING, Source.REPAIR, Source.MAINTENANCE));
 
   private final int number;
