@@ -17,23 +17,25 @@
                         required
                       />
                     </div>
+                  <br>
                     <div class="p-col-12">
                       <label class="block text-900 font-medium mb-2" for="link">External Link:</label>
                       <input
                         [placeholder]="'Link'"
                         class="w-full mb-3"
-                        formControlName="link"
-                        id="link"
+                        formControlName="externalLink"
+                        id="externalLink"
                         pInputText
                         type="text"
-                        [ngClass]="{'error-outline': editExternalOfferForm.get('link')?.hasError('required') && editExternalOfferForm.get('link')?.touched}"
+                        [ngClass]="{'error-outline': editExternalOfferForm.get('externalLink')?.hasError('required')
+                        && editExternalOfferForm.get('externalLink')?.touched}"
                         required
                       />
                     </div>
                 </div>
                 <div class="p-col-12">
                   <label class="block text-900 font-medium mb-2">Apartment:</label>
-                  <p-dropdown formControlName="apartmentId" [options]="apartments" optionLabel="title"
+                  <p-dropdown formControlName="apartmentId" [options]="apartments" optionLabel="title" optionValue="id"
                               [ngClass]="{'error-outline': editExternalOfferForm.get('apartmentId')?.hasError('required')
                               && editExternalOfferForm.get('apartmentId')?.touched}">
                     <ng-template let-apartment pTemplate="item">
@@ -51,6 +53,7 @@
                 type="submit"
                 (click)="editExternalOffer()"
           >Edit External Offer</button>
+          <p-button class="custom-button" severity="danger" (click)="cancelEditing()">Back</p-button>
         </div>
     </div>
 </div>

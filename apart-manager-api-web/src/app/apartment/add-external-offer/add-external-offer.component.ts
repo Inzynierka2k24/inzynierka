@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import {Apartment, ExternalOffer, UserDTO} from "../../../generated";
-import {Observable} from "rxjs";
+import {Apartment, ExternalOffer, ExternalService, UserDTO} from "../../../generated";
+import {Observable, of} from "rxjs";
 import {AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators} from "@angular/forms";
 import {Store} from "@ngrx/store";
 import {AppState} from "../../core/store/app.store";
@@ -24,6 +24,12 @@ export class AddExternalOfferComponent {
   user: UserDTO;
   user$: Observable<UserDTO | undefined>;
   externalOfferResult$: Observable<string | undefined>;
+  serviceTypes = [
+    { name: "BOOKING", id: 0 },
+    { name: "AIRBNB", id: 1 },
+    { name: "TRIVAGO", id: 2 },
+    { name: "NOCOWANIEPL", id: 3 },
+  ];
 
   constructor(private formBuilder: FormBuilder,
               private store: Store<AppState>,
@@ -35,7 +41,7 @@ export class AddExternalOfferComponent {
     this.addExternalOfferForm = formBuilder.nonNullable.group(
       {
         serviceType: ['', [Validators.required]],
-        externalLink: ['', [Validators.required, this.urlValidator()]],
+        externalLink: ['', [Validators.required]], //, this.urlValidator()
         apartmentId: ['', [Validators.required]]
       })
   }
@@ -56,47 +62,58 @@ export class AddExternalOfferComponent {
   }
 
   addExternalOffer(): void {
-    // if (this.addExternalOfferForm.valid) {
-    //   this.store
-    //     .select(selectCurrentUser)
-    //     .pipe(
-    //       switchMap((user) => {
-    //         if (!user) {
-    //           this.isUserLoggedIn = false;
-    //           throw new Error('User not logged in');
-    //         }
-    //         this.isUserLoggedIn = true;
-    //         this.user = user;
-    //         const externalOfferData: ExternalOffer = {
-    //           serviceType: this.addExternalOfferForm.value.serviceType!,
-    //           externalLink: this.addExternalOfferForm.value.externalLink!,
-    //           apartmentId: this.addExternalOfferForm.value.apartmentId.id!,
-    //         };
-    //         return this.externalOfferService.addExternalOffer(this.user, externalOfferData, { responseType: 'text' });
-    //       })
-    //     )
-    //     .subscribe(
-    //       {
-    //       next: response =>{
-    //         this.addExternalOfferForm.reset();
-    //         this.messageService.add({
-    //           severity: 'success',
-    //           summary: 'ExternalOffer added correctly',
-    //           detail: 'success'
-    //         })},
-    //       error:error => {
-    //           console.error('API call error:', error);
-    //         }
-    //       },
-    //     );
-    // } else {
-    //   this.messageService.add({
-    //     severity: 'error',
-    //     summary: 'Validation Error',
-    //     detail: 'Please fill in all required fields and correct validation errors.',
-    //   });
-    //   this.markAllFieldsAsTouched(this.addExternalOfferForm);
-    // }
+    if (this.addExternalOfferForm.valid) {
+      console.log('wchodzi');
+      this.store
+        .select(selectCurrentUser)
+        .pipe(
+          switchMap((user: UserDTO | undefined) => {
+            if (!user) {
+              this.isUserLoggedIn = false;
+              throw new Error('User not logged in');
+            }
+            this.isUserLoggedIn = true;
+            this.user = user;
+
+            if (this.addExternalOfferForm.value.apartmentId != null){
+              const apartment = this.getApartmentById(this.addExternalOfferForm.value.apartmentId as unknown as number);
+              const externalOfferData: ExternalOffer = {
+                serviceType: this.addExternalOfferForm.value.serviceType! as ExternalService,
+                externalLink: this.addExternalOfferForm.value.externalLink!,
+              };
+              return this.externalOfferService.addExternalOffer(
+                this.user,
+                <Apartment>apartment,
+                externalOfferData,
+                { responseType: 'text' });
+            }
+            else {
+               return of();
+            }
+          })
+        )
+        .subscribe(
+          {
+          next: response =>{
+            this.addExternalOfferForm.reset();
+            this.messageService.add({
+              severity: 'success',
+              summary: 'External Offer added correctly',
+              detail: 'success'
+            })},
+          error: error => {
+              console.error('API call error:', error);
+            }
+          },
+        );
+    } else {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Validation Error',
+        detail: 'Please fill in all required fields and correct validation errors.',
+      });
+      this.markAllFieldsAsTouched(this.addExternalOfferForm);
+    }
   }
 
   private markAllFieldsAsTouched(formGroup: FormGroup): void {
@@ -110,11 +127,27 @@ export class AddExternalOfferComponent {
     });
   }
 
-   urlValidator(): ValidatorFn {
-    return (control: AbstractControl): { [key: string]: any } | null => {
-      const urlPattern = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i;
-      const isValid = urlPattern.test(control.value);
-      return isValid ? null : { 'invalidUrl': { value: control.value } };
-    };
+  //  urlValidator(): ValidatorFn {
+  //   return (control: AbstractControl): { [key: string]: any } | null => {
+  //     const urlPattern = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i;
+  //     const isValid = urlPattern.test(control.value);
+  //     return isValid ? null : { 'invalidUrl': { value: control.value } };
+  //   };
+  // }
+
+  getApartmentById(id: number): Apartment | null{
+    for (const apartment of this.apartments){
+      if (apartment.id == id){
+        return apartment;
+      }
+    }
+    return null;
   }
+  // getApartmentById(id: number): Apartment | null {
+  //   const foundApartment = this.apartments.find(apartment => apartment.id === id);
+  //
+  //   // Check if 'foundApartment' is not undefined before returning
+  //   return foundApartment || null;
+  // }
+
 }

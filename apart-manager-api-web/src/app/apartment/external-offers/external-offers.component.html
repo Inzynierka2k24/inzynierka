@@ -1,6 +1,6 @@
 <div class="surface-card p-4 shadow-7 border-round w-full">
   <h2>External Offers List</h2>
-  <p-table [value]="flattenExternalOffers()" [tableStyle]="{ 'min-width': '50rem' }">
+  <p-table [value]="externalOffersFlatten" [tableStyle]="{ 'min-width': '50rem' }">
     <ng-template pTemplate="header">
       <tr>
         <th>Apartment ID</th>
@@ -17,9 +17,13 @@
         <td>{{ externalOffer.id }}</td>
         <td>{{ externalOffer.serviceType }}</td>
         <td>{{ externalOffer.externalLink }}</td>
-        <td><p-button icon="pi pi-file-edit" (click)="startEditing(externalOffer.id, externalOffer.apartmentId)"></p-button></td>
-        <td><p-button icon="pi pi-trash"
-                      (click)="deleteExternalOffer(externalOffer.id, externalOffer.apartmentId)">
+        <td><p-button
+          icon="pi pi-file-edit"
+          (click)="startEditing(externalOffer.id, externalOffer.apartmentId)">
+        </p-button></td>
+        <td><p-button
+          icon="pi pi-trash"
+          (click)="deleteExternalOffer()">
         </p-button></td>
       </tr>
     </ng-template>

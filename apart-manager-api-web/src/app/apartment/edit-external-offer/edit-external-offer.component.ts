@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import {Apartment, ExternalOffer, ExternalService, UserDTO} from "../../../generated";
-import {Observable} from "rxjs";
+import {Observable, of} from "rxjs";
 import {AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators} from "@angular/forms";
 import {Store} from "@ngrx/store";
 import {AppState} from "../../core/store/app.store";
@@ -9,7 +9,8 @@ import {ApartmentService} from "../services/apartment.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {MessageService} from "primeng/api";
 import {selectCurrentUser} from "../../core/store/user/user.selectors";
-import {switchMap} from "rxjs/operators";
+import {map, switchMap} from "rxjs/operators";
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-edit-external-offer',
@@ -27,6 +28,9 @@ export class EditExternalOfferComponent {
   user: UserDTO;
   user$: Observable<UserDTO | undefined>;
   externalOfferResult$: Observable<string | undefined>;
+  externalOfferId: number;
+  apartmentId: number;
+  externalOffersFlatten: any = [];
 
   constructor(private formBuilder: FormBuilder,
               private store: Store<AppState>,
@@ -36,38 +40,73 @@ export class EditExternalOfferComponent {
               private messageService: MessageService,
               private route: ActivatedRoute,){
 
-    this.route.params.subscribe((params) => {
-      this.externalOffer = params[0];
-      this.apartment = params[1];
-    });
-
     this.editExternalOfferForm = formBuilder.nonNullable.group(
       {
         serviceType: ['', [Validators.required]],
         externalLink: ['', [Validators.required, this.urlValidator()]],
         apartmentId: ['', [Validators.required]]
-      })
-
-    this.editExternalOfferForm.setValue({
-        serviceType: this.externalOffer.serviceType,
-        externalLink: this.externalOffer.externalLink,
-        apartmentId: this.apartment.id as unknown as string
-    })
+      });
   }
 
   ngOnInit() {
     this.fetchData();
   }
 
-  fetchData(){
+
+  fetchData(): void {
     this.user$ = this.store.select(selectCurrentUser);
-    this.user$.subscribe((user) => {
-      if (user) {
-        this.apartmentService.getApartments(user).subscribe((data: Apartment[]) => {
-          this.apartments = data;
-        });
-      }
+    this.user$.pipe(
+      switchMap((user) => {
+        if (!user) {
+          throw new Error('User not logged in');
+        }
+        this.user = user;
+        return this.apartmentService.getApartments(user);
+      }),
+      switchMap((apartments: Apartment[]) => {
+        this.apartments = apartments;
+        this.externalOffers = {};
+        this.externalOffersList = [];
+
+        const externalOffersObservables = this.apartments.map((apart) =>
+          this.externalOfferService.getExternalOffers(this.user, apart).pipe(
+            map((data: ExternalOffer[]) => {
+              if (apart.id !== undefined) {
+                this.externalOffers[apart.id] = data;
+                this.externalOffersList = this.externalOffersList.concat(data);
+              }
+              return data;
+            })
+          )
+        );
+
+        return externalOffersObservables.length > 0
+          ? forkJoin(externalOffersObservables)
+          : of([]);
+      })
+    ).subscribe(() => {
+      this.externalOffersFlatten = this.flattenExternalOffers();
+      this.externalOfferId = +this.route.snapshot.paramMap.get('externalOfferId')!;
+      this.externalOffer = <ExternalOffer>this.getExternalOfferById(this.externalOfferId);
+      this.apartmentId = +this.route.snapshot.paramMap.get('apartmentId')!;
+
+      this.editExternalOfferForm.setValue({
+        serviceType: this.externalOffer.serviceType,
+        externalLink: this.externalOffer.externalLink,
+        apartmentId: this.apartmentId as unknown as string
+      });
     });
+  }
+
+  flattenExternalOffers(): any[] {
+    const result: any[] = [];
+    for (const apartmentId in this.externalOffers) {
+      const externalOffersForApartment = this.externalOffers[apartmentId];
+      externalOffersForApartment.forEach((externalOffer: any) => {
+        result.push({ apartmentId: apartmentId, ...externalOffer });
+      });
+    }
+    return result;
   }
 
   editExternalOffer(): void {
@@ -83,10 +122,13 @@ export class EditExternalOfferComponent {
             this.isUserLoggedIn = true;
             this.user = user;
             const externalOfferData: ExternalOffer = {
+              id: this.externalOfferId,
               serviceType: this.editExternalOfferForm.value.serviceType! as ExternalService,
               externalLink: this.editExternalOfferForm.value.externalLink!,
-              // apartmentId: this.editExternalOfferForm.value.apartmentId.id!,
             };
+            if (this.editExternalOfferForm.value.apartmentId! == null){
+              this.editExternalOfferForm.controls['apartmentId'].setValue(this.apartmentId.toString());
+            }
             return this.externalOfferService.updateExternalOffer(
               this.user,
               <Apartment>this.getApartmentById(this.editExternalOfferForm.value.apartmentId! as unknown as number),
@@ -130,7 +172,7 @@ export class EditExternalOfferComponent {
     });
   }
 
-   urlValidator(): ValidatorFn {
+  urlValidator(): ValidatorFn {
     return (control: AbstractControl): { [key: string]: any } | null => {
       const urlPattern = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i;
       const isValid = urlPattern.test(control.value);
@@ -145,5 +187,20 @@ export class EditExternalOfferComponent {
       }
     }
     return null;
+  }
+
+  getExternalOfferById(id: number): ExternalOffer | null {
+    console.log(this.externalOffersList)
+    for (const offer of this.externalOffersList) {
+      console.log(offer)
+      if (offer.id === id) {
+        return offer;
+      }
+    }
+    return null;
+  }
+
+  cancelEditing(): void {
+    window.history.back()
   }
 }

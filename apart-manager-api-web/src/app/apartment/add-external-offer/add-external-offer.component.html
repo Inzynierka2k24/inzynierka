@@ -4,42 +4,36 @@
             <form [formGroup]="addExternalOfferForm">
                 <div class="p-grid">
                     <div class="p-col-12">
-                      <label class="block text-900 font-medium mb-2" for="serviceType">Service Name:</label>
-                      <input
-                        [placeholder]="'ServiceType'"
-                        class="w-full mb-3"
-                        formControlName="serviceType"
-                        id="serviceType"
-                        pInputText
-                        type="text"
-                        [ngClass]="{'error-outline': addExternalOfferForm.get('serviceType')?.hasError('required') && addExternalOfferForm.get('serviceType')?.touched}"
-                        required
-                      />
+                      <label class="block text-900 font-medium mb-2">Service Name:</label>
+                      <p-dropdown formControlName="serviceType" [options]="serviceTypes" optionLabel="name" optionValue="id"
+                      [ngClass]="{'error-outline': addExternalOfferForm.get('serviceType')?.hasError('required') && addExternalOfferForm.get('serviceType')?.touched}"
+                      ></p-dropdown>
                     </div>
+                  <br>
                     <div class="p-col-12">
                       <label class="block text-900 font-medium mb-2" for="link">External Link:</label>
                       <input
                         [placeholder]="'Link'"
                         class="w-full mb-3"
-                        formControlName="link"
-                        id="link"
+                        formControlName="externalLink"
+                        id="externalLink"
                         pInputText
                         type="text"
-                        [ngClass]="{'error-outline': addExternalOfferForm.get('link')?.hasError('required') && addExternalOfferForm.get('link')?.touched}"
+                        [ngClass]="{'error-outline': addExternalOfferForm.get('externalLink')?.hasError('required')
+                        && addExternalOfferForm.get('externalLink')?.touched}"
                         required
                       />
                     </div>
                 </div>
                 <div class="p-col-12">
                   <label class="block text-900 font-medium mb-2">Apartment:</label>
-                  <p-dropdown formControlName="apartmentId" [options]="apartments" optionLabel="title"
+                  <p-dropdown formControlName="apartmentId" [options]="apartments" optionLabel="title" optionValue="id"
                               [ngClass]="{'error-outline': addExternalOfferForm.get('apartmentId')?.hasError('required')
                               && addExternalOfferForm.get('apartmentId')?.touched}">
                     <ng-template let-apartment pTemplate="item">
                       {{ apartment.id }} - {{ apartment.title }} - {{ apartment.dailyPrice }} - {{ apartment.street }} {{ apartment.buildingNumber }}/{{ apartment.apartmentNumber }}, {{ apartment.city }}
                     </ng-template>
                   </p-dropdown>
-
                 </div>
             </form>
           <br>

@@ -108,7 +108,7 @@ const routes: Routes = [
           { path: 'edit', component: EditApartmentComponent },
           { path: 'externalOffers', component: ExternalOffersComponent },
           { path: 'externalOffers/add', component: AddExternalOfferComponent },
-          { path: 'externalOffers/edit', component: EditExternalOfferComponent },
+          { path: 'externalOffers/edit/:externalOfferId/:apartmentId', component: EditExternalOfferComponent },
           { path: '', component: ApartmentListComponent },
         ],
       },
