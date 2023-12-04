@@ -58,11 +58,11 @@ export class AddApartmentComponent {
               buildingNumber: this.addApartForm.value.buildingNumber!,
               apartmentNumber: this.addApartForm.value.apartmentNumber!,
             };
-            return this.apartmentService.addApartment(this.user, apartmentData);
+            return this.apartmentService.addApartment(this.user, apartmentData,
+              { responseType: 'text' });
           }),
         )
         .subscribe({
-          //todo display message
           next: () => {
             this.addApartForm.reset();
             this.messageService.add({
