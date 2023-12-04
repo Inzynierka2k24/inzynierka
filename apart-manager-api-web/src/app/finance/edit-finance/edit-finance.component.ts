@@ -53,7 +53,7 @@ export class EditFinanceComponent implements OnInit {
       apartment: ['', Validators.required],
       eventType: ['', [Validators.required]],
       source: ['', [Validators.required]],
-      price: ['', [Validators.required, Validators.min(0)]],
+      price: ['', [Validators.required]],
       date: ['', [Validators.required]],
       details: ['', [Validators.required]],
     });
