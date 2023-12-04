@@ -7,7 +7,13 @@
         <th>Start Date</th>
         <th>End Date</th>
         <th></th>
-        <th></th>
+        <th>
+          <p-button
+            label="Fetch"
+            (click)="fetchReservations()"
+            icon="pi pi-cloud-download"
+          ></p-button>
+        </th>
         <th>
           <p-button (click)="addReservation()" icon="pi pi-plus"></p-button>
         </th>
@@ -30,12 +36,6 @@
             (click)="deleteReservation(reservation)"
             icon="pi pi-trash"
             severity="danger"
-          ></p-button>
-        </td>
-        <td>
-          <p-button
-            (click)="propagateReservation(reservation)"
-            icon="pi pi-sync"
           ></p-button>
         </td>
       </tr>

@@ -145,35 +145,43 @@ export class ReservationListComponent implements OnInit {
     });
   }
 
+  fetchReservations() {
+    for (const apart of this.apartments){
+      this.store
+        .select(selectCurrentUser)
+        .pipe(
+          switchMap((user) => {
+            if (!user) {
+              throw new Error('User not logged in');
+            }
+            this.user = user;
+            return this.reservationService.fetchReservations(
+              this.user,
+              <number>apart.id,
+              { responseType: 'text' });
+          })
+        )
+        .subscribe(
+          {
+          next: response =>{
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Reservation fetched correctly',
+              detail: 'success',
+            });
+            this.fetchData();
+          },
+          error:error => {
+              console.error('API call error:', error);
+              this.fetchData();
+            }
+          },
+        );
+    }
+  }
+
   getApartmentLabelById(id: number) {
     const apartment = this.apartments.find(ap => ap.id === id);
     return apartment?.title + ', ' + apartment?.city;
-  }
-
-  propagateReservation(reservation: Reservation) {
-    this.user$.subscribe((user) => {
-      if (user) {
-        this.reservationService
-          .propagateReservation(
-            user.id,
-            reservation.apartmentId,
-            reservation.id!,
-          )
-          .subscribe({
-            next: (response) => {
-              this.messageService.add({
-                severity: 'success',
-                summary: 'Reservation propagated correctly',
-                detail: 'success',
-              });
-              this.fetchData();
-            },
-            error: (error) => {
-              console.error('API call error:', error);
-              this.fetchData();
-            },
-          });
-      }
-    });
   }
 }
