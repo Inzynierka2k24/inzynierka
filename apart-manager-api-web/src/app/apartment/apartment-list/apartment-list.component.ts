@@ -10,6 +10,7 @@ import {selectCurrentUser} from "../../core/store/user/user.selectors";
 import {Store} from "@ngrx/store";
 import {AppState} from "../../core/store/app.store";
 import {switchMap} from "rxjs/operators";
+import {ConfirmationService} from "primeng/api";
 
 @Component({
   selector: 'app-apartment-list',
@@ -30,7 +31,8 @@ export class ApartmentListComponent implements OnInit {
               private apartmentService: ApartmentService,
               private messageService: MessageService,
               private router: Router,
-              private fb: FormBuilder) {
+              private fb: FormBuilder,
+              private confirmationService: ConfirmationService) {
 
     this.editApartmentForm = this.fb.group({
         dailyPrice: ['', [Validators.required, Validators.min(0)]],
@@ -67,9 +69,21 @@ export class ApartmentListComponent implements OnInit {
   }
 
   deleteApartment(apartment: Apartment): void {
+    console.log("CLIKED")
+    this.confirmationService.confirm({
+      message: 'Are you sure you want to delete ' + "`"+ apartment.title + "`? "+
+          'This action cannot be undone and will delete all reservation and finances for this apartment.',
+      header: 'Confirmation',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => this.acceptDelete(apartment),
+      reject: () => this.declineDelete()
+    });
+  }
+
+  acceptDelete(apartment: Apartment) {
     this.store
-      .select(selectCurrentUser)
-      .pipe(
+    .select(selectCurrentUser)
+    .pipe(
         switchMap((user) => {
           if (!user) {
             throw new Error('User not logged in');
@@ -77,23 +91,29 @@ export class ApartmentListComponent implements OnInit {
           this.user = user;
           return this.apartmentService.deleteApartment(this.user, <number>apartment.id, { responseType: 'text' });
         })
-      )
-      .subscribe(
+    )
+    .subscribe(
         {
-        next: response =>{
-          this.editApartmentForm.reset();
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Apartment deleted correctly',
-            detail: 'success'
-          });
-          this.fetchData();
-        },
-        error:error => {
+          next: response =>{
+            this.editApartmentForm.reset();
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Apartment deleted'
+            });
+            this.fetchData();
+          },
+          error:error => {
             console.error('API call error:', error);
             this.fetchData();
           },
         },
-      );
+    );
+  }
+
+  declineDelete() {
+    this.messageService.add({
+      severity: 'warn',
+      summary: 'Apartment delete declined'
+    });
   }
 }
