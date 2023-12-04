@@ -145,7 +145,7 @@ public class AuthorizationService {
     }
   }
 
-  private HttpHeaders headersWithAdminToken() {
+  HttpHeaders headersWithAdminToken() {
     String token = getToken(adminLogin, adminPassword);
     HttpHeaders headers = new HttpHeaders();
     headers.setContentType(MediaType.APPLICATION_JSON);
@@ -153,7 +153,7 @@ public class AuthorizationService {
     return headers;
   }
 
-  private static class UserRepresentation {
+  static class UserRepresentation {
     public String id;
     public String username;
   }
