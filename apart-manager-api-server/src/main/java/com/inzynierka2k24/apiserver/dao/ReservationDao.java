@@ -79,7 +79,6 @@ public class ReservationDao {
   }
 
   public void update(Reservation reservation) {
-    System.out.println(reservation);
     template.update(
         UPDATE_QUERY,
         Timestamp.from(reservation.startDate()),
