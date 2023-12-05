@@ -44,7 +44,7 @@ public class ReservationDao {
           reservations
         WHERE
         	apartment_id = ? AND (start_date BETWEEN ? AND ? OR end_date BETWEEN ? AND ?) 
-        	AND reservation_id != ?
+        AND reservation_id != ?
         """;
   private static final String PERIOD_FREE_QUERY_FOR_ADD =
       """
