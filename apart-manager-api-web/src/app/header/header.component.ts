@@ -1,7 +1,11 @@
 import { Component, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { MenuItem } from 'primeng/api';
+import { MenuItem, MessageService } from 'primeng/api';
 import { SlideMenu } from 'primeng/slidemenu';
+import { selectCurrentUser } from '../core/store/user/user.selectors';
+import { AppState } from '../core/store/app.store';
+import { Store } from '@ngrx/store';
+import { UserDTO } from '../../generated';
 
 @Component({
   selector: 'app-header',
@@ -16,51 +20,73 @@ export class HeaderComponent {
   @ViewChild('reservationMenu') reservationMenu!: SlideMenu;
   @ViewChild('financeMenu') financeMenu!: SlideMenu;
 
-  constructor(public router: Router) {}
+  currentUser: UserDTO | undefined;
+
+  constructor(
+    public router: Router,
+    private store: Store<AppState>,
+    private messageService: MessageService,
+  ) {}
 
   ngOnInit() {
+    this.store.select(selectCurrentUser).subscribe((user) => {
+      this.currentUser = user;
+    });
     this.apartmentItems = [
       {
         label: 'Apartments List',
-        command: () => this.router.navigate(['/apartments']),
+        command: () => this.navigateWithErrorHandling('/apartments'),
       },
       {
         label: 'Add apartment',
-        command: () => this.router.navigate(['/apartments/add']),
+        command: () => this.navigateWithErrorHandling('/apartments/add'),
       },
       {
         label: 'External offers',
-        command: () => this.router.navigate(['/apartments/externalOffers']),
+        command: () =>
+          this.navigateWithErrorHandling('/apartments/externalOffers'),
       },
     ];
     this.reservationItems = [
       {
         label: 'Reservations Calendar',
-        command: () => this.router.navigate(['/reservations/calendar']),
+        command: () => this.navigateWithErrorHandling('/reservations/calendar'),
       },
       {
         label: 'Reservations List',
-        command: () => this.router.navigate(['/reservations']),
+        command: () => this.navigateWithErrorHandling('/reservations'),
       },
       {
         label: 'Add reservation',
-        command: () => this.router.navigate(['/reservations/add']),
+        command: () => this.navigateWithErrorHandling('/reservations/add'),
       },
     ];
     this.financeItems = [
       {
         label: 'Finances List',
-        command: () => this.router.navigate(['/finances']),
+        command: () => this.navigateWithErrorHandling('/finances'),
       },
       {
         label: 'Add finance',
-        command: () => this.router.navigate(['/finances/add']),
+        command: () => this.navigateWithErrorHandling('/finances/add'),
       },
       {
         label: 'Finance Chart',
-        command: () => this.router.navigate(['/finances/chart']),
+        command: () => this.navigateWithErrorHandling('/finances/chart'),
       },
     ];
+  }
+
+  navigateWithErrorHandling(route: string) {
+    if (!this.currentUser) {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'You are not logged in!',
+      });
+    } else {
+      this.router.navigate([route]);
+    }
   }
 
   showClickApartments(event: any) {

@@ -43,12 +43,6 @@ export class AppComponent implements OnInit {
             detail: action.type,
           });
           break;
-        default:
-          this.messageService.add({
-            severity: 'info',
-            summary: action.type,
-            detail: action.type,
-          });
       }
     });
   }

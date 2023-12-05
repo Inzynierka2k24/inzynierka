@@ -31,13 +31,11 @@ const loginComplete = createEffect(
   (
     actions$ = inject(Actions),
     localStorageService = inject(LocalStorageService),
-    router = inject(Router),
   ) => {
     return actions$.pipe(
       ofType(UserActions.loginComplete),
       tap(({ jwt }) => {
         localStorageService.saveData('JWT_TOKEN', jwt);
-        router.navigate(['user', 'dashboard']);
       }),
       map(() => UserActions.details()),
     );
@@ -121,10 +119,10 @@ const getDetails = createEffect(
 );
 
 export default {
-    login,
-    loginComplete,
-    logout,
-    register,
-    getDetails,
-    edit,
-}
+  login,
+  loginComplete,
+  logout,
+  register,
+  getDetails,
+  edit,
+};
