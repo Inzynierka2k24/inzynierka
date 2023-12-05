@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 import { selectCurrentUser } from '../../core/store/user/user.selectors';
 import { AppState } from '../../core/store/app.store';
 import { switchMap } from 'rxjs/operators';
+import { Dialog } from 'primeng/dialog';
 
 @Component({
   selector: 'app-reservation-list',
@@ -24,6 +25,9 @@ export class ReservationListComponent implements OnInit {
   apartment: Apartment;
   user$: Observable<UserDTO | undefined>;
   user: UserDTO;
+  dateRangeDialogVisible = false;
+  startDate: Date;
+  endDate: Date;
 
   constructor(
     private store: Store<AppState>,
@@ -146,50 +150,91 @@ export class ReservationListComponent implements OnInit {
   }
 
   fetchReservations() {
-    const today = new Date();
-    const nextYear = new Date(today);
-    nextYear.setFullYear(today.getFullYear() + 1);
-    const requestBody = {
-        from: today.toISOString(),
-        to: nextYear.toISOString()
-    };
+    if (this.validateDateRange()) {
+      const requestBody = {
+        from: this.startDate.toISOString(),
+        to: this.endDate.toISOString()
+      };
 
-    for (const apart of this.apartments){
-      this.store
-        .select(selectCurrentUser)
-        .pipe(
-          switchMap((user) => {
-            if (!user) {
-              throw new Error('User not logged in');
-            }
-            this.user = user;
+      for (const apart of this.apartments) {
+        this.store
+          .select(selectCurrentUser)
+          .pipe(
+            switchMap((user) => {
+              if (!user) {
+                throw new Error('User not logged in');
+              }
+              this.user = user;
 
-            console.log(requestBody.from)
-            console.log(requestBody.to)
-            return this.reservationService.fetchReservations(
-              this.user,
-              <number>apart.id,
-              requestBody
+              console.log(requestBody.from)
+              console.log(requestBody.to)
+              return this.reservationService.fetchReservations(
+                this.user,
+                <number>apart.id,
+                requestBody
               );
-          })
-        )
-        .subscribe(
-          {
-          next: response =>{
-            this.messageService.add({
-              severity: 'success',
-              summary: 'Reservation fetched correctly',
-              detail: 'success',
-            });
-            this.fetchData();
-          },
-          error:error => {
-              console.error('API call error:', error);
-              this.fetchData();
-            }
-          },
-        );
+            })
+          )
+          .subscribe(
+            {
+              next: response => {
+                this.messageService.add({
+                  severity: 'success',
+                  summary: 'Reservation fetched correctly',
+                  detail: 'success',
+                });
+                this.fetchData();
+              },
+              error: error => {
+                console.error('API call error:', error);
+                this.fetchData();
+              }
+            },
+          );
+      }
+      this.dateRangeDialogVisible = false;
     }
+  }
+  validateDateRange(): boolean {
+    this.messages = [];
+
+    if (!this.startDate || !this.endDate) {
+       this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'Please select both start and end dates.',
+      });
+      return false;
+    }
+
+    if (this.startDate > this.endDate) {
+       this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'End date must be after start date.',
+      });
+      return false;
+    }
+
+    const monthDifference = (this.endDate.getFullYear() - this.startDate.getFullYear()) * 12 +
+      (this.endDate.getMonth() - this.startDate.getMonth());
+
+    if (monthDifference >= 6) {
+       this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'The selected period must be shorter than 6 months.',
+      });
+      return false;
+    }
+
+    return true;
+  }
+
+  openDateRangeDialog() {
+    this.startDate = new Date();
+    this.endDate = new Date();
+    this.dateRangeDialogVisible = true;
   }
 
   getApartmentLabelById(id: number) {

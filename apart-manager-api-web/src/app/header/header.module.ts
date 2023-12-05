@@ -38,6 +38,7 @@ import {ExternalOffersComponent} from "../apartment/external-offers/external-off
 import {AddExternalOfferComponent} from "../apartment/add-external-offer/add-external-offer.component";
 import {EditExternalOfferComponent} from "../apartment/edit-external-offer/edit-external-offer.component";
 import {ConfirmDialogModule} from "primeng/confirmdialog";
+import {DialogModule} from "primeng/dialog";
 
 @NgModule({
   declarations: [
@@ -85,6 +86,7 @@ import {ConfirmDialogModule} from "primeng/confirmdialog";
     TabViewModule,
     CardModule,
     ConfirmDialogModule,
+    DialogModule,
 
   ],
   exports: [

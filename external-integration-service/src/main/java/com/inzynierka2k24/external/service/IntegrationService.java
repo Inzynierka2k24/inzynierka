@@ -33,9 +33,6 @@ public class IntegrationService {
   }
 
   public Set<Reservation> getReservations(Instant from, Instant to, Collection<Account> accounts) {
-    log.info(from.toString());
-    log.info(to.toString());
-
     return serviceProvider
         .getServices(accounts)
         .map(externalService -> externalService.getReservations(from, to))
