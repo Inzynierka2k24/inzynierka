@@ -159,14 +159,15 @@ export class ReservationListComponent implements OnInit {
             const nextYear = new Date(today);
             nextYear.setFullYear(today.getFullYear() + 1);
             const requestBody = {
-                from: today.toISOString().split('T')[0],
-                to: nextYear.toISOString().split('T')[0],
+                from: today.getTime() / 1000,
+                to: nextYear.getTime() / 1000
             };
 
             return this.reservationService.fetchReservations(
               this.user,
               <number>apart.id,
-              { responseType: 'text' });
+              requestBody
+              );
           })
         )
         .subscribe(
