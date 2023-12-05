@@ -112,8 +112,7 @@ export class ReservationService {
   fetchReservations(user: UserDTO, apartmentId: number, requestBody: any) {
     return this.http.post(
       `${environment.api_url}/${user.id}/external/integration/apartment/${apartmentId}/get/reservations`,
-      requestBody,
-      { responseType: 'text' },
+      requestBody
     );
   }
 }

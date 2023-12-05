@@ -1,4 +1,20 @@
 <div class="surface-card p-4 shadow-7 border-round w-full">
+  <p-dialog header="Select Date Range" [(visible)]="dateRangeDialogVisible" [modal]="true">
+    <div class="p-fluid">
+      <label for="startDate">Start Date:</label>
+      <p-calendar id="startDate" [(ngModel)]="startDate" [showIcon]="true" [appendTo]="'body'"></p-calendar>
+      <br>
+      <label for="endDate">End Date:</label>
+      <p-calendar id="endDate" [(ngModel)]="endDate" [showIcon]="true" [appendTo]="'body'"></p-calendar>
+
+      <br>
+      <div class="p-dialog-footer">
+      <button pButton type="button" label="Fetch" (click)="fetchReservations()"></button>
+      <button pButton type="button" label="Cancel" (click)="dateRangeDialogVisible = false"></button>
+      </div>
+    </div>
+    <br>
+  </p-dialog>
   <h2>Reservations List</h2>
   <p-table [tableStyle]="{ 'min-width': '50rem' }" [value]="reservations">
     <ng-template pTemplate="header">
@@ -10,7 +26,7 @@
         <th>
           <p-button
             label="Fetch"
-            (click)="fetchReservations()"
+            (click)="openDateRangeDialog()"
             icon="pi pi-cloud-download"
           ></p-button>
         </th>
