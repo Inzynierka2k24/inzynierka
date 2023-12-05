@@ -9,8 +9,10 @@ import java.util.Collection;
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class IntegrationService {
@@ -31,6 +33,9 @@ public class IntegrationService {
   }
 
   public Set<Reservation> getReservations(Instant from, Instant to, Collection<Account> accounts) {
+    log.info(from.toString());
+    log.info(to.toString());
+
     return serviceProvider
         .getServices(accounts)
         .map(externalService -> externalService.getReservations(from, to))

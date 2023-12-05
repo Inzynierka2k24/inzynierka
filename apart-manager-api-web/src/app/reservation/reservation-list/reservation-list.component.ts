@@ -146,6 +146,14 @@ export class ReservationListComponent implements OnInit {
   }
 
   fetchReservations() {
+    const today = new Date();
+    const nextYear = new Date(today);
+    nextYear.setFullYear(today.getFullYear() + 1);
+    const requestBody = {
+        from: today.toISOString(),
+        to: nextYear.toISOString()
+    };
+
     for (const apart of this.apartments){
       this.store
         .select(selectCurrentUser)
@@ -155,14 +163,9 @@ export class ReservationListComponent implements OnInit {
               throw new Error('User not logged in');
             }
             this.user = user;
-            const today = new Date();
-            const nextYear = new Date(today);
-            nextYear.setFullYear(today.getFullYear() + 1);
-            const requestBody = {
-                from: today.getTime() / 1000,
-                to: nextYear.getTime() / 1000
-            };
 
+            console.log(requestBody.from)
+            console.log(requestBody.to)
             return this.reservationService.fetchReservations(
               this.user,
               <number>apart.id,
