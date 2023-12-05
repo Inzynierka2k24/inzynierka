@@ -1,40 +1,33 @@
 <div class="form-container">
-    <div class="surface-card p-4 shadow-7 border-round w-full">
-        <div class="text-center mb-5">
-            <form [formGroup]="editReservationForm">
-                <div class="p-grid">
-                    <div class="p-col-12 mb-2">
-                        <label class="block text-900 font-medium mb-2">Apartment:</label>
-                      <p-dropdown
-                        formControlName="apartment"
-                        [options]="apartmentOptions"
-                        [style]="{'width':'100%', 'text-align':'left'}"
-                        [ngClass]="{'error-outline': editReservationForm.get('apartment')?.hasError('required')
-                            && editReservationForm.get('apartment')?.touched}">
-                      </p-dropdown>
-                    </div>
-                    <div class="p-col-12 mb-2">
-                      <label class="block text-900 font-medium mb-2" for="startDate">Start Date:</label>
-                      <p-calendar [showIcon]="true" formControlName="startDate" id="startDate"
-                      [ngClass]="{'error-outline': editReservationForm.get('startDate')?.hasError('required')
+  <div class="surface-card p-4 shadow-7 border-round w-full">
+    <div class="text-center mb-5">
+      <form [formGroup]="editReservationForm">
+        <div class="p-grid">
+          <div class="p-col-12 mb-2">
+            <label class="block text-900 font-medium mb-1">Apartment:</label>
+            <div class="font-semibold text-xl">{{ apartmentLabel }}</div>
+          </div>
+          <div class="p-col-12 mb-2">
+            <label class="block text-900 font-medium mb-2" for="startDate">Start Date:</label>
+            <p-calendar [showIcon]="true" formControlName="startDate" id="startDate"
+                        [ngClass]="{'error-outline': editReservationForm.get('startDate')?.hasError('required')
                        && editReservationForm.get('startDate')?.touched}">
-                      </p-calendar>
+            </p-calendar>
 
-                    </div>
-                    <div class="p-col-12">
-                      <label class="block text-900 font-medium mb-2" for="endDate">End Date:</label>
-                      <p-calendar [showIcon]="true" formControlName="endDate" id="endDate"
-                      [ngClass]="{'error-outline': editReservationForm.get('endDate')?.hasError('required')
+          </div>
+          <div class="p-col-12">
+            <label class="block text-900 font-medium mb-2" for="endDate">End Date:</label>
+            <p-calendar [showIcon]="true" formControlName="endDate" id="endDate"
+                        [ngClass]="{'error-outline': editReservationForm.get('endDate')?.hasError('required')
                       && editReservationForm.get('endDate')?.touched}">
-                      </p-calendar>
-                    </div>
-                </div>
-            </form>
+            </p-calendar>
+          </div>
         </div>
-      <div class="text-center">
-        <p-button class="custom-button" severity="success" (click)="saveChanges()">Save</p-button>
-        <p-button class="custom-button" severity="danger" (click)="cancelEditing()">Cancel</p-button>
-      </div>
+      </form>
     </div>
+    <div class="text-center">
+      <p-button class="custom-button" severity="success" (click)="saveChanges()">Save</p-button>
+      <p-button class="custom-button" severity="danger" (click)="cancelEditing()">Cancel</p-button>
+    </div>
+  </div>
 </div>
-

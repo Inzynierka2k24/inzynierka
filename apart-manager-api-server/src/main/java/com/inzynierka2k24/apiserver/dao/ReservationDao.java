@@ -36,8 +36,17 @@ public class ReservationDao {
           apartment_id = ? AND reservation_id = ?
         """;
 
-  // TODO: this is not valid query to check if period is free
-  private static final String PERIOD_FREE_QUERY =
+  private static final String PERIOD_FREE_QUERY_FOR_UPDATE =
+      """
+        SELECT
+          COUNT(reservation_id)
+        FROM
+          reservations
+        WHERE
+        	apartment_id = ? AND (start_date BETWEEN ? AND ? OR end_date BETWEEN ? AND ?) 
+        	AND reservation_id != ?
+        """;
+  private static final String PERIOD_FREE_QUERY_FOR_ADD =
       """
         SELECT
           COUNT(reservation_id)
@@ -70,6 +79,7 @@ public class ReservationDao {
   }
 
   public void update(Reservation reservation) {
+    System.out.println(reservation);
     template.update(
         UPDATE_QUERY,
         Timestamp.from(reservation.startDate()),
@@ -86,9 +96,23 @@ public class ReservationDao {
     Timestamp start = from(reservation.startDate());
     Timestamp end = from(reservation.endDate());
 
+    if (reservation.id().isPresent()) {
+      return Optional.ofNullable(
+              template.queryForObject(
+                  PERIOD_FREE_QUERY_FOR_UPDATE,
+                  int.class,
+                  reservation.apartmentId(),
+                  start,
+                  end,
+                  start,
+                  end, reservation.id().get()))
+          .orElseThrow()
+          == 0;
+    }
+
     return Optional.ofNullable(
                 template.queryForObject(
-                    PERIOD_FREE_QUERY,
+                    PERIOD_FREE_QUERY_FOR_ADD,
                     int.class,
                     reservation.apartmentId(),
                     start,
