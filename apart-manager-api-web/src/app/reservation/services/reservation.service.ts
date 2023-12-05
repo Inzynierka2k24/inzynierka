@@ -61,7 +61,8 @@ export class ReservationService {
   updateReservation(
     user: UserDTO,
     apartmentId: number,
-    reservation: Reservation, options?: any
+    reservation: Reservation,
+    options?: any,
   ): Observable<HttpEvent<string>> {
     return this.http.put<string>(
       `${environment.api_url}/` +
@@ -69,7 +70,8 @@ export class ReservationService {
         '/apartment/' +
         apartmentId +
         '/reservation',
-      reservation, options
+      reservation,
+      options,
     );
   }
 
@@ -90,19 +92,25 @@ export class ReservationService {
     );
   }
 
-  propagateReservation(user: UserDTO, apartmentId: number, reservation: Reservation, options?: any):
-    Observable<HttpEvent<boolean>> {
+  propagateReservation(
+    user: UserDTO,
+    apartmentId: number,
+    reservation: Reservation,
+    options?: any,
+  ): Observable<HttpEvent<boolean>> {
     return this.http.get<boolean>(
-      `${environment.api_url}/`+
-      user.id +
-      '/external/integration/propagate/apartment/' +
-      apartmentId +
-      '/reservation/' +
-      reservation.id, options);
+      `${environment.api_url}/` +
+        user.id +
+        '/external/integration/propagate/apartment/' +
+        apartmentId +
+        '/reservation/' +
+        reservation.id,
+      options,
+    );
   }
 
-  fetchReservations(user: UserDTO, apartmentId: number, requestBody: any): Observable<boolean> {
-    return this.http.post<boolean>(
+  fetchReservations(user: UserDTO, apartmentId: number, requestBody: any) {
+    return this.http.post(
       `${environment.api_url}/${user.id}/external/integration/apartment/${apartmentId}/get/reservations`,
       requestBody
     );

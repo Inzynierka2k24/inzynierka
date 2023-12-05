@@ -1,6 +1,5 @@
 package com.inzynierka2k24.apiserver.model;
 
-import lombok.Getter;
 import com.inzynierka2k24.ExternalService;
 import lombok.Getter;
 
