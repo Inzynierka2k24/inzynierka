@@ -7,7 +7,6 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Repository;
 
-// TODO: This probably shouldn't be hardcoded
 @Repository
 public class FinanceSourceDao {
 

@@ -77,13 +77,13 @@ class IntegrationServiceTest {
     long apartmentId = 1;
     Instant from = Instant.now();
     Instant to = Instant.now().plus(Duration.ofDays(7));
-    List<ExternalAccount> accounts = List.of(new ExternalAccount(1L, "login", "password", 1));
-    List<ExternalOffer> offers = List.of(new ExternalOffer(1L, 1, "Apartment"));
+    List<ExternalAccount> accounts = List.of(new ExternalAccount(1L, "login", "password", 3));
+    List<ExternalOffer> offers = List.of(new ExternalOffer(1L, 3, "Apartment"));
     ExternalReservation reservation =
         new ExternalReservation(
             new Reservation(Optional.of(1L), 1L, Instant.now(), Instant.now().plusSeconds(3600)),
             Optional.of(100f),
-            ExternalService.BOOKING);
+            ExternalService.NOCOWANIEPL);
 
     when(accountService.getAll(userId)).thenReturn(accounts);
     when(offerService.getAll(userId)).thenReturn(offers);
@@ -113,7 +113,7 @@ class IntegrationServiceTest {
     List<ServiceResponse> responses =
         List.of(
             ServiceResponse.newBuilder()
-                .setService(ExternalService.BOOKING)
+                .setService(ExternalService.TRIVAGO)
                 .setStatus(ResponseStatus.SUCCESS)
                 .build());
 

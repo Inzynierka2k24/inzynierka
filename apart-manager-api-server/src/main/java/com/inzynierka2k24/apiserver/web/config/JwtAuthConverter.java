@@ -29,7 +29,7 @@ public class JwtAuthConverter implements Converter<Jwt, AbstractAuthenticationTo
       new JwtGrantedAuthoritiesConverter();
 
   @Value("${jwt.auth.converter.resource-id}")
-  private String resourceId;
+  String resourceId;
 
   public String getLoginFromJWT(String jwt) {
     String[] chunks = jwt.split("\\.");

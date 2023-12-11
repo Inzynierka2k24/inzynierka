@@ -3,6 +3,7 @@ package com.inzynierka2k24.apiserver.grpc.integration;
 import static com.inzynierka2k24.apiserver.grpc.util.TimeConverter.toProtoTimestamp;
 import static org.junit.jupiter.api.Assertions.*;
 
+import com.google.protobuf.Timestamp;
 import com.inzynierka2k24.*;
 import com.inzynierka2k24.apiserver.model.Apartment;
 import com.inzynierka2k24.apiserver.model.ExternalAccount;
@@ -41,27 +42,30 @@ class RequestBuilderTest {
     assertEquals(accounts.size(), request.getAccountsList().size());
   }
 
+
   @Test
-  void shouldBuildGetReservationsRequest() {
+  void shouldBuildGetMessageStatusRequest() {
     // Given
-    Instant from = Instant.now();
-    Instant to = Instant.now().plusSeconds(3600);
-    Collection<ExternalAccount> accounts =
-        List.of(
-            new ExternalAccount("login1", "password1", 1),
-            new ExternalAccount("login2", "password2", 2));
-    Collection<ExternalOffer> offers =
-        List.of(new ExternalOffer(1L, 1, "Apartment1"), new ExternalOffer(2L, 2, "Apartment2"));
+    long testEventId = 123L;
+    com.inzynierka2k24.EventType testEventType = com.inzynierka2k24.EventType.RESERVATION;
+    Timestamp testEventTime = Timestamp.newBuilder().setSeconds(1609459200L).setNanos(0).build();
+
+    EventData eventData = EventData.newBuilder()
+        .setEventId(testEventId)
+        .setEventType(testEventType)
+        .setEventTime(testEventTime)
+        .build();
 
     // When
-    GetReservationsRequest request =
-        RequestBuilder.buildGetReservationsRequest(from, to, accounts, offers);
+    GetMessageStatusRequest request =
+        com.inzynierka2k24.apiserver.grpc.messaging.RequestBuilder.buildGetMessageStatusRequest(eventData);
 
     // Then
     assertNotNull(request);
-    assertEquals(toProtoTimestamp(from), request.getFrom());
-    assertEquals(toProtoTimestamp(to), request.getTo());
-    assertEquals(accounts.size(), request.getAccountsList().size());
+    assertNotNull(request.getEventData());
+    assertEquals(testEventId, request.getEventData().getEventId());
+    assertEquals(testEventType, request.getEventData().getEventType());
+    assertEquals(testEventTime, request.getEventData().getEventTime());
   }
 
   @Test

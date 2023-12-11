@@ -55,8 +55,8 @@ public class FinanceServiceTest {
             Optional.of(1L),
             1L,
             1L,
-            1,
-            1,
+            2,
+            4,
             200.5f,
             Instant.parse("2023-01-01T00:00:00Z"),
             "Washing machine repair");
@@ -133,7 +133,7 @@ public class FinanceServiceTest {
     long financeId = 1;
     Finance finance =
         new Finance(
-            Optional.of(1L), 1L, 1L, 1, 1, 3333f, Instant.parse("2023-01-01T00:00:00Z"), "none");
+            Optional.of(1L), 1L, 1L, 2, 5, 3333f, Instant.parse("2023-01-01T00:00:00Z"), "none");
 
     when(financeDao.getById(financeId)).thenReturn(Optional.of(finance));
 
@@ -155,8 +155,8 @@ public class FinanceServiceTest {
                     Optional.of(1L),
                     1L,
                     1L,
-                    1,
-                    1,
+                    2,
+                    6,
                     3333f,
                     Instant.parse("2023-01-01T00:00:00Z"),
                     "none")));
@@ -183,13 +183,13 @@ public class FinanceServiceTest {
     // Given
     Finance finance =
         new Finance(
-            Optional.empty(), 1L, 33L, 1, 8, 200.5f, Instant.parse("2023-01-01T00:00:00Z"), "none");
+            Optional.empty(), 1L, 33L, 1, 101, 200.5f, Instant.parse("2023-01-01T00:00:00Z"), "none");
     FinanceDTO financeDto =
         new FinanceDTO(
             1L,
             33L,
             "RESERVATION",
-            "NOCOWANIE",
+            "AIRBNB",
             200.5f,
             Instant.parse("2023-01-01T00:00:00Z"),
             "none");
@@ -204,13 +204,13 @@ public class FinanceServiceTest {
     // Given
     Finance finance =
         new Finance(
-            Optional.empty(), 1L, 33L, 1, 8, 200.5f, Instant.parse("2023-01-01T00:00:00Z"), "none");
+            Optional.empty(), 1L, 33L, 1, 100, 200.5f, Instant.parse("2023-01-01T00:00:00Z"), "none");
     FinanceDTO financeDto =
         new FinanceDTO(
             1L,
             33L,
             "RESERVATION",
-            "NOCOWANIE",
+            "BOOKING",
             200.5f,
             Instant.parse("2023-01-01T00:00:00Z"),
             "none");
@@ -226,7 +226,7 @@ public class FinanceServiceTest {
     long financeId = 33;
     Finance finance =
         new Finance(
-            Optional.of(33L), 1L, 33L, 1, 1, 200.5f, Instant.parse("2023-01-01T00:00:00Z"), "none");
+            Optional.of(33L), 1L, 33L, 2, 7, 200.5f, Instant.parse("2023-01-01T00:00:00Z"), "none");
     when(financeDao.getById(financeId)).thenReturn(Optional.empty());
 
     // When/Then
@@ -238,7 +238,7 @@ public class FinanceServiceTest {
     // Given
     Finance finance =
         new Finance(
-            Optional.of(1L), 33L, 1L, 1, 1, 200.5f, Instant.parse("2023-01-01T00:00:00Z"), "none");
+            Optional.of(1L), 33L, 1L, 1, 2, 200.5f, Instant.parse("2023-01-01T00:00:00Z"), "none");
     doThrow(new IllegalArgumentException()).when(financeDao).update(finance);
 
     // When/Then
@@ -250,7 +250,7 @@ public class FinanceServiceTest {
     // Given
     Finance finance =
         new Finance(
-            Optional.of(1L), 1L, 33L, 1, 1, 200.5f, Instant.parse("2023-01-01T00:00:00Z"), "none");
+            Optional.of(1L), 1L, 33L, 1, 100, 200.5f, Instant.parse("2023-01-01T00:00:00Z"), "none");
     doThrow(new IllegalArgumentException()).when(financeDao).update(finance);
 
     // When/Then
@@ -279,7 +279,7 @@ public class FinanceServiceTest {
                     1L,
                     1L,
                     1,
-                    1,
+                    102,
                     200.5f,
                     Instant.parse("2023-01-01T00:00:00Z"),
                     "Washing machine repair")));
@@ -309,7 +309,7 @@ public class FinanceServiceTest {
     // Given
     Finance finance =
         new Finance(
-            Optional.empty(), 1L, 1L, 1, 1, 200.5f, Instant.parse("2023-01-01T00:00:00Z"), "none");
+            Optional.empty(), 1L, 1L, 1, 3, 200.5f, Instant.parse("2023-01-01T00:00:00Z"), "none");
 
     // When
     assertThrows(FinanceNotFoundException.class, () -> financeService.update(finance));
